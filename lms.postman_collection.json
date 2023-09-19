@@ -1,0 +1,800 @@
+{
+	"info": {
+		"_postman_id": "1ce82e36-472a-4f19-adcc-b3181bee45d3",
+		"name": "lms",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "1635749"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "student1@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "student1@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": "https://dav.binshaharts.com/api/v1/login"
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "admin1111@gmail.com",
+							"description": "required",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"description": "required",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "ali khan",
+							"description": "required",
+							"type": "text"
+						},
+						{
+							"key": "contact",
+							"value": "123123123",
+							"description": "optional",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "12345678",
+							"type": "text"
+						}
+					]
+				},
+				"url": "https://dav.binshaharts.com/api/v1/register"
+			},
+			"response": []
+		},
+		{
+			"name": "BillInquiry",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGYwODg0Yzk4NzJlNWZjZWI4Y2M0Nzk5MzYwZGMxNzRmZWI4ZDY5NTU4ZjhhMTZkNjc5ZDFjOTQ4NWU2ODNiMDFkNjJiOTRmZDgwOTVkMGEiLCJpYXQiOjE2OTI4NTk2ODUuNTE2NjI3LCJuYmYiOjE2OTI4NTk2ODUuNTE2NjMxLCJleHAiOjE3MjQ0ODIwODUuMjgyOTU4LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.cvtgUzU9yjcxR1fbHcdauWcBRIzwJdN7GNC8wqIBzC3x9vYX3_UD66pbnrorQjBZm4opI6KZnexgb8N70lEw4WYJv7q6RKcghEYh4mgsPo6D1aW4i7pG9-Zm4ET0sNzcrIv6Ml5eyBojm2_bgJElSoeP1Ype7RJEigS58tJCCndrw-lxhZ0zUNS2wWTTzcRMezbiqnYhaM4xWz4RjzuycGurYC08BmN0a-OLxoyxZtpZ6uTjorTR59XDz6nwqMX0VAo3nUj0hJj73y4S-UwTvJqnT1jBGeVzZKp5HtaPiQvr0Nv7M_zqZfn4ulBhifxWgIlAFdr33MgSHlkrCqt1XTHfGNQruZ2E26QcsbPkvZpwIN0o8mFzmDmd19vVrszjvvnpP4mJb2LcxifwueIplG1V9JEVKrA_Z3hTKNfPdjhwHUERVIZPYKawqM2QBFCPlkUO0krYdXoGSEcTplLEUf-UvXwyHljwUplGxrweCrhdFZrxk6XFi0MQt4xXIeHVLGwXZPgCM4Cq6RF-4jT82PWXtxuRI_IweDnLvwdTYkhzoYg5cwU5paY9AccB0W3D9Xr0RrKYUgiQ78Kj_bRthk9TpKG-6Ke20RjJp-VFaOOO0GmzbQ2YNvpxeHElwAyBAnIqD2NYAmf9uIhx0ogyGNNV94oQ-SgOjtK552CZ1cs"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "username",
+						"value": "QCA@2023#.User1",
+						"type": "text"
+					},
+					{
+						"key": "password",
+						"value": "QCA#2023-.pppp1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "consumer_number",
+							"value": "123451",
+							"type": "text"
+						},
+						{
+							"key": "bank_mnemonic",
+							"value": "kpy",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://127.0.0.1:8000/api/v1/BillInquiry"
+			},
+			"response": []
+		},
+		{
+			"name": "BillPayment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "username",
+						"value": "QCA@2023#.User1",
+						"type": "text"
+					},
+					{
+						"key": "password",
+						"value": "QCA#2023-.pppp1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "consumer_number",
+							"value": "012341",
+							"type": "text"
+						},
+						{
+							"key": "tran_auth_id",
+							"value": "112233",
+							"type": "text"
+						},
+						{
+							"key": "bank_mnemonic",
+							"value": "kpy",
+							"type": "text"
+						},
+						{
+							"key": "transaction_amount",
+							"value": "000000012000",
+							"type": "text"
+						},
+						{
+							"key": "tran_date",
+							"value": "20180911",
+							"type": "text"
+						},
+						{
+							"key": "tran_time",
+							"value": "121366",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://127.0.0.1:8000/api/v1/BillPayment"
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGYwODg0Yzk4NzJlNWZjZWI4Y2M0Nzk5MzYwZGMxNzRmZWI4ZDY5NTU4ZjhhMTZkNjc5ZDFjOTQ4NWU2ODNiMDFkNjJiOTRmZDgwOTVkMGEiLCJpYXQiOjE2OTI4NTk2ODUuNTE2NjI3LCJuYmYiOjE2OTI4NTk2ODUuNTE2NjMxLCJleHAiOjE3MjQ0ODIwODUuMjgyOTU4LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.cvtgUzU9yjcxR1fbHcdauWcBRIzwJdN7GNC8wqIBzC3x9vYX3_UD66pbnrorQjBZm4opI6KZnexgb8N70lEw4WYJv7q6RKcghEYh4mgsPo6D1aW4i7pG9-Zm4ET0sNzcrIv6Ml5eyBojm2_bgJElSoeP1Ype7RJEigS58tJCCndrw-lxhZ0zUNS2wWTTzcRMezbiqnYhaM4xWz4RjzuycGurYC08BmN0a-OLxoyxZtpZ6uTjorTR59XDz6nwqMX0VAo3nUj0hJj73y4S-UwTvJqnT1jBGeVzZKp5HtaPiQvr0Nv7M_zqZfn4ulBhifxWgIlAFdr33MgSHlkrCqt1XTHfGNQruZ2E26QcsbPkvZpwIN0o8mFzmDmd19vVrszjvvnpP4mJb2LcxifwueIplG1V9JEVKrA_Z3hTKNfPdjhwHUERVIZPYKawqM2QBFCPlkUO0krYdXoGSEcTplLEUf-UvXwyHljwUplGxrweCrhdFZrxk6XFi0MQt4xXIeHVLGwXZPgCM4Cq6RF-4jT82PWXtxuRI_IweDnLvwdTYkhzoYg5cwU5paY9AccB0W3D9Xr0RrKYUgiQ78Kj_bRthk9TpKG-6Ke20RjJp-VFaOOO0GmzbQ2YNvpxeHElwAyBAnIqD2NYAmf9uIhx0ogyGNNV94oQ-SgOjtK552CZ1cs"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": "http://127.0.0.1:8000/api/v1/logout"
+			},
+			"response": []
+		},
+		{
+			"name": "A.1 reset passwrod",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "afridiofkh@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": "https://dav.binshaharts.com/api/v1/password/email"
+			},
+			"response": []
+		},
+		{
+			"name": "A.2 passwrod code check",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "code",
+							"value": "2363",
+							"type": "text"
+						}
+					]
+				},
+				"url": "https://dav.binshaharts.com/api/v1/password/code/check"
+			},
+			"response": []
+		},
+		{
+			"name": "A.3 password/reset",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "code",
+							"value": "2363",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234567",
+							"description": "minimum 6 digit",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "1234567",
+							"type": "text"
+						}
+					]
+				},
+				"url": "https://dav.binshaharts.com/api/v1/password/reset"
+			},
+			"response": []
+		},
+		{
+			"name": "B.1.dashboard",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": "https://dav.binshaharts.com/api/v1/dashboard"
+			},
+			"response": []
+		},
+		{
+			"name": "B.2 courseList",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "category_id",
+							"value": "22",
+							"description": "get mscat_id from dashboard response",
+							"type": "text"
+						}
+					]
+				},
+				"url": "https://dav.binshaharts.com/api/v1/courseList"
+			},
+			"response": []
+		},
+		{
+			"name": "C.1 student/myPayments",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiODhiMGM5NWYwZjcyM2E5MjVmNWQxMTZkMTczODEwYWMwM2YzNzk2NmJlZDcwMzE2YjRmODFkOWM5ZTQ4M2VmNDRlMDdlZmJiOWY3NGFlOTQiLCJpYXQiOjE2OTI4MTU3MDMuNDc3MDgxLCJuYmYiOjE2OTI4MTU3MDMuNDc3MDg1LCJleHAiOjE3MjQ0MzgxMDMuNDcwMTM4LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.yFHaEOfJjz-Kl_qMeg_HGbkgUSLdZ9zwYg9KYM3JC6WHSRuzskxy38XfpToHR5tobcwqyYAoO9vps4QHUXRvFWcWiSAI8uMWq0KZdDi3NEixnI_w0r-LmeBsKqVrNLgPIz7xAJJ9wNwWQWsEl7tP3axTjIKbnMxVkvx6hS52Qqf-icNsC9N63-RPk_ltveI7-WvOMc3dmcOMJMyrWQGgvDL-_VvSdElm-siil2i_bzxjAP4PYAxNxJ4nhM7zQQjvCX0-Iu81TiQ3KnwDKL9ceXLrfBtFefAbGC_gDCrbJUvTfbzWp61NLdECap0tISpFjO4gdm7cc1PlfIiGl_GdLdGJxIYNtz_cN_ZkiCT4MRbDOMUC4tmaM_rd9Bd_6VEGYSTmua7na0UkTAzO7pqCePupZXZ7rpltVm4QJZAV8Uk4J-ojSaYVzMWN73MVauXn6d_HejEqNxi94HGSLWsVhMhlm1_TPBJ7FM1TaBQPnjQgIdTBo6Kb_sPWWWSnQ3fSYitKGMPE61lVH9QSVa0tl-kWfyvCGrPhkqdRH0zZWeGVgV-3wtAFwt9Edsan8yZBD1UHE2zjIi_8gTUxOPVf8H19Mw8NI6MH_CaS9XUAEtnLXSNz93zPd-zBQRSpl9FfPRrqJnSAFax4POqYB81atgwlwBs1uf6bSaebTNAVC9A"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": "https://dav.binshaharts.com/api/v1/student/myPayments"
+			},
+			"response": []
+		},
+		{
+			"name": "C.2 student/getInvoiceById",
+			"protocolProfileBehavior": {
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiODhiMGM5NWYwZjcyM2E5MjVmNWQxMTZkMTczODEwYWMwM2YzNzk2NmJlZDcwMzE2YjRmODFkOWM5ZTQ4M2VmNDRlMDdlZmJiOWY3NGFlOTQiLCJpYXQiOjE2OTI4MTU3MDMuNDc3MDgxLCJuYmYiOjE2OTI4MTU3MDMuNDc3MDg1LCJleHAiOjE3MjQ0MzgxMDMuNDcwMTM4LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.yFHaEOfJjz-Kl_qMeg_HGbkgUSLdZ9zwYg9KYM3JC6WHSRuzskxy38XfpToHR5tobcwqyYAoO9vps4QHUXRvFWcWiSAI8uMWq0KZdDi3NEixnI_w0r-LmeBsKqVrNLgPIz7xAJJ9wNwWQWsEl7tP3axTjIKbnMxVkvx6hS52Qqf-icNsC9N63-RPk_ltveI7-WvOMc3dmcOMJMyrWQGgvDL-_VvSdElm-siil2i_bzxjAP4PYAxNxJ4nhM7zQQjvCX0-Iu81TiQ3KnwDKL9ceXLrfBtFefAbGC_gDCrbJUvTfbzWp61NLdECap0tISpFjO4gdm7cc1PlfIiGl_GdLdGJxIYNtz_cN_ZkiCT4MRbDOMUC4tmaM_rd9Bd_6VEGYSTmua7na0UkTAzO7pqCePupZXZ7rpltVm4QJZAV8Uk4J-ojSaYVzMWN73MVauXn6d_HejEqNxi94HGSLWsVhMhlm1_TPBJ7FM1TaBQPnjQgIdTBo6Kb_sPWWWSnQ3fSYitKGMPE61lVH9QSVa0tl-kWfyvCGrPhkqdRH0zZWeGVgV-3wtAFwt9Edsan8yZBD1UHE2zjIi_8gTUxOPVf8H19Mw8NI6MH_CaS9XUAEtnLXSNz93zPd-zBQRSpl9FfPRrqJnSAFax4POqYB81atgwlwBs1uf6bSaebTNAVC9A"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "invoice_id",
+							"value": "84",
+							"description": "get id from data array from c.1 response",
+							"type": "text"
+						}
+					]
+				},
+				"url": "https://dav.binshaharts.com/api/v1/student/getInvoiceById"
+			},
+			"response": []
+		},
+		{
+			"name": "C.3 student/uploadReceipt",
+			"protocolProfileBehavior": {
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiODhiMGM5NWYwZjcyM2E5MjVmNWQxMTZkMTczODEwYWMwM2YzNzk2NmJlZDcwMzE2YjRmODFkOWM5ZTQ4M2VmNDRlMDdlZmJiOWY3NGFlOTQiLCJpYXQiOjE2OTI4MTU3MDMuNDc3MDgxLCJuYmYiOjE2OTI4MTU3MDMuNDc3MDg1LCJleHAiOjE3MjQ0MzgxMDMuNDcwMTM4LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.yFHaEOfJjz-Kl_qMeg_HGbkgUSLdZ9zwYg9KYM3JC6WHSRuzskxy38XfpToHR5tobcwqyYAoO9vps4QHUXRvFWcWiSAI8uMWq0KZdDi3NEixnI_w0r-LmeBsKqVrNLgPIz7xAJJ9wNwWQWsEl7tP3axTjIKbnMxVkvx6hS52Qqf-icNsC9N63-RPk_ltveI7-WvOMc3dmcOMJMyrWQGgvDL-_VvSdElm-siil2i_bzxjAP4PYAxNxJ4nhM7zQQjvCX0-Iu81TiQ3KnwDKL9ceXLrfBtFefAbGC_gDCrbJUvTfbzWp61NLdECap0tISpFjO4gdm7cc1PlfIiGl_GdLdGJxIYNtz_cN_ZkiCT4MRbDOMUC4tmaM_rd9Bd_6VEGYSTmua7na0UkTAzO7pqCePupZXZ7rpltVm4QJZAV8Uk4J-ojSaYVzMWN73MVauXn6d_HejEqNxi94HGSLWsVhMhlm1_TPBJ7FM1TaBQPnjQgIdTBo6Kb_sPWWWSnQ3fSYitKGMPE61lVH9QSVa0tl-kWfyvCGrPhkqdRH0zZWeGVgV-3wtAFwt9Edsan8yZBD1UHE2zjIi_8gTUxOPVf8H19Mw8NI6MH_CaS9XUAEtnLXSNz93zPd-zBQRSpl9FfPRrqJnSAFax4POqYB81atgwlwBs1uf6bSaebTNAVC9A"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "invoice_id",
+							"value": "84",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"value": "actual file",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://dav.binshaharts.com/api/v1/student/uploadReceipt",
+					"protocol": "https",
+					"host": [
+						"dav",
+						"binshaharts",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"student",
+						"uploadReceipt"
+					],
+					"query": [
+						{
+							"key": "invoice_id",
+							"value": "123",
+							"disabled": true
+						},
+						{
+							"key": "file",
+							"value": "actual file ",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "D.1 student/myCourses",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNzZmMTM2M2E5NGI4OTJlMDc3NmZmOTJkODE2Mzk5NzgxNzQ1OTY4ODg1MWUyZjBhODk4YWY0N2QxZjQ2YzMwNjhkZDk2MWU5YTBkMDMzNzciLCJpYXQiOjE2OTMzMzIzNzguMTM3NDYsIm5iZiI6MTY5MzMzMjM3OC4xMzc0NjIsImV4cCI6MTcyNDk1NDc3OC4xMjI5Mywic3ViIjoiMTAiLCJzY29wZXMiOltdfQ.YbsQGLcrHeNLhgA-KgJFtQkyyXJz-xoAT_uiMcccQqe_VkMH0w8RRzvfhMauWLtS9hIkFpiWWtYRBUuwOijenv5fwryx6j7QuO9dHZwZTGhjLi4YcHkfWcxCXhpaatsFwrJeu2Wo_f-kCRQuTP42vMt5Csqm7NiXTp3ulpbGaFv3WPxZAnt-vdU3qqv-Z_WSfpqAphJnjMJCaGVjTqWIqxFWAzFb4dE3Al6_mKnqcwOjpCQz1GGlT2H7raGoQ4WMf4xPgxq17mWJ3qVUUXmLadBrlW34uOV7tb09X4kyRj3r6nDHL3NRiVvoT5zLCRkVvqol7V4nmuO8i2TJ8tvhxQnAQA3N_Vw09ze0biYwgq475or8n9Gw1QCzSR9UYnoHpRb3UHeBB85JwUrtLj9DvkJso9R-Z8afvou1s9uQLrPOk_hZ655_FI0FB0hQLMtew_R5yc0iukLK9hgHhYRe4Ob8tveahkjLJa6K04POeWf8UAaFSG9nLmUSHaQyloVc1YPmWeOkNNm6eK37OpdweOT8d06YcO98t7eUdwmPl2967uP46bdrdfGrw8a_o0ouzlkjc7ocWYN3mBCjQSAJOQoDkzeUeygO4oCyZrSY-1cwcDjYHnES59QMjeVQqNYBww_O94-GNGlqs-XPusgt9aJh9QyeovVCUoxmwzcc1Gw"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": "https://dav.binshaharts.com/api/v1/student/myCourses"
+			},
+			"response": []
+		},
+		{
+			"name": "D.2 student/getCourseById",
+			"protocolProfileBehavior": {
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYzAxZTc2MDFkYmJmOTE5Mjk5YzI4YjllYzBlZWJiMDU1ZWE2NDllYzdiZTA3NDQwODUyMjEyMzY2NWVhMzczZGZkMmM0YWI2YWFkY2JhMjYiLCJpYXQiOjE2OTMxNTc2NDAuNDE5MDY1LCJuYmYiOjE2OTMxNTc2NDAuNDE5MDY4LCJleHAiOjE3MjQ3ODAwNDAuNDA4MzI2LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.PUEWGXWcCCDQsNKSTdhhAT09y2hru0diqvBBtQRWS2zeYfiu6yoMczU4QjV0JCBEWJ_Sx_5JXRgCQ2vm_9YZlH-A1Xd13BPZqnRE1x5c72YZDMf5aPmOx_gAzQYVmnI5qrb4s_-i2GpX6zUmbfj4ubRvLqz7mkeFGan8ScX6g4j48Auh60aGrREuIRWctj9z5KviFQPk45DFch4k_sRmNugwB1IgHhxSkzlA09_ZuT_nwqlGrwff1PVcNNLhGQW4s_hTVqHM8TagIwySK88TN-XWzFr0Udf7YmdU4rBygftvkoGH0fGJHbtpQGO46jwLpOeot3HNIPUkIe7HvyGIBbSmzZk-JzerWWOXAXIaPO3K2bRXW9alzjIQI5c_RQ7GZolhgReR0cY0lsXgwXoILh1NfvPIrqCDZ1hEJ1pzfzYkLPfVLght6OqTxXVnP6TxBJynvU77WkDffT2q7VuiBRqh4MTyRE7ghjZjlFpSZJMTHI3fzveHW9wSVkhdzMx9rZBOSAuYbIc0HJAYIFoJi9Q01-v4wtLihCpeFzhkTTburp6g5m0SGqc0K99jnPntA1iSVngByyftsUxDSDnEaIlx6fYeal0X4zg9I01tkKWIIjRRkD_eDvDuJgfnzTyuaKXUa3xOTWqc11E_R-vf7uIUQ9eGga-2spjUlwvP6zU"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "course_id",
+							"value": "27",
+							"description": "get course_id from D1 response",
+							"type": "text"
+						}
+					]
+				},
+				"url": "https://dav.binshaharts.com/api/v1/student/getCourseById"
+			},
+			"response": []
+		},
+		{
+			"name": "D.3 student/getCourseVideos",
+			"protocolProfileBehavior": {
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGFjYjNlYTJjNzdjZjQ3YjZmNTA2ZWE4OTAzNWQ2NDdhYmE0OGVjMDI5NTllZGY1ZDk5NGNmMWFkNTYxMzdiNjEyZmU4ZjA3MTc3NDAzM2IiLCJpYXQiOjE2OTMzNjExMDguODAzMzU5LCJuYmYiOjE2OTMzNjExMDguODAzMzY0LCJleHAiOjE3MjQ5ODM1MDguNTU2MTA1LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.FXIVv6Sun2RQFcaWLqXR1Gw6VCE7XV7Kd4Y-XG-Jj8AgRNV6jOPVlOcmJYc3fMHhXeHWd3ZrK6BaW4jaQoENFQjQQD50iczbfrUCdlmGWZkAATs8z0duSw7pQUnDkbwpIdL26RUfKpKmesPUZX_ZyjnLtlhlxAZvC3FkcdzHbsv2jIN4hVEbQN7oSGaAuOd8Dkw4nDyBQkE3GUBH2TEkIHEN5LbIr3PKwEntgrgd4xsCl8Z0CxMk9jLZU4VxG-6dacCJ5KXdyr5p5eDZK6j4LhRx7Nt3rGTAAr6woK-VPT74dYJ-tHO6z0xPmM-r-gx2_9bpRDcE-JZ52a7NWaHiQ8jxQoy5s_DCx6vXX_BZgheUUuZsn_vJAhM_GfAXuaeyf9nKnbl__a-BTxqbckvhVZb9-Vh88pIXgQ9RMZGY1m8f_11U1aicjq0bKfN8FAp-VlIe4mczW1cpf13GSbEDbVcVTRIamY20ftlt-iCdU0noIHWhWi1NIqPLr37MvEGBvQL4DOesJmRNbH74-Oq4bFKbNFr037EGHgNSsm-7418RJetP6dO6YUUnAN77rhq4vBPOd01KBCiYhQ5Wew66UQhlSFVdGnbqnUoaldDxLDt-ny2xM_IspVnpC2Zm4ciB6mWuih5GbZyPosxnOF4G9fezFPB2QUzRSQvuHfHnp40"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "course_id",
+							"value": "28",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://127.0.0.1:8000/api/v1/student/getCourseVideos"
+			},
+			"response": []
+		},
+		{
+			"name": "T.1 student/getCourseTests",
+			"protocolProfileBehavior": {
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGFjYjNlYTJjNzdjZjQ3YjZmNTA2ZWE4OTAzNWQ2NDdhYmE0OGVjMDI5NTllZGY1ZDk5NGNmMWFkNTYxMzdiNjEyZmU4ZjA3MTc3NDAzM2IiLCJpYXQiOjE2OTMzNjExMDguODAzMzU5LCJuYmYiOjE2OTMzNjExMDguODAzMzY0LCJleHAiOjE3MjQ5ODM1MDguNTU2MTA1LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.FXIVv6Sun2RQFcaWLqXR1Gw6VCE7XV7Kd4Y-XG-Jj8AgRNV6jOPVlOcmJYc3fMHhXeHWd3ZrK6BaW4jaQoENFQjQQD50iczbfrUCdlmGWZkAATs8z0duSw7pQUnDkbwpIdL26RUfKpKmesPUZX_ZyjnLtlhlxAZvC3FkcdzHbsv2jIN4hVEbQN7oSGaAuOd8Dkw4nDyBQkE3GUBH2TEkIHEN5LbIr3PKwEntgrgd4xsCl8Z0CxMk9jLZU4VxG-6dacCJ5KXdyr5p5eDZK6j4LhRx7Nt3rGTAAr6woK-VPT74dYJ-tHO6z0xPmM-r-gx2_9bpRDcE-JZ52a7NWaHiQ8jxQoy5s_DCx6vXX_BZgheUUuZsn_vJAhM_GfAXuaeyf9nKnbl__a-BTxqbckvhVZb9-Vh88pIXgQ9RMZGY1m8f_11U1aicjq0bKfN8FAp-VlIe4mczW1cpf13GSbEDbVcVTRIamY20ftlt-iCdU0noIHWhWi1NIqPLr37MvEGBvQL4DOesJmRNbH74-Oq4bFKbNFr037EGHgNSsm-7418RJetP6dO6YUUnAN77rhq4vBPOd01KBCiYhQ5Wew66UQhlSFVdGnbqnUoaldDxLDt-ny2xM_IspVnpC2Zm4ciB6mWuih5GbZyPosxnOF4G9fezFPB2QUzRSQvuHfHnp40"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "course_id",
+							"value": "28",
+							"description": "get course_id from D1 response",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://127.0.0.1:8000/api/v1/student/getCourseTests"
+			},
+			"response": []
+		},
+		{
+			"name": "T.2 student/getTestQuestions",
+			"protocolProfileBehavior": {
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGFjYjNlYTJjNzdjZjQ3YjZmNTA2ZWE4OTAzNWQ2NDdhYmE0OGVjMDI5NTllZGY1ZDk5NGNmMWFkNTYxMzdiNjEyZmU4ZjA3MTc3NDAzM2IiLCJpYXQiOjE2OTMzNjExMDguODAzMzU5LCJuYmYiOjE2OTMzNjExMDguODAzMzY0LCJleHAiOjE3MjQ5ODM1MDguNTU2MTA1LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.FXIVv6Sun2RQFcaWLqXR1Gw6VCE7XV7Kd4Y-XG-Jj8AgRNV6jOPVlOcmJYc3fMHhXeHWd3ZrK6BaW4jaQoENFQjQQD50iczbfrUCdlmGWZkAATs8z0duSw7pQUnDkbwpIdL26RUfKpKmesPUZX_ZyjnLtlhlxAZvC3FkcdzHbsv2jIN4hVEbQN7oSGaAuOd8Dkw4nDyBQkE3GUBH2TEkIHEN5LbIr3PKwEntgrgd4xsCl8Z0CxMk9jLZU4VxG-6dacCJ5KXdyr5p5eDZK6j4LhRx7Nt3rGTAAr6woK-VPT74dYJ-tHO6z0xPmM-r-gx2_9bpRDcE-JZ52a7NWaHiQ8jxQoy5s_DCx6vXX_BZgheUUuZsn_vJAhM_GfAXuaeyf9nKnbl__a-BTxqbckvhVZb9-Vh88pIXgQ9RMZGY1m8f_11U1aicjq0bKfN8FAp-VlIe4mczW1cpf13GSbEDbVcVTRIamY20ftlt-iCdU0noIHWhWi1NIqPLr37MvEGBvQL4DOesJmRNbH74-Oq4bFKbNFr037EGHgNSsm-7418RJetP6dO6YUUnAN77rhq4vBPOd01KBCiYhQ5Wew66UQhlSFVdGnbqnUoaldDxLDt-ny2xM_IspVnpC2Zm4ciB6mWuih5GbZyPosxnOF4G9fezFPB2QUzRSQvuHfHnp40"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "test_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "question_no",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://127.0.0.1:8000/api/v1/student/getTestQuestions"
+			},
+			"response": []
+		},
+		{
+			"name": "T.3 student/postAnswer",
+			"protocolProfileBehavior": {
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGFjYjNlYTJjNzdjZjQ3YjZmNTA2ZWE4OTAzNWQ2NDdhYmE0OGVjMDI5NTllZGY1ZDk5NGNmMWFkNTYxMzdiNjEyZmU4ZjA3MTc3NDAzM2IiLCJpYXQiOjE2OTMzNjExMDguODAzMzU5LCJuYmYiOjE2OTMzNjExMDguODAzMzY0LCJleHAiOjE3MjQ5ODM1MDguNTU2MTA1LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.FXIVv6Sun2RQFcaWLqXR1Gw6VCE7XV7Kd4Y-XG-Jj8AgRNV6jOPVlOcmJYc3fMHhXeHWd3ZrK6BaW4jaQoENFQjQQD50iczbfrUCdlmGWZkAATs8z0duSw7pQUnDkbwpIdL26RUfKpKmesPUZX_ZyjnLtlhlxAZvC3FkcdzHbsv2jIN4hVEbQN7oSGaAuOd8Dkw4nDyBQkE3GUBH2TEkIHEN5LbIr3PKwEntgrgd4xsCl8Z0CxMk9jLZU4VxG-6dacCJ5KXdyr5p5eDZK6j4LhRx7Nt3rGTAAr6woK-VPT74dYJ-tHO6z0xPmM-r-gx2_9bpRDcE-JZ52a7NWaHiQ8jxQoy5s_DCx6vXX_BZgheUUuZsn_vJAhM_GfAXuaeyf9nKnbl__a-BTxqbckvhVZb9-Vh88pIXgQ9RMZGY1m8f_11U1aicjq0bKfN8FAp-VlIe4mczW1cpf13GSbEDbVcVTRIamY20ftlt-iCdU0noIHWhWi1NIqPLr37MvEGBvQL4DOesJmRNbH74-Oq4bFKbNFr037EGHgNSsm-7418RJetP6dO6YUUnAN77rhq4vBPOd01KBCiYhQ5Wew66UQhlSFVdGnbqnUoaldDxLDt-ny2xM_IspVnpC2Zm4ciB6mWuih5GbZyPosxnOF4G9fezFPB2QUzRSQvuHfHnp40"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "test_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "question_no",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://127.0.0.1:8000/api/v1/student/postAnswer"
+			},
+			"response": []
+		},
+		{
+			"name": "R.1 student/myResultsCourses",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGFjYjNlYTJjNzdjZjQ3YjZmNTA2ZWE4OTAzNWQ2NDdhYmE0OGVjMDI5NTllZGY1ZDk5NGNmMWFkNTYxMzdiNjEyZmU4ZjA3MTc3NDAzM2IiLCJpYXQiOjE2OTMzNjExMDguODAzMzU5LCJuYmYiOjE2OTMzNjExMDguODAzMzY0LCJleHAiOjE3MjQ5ODM1MDguNTU2MTA1LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.FXIVv6Sun2RQFcaWLqXR1Gw6VCE7XV7Kd4Y-XG-Jj8AgRNV6jOPVlOcmJYc3fMHhXeHWd3ZrK6BaW4jaQoENFQjQQD50iczbfrUCdlmGWZkAATs8z0duSw7pQUnDkbwpIdL26RUfKpKmesPUZX_ZyjnLtlhlxAZvC3FkcdzHbsv2jIN4hVEbQN7oSGaAuOd8Dkw4nDyBQkE3GUBH2TEkIHEN5LbIr3PKwEntgrgd4xsCl8Z0CxMk9jLZU4VxG-6dacCJ5KXdyr5p5eDZK6j4LhRx7Nt3rGTAAr6woK-VPT74dYJ-tHO6z0xPmM-r-gx2_9bpRDcE-JZ52a7NWaHiQ8jxQoy5s_DCx6vXX_BZgheUUuZsn_vJAhM_GfAXuaeyf9nKnbl__a-BTxqbckvhVZb9-Vh88pIXgQ9RMZGY1m8f_11U1aicjq0bKfN8FAp-VlIe4mczW1cpf13GSbEDbVcVTRIamY20ftlt-iCdU0noIHWhWi1NIqPLr37MvEGBvQL4DOesJmRNbH74-Oq4bFKbNFr037EGHgNSsm-7418RJetP6dO6YUUnAN77rhq4vBPOd01KBCiYhQ5Wew66UQhlSFVdGnbqnUoaldDxLDt-ny2xM_IspVnpC2Zm4ciB6mWuih5GbZyPosxnOF4G9fezFPB2QUzRSQvuHfHnp40"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": "http://127.0.0.1:8000/api/v1/student/myResultsCourses"
+			},
+			"response": []
+		},
+		{
+			"name": "R.2 student/myResultsTests",
+			"protocolProfileBehavior": {
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGFjYjNlYTJjNzdjZjQ3YjZmNTA2ZWE4OTAzNWQ2NDdhYmE0OGVjMDI5NTllZGY1ZDk5NGNmMWFkNTYxMzdiNjEyZmU4ZjA3MTc3NDAzM2IiLCJpYXQiOjE2OTMzNjExMDguODAzMzU5LCJuYmYiOjE2OTMzNjExMDguODAzMzY0LCJleHAiOjE3MjQ5ODM1MDguNTU2MTA1LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.FXIVv6Sun2RQFcaWLqXR1Gw6VCE7XV7Kd4Y-XG-Jj8AgRNV6jOPVlOcmJYc3fMHhXeHWd3ZrK6BaW4jaQoENFQjQQD50iczbfrUCdlmGWZkAATs8z0duSw7pQUnDkbwpIdL26RUfKpKmesPUZX_ZyjnLtlhlxAZvC3FkcdzHbsv2jIN4hVEbQN7oSGaAuOd8Dkw4nDyBQkE3GUBH2TEkIHEN5LbIr3PKwEntgrgd4xsCl8Z0CxMk9jLZU4VxG-6dacCJ5KXdyr5p5eDZK6j4LhRx7Nt3rGTAAr6woK-VPT74dYJ-tHO6z0xPmM-r-gx2_9bpRDcE-JZ52a7NWaHiQ8jxQoy5s_DCx6vXX_BZgheUUuZsn_vJAhM_GfAXuaeyf9nKnbl__a-BTxqbckvhVZb9-Vh88pIXgQ9RMZGY1m8f_11U1aicjq0bKfN8FAp-VlIe4mczW1cpf13GSbEDbVcVTRIamY20ftlt-iCdU0noIHWhWi1NIqPLr37MvEGBvQL4DOesJmRNbH74-Oq4bFKbNFr037EGHgNSsm-7418RJetP6dO6YUUnAN77rhq4vBPOd01KBCiYhQ5Wew66UQhlSFVdGnbqnUoaldDxLDt-ny2xM_IspVnpC2Zm4ciB6mWuih5GbZyPosxnOF4G9fezFPB2QUzRSQvuHfHnp40"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "course_id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/student/myResultsTests",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"student",
+						"myResultsTests"
+					],
+					"query": [
+						{
+							"key": "course_id",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "R.3 student/myFinalResults",
+			"protocolProfileBehavior": {
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGFjYjNlYTJjNzdjZjQ3YjZmNTA2ZWE4OTAzNWQ2NDdhYmE0OGVjMDI5NTllZGY1ZDk5NGNmMWFkNTYxMzdiNjEyZmU4ZjA3MTc3NDAzM2IiLCJpYXQiOjE2OTMzNjExMDguODAzMzU5LCJuYmYiOjE2OTMzNjExMDguODAzMzY0LCJleHAiOjE3MjQ5ODM1MDguNTU2MTA1LCJzdWIiOiIxMCIsInNjb3BlcyI6W119.FXIVv6Sun2RQFcaWLqXR1Gw6VCE7XV7Kd4Y-XG-Jj8AgRNV6jOPVlOcmJYc3fMHhXeHWd3ZrK6BaW4jaQoENFQjQQD50iczbfrUCdlmGWZkAATs8z0duSw7pQUnDkbwpIdL26RUfKpKmesPUZX_ZyjnLtlhlxAZvC3FkcdzHbsv2jIN4hVEbQN7oSGaAuOd8Dkw4nDyBQkE3GUBH2TEkIHEN5LbIr3PKwEntgrgd4xsCl8Z0CxMk9jLZU4VxG-6dacCJ5KXdyr5p5eDZK6j4LhRx7Nt3rGTAAr6woK-VPT74dYJ-tHO6z0xPmM-r-gx2_9bpRDcE-JZ52a7NWaHiQ8jxQoy5s_DCx6vXX_BZgheUUuZsn_vJAhM_GfAXuaeyf9nKnbl__a-BTxqbckvhVZb9-Vh88pIXgQ9RMZGY1m8f_11U1aicjq0bKfN8FAp-VlIe4mczW1cpf13GSbEDbVcVTRIamY20ftlt-iCdU0noIHWhWi1NIqPLr37MvEGBvQL4DOesJmRNbH74-Oq4bFKbNFr037EGHgNSsm-7418RJetP6dO6YUUnAN77rhq4vBPOd01KBCiYhQ5Wew66UQhlSFVdGnbqnUoaldDxLDt-ny2xM_IspVnpC2Zm4ciB6mWuih5GbZyPosxnOF4G9fezFPB2QUzRSQvuHfHnp40"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "test_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "question_no",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/student/postAnswer?test_id=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"student",
+						"postAnswer"
+					],
+					"query": [
+						{
+							"key": "test_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
