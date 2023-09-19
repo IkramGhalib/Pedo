@@ -52,9 +52,9 @@
                 <td>{{ $user->email }}</td>
                 <td>
                   @foreach($user->roles as $role)
-                    @if($role->name == 'student')
+                    @if($role->name == 'reader')
                         <span class="badge badge-primary">{{ ucfirst($role->name) }}</span>
-                    @elseif($role->name == 'instructor')
+                    @elseif($role->name == 'incharge')
                         <span class="badge badge-warning">{{ ucfirst($role->name) }}</span>
                     @endif
                     @if(!$loop->last)

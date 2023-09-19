@@ -11,8 +11,8 @@
             <div class="card-watermark darker font-size-80 m-15"><i class="fa fa-chalkboard" aria-hidden="true"></i></div>
             <div class="counter counter-md counter-inverse text-left">
               <div class="counter-number-group">
-                <span class="counter-number">{{ $metrics['courses'] }}</span>
-                <span class="counter-number-related text-capitalize">courses</span>
+                <span class="counter-number">25</span>
+                <span class="counter-number-related text-capitalize">Users</span>
               </div>
               <div class="counter-label text-capitalize">in total</div>
             </div>
@@ -26,8 +26,8 @@
             <div class="card-watermark darker font-size-80 m-15"><i class="fas fa-bullhorn" aria-hidden="true"></i></div>
             <div class="counter counter-md counter-inverse text-left">
               <div class="counter-number-group">
-                <span class="counter-number">{{ $metrics['lectures'] }}</span>
-                <span class="counter-number-related text-capitalize">lectures</span>
+                <span class="counter-number">1000</span>
+                <span class="counter-number-related text-capitalize">Consumer</span>
               </div>
               <div class="counter-label text-capitalize">in total</div>
             </div>
@@ -41,8 +41,8 @@
             <div class="card-watermark darker font-size-60 m-15"><i class="far fa-play-circle" aria-hidden="true"></i></div>
             <div class="counter counter-md counter-inverse text-left">
               <div class="counter-number-group">
-                <span class="counter-number">{{ $metrics['videos'] }}</span>
-                <span class="counter-number-related text-capitalize">videos</span>
+                <span class="counter-number">1021</span>
+                <span class="counter-number-related text-capitalize">Pending Bills</span>
               </div>
               <div class="counter-label text-capitalize">in total</div>
             </div>

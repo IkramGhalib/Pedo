@@ -48,31 +48,31 @@
             <li class="nav-item active ">
               <a class="nav-link" href="{{ route('home') }}">Home </a>
             </li>
-           
+            {{--
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Offer Courses
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <?php 
-                $categories = SiteHelpers::active_categories_master();
+                //$categories = SiteHelpers::active_categories_master();
             ?>
              @foreach ($categories as $category)
              <a class="dropdown-item" href="{{ route('course.list','category_id[]='.$category->mscat_id) }}">
-                 {{-- <i class="fa {{ $category->icon_class }} category-menu-icon"></i> --}}
+               
                  <i class="fa fa-list category-menu-icon"></i>{{ $category->cat_name}}
              </a>
          @endforeach
+
+        
                 
               </div>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('test.applyTest') }}">Apply Test</a>
-            </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('instructor.list') }}">Instructors List</a>
-            </li>
+            --}}
+            
+
+            
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('page.about') }}">About Us</a>
@@ -85,7 +85,6 @@
 
           <div class="form-inline  my-2 my-lg-0">
             {{-- <li class="nav-item"> --}}
-                <a class="nav-link" style="color:green" href="{{ url('cart') }}"><i class="fas fa-shopping-cart">Cart<small class="cart-count">0</small></i></a>
               {{-- </li> --}}
               {{--
                     <a class="nav-item mr-2">
@@ -102,34 +101,13 @@
                 
              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButtonRight">
                 
-                @if(Auth::user()->hasRole('instructor'))
-                <a class="dropdown-item" href="{{ route('instructor.dashboard') }}" >
-                    <i class="fa fa-sign-out-alt"></i> Instructor
-                </a>
-                @endif
+              
 
                 @if(Auth::user()->hasAnyRole(['instructor', 'admin']))
                 <a class="dropdown-item" href="{{ route('admin.dashboard') }}" >
                     <i class="fa fa-sign-out-alt"></i> Dashboard
                 </a>
             @endif
-            
-
-                <a class="dropdown-item" href="{{ route('my.courses') }}" >
-                    <i class="fa fa-sign-out-alt"></i> My Courses
-                </a>
-                 @if(Auth::user()->hasAnyRole(['student']))
-                      <a class="dropdown-item" href="{{ route('myPayments') }}" >
-                         <i class="fa fa-sign-out-alt"></i> My Payments
-                    </a>
-                    <a class="dropdown-item" href="{{ route('my.courses') }}" >
-                         <i class="fa fa-sign-out-alt"></i> My Exams
-                    </a>
-                    <a class="dropdown-item" href="{{ route('my.courses') }}" >
-                         <i class="fa fa-sign-out-alt"></i> My Results
-                    </a>
-                 @endif
-
                 <a class="dropdown-item" href="{{ route('logOut') }}" >
                     <i class="fa fa-sign-out-alt"></i> Logout
                 </a>
@@ -148,8 +126,8 @@
                 <ul>
                     <li class="mb-1"><b>Quick Links</b></li>
                     <li><a href="{{ route('home') }}">Home Page</a></li>
-                    <li><a href="{{ route('course.list') }}">Courses List</a></li>
-                    <li><a href="{{ route('instructor.list') }}">Instructors List</a></li>
+                    <li><a href="">Courses List</a></li>
+                    <li><a href="">Instructors List</a></li>
                     <li><a href="{{ route('blogs') }}">Blogs List</a></li>
                 </ul>
             </div>
@@ -165,11 +143,13 @@
             <div class="col-lg-2 col-md-4 col-sm-4 mt-3 d-none d-sm-block">
                 <ul>
                     <li class="mb-1"><b>Top Categories</b></li>
+                    {{--
                     @foreach ($categories as $category)
                         @if($loop->iteration <= 4)
                             <li><a href="{{ route('course.list','category_id[]='.$category->id) }}">{{ $category->cat_name}}</a></li>
                         @endif
                     @endforeach
+                    --}}
                     
                 </ul>
             </div>
@@ -194,7 +174,7 @@
         </div>
            
         <div class="becomeInstructorForm">
-           <form id="becomeInstructorForm" class="form-horizontal" method="POST" action="{{ route('become.instructor') }}">
+           <form id="becomeInstructorForm" class="form-horizontal" method="POST" action="">
             {{ csrf_field() }}
                 <div class="px-4 py-2">
                     <div class="form-group">
@@ -297,23 +277,7 @@
 
         $(document).ready(function()
         {   
-            laodcart();
-            //count cart
-
-            function laodcart() {
-        $.ajax({
-            type: 'GET',
-            url: '/load-cart-data', 
             
-            success: function (response) {
-                // Update the cart item count on the page
-                $('.cart-count').html('');
-                $('.cart-count').html(response.count);
-
-            }
-           
-        });
-    }
 
             // end count
             /* Delete record */

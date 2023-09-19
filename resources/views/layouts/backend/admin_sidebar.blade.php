@@ -15,86 +15,87 @@
                         <span class="site-menu-title">Users Management</span>
                     </a>
                 </li>
-
-                <li class="site-menu-item {{ request()->is('admin/group*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.groups') }}">
-                        <i class="site-menu-icon wb-tag" aria-hidden="true"></i>
-                        <span class="site-menu-title">Group</span>
-                    </a>
-                </li>
-
-                <li class="site-menu-item {{ request()->is('admin/test*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.test.list') }}">
-                        <i class="site-menu-icon wb-tag" aria-hidden="true"></i>
-                        <span class="site-menu-title">Test</span>
-                    </a>
-                </li>
-
-                <li class="site-menu-item {{ request()->is('admin/question*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.question.list') }}">
-                        <i class="site-menu-icon wb-tag" aria-hidden="true"></i>
-                        <span class="site-menu-title">Questions</span>
-                    </a>
-                </li>
-
-                <li class="site-menu-item {{ request()->is('admin/result*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.result.list') }}">
-                        <i class="site-menu-icon wb-tag" aria-hidden="true"></i>
-                        <span class="site-menu-title">Result</span>
-                    </a>
-                </li>
-
-
-              
-            {{-- <li class="site-menu-item {{ request()->is('admin/categor*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.categories') }}">
-                        <i class="site-menu-icon wb-tag" aria-hidden="true"></i>
-                        <span class="site-menu-title">Categories</span>
-                    </a>
-                </li> 
-                <li class="site-menu-item {{ request()->is('instructor-course-*') ? 'active' : '' }}">
-                    <a href="{{ route('instructor.course.list') }}">
-                        <i class="site-menu-icon wb-user" aria-hidden="true"></i>
-                        <span class="site-menu-title">Courses</span>
-                    </a>
-                </li>
-                
-                --}}
-
-
-                <li class="site-menu-item {{ request()->is('instructor-lists-*') ? 'active' : '' }}">
-                    <a href="{{ route('instructor.lists') }}">
-                        <i class="site-menu-icon wb-user" aria-hidden="true"></i>
-                        <span class="site-menu-title">Instructors</span>
-                    </a>
-                </li>
-
-
-                  
-                
-                
-                {{-- <li class="site-menu-item {{ request()->is('admin/withdraw-requests') ? 'active' : '' }}">
-                    <a href="{{ route('admin.withdraw.requests') }}">
-                        <i class="site-menu-icon fas fa-hand-holding-usd" aria-hidden="true"></i>
-                        <span class="site-menu-title">Withdraw Requests</span>
-                    </a>
-                </li> 
-                <li class="site-menu-item {{ request()->is('admin/blog*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.blogs') }}">
-                        <i class="site-menu-icon fas fa-blog" aria-hidden="true"></i>
-                        <span class="site-menu-title">Blogs</span>
-                    </a>
-                </li>
-                --}}
-
                
-                <li class="site-menu-item {{ request()->is('admin/invoice-form-*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.invoice.list') }}">
-                        <i class="site-menu-icon wb-user" aria-hidden="true"></i>
-                        <span class="site-menu-title">Invoice</span>
+                <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
+                    <a href="javascript:void(0)">
+                        <i class="site-menu-icon wb-file" aria-hidden="true"></i>
+                        <span class="site-menu-title">Consumer</span>
+                        <span class="site-menu-arrow"></span>
                     </a>
+                    <ul class="site-menu-sub">
+                        <li class="site-menu-item {{ request()->is('admin/configc/page-home') ? 'active' : '' }}">
+                            <a href="{{ route('admin.pageHome') }}">
+                                <span class="site-menu-title"> Type</span>
+                            </a>
+                        </li>
+                        <li class="site-menu-item {{ request()->is('admin/config/pagedd-about') ? 'active' : '' }}">
+                            <a href="{{ route('admin.pageAbout') }}">
+                                <span class="site-menu-title">Sub Type</span>
+                            </a>
+                        </li>
+                        <li class="site-menu-item {{ request()->is('admin/config/pagedd-contact') ? 'active' : '' }}">
+                            <a href="{{ route('admin.pageContact') }}">
+                                <span class="site-menu-title">Slabs</span>
+                            </a>
+                        </li>
+
+                        <li class="site-menu-item {{ request()->is('admin/config/pagedd-contact') ? 'active' : '' }}">
+                            <a href="{{ route('consumer.lists') }}">
+                                <span class="site-menu-title">Consumer</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                
+
+
+                <li class="site-menu-item has-sub {{ request()->is('admin/configd/page-*') ? 'active open' : '' }}">
+                    <a href="javascript:void(0)">
+                        <i class="site-menu-icon wb-file" aria-hidden="true"></i>
+                        <span class="site-menu-title">Taxes</span>
+                        <span class="site-menu-arrow"></span>
+                    </a>
+                    <ul class="site-menu-sub">
+                        <li class="site-menu-item {{ request()->is('admin/config/page-home2') ? 'active' : '' }}">
+                            <a href="{{ route('admin.pageHome') }}">
+                                <span class="site-menu-title">General </span>
+                            </a>
+                        </li>
+                        <li class="site-menu-item {{ request()->is('admin/config/page-about1') ? 'active' : '' }}">
+                            <a href="{{ route('admin.pageAbout') }}">
+                                <span class="site-menu-title">Special </span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </li>
+
+                <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
+                    <a href="javascript:void(0)">
+                        <i class="site-menu-icon wb-file" aria-hidden="true"></i>
+                        <span class="site-menu-title">Area</span>
+                        <span class="site-menu-arrow"></span>
+                    </a>
+                    <ul class="site-menu-sub">
+                        <li class="site-menu-item {{ request()->is('admin/config/page-homec') ? 'active' : '' }}">
+                            <a href="{{ route('admin.pageHome') }}">
+                                <span class="site-menu-title">Division </span>
+                            </a>
+                        </li>
+                        <li class="site-menu-item {{ request()->is('admin/config/page-aboutb') ? 'active' : '' }}">
+                            <a href="{{ route('admin.pageAbout') }}">
+                                <span class="site-menu-title">Sub Division </span>
+                            </a>
+                        </li>
+                        <li class="site-menu-item {{ request()->is('admin/config/page-abouta') ? 'active' : '' }}">
+                            <a href="{{ route('admin.pageAbout') }}">
+                                <span class="site-menu-title">Feder </span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </li>
+
+
 
                 <li class="site-menu-item has-sub {{ request()->is('admin/config/page-*') ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
@@ -138,22 +139,6 @@
                                 <span class="site-menu-title">Payment</span>
                             </a>
                         </li>
-                        <li class="site-menu-item {{ request()->is('admin/config/setting-category') ? 'active' : '' }}">
-                            <a href="{{ route('admin.categoryIndex') }}">
-                                <span class="site-menu-title">Category</span>
-                            </a>
-                        </li>
-                        <li class="site-menu-item {{ request()->is('admin/config/setting-course') ? 'active' : '' }}">
-                            <a href="{{ route('admin.course.list') }}">
-                                <span class="site-menu-title">Subject</span>
-                            </a>
-                        </li>
-
-                        {{-- <li class="site-menu-item {{ request()->is('admin/config/setting-course') ? 'active' : '' }}">
-                            <a href="{{ route('admin.course.list') }}">
-                                <span class="site-menu-title">Course</span>
-                            </a>
-                        </li> --}}
                         <!-- <li class="site-menu-item {{ request()->is('admin/config/setting-email') ? 'active' : '' }}">
                   <a href="{{ route('admin.settingEmail') }}">
                     <span class="site-menu-title">Email</span>

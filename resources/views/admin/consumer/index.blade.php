@@ -13,7 +13,7 @@
 <div class="panel">
         <div class="panel-heading">
             <div class="panel-title">
-              <a href="{{ route('instructor.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Add Instructor </a>
+              <a href="{{ route('consumer.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Add Instructor </a>
             </div>
           
           <div class="panel-actions">
@@ -35,9 +35,11 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Reg#</th>
+                <th>Ref#</th>
+                <th>Consumer No</th>
                 <th>Name</th>
-                <th>Email</th>
+                <th>Father Name</th>
+                <th>CNIC</th>
                 <th>Contact</th>
                 <th>Status</th>
 
@@ -50,9 +52,11 @@
               @foreach($instructors as $key=>$instructor)
               <tr>
                 <td>{{ $key+1}}</td>
-                <td>{{ get_reg_no($instructor->id)}}</td>
-                <td>{{ $instructor->first_name }} {{ $instructor->last_name }}</td>
-                <td>{{ $instructor->contact_email }}</td>
+                <td>{{ $instructor->ref_no}}</td>
+                <td>{{ $instructor->consumer_id}}</td>
+                <td>{{ $instructor->full_name }} </td>
+                <td>{{ $instructor->father_name }}</td>
+                <td>{{ $instructor->cnic }}</td>
                 <td>{{ $instructor->mobile }}</td>
 
                 <td>

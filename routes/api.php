@@ -52,8 +52,8 @@ Route::prefix('v1')->group(function () {
     Route::post('register', [LoginController::class, 'register']);
     
     // Route::post('forgot-password', [LoginController::class, 'forgot_password']);
-    Route::get('/dashboard', [ApiDashboardController::class, 'index']);
-    Route::post('/courseList', [ApiCoursesController::class, 'courseList']);
+    // Route::get('/dashboard', [ApiDashboardController::class, 'index']);
+    // Route::post('/courseList', [ApiCoursesController::class, 'courseList']);
 
     //student routes
 
@@ -65,37 +65,38 @@ Route::prefix('v1')->group(function () {
         Route::group(['prefix'=>'student'], function(){
 
             // courses related routes  ------------------------------------------------
-            Route::get('/myCourses', [ApiCoursesController::class, 'myCourses']);
+            // Route::get('/myCourses', [ApiCoursesController::class, 'myCourses']);
             // same as web course-learn/{course_slug} web.php route
-            Route::post('/getCourseById', [ApiCoursesController::class, 'getCourseById']);
-            Route::post('/getCourseVideos', [ApiCoursesController::class, 'getCourseVideos']);
+            // Route::post('/getCourseById', [ApiCoursesController::class, 'getCourseById']);
+            // Route::post('/getCourseVideos', [ApiCoursesController::class, 'getCourseVideos']);
             // courses related routes  ------------------------------------------------
 
 
              // Payments routes --------------------------------------------------------
              //Similar to web route myPayments CartController::class, 'myPayments'
-             Route::get('/myPayments', [ApiPaymentController::class, 'myPayments']);
-             Route::post('/getInvoiceById', [ApiPaymentController::class, 'getInvoiceById']);
+            //  Route::get('/myPayments', [ApiPaymentController::class, 'myPayments']);
+            //  Route::post('/getInvoiceById', [ApiPaymentController::class, 'getInvoiceById']);
 
-            Route::post('/createInvoice', [ApiPaymentController::class, 'createInvoice']);
-            Route::post('/uploadReceipt', [ApiPaymentController::class, 'upload_file']);// similar to web uploadReceipt
+            // Route::post('/createInvoice', [ApiPaymentController::class, 'createInvoice']);
+            // Route::post('/uploadReceipt', [ApiPaymentController::class, 'upload_file']);
+            // similar to web uploadReceipt
             // Payments routes --------------------------------------------------------
         
 
 
             // Tests  routes  --------------------------------------------------------
-            Route::get('/myTests', [ApiTestController::class, 'myTests']);
-            Route::post('/getCourseTests', [ApiTestController::class, 'getCourseTests']);
-            Route::post('/getTestQuestions', [ApiTestController::class, 'getTestQuestions']);
-            Route::post('/postAnswers', [ApiTestController::class, 'postAnswers']);
+            // Route::get('/myTests', [ApiTestController::class, 'myTests']);
+            // Route::post('/getCourseTests', [ApiTestController::class, 'getCourseTests']);
+            // Route::post('/getTestQuestions', [ApiTestController::class, 'getTestQuestions']);
+            // Route::post('/postAnswers', [ApiTestController::class, 'postAnswers']);
             // Tests  routes  --------------------------------------------------------
 
 
 
             // Result routes --------------------------------------------------------
-            Route::get('/myResultsCourses', [ApiResultController::class, 'myResultsCourses']);
-            Route::post('/myResultsTests', [ApiResultController::class, 'myResultsTests']);
-            Route::post('/myFinalResults', [ApiResultController::class, 'myFinalResults']);
+            // Route::get('/myResultsCourses', [ApiResultController::class, 'myResultsCourses']);
+            // Route::post('/myResultsTests', [ApiResultController::class, 'myResultsTests']);
+            // Route::post('/myFinalResults', [ApiResultController::class, 'myFinalResults']);
             // Result routes --------------------------------------------------------
 
         });

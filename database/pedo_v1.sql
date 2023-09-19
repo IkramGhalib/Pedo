@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 19, 2023 at 11:14 AM
+-- Generation Time: Sep 19, 2023 at 01:21 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -516,8 +516,8 @@ CREATE TABLE `options` (
 --
 
 INSERT INTO `options` (`id`, `code`, `option_key`, `option_value`) VALUES
-(1, 'pageHome', 'banner_title', 'Learn courses online'),
-(2, 'pageHome', 'banner_text', 'Learn every topic. On time. Everytime.'),
+(1, 'pageHome', 'banner_title', 'PEDO'),
+(2, 'pageHome', 'banner_text', 'Search you bill by refrence Number from anywhere'),
 (3, 'pageHome', 'instructor_text', 'We have more than 200 skilled & professional Instructors'),
 (4, 'pageHome', 'learn_block_title', 'Learn every topic, everytime.'),
 (5, 'pageHome', 'learn_block_text', '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>'),
@@ -526,7 +526,7 @@ INSERT INTO `options` (`id`, `code`, `option_key`, `option_value`) VALUES
 (8, 'pageContact', 'email', 'qca@example.com'),
 (9, 'pageContact', 'address', 'University Town, Peshawar , pakistan'),
 (10, 'pageContact', 'map', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.940622898076!2d-74.00543578509465!3d40.74133204375838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf14f1f51f%3A0xcc1b5ab35bd75df0!2sGoogle!5e0!3m2!1sen!2sin!4v1542693598934\" width=\"100%\" height=\"100%\" frameborder=\"0\" style=\"border:0\" allowfullscreen></iframe>'),
-(11, 'settingGeneral', 'application_name', 'QCA'),
+(11, 'settingGeneral', 'application_name', 'pedo'),
 (12, 'settingGeneral', 'meta_key', 'Quality Coaching Academy'),
 (13, 'settingGeneral', 'meta_description', 'Learn every topic. On time. Every time.'),
 (14, 'settingGeneral', 'admin_commission', '20'),
@@ -676,8 +676,8 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'student', 'Student to learn course', '2023-07-12 23:56:24', '2023-07-12 23:56:24'),
-(2, 'instructor', 'Instructor to manage course', '2023-07-12 23:56:24', '2023-07-12 23:56:24'),
+(1, 'reader', 'Student to learn course', '2023-07-12 23:56:24', '2023-07-12 23:56:24'),
+(2, 'incharge', 'Instructor to manage course', '2023-07-12 23:56:24', '2023-07-12 23:56:24'),
 (3, 'admin', 'Admin to manage the site', '2023-07-12 23:56:24', '2023-07-12 23:56:24');
 
 -- --------------------------------------------------------

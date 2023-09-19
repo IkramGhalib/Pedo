@@ -62,12 +62,12 @@
           <label class="form-control-label">Role</label>
           <div>
               <div class="checkbox-custom checkbox-default checkbox-inline">
-                <input type="checkbox" id="inputCheckboxStudent" name="roles[]" value="student" @if($user->id && $user->hasRole('student')) checked @endif>
-                <label for="inputCheckboxStudent">Student</label>
+                <input type="checkbox" id="inputCheckboxStudent" name="roles[]" value="reader" @if($user->id && $user->hasRole('reader')) checked @endif>
+                <label for="inputCheckboxStudent">Reader</label>
               </div>
               <div class="checkbox-custom checkbox-default checkbox-inline">
-                <input type="checkbox" id="inputCheckboxInstructor" name="roles[]" value="instructor" @if($user->id &&  $user->hasRole('instructor')) checked @endif>
-                <label for="inputCheckboxInstructor">Instructor</label>
+                <input type="checkbox" id="inputCheckboxInstructor" name="roles[]" value="incharge" @if($user->id &&  $user->hasRole('incharge')) checked @endif>
+                <label for="inputCheckboxInstructor">Incharge</label>
               </div>
               <div id="role-div-error">
               @if ($errors->has('roles'))

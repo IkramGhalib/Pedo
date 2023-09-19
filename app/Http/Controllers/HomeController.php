@@ -35,48 +35,48 @@ class HomeController extends Controller
        
        
         
-        $latestTab_courses = DB::table('courses')
-                    ->select('courses.*', 'instructors.first_name', 'instructors.last_name')
-                    ->selectRaw('AVG(course_ratings.rating) AS average_rating')
-                    ->leftJoin('course_ratings', 'course_ratings.course_id', '=', 'courses.id')
-                    ->join('instructors', 'instructors.id', '=', 'courses.instructor_id')
-                    ->where('courses.is_active',1)
-                    ->groupBy('courses.id')
-                    ->limit(8)
-                    ->orderBy('courses.updated_at', 'desc')
-                    ->get();
+        // $latestTab_courses = DB::table('courses')
+        //             ->select('courses.*', 'instructors.first_name', 'instructors.last_name')
+        //             ->selectRaw('AVG(course_ratings.rating) AS average_rating')
+        //             ->leftJoin('course_ratings', 'course_ratings.course_id', '=', 'courses.id')
+        //             ->join('instructors', 'instructors.id', '=', 'courses.instructor_id')
+        //             ->where('courses.is_active',1)
+        //             ->groupBy('courses.id')
+        //             ->limit(8)
+        //             ->orderBy('courses.updated_at', 'desc')
+        //             ->get();
         
-        $freeTab_courses = DB::table('courses')
-                    ->select('courses.*', 'instructors.first_name', 'instructors.last_name')
-                    ->selectRaw('AVG(course_ratings.rating) AS average_rating')
-                    ->leftJoin('course_ratings', 'course_ratings.course_id', '=', 'courses.id')
-                    ->join('instructors', 'instructors.id', '=', 'courses.instructor_id')
-                    ->where('courses.is_active',1)
-                    ->groupBy('courses.id')
-                    ->limit(8)
-                    ->where('courses.price', 0)
-                    ->get();
+        // $freeTab_courses = DB::table('courses')
+        //             ->select('courses.*', 'instructors.first_name', 'instructors.last_name')
+        //             ->selectRaw('AVG(course_ratings.rating) AS average_rating')
+        //             ->leftJoin('course_ratings', 'course_ratings.course_id', '=', 'courses.id')
+        //             ->join('instructors', 'instructors.id', '=', 'courses.instructor_id')
+        //             ->where('courses.is_active',1)
+        //             ->groupBy('courses.id')
+        //             ->limit(8)
+        //             ->where('courses.price', 0)
+        //             ->get();
 
-        $discountTab_courses = DB::table('courses')
-                    ->select('courses.*', 'instructors.first_name', 'instructors.last_name')
-                    ->selectRaw('AVG(course_ratings.rating) AS average_rating')
-                    ->leftJoin('course_ratings', 'course_ratings.course_id', '=', 'courses.id')
-                    ->join('instructors', 'instructors.id', '=', 'courses.instructor_id')
-                    ->where('courses.is_active',1)
-                    ->groupBy('courses.id')
-                    ->limit(8)
-                    ->where('courses.strike_out_price', '<>' ,null)
-                    ->get();
+        // $discountTab_courses = DB::table('courses')
+        //             ->select('courses.*', 'instructors.first_name', 'instructors.last_name')
+        //             ->selectRaw('AVG(course_ratings.rating) AS average_rating')
+        //             ->leftJoin('course_ratings', 'course_ratings.course_id', '=', 'courses.id')
+        //             ->join('instructors', 'instructors.id', '=', 'courses.instructor_id')
+        //             ->where('courses.is_active',1)
+        //             ->groupBy('courses.id')
+        //             ->limit(8)
+        //             ->where('courses.strike_out_price', '<>' ,null)
+        //             ->get();
 
-        $instructors = DB::table('instructors')
-                        ->select('instructors.*')
-                        ->join('users', 'users.id', '=', 'instructors.user_id')
-                        ->where('users.is_active',1)
-                        ->groupBy('instructors.id')
-                        ->limit(8)
-                        ->get();
-            //  dd('testing');           
-        return view('site/home', compact('latestTab_courses', 'freeTab_courses', 'discountTab_courses', 'instructors'));
+        // $instructors = DB::table('instructors')
+        //                 ->select('instructors.*')
+        //                 ->join('users', 'users.id', '=', 'instructors.user_id')
+        //                 ->where('users.is_active',1)
+        //                 ->groupBy('instructors.id')
+        //                 ->limit(8)
+        //                 ->get();
+        //     //  dd('testing');           
+        return view('site/home', );
     }
 
     /**

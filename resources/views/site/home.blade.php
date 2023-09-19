@@ -6,14 +6,14 @@
         <div class="homepage-slide-blue">
             <h1 style="margin-top: 80px">{{ SiteHelpers::get_option('pageHome', 'banner_title') }}</h1>
             <span class="title-sub-header">{{ SiteHelpers::get_option('pageHome', 'banner_text') }}</span>
-            <form method="GET" action="{{ route('course.list') }}">
+            <form method="GET" action="">
             <div class="searchbox-contrainer col-md-6 mx-auto">
-                <input name="keyword" type="text" class="searchbox d-none d-sm-inline-block" placeholder="Search for courses by course titles"><input name="keyword" type="text" class="searchbox d-inline-block d-sm-none" placeholder="Search for courses"><button type="submit" class="searchbox-submit"><i class="fa fa-search"></i></button>
+                <input name="keyword" type="text" class="searchbox d-none d-sm-inline-block" placeholder="Search "><input name="keyword" type="text" class="searchbox d-inline-block d-sm-none" placeholder="Search for courses"><button type="submit" class="searchbox-submit"><i class="fa fa-search"></i></button>
             </div>
             </form>
         </div>
         <!-- banner end -->
-
+    {{--
         <?php 
             $tabs = array('latestTab' => 'Latest Courses',
                           'freeTab' => 'Free Courses',
@@ -30,6 +30,8 @@
             </ul>
         </nav>
 
+                 
+
         <!-- course list start -->
         <div class="container tab-content">
             <?php foreach ($tabs as $tab_key => $tab_value) { ?>
@@ -37,15 +39,16 @@
 
              <div class="row">
                 <?php 
-                $cate = SiteHelpers::active_categories_master();
+                //$cate = SiteHelpers::active_categories_master();
             ?>
         
             <div  class="card-deck">
-                @foreach ( $cate as $categ)
+               
+             @foreach ( $cate as $categ)
                 <div class="card text-center">
                     <div class="card-header">Groups</div>
                   <div style="padding: 30px"  class="card-body">
-                    <h5 class="card-title"><a  href="{{ route('course.list','category_id[]='.$categ->mscat_id) }}"> {{ $categ->cat_name }}</a></h5>
+                    <h5 class="card-title"><a  href=""> {{ $categ->cat_name }}</a></h5>
                     <p class="card-text">Lorem ipsum dolor sit amet consectetur
                          .</p>
                   </div>
@@ -53,9 +56,10 @@
                 </div>
                 
                    
-            @endforeach
+            @endforeach 
+
               </div>
-               {{-- @foreach(${$tab_key.'_courses'} as $course)
+                @foreach(${$tab_key.'_courses'} as $course)
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                         
                         <div class="course-block mx-auto">
@@ -93,13 +97,14 @@
                         </div>
                         
                     </div>
-                @endforeach --}}
+                @endforeach 
             </div>
 
             </div>
             <?php }?>
 
         </div>
+        --}}
         <!-- course list end -->
 
         <!-- dummy block start -->
@@ -109,7 +114,7 @@
                     <div class="col-xl-6 col-lg-6 col-md-6">
                         <h3 class="dblock-heading">{{ SiteHelpers::get_option('pageHome', 'learn_block_title') }}</h3>
                         <p class="dblock-text">{!! SiteHelpers::get_option('pageHome', 'learn_block_text') !!}</p>
-                        <a href="{{ route('course.list') }}" class="btn btn-ulearn">Explore Courses</a>
+                        <a href="" class="btn btn-ulearn">Explore Courses</a>
                     </div>
 
                     <div class="col-xl-6 col-lg-6 col-md-6 vertical-align">
@@ -121,8 +126,10 @@
         <!-- dummy block end -->
 
         <!-- instructor block start -->
+        {{--
         <article class="instructor-block">
             <div class="container">
+           
                 <div class="row">
                     <div class="col-12 text-center seperator-head mt-3">
                         <h3>Our Instructors</h3>
@@ -131,17 +138,18 @@
                 </div>
                 
                 <div class="row mt-4 mb-5">
+                  
                     @foreach ($instructors as $instructor) 
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                         <div class="instructor-box mx-auto text-center">
                         <a href="{{ route('instructor.view', $instructor->instructor_slug) }}">
-                            {{-- <main>
+                             <main>
                                 <img src="@if($instructor->instructor_image)@if(Storage::exists($instructor->instructor_image)){{ Storage::url($instructor->instructor_image) }}@else{{ asset('backend/assets/images/course_detail_thumb.jpg') }}@endif @endif">
                                 <div class="col-md-12">
                                     <h6 class="instructor-title">{{ $instructor->first_name.' '.$instructor->last_name }}</h6>
                                     <p>{!! mb_strimwidth($instructor->biography, 0, 120, ".....") !!}</p>
                                 </div>
-                            </main> --}}
+                            </main> 
 
                             <main>
                                 <img src="@if($instructor->instructor_image){{asset('instructor/'.$instructor->instructor_image)}}@else{{ asset('backend/assets/images/course_detail_thumb.jpg') }}@endif">
@@ -154,9 +162,11 @@
                         </div>
                     </div>
                 @endforeach
+                
                 </div>
             </div>
         </article>
+        --}}
         <!-- instructor block end -->
 
     </div>
