@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Consumer extends Model
 {
-    protected $table = 'instructors';
+    protected $table = 'consumers';
     protected $guarded = array();
 
     

@@ -9,6 +9,9 @@ use App\Models\Category;
 use App\Models\Role;
 use App\Models\Consumer;
 use App\Models\ConsumerCategory;
+use App\Models\Division;
+use App\Models\SubDivision;
+use App\Models\Feeder;
 use App\Models\Credit;
 use App\Models\WithdrawRequest;
 use Illuminate\Support\Facades\Validator;
@@ -50,116 +53,206 @@ class ConsumerController extends Controller
     public function consumer_form()
     {
         $category=ConsumerCategory::where('is_active',1)->get();
-        // dd($category);
-        return view('admin.consumer.form',compact('category'));
+        $previous_no=Consumer::orderBy('id','desc')->first();
+        if($previous_no)
+            $new_consumer_no=$previous_no->id+1;
+        else
+            $new_consumer_no=1;
+
+        $divisions=Division::where('is_active',1)->get();
+        $meters=DB::table('meters')->where('status','free')->get();
+        // dd($divisions);
+        return view('admin.consumer.form',compact('category','divisions','new_consumer_no','meters'));
     }
 
     public function consumer_save(Request $request)
     {
     
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'contact_email' => 'required|string|email|max:255',
-            'mobile' => 'required|string|max:255',
-    
+            'consumer_type' => 'required|integer',
+            'division' => 'required|integer',
+            'sub_division' => 'required|integer',
+            'feeder' => 'required|integer',
+            'full_name' => 'required|string',
+            'father_name' => 'required|string',
+            'cnic' => 'required|string|unique:consumers',
+            'mobile' => 'required|string',
+            'consumer_code' => 'required|string',
+            'ref_no' => 'required|string',
+            'address' => 'required|string',
+            'connection_date' => 'required|string',
+            'meter_no' => 'required',
+           
+           
+        ], [
+            'cnic.unique' => 'CNIC Already Used'
         ]);
+       
+        // pr($request->all());
+
+        DB::beginTransaction();
+        try {
+        $division=Division::find($request->division);
+        $subDivision=SubDivision::find($request->sub_division);
+        $feeder=Feeder::find($request->feeder);
+
+        $new_ref_no=$feeder->feeder_code.' '.$subDivision->sub_division_code.' '.$division->division_code.' '.$request->ref_no;
+
+        $check_data=DB::table('consumer_meters')->where('ref_no',$new_ref_no)->first();
+        if($check_data)
+        return redirect()->back()->with(['error'=>'Ref No Already Exits']);
+
+        // pr($new_ref_no);
+
+        $cousumer=new Consumer();
+        $cousumer->full_name=$request->full_name;
+        $cousumer->father_name=$request->father_name;
+        $cousumer->cnic=$request->cnic;
+        $cousumer->mobile=$request->mobile;
+        $cousumer->consumer_code=$request->consumer_code;
+        $cousumer->address=$request->address;
+        $cousumer->consumer_category_id=$request->consumer_type;
+        $cousumer->feeder_id=$request->feeder;
+        // $data=[feeder_id
+        //     // 'full_name'=>$request->full_name,
+        //         // 'father_name'=>$request->father_name,
+        //         'cnic'=>$request->cnic,
+        //         'mobile'=>$request->mobile,
+        //         'consumer_id'=>0000,
+        //         // 'ref_no'=>$request->ref_no,
+        //         'address'=>$request->address,
+        //         'consumer_category_id'=>$request->consumer_type,
+               
+        //         // ''=>$request->,
+        //         ];
+
+
+        $cousumer->save();
+       
+        $meter_data= DB::table('meters')->where('meter_id',$request->meter_no)->update(['status'=>'assigned']);
+
+        // pr($meter_data);
+       
+        DB::table('consumer_meters')->insert(['ref_no'=>$new_ref_no,
+        'consumer_id'=>$cousumer->id,
+        'meter_id'=>$request->meter_no,
+        'connection_date'=>$request->connection_date,
+        'definition_date'=>$request->definition_date,
+        'previous_reading'=>$request->previous_reading,
+        'arrear'=>$request->arrear
+        ] );
         
+                // pr($cousumer->id);
+                
+                DB::commit();
+                return redirect()->back()->with(['success'=>'Action Completed']); 
+        } catch (\Exception $e) {  
+            DB::rollback();
+            return redirect()->back()->with(['error'=>'Action Failed']); 
+        }  
 
-
-        $instructor = new Instructor();
-        
-        $instructor->user_id = Auth::user()->id;
-        $instructor->first_name = $request->input('first_name');
-        $instructor->last_name = $request->input('last_name');
-        $instructor->contact_email = $request->input('contact_email');
-        $instructor->mobile = $request->input('mobile');
-
-
-        $first_name = $request->input('first_name');
-        $last_name = $request->input('last_name');
-
-        if($request->hasFile('instructor_image')){
-            $image_name = time().'.'.$request->instructor_image->getClientOriginalExtension();
-            // pr($image_name);
-            $check=Storage::disk('public_instructor')->put($image_name, file_get_contents($request->instructor_image));
-            
-            $instructor->instructor_image =$image_name;
-            // $course->thumb_image = $path."/".$thumb_image;
-
-            
-        }
-
-        //create slug only while add
-        $slug = $first_name.'-'.$last_name;
-        $slug = str_slug($slug, '-');
-
-        $results = DB::select(DB::raw("SELECT count(*) as total from instructors where instructor_slug REGEXP '^{$slug}(-[0-9]+)?$' "));
-
-        $finalSlug = ($results['0']->total > 0) ? "{$slug}-{$results['0']->total}" : $slug;
-        $instructor->instructor_slug = $finalSlug;
-
-        // $instructor->telephone = $request->input('telephone');
-        // $instructor->paypal_id = $request->input('paypal_id');
-        // $instructor->biography = $request->input('biography');
-        $instructor->save();
-
-        $user = User::find(Auth::user()->id);
-
-        $role = Role::where('name', 'instructor')->first();
-        $user->roles()->attach($role);
-        
-        return redirect()->route('consumer.lists') ;
+       
     }
 
+    // public function assignMeter(Request $request)
+    // {
+    //     pr(Session::get('consumser_id'));
+    //     pr($request->all());
+    //     $instructor=Instructor::find($id);
+    //     return view('admin.consumer.edit',compact('instructor'));
+    // }
     public function consumer_edit($id)
     {
-        $instructor=Instructor::find($id);
-        return view('admin.consumer.edit',compact('instructor'));
+        $category=ConsumerCategory::where('is_active',1)->get();
+
+        // $previous_no=Consumer::orderBy('id','desc')->first();
+        // if($previous_no)
+        //     $new_consumer_no=$previous_no->id+1;
+        // else
+        //     $new_consumer_no=1;
+        
+        $divisions=Division::where('is_active',1)->get();
+        // $meters=DB::table('meters')->where('status','free')->get();
+        
+        
+        $instructor=Consumer::find($id);
+        $area_data_all= DB::table('feeders')->select('feeders.*','sub_divisions.*','divisions.*','feeders.id as feeder_id','divisions.id as division_id','sub_divisions.id as sub_dev_id')
+                        // ->from('feeders')
+                        ->join('sub_divisions', 'sub_divisions.id', '=', 'feeders.sub_division_id')
+                        ->join('divisions', 'divisions.id', '=', 'sub_divisions.division_id')
+                        ->where('feeders.id',$instructor->feeder_id)->first();
+
+                        
+                        $sub_divisions= DB::table('sub_divisions')->where('division_id',$area_data_all->division_id)->get();
+                        // pr($sub_divisions);                             
+
+        $feeders= DB::table('feeders')->where('sub_division_id',$area_data_all->sub_dev_id)->get();
+
+
+        return view('admin.consumer.edit',compact('instructor','category','divisions','sub_divisions','feeders','area_data_all'));
     }
 
     public function consumer_update(Request $request ,$id)
     {
-        $instructor=Instructor::find($id);
-        $instructor->user_id = Auth::user()->id;
-        $instructor->first_name = $request->input('first_name');
-        $instructor->last_name = $request->input('last_name');
-        $instructor->contact_email = $request->input('contact_email');
-        $instructor->mobile = $request->input('mobile');
 
+        $request->validate([
+            'consumer_type' => 'required|integer',
+            'division' => 'required|integer',
+            'sub_division' => 'required|integer',
+            'feeder' => 'required|integer',
+            'full_name' => 'required|string',
+            'father_name' => 'required|string',
+            'cnic' => 'required|string',
+            'mobile' => 'required|string',
+            'consumer_code' => 'required|string',
+            'address' => 'required|string',
+        ],);
+       
+        // pr($request->all());
 
-        $first_name = $request->input('first_name');
-        $last_name = $request->input('last_name');
+        DB::beginTransaction();
+        try {
+        // $division=Division::find($request->division);
+        // $subDivision=SubDivision::find($request->sub_division);
+        // $feeder=Feeder::find($request->feeder);
 
-        //create slug only while add
-        $slug = $first_name.'-'.$last_name;
-        $slug = str_slug($slug, '-');
+        // $new_ref_no=$feeder->feeder_code.' '.$subDivision->sub_division_code.' '.$division->division_code.' '.$request->ref_no;
 
-        $results = DB::select(DB::raw("SELECT count(*) as total from instructors where instructor_slug REGEXP '^{$slug}(-[0-9]+)?$' "));
+        // $check_data=DB::table('consumer_meters')->where('ref_no',$new_ref_no)->first();
+        // if($check_data)
+        // return redirect()->back()->with(['error'=>'Ref No Already Exits']);
 
-        $finalSlug = ($results['0']->total > 0) ? "{$slug}-{$results['0']->total}" : $slug;
-        $instructor->instructor_slug = $finalSlug;
+        // pr($new_ref_no);
 
-        // $instructor->telephone = $request->input('telephone');
-        // $instructor->paypal_id = $request->input('paypal_id');
-        // $instructor->biography = $request->input('biography');
-        $instructor->save();
+        $cousumer=Consumer::find($id);
+        $cousumer->full_name=$request->full_name;
+        $cousumer->father_name=$request->father_name;
+        $cousumer->cnic=$request->cnic;
+        $cousumer->mobile=$request->mobile;
+        $cousumer->consumer_code=$request->consumer_code;
+        $cousumer->address=$request->address;
+        $cousumer->consumer_category_id=$request->consumer_type;
+        $cousumer->feeder_id=$request->feeder;
+        $cousumer->save();
+                
+                DB::commit();
+                return redirect(route('consumer.lists'))->with(['success'=>'Action Completed']); 
+        } catch (\Exception $e) {  
+            DB::rollback();
+            return redirect()->back()->with(['error'=>'Action Failed']); 
+        }  
 
-        $user = User::find(Auth::user()->id);
-
-        $role = Role::where('name', 'instructor')->first();
-        $user->roles()->attach($role);
-        
-        return redirect()->route('consumer.lists') ;
-
+       
+    
     }
 
 
     public function consumer_disable($id)
     {
-        $instructor=Instructor::find($id);
-        $instructor->status="Disable";
+        $instructor=Consumer::find($id);
+        $instructor->status='Disable';
         $instructor->save();
-        return $this->return_output('flash', 'success', 'Disable successfully', 'instructor-lists', '200');
+        return $this->return_output('flash', 'success', 'Disable successfully', 'consumer-lists', '200');
 
     }   
 

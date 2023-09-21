@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 19, 2023 at 01:21 PM
+-- Generation Time: Sep 21, 2023 at 08:15 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -48,8 +48,7 @@ CREATE TABLE `consumers` (
   `father_name` varchar(100) DEFAULT NULL,
   `cnic` varchar(20) DEFAULT NULL,
   `address` text DEFAULT NULL,
-  `consumer_id` varchar(50) DEFAULT NULL,
-  `ref_no` varchar(50) DEFAULT NULL,
+  `consumer_code` varchar(50) DEFAULT NULL,
   `connection_date` date DEFAULT NULL,
   `telephone` varchar(255) DEFAULT NULL,
   `mobile` varchar(255) DEFAULT NULL,
@@ -57,18 +56,30 @@ CREATE TABLE `consumers` (
   `consumer_category_id` int(11) NOT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'active',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `feeder_id` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `consumers`
 --
 
-INSERT INTO `consumers` (`id`, `full_name`, `father_name`, `cnic`, `address`, `consumer_id`, `ref_no`, `connection_date`, `telephone`, `mobile`, `total_credits`, `consumer_category_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Zarif Khan Afridi', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '03025959967', 0.00, 1, 'active', '2023-09-01 04:52:19', '2023-09-01 04:52:19'),
-(2, 'Muhammad Bilal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0335691919', 0.00, 1, 'active', '2023-09-01 04:52:58', '2023-09-01 04:52:58'),
-(3, 'Muhammad Sami', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0123123', 0.00, 1, 'active', '2023-09-01 06:36:45', '2023-09-01 06:36:45'),
-(4, 'Haider khan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '021233123', 0.00, 1, 'active', '2023-09-01 06:38:26', '2023-09-01 06:38:26');
+INSERT INTO `consumers` (`id`, `full_name`, `father_name`, `cnic`, `address`, `consumer_code`, `connection_date`, `telephone`, `mobile`, `total_credits`, `consumer_category_id`, `status`, `created_at`, `updated_at`, `feeder_id`) VALUES
+(1, 'Zarif Khan Afridi', NULL, NULL, NULL, NULL, NULL, NULL, '03025959967', 0.00, 1, 'active', '2023-09-01 04:52:19', '2023-09-01 04:52:19', 0),
+(2, 'Muhammad Bilal', NULL, NULL, NULL, NULL, NULL, NULL, '0335691919', 0.00, 1, 'active', '2023-09-01 04:52:58', '2023-09-01 04:52:58', 0),
+(3, 'Muhammad Sami', NULL, NULL, NULL, NULL, NULL, NULL, '0123123', 0.00, 1, 'active', '2023-09-01 06:36:45', '2023-09-01 06:36:45', 0),
+(4, 'Haider khan', NULL, NULL, NULL, NULL, NULL, NULL, '021233123', 0.00, 1, 'active', '2023-09-01 06:38:26', '2023-09-01 06:38:26', 0),
+(5, 'zairf khan', 'abc', '123123', 'kohat road', '0', NULL, NULL, '123213', 0.00, 2, 'active', NULL, NULL, 0),
+(6, 'zairf khan', 'abc', '123123', 'kohat road', NULL, NULL, NULL, '123213', 0.00, 2, 'active', '2023-09-20 03:47:35', '2023-09-20 03:47:35', 0),
+(7, 'zairf khan k', 'abc k', '12312340', 'kohat road k', '075', NULL, NULL, '12321360', 0.00, 2, 'active', '2023-09-20 03:51:18', '2023-09-21 01:14:24', 8),
+(8, 'abc', 'abc', '123123', 'afred', '12', NULL, NULL, '12312', 0.00, 2, 'de-active', '2023-09-20 03:52:25', '2023-09-20 23:46:56', 0),
+(9, 'zairf khan', 'abc', '123123', 'abc', NULL, NULL, NULL, '123123', 0.00, 2, 'active', '2023-09-20 03:58:16', '2023-09-20 03:58:16', 0),
+(10, 'ali', 'khan', '1231', 'kohat', '10', NULL, NULL, '123123213', 0.00, 2, 'active', '2023-09-20 05:25:45', '2023-09-20 05:25:45', 0),
+(11, 'ali', 'khan', '1231', 'kohat', '10', NULL, NULL, '123123213', 0.00, 2, 'active', '2023-09-20 05:26:06', '2023-09-20 05:26:06', 0),
+(12, 'shah', 'khalid', '1231231', 'test', '12', NULL, NULL, '0123', 0.00, 1, 'active', '2023-09-20 05:27:15', '2023-09-20 05:27:15', 0),
+(13, 'sha', 'ali', '123', 'ABC', '13', NULL, NULL, '123', 0.00, 1, 'active', '2023-09-20 05:28:18', '2023-09-20 05:28:18', 0),
+(14, 'Shoaib Afridi', 'afridi', '17301176840201', 'peshawar', '14', NULL, NULL, '012345678', 0.00, 1, 'active', '2023-09-20 23:33:45', '2023-09-20 23:33:45', 0),
+(15, 'zairf khan', 'abcccc', '1231230', 'abc', '15', NULL, NULL, '1212312312', 0.00, 1, 'active', '2023-09-20 23:38:39', '2023-09-20 23:38:39', 0);
 
 -- --------------------------------------------------------
 
@@ -91,6 +102,34 @@ CREATE TABLE `consumer_categories` (
 INSERT INTO `consumer_categories` (`id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
 (1, 'Domestic', 1, NULL, NULL),
 (2, 'Commercial', 1, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `consumer_meters`
+--
+
+CREATE TABLE `consumer_meters` (
+  `cm_id` int(11) NOT NULL,
+  `consumer_id` int(11) NOT NULL,
+  `meter_id` int(11) NOT NULL,
+  `ref_no` varchar(100) NOT NULL,
+  `connection_date` date DEFAULT NULL,
+  `definition_date` date DEFAULT NULL,
+  `previous_reading` int(11) NOT NULL DEFAULT 0,
+  `arrear` float NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `consumer_meters`
+--
+
+INSERT INTO `consumer_meters` (`cm_id`, `consumer_id`, `meter_id`, `ref_no`, `connection_date`, `definition_date`, `previous_reading`, `arrear`) VALUES
+(1, 11, 0, '8 8 1 01', '2023-09-20', '2023-09-20', 0, 0),
+(2, 12, 0, '8 8 1 02', '2023-09-20', '2023-09-20', 0, 0),
+(3, 13, 0, '8 8 1 03', '2023-09-20', '2023-09-20', 0, 0),
+(4, 1, 0, '8 8 1 075', '2023-09-21', '2023-09-21', 0, 0),
+(5, 15, 1, '8 8 1 123123222', '2023-09-21', '2023-09-21', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -126,6 +165,7 @@ INSERT INTO `consumer_sub_categories` (`id`, `consumer_category_id`, `name`, `ca
 
 CREATE TABLE `divisions` (
   `id` int(11) NOT NULL,
+  `division_code` int(11) NOT NULL,
   `name` text NOT NULL,
   `description` text DEFAULT NULL,
   `is_active` tinyint(4) NOT NULL DEFAULT 0
@@ -135,9 +175,9 @@ CREATE TABLE `divisions` (
 -- Dumping data for table `divisions`
 --
 
-INSERT INTO `divisions` (`id`, `name`, `description`, `is_active`) VALUES
-(1, 'Chitral', NULL, 1),
-(2, 'Dir', NULL, 1);
+INSERT INTO `divisions` (`id`, `division_code`, `name`, `description`, `is_active`) VALUES
+(1, 1, 'Chitral', NULL, 1),
+(2, 2, 'Dir', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -158,15 +198,24 @@ CREATE TABLE `failed_jobs` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `feder`
+-- Table structure for table `feeders`
 --
 
-CREATE TABLE `feder` (
+CREATE TABLE `feeders` (
   `id` int(11) NOT NULL,
+  `feeder_code` int(11) NOT NULL,
   `name` text NOT NULL,
   `is_active` tinyint(4) NOT NULL DEFAULT 0,
   `sub_division_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `feeders`
+--
+
+INSERT INTO `feeders` (`id`, `feeder_code`, `name`, `is_active`, `sub_division_id`) VALUES
+(8, 8, 'feeder 8', 1, 8),
+(9, 9, 'feeder 9', 1, 8);
 
 -- --------------------------------------------------------
 
@@ -340,6 +389,26 @@ INSERT INTO `master_categories` (`id`, `name`, `slug`, `icon_class`, `is_active`
 (4, '10th', '10th', 'fa-user', 1, '2023-09-01 04:12:52', '2023-09-01 04:12:52'),
 (5, '9th', '9th', 'fa-user', 1, '2023-09-01 04:13:05', '2023-09-01 04:13:05'),
 (7, '2nd Year', '2nd-year', 'fa-user', 1, '2023-09-01 04:13:58', '2023-09-01 04:13:58');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `meters`
+--
+
+CREATE TABLE `meters` (
+  `meter_id` int(11) NOT NULL,
+  `meter_no` varchar(100) NOT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'free'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `meters`
+--
+
+INSERT INTO `meters` (`meter_id`, `meter_no`, `status`) VALUES
+(1, '01', 'assigned'),
+(2, '02', 'free');
 
 -- --------------------------------------------------------
 
@@ -710,11 +779,20 @@ INSERT INTO `role_user` (`id`, `role_id`, `user_id`) VALUES
 
 CREATE TABLE `sub_divisions` (
   `id` int(11) NOT NULL,
+  `sub_division_code` int(11) NOT NULL,
   `name` text NOT NULL,
   `description` text DEFAULT NULL,
   `is_active` tinyint(4) NOT NULL DEFAULT 0,
   `division_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sub_divisions`
+--
+
+INSERT INTO `sub_divisions` (`id`, `sub_division_code`, `name`, `description`, `is_active`, `division_id`) VALUES
+(8, 8, 'sub chitral', 'test', 1, 1),
+(9, 9, 'sub chitral2', 'test2', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -831,6 +909,12 @@ ALTER TABLE `consumer_categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `consumer_meters`
+--
+ALTER TABLE `consumer_meters`
+  ADD PRIMARY KEY (`cm_id`);
+
+--
 -- Indexes for table `consumer_sub_categories`
 --
 ALTER TABLE `consumer_sub_categories`
@@ -850,9 +934,9 @@ ALTER TABLE `failed_jobs`
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
--- Indexes for table `feder`
+-- Indexes for table `feeders`
 --
-ALTER TABLE `feder`
+ALTER TABLE `feeders`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -878,6 +962,12 @@ ALTER TABLE `invoice_details`
 --
 ALTER TABLE `master_categories`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `meters`
+--
+ALTER TABLE `meters`
+  ADD PRIMARY KEY (`meter_id`);
 
 --
 -- Indexes for table `migrations`
@@ -1020,13 +1110,19 @@ ALTER TABLE `category_slab`
 -- AUTO_INCREMENT for table `consumers`
 --
 ALTER TABLE `consumers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `consumer_categories`
 --
 ALTER TABLE `consumer_categories`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `consumer_meters`
+--
+ALTER TABLE `consumer_meters`
+  MODIFY `cm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `consumer_sub_categories`
@@ -1047,10 +1143,10 @@ ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `feder`
+-- AUTO_INCREMENT for table `feeders`
 --
-ALTER TABLE `feder`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+ALTER TABLE `feeders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `instruction_levels`
@@ -1075,6 +1171,12 @@ ALTER TABLE `invoice_details`
 --
 ALTER TABLE `master_categories`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `meters`
+--
+ALTER TABLE `meters`
+  MODIFY `meter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -1146,7 +1248,7 @@ ALTER TABLE `role_user`
 -- AUTO_INCREMENT for table `sub_divisions`
 --
 ALTER TABLE `sub_divisions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `transactions`

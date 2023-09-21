@@ -3,7 +3,7 @@
 <div class="page-header">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Instructors</li>
+    <li class="breadcrumb-item active">Consumer</li>
   </ol>
   <!-- <h1 class="page-title">Categories</h1> -->
 </div>
@@ -13,19 +13,19 @@
 <div class="panel">
         <div class="panel-heading">
             <div class="panel-title">
-              <a href="{{ route('consumer.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Add Instructor </a>
+              <a href="{{ route('consumer.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Add  </a>
             </div>
           
           <div class="panel-actions">
-          {{-- <form method="GET" action="{{ route('admin.categories') }}">
+           <form method="GET" action="{{ route('consumer.lists') }}">
               <div class="input-group">
                 <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ Request::input('search') }}">
                 <span class="input-group-btn">
                   <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Search"><i class="icon wb-search" aria-hidden="true"></i></button>
-                  <a href="{{ route('admin.categories') }}" class="btn btn-danger" data-toggle="tooltip" data-original-title="Clear Search"><i class="icon wb-close" aria-hidden="true"></i></a>
+                  <a href="{{ route('consumer.lists') }}" class="btn btn-danger" data-toggle="tooltip" data-original-title="Clear Search"><i class="icon wb-close" aria-hidden="true"></i></a>
                 </span>
               </div>
-          </form> --}}
+          </form> 
           </div>
         </div>
         
@@ -35,8 +35,8 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Ref#</th>
-                <th>Consumer No</th>
+               
+                <th>Consumer Code</th>
                 <th>Name</th>
                 <th>Father Name</th>
                 <th>CNIC</th>
@@ -52,8 +52,7 @@
               @foreach($instructors as $key=>$instructor)
               <tr>
                 <td>{{ $key+1}}</td>
-                <td>{{ $instructor->ref_no}}</td>
-                <td>{{ $instructor->consumer_id}}</td>
+                <td>{{ $instructor->consumer_code}}</td>
                 <td>{{ $instructor->full_name }} </td>
                 <td>{{ $instructor->father_name }}</td>
                 <td>{{ $instructor->cnic }}</td>
@@ -67,11 +66,11 @@
                   @endif
                 </td>
                 <td>
-                  <a href="{{ url('instructor-form-edit/'.$instructor->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round" data-toggle="tooltip" data-original-title="Edit" >
+                  <a href="{{ url('consumer-form-edit/'.$instructor->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round" data-toggle="tooltip" data-original-title="Edit" >
                     <i class="icon wb-pencil" aria-hidden="true"></i>
                   </a>
 
-                  <a href="{{ url('instructor-disable/'.$instructor->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round" data-toggle="tooltip"  >
+                  <a href="{{ url('consumer-disable/'.$instructor->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round" data-toggle="tooltip"  >
                     <i class="fa fa-ban disabled-icon"></i>
                   </a>
                 </td>

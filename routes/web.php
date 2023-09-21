@@ -5,6 +5,9 @@ use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SubDivisionController;
+use App\Http\Controllers\Admin\DivisionController;
+use App\Http\Controllers\Admin\FeederController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
@@ -139,6 +142,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('consumer-form-edit/{id}', [ConsumerController::class, 'consumer_edit'])->name('consumer.edit');
         Route::post('consumer-form-update/{id}', [ConsumerController::class, 'consumer_update'])->name('consumer.update');
         Route::get('consumer-disable/{id}', [ConsumerController::class, 'consumer_disable'])->name('consumer.disable');
+        
+        // Route::get('assignMeter/{consumer_id}', [ConsumerController::class, 'assignMeter'])->name('consumer.assignMeter');
+        
+        Route::get('getSubDivisionsAgainstDivision', [SubDivisionController::class, 'getSubDivisionsAgainstDivision'])->name('subDivision.getSubDivisionsAgainstDivision');
+        Route::get('getFeedersAgainstSubDivision', [FeederController::class, 'getFeedersAgainstSubDivision'])->name('feeder.getFeedersAgainstSubDivision');
+
 
 
 
