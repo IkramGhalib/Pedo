@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\UserController;
 // use App\Http\Controllers\CartController;
 // use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ConsumerController;
+use App\Http\Controllers\ConsumerCategoryController;
+use App\Http\Controllers\GeneralController;
 // use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 // use App\Http\Controllers\QuestionController;
@@ -81,6 +83,13 @@ Route::get('cart',[CartController::class,'cartview']);
 //Functions accessed by only authenticated users
 Route::group(['middleware' => 'auth'], function () {
 
+    Route::get('get_all_division_where',[GeneralController::class,'get_all_division_where'])->name('get_all_division_where');
+    Route::get('get_all_sub_division_where',[GeneralController::class,'get_all_sub_division_where'])->name('get_all_sub_division_where');
+     
+
+
+
+
     Route::get('load-cart-data',[CartController::class,'cartcount']);
     Route::get('cart-delete/{group_id}/{fee_type}',[CartController::class,'deletecart'])->name('delete.cart');
 
@@ -134,6 +143,38 @@ Route::group(['middleware' => 'auth'], function () {
     //Functions accessed by only admin users
     Route::group(['middleware' => 'role:admin'], function () {
         // Route::get('my-courses', [CourseController::class, 'myCourses'])->name('my.courses');
+
+        //consumer_categories routes
+        Route::get('admin/consumer-category-list', [ConsumerCategoryController::class, 'index'])->name('admin.ccategory.list');
+        Route::get('admin/consumer-category-form', [ConsumerCategoryController::class, 'create'])->name('admin.ccategory.form');
+        Route::post('admin/consumer-category-store', [ConsumerCategoryController::class, 'store'])->name('admin.ccategory.store');
+        Route::get('admin/consumer-category-edit/{id}', [ConsumerCategoryController::class, 'edit'])->name('admin.ccategory.edit');
+        Route::post('admin/consumer-category-update/{id}', [ConsumerCategoryController::class, 'update'])->name('admin.ccategory.update');
+
+
+         //Division routes
+         Route::get('admin/division-list', [DivisionController::class, 'index'])->name('admin.division.list');
+         Route::get('admin/division-form', [DivisionController::class, 'create'])->name('admin.division.form');
+         Route::post('admin/division-store', [DivisionController::class, 'store'])->name('admin.division.store');
+         Route::get('admin/division-edit/{id}', [DivisionController::class, 'edit'])->name('admin.division.edit');
+         Route::post('admin/division-update/{id}', [DivisionController::class, 'update'])->name('admin.division.update');
+
+
+          //Sub Division routes
+          Route::get('admin/sub-division-list', [SubDivisionController::class, 'index'])->name('admin.sub_division.list');
+          Route::get('admin/sub-division-form', [SubDivisionController::class, 'create'])->name('admin.sub_division.form');
+          Route::post('admin/sub-division-store', [SubDivisionController::class, 'store'])->name('admin.sub_division.store');
+          Route::get('admin/sub-division-edit/{id}', [SubDivisionController::class, 'edit'])->name('admin.sub_division.edit');
+          Route::post('admin/sub-division-update/{id}', [SubDivisionController::class, 'update'])->name('admin.sub_division.update');
+
+          //Feeder routes
+          Route::get('admin/feeder-list', [FeederController::class, 'index'])->name('admin.feeder.list');
+          Route::get('admin/feeder-form', [FeederController::class, 'create'])->name('admin.feeder.form');
+          Route::post('admin/feeder-store', [FeederController::class, 'store'])->name('admin.feeder.store');
+          Route::get('admin/feeder-edit/{id}', [FeederController::class, 'edit'])->name('admin.feeder.edit');
+          Route::post('admin/feeder-update/{id}', [FeederController::class, 'update'])->name('admin.feeder.update');
+
+
 
         // consumer module
         Route::get('consumer-lists', [ConsumerController::class, 'consumer_show'])->name('consumer.lists');

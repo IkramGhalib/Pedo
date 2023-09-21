@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Feeder extends Model
 {
     protected $table = 'feeders';
+    public $timestamps = false;
 
     // protected $fillable=['test_id'];
 

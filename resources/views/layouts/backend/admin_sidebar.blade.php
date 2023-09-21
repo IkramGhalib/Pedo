@@ -24,17 +24,17 @@
                     </a>
                     <ul class="site-menu-sub">
                         <li class="site-menu-item {{ request()->is('admin/configc/page-home') ? 'active' : '' }}">
-                            <a href="{{ route('admin.pageHome') }}">
+                            <a href="{{ route('admin.ccategory.list') }}">
                                 <span class="site-menu-title"> Type</span>
                             </a>
                         </li>
                         <li class="site-menu-item {{ request()->is('admin/config/pagedd-about') ? 'active' : '' }}">
-                            <a href="{{ route('admin.pageAbout') }}">
+                            <a href="#">
                                 <span class="site-menu-title">Sub Type</span>
                             </a>
                         </li>
                         <li class="site-menu-item {{ request()->is('admin/config/pagedd-contact') ? 'active' : '' }}">
-                            <a href="{{ route('admin.pageContact') }}">
+                            <a href="#">
                                 <span class="site-menu-title">Slabs</span>
                             </a>
                         </li>
@@ -77,17 +77,17 @@
                     </a>
                     <ul class="site-menu-sub">
                         <li class="site-menu-item {{ request()->is('admin/config/page-homec') ? 'active' : '' }}">
-                            <a href="{{ route('admin.pageHome') }}">
+                            <a href="{{ route('admin.division.list') }}">
                                 <span class="site-menu-title">Division </span>
                             </a>
                         </li>
                         <li class="site-menu-item {{ request()->is('admin/config/page-aboutb') ? 'active' : '' }}">
-                            <a href="{{ route('admin.pageAbout') }}">
+                            <a href="{{ route('admin.sub_division.list') }}">
                                 <span class="site-menu-title">Sub Division </span>
                             </a>
                         </li>
                         <li class="site-menu-item {{ request()->is('admin/config/page-abouta') ? 'active' : '' }}">
-                            <a href="{{ route('admin.pageAbout') }}">
+                            <a href="{{route('admin.feeder.list')}}">
                                 <span class="site-menu-title">Feder </span>
                             </a>
                         </li>

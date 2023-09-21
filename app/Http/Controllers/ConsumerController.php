@@ -206,7 +206,7 @@ class ConsumerController extends Controller
             'mobile' => 'required|string',
             'consumer_code' => 'required|string',
             'address' => 'required|string',
-        ],);
+        ]);
        
         // pr($request->all());
 

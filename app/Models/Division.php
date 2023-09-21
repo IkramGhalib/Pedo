@@ -9,10 +9,11 @@ use App\Models\SubDivision;
 class Division extends Model
 {
     protected $table = 'divisions';
-
+    public $timestamps = false;
     // protected $fillable=['test_id'];
 
     use HasFactory;
+
 
     public function subDivisions()
     {

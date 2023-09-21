@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SubDivision extends Model
 {
     protected $table = 'sub_divisions';
+    public $timestamps = false;
 
     // protected $fillable=['test_id'];
 
