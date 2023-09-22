@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SubDivisionController;
 use App\Http\Controllers\Admin\DivisionController;
 use App\Http\Controllers\Admin\FeederController;
+use App\Http\Controllers\Admin\SlabController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
@@ -86,8 +87,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('get_all_division_where',[GeneralController::class,'get_all_division_where'])->name('get_all_division_where');
     Route::get('get_all_sub_division_where',[GeneralController::class,'get_all_sub_division_where'])->name('get_all_sub_division_where');
-     
+    
     Route::get('get_all_consumer_category_where',[GeneralController::class,'get_all_consumer_category_where'])->name('get_all_consumer_category_where');
+    Route::get('get_all_consumer_sub_category_where',[GeneralController::class,'get_all_consumer_sub_category_where'])->name('get_all_consumer_sub_category_where');
 
 
 
@@ -159,6 +161,13 @@ Route::group(['middleware' => 'auth'], function () {
          Route::post('admin/cons-sub-category-store', [ConsumerSubCategoryController::class, 'store'])->name('admin.cons-sub-category.store');
          Route::get('admin/cons-sub-category-edit/{id}', [ConsumerSubCategoryController::class, 'edit'])->name('admin.cons-sub-category.edit');
          Route::post('admin/cons-sub-category-update/{id}', [ConsumerSubCategoryController::class, 'update'])->name('admin.cons-sub-category.update');
+
+         //Slabs routes
+         Route::get('admin/slab-list', [SlabController::class, 'index'])->name('admin.slab.list');
+         Route::get('admin/slab-form', [SlabController::class, 'create'])->name('admin.slab.form');
+         Route::post('admin/slab-store', [SlabController::class, 'store'])->name('admin.slab.store');
+         Route::get('admin/slab-edit/{id}', [SlabController::class, 'edit'])->name('admin.slab.edit');
+         Route::post('admin/slab-update/{id}', [SlabController::class, 'update'])->name('admin.slab.update');
 
 
          //Division routes

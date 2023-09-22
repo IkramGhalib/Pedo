@@ -99,7 +99,7 @@
 <script>
 $("#division").select2({
         ajax: {
-            url: "{{route('get_all_division')}}",
+            url: "{{route('get_all_division_where')}}",
             dataType: 'json',
             data: function (params) {
                 var query = {

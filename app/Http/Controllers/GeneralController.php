@@ -18,6 +18,7 @@ use App\Models\SubDivision;
 use App\Models\Feeder;
 
 use App\Models\ConsumerCategory;
+use App\Models\ConsumerSubCategory;
 
 
 
@@ -72,6 +73,12 @@ class GeneralController extends Controller
     public function get_all_consumer_category_where(Request $request)
     {
             echo json_encode(ConsumerCategory::where('is_active',1)->where('name','like',$request->search.'%')->get());
+    }
+
+    public function get_all_consumer_sub_category_where(Request $request)
+    {
+           
+            echo json_encode(ConsumerSubCategory::where('is_active',1)->where('consumer_category_id',$request->parent_id)->where('name','like',$request->search.'%')->get());
     }
 
 

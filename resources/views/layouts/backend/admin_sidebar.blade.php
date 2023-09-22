@@ -35,7 +35,7 @@
                             </a>
                         </li>
                         <li class="site-menu-item {{ request()->is('admin/config/pagedd-contact') ? 'active' : '' }}">
-                            <a href="#">
+                            <a href="{{ route('admin.slab.list') }}">
                                 <span class="site-menu-title">Slabs</span>
                             </a>
                         </li>

@@ -4,8 +4,8 @@
 <div class="page-header">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('admin.users') }}">Consumer</a></li>
-    <li class="breadcrumb-item active">Sub Type</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.users') }}">Area</a></li>
+    <li class="breadcrumb-item active">Division</li>
   </ol>
   <h1 class="page-title">Edit</h1>
 </div>
@@ -15,33 +15,43 @@
 
     <div class="panel">
       <div class="panel-body">
-        <form method="POST" action="{{ route('admin.cons-sub-category.update',$record->id) }}" id="userForm">
+        <form method="POST" action="{{ route('admin.sub_division.update',$record->id) }}" id="userForm">
           {{ csrf_field() }}
+         
           <div class="row">
+       
             <div class="form-group col-md-4">
-              <label class="form-control-label">Consumer Type</label>
-              <select name="type" id="type" class="form-control">
-              <option value="{{$parant_record->id}}" selected>{{$parant_record->name}}</option>
+              <label class="form-control-label">Divison</label>
+              <select name="division" id="division" class="form-control">
+                    <option value="{{$parant_record->id}}" selected>{{$parant_record->division_code.' - '.$parant_record->name}}</option>
                   </select>
-                @if ($errors->has('type'))
-                    <label class="error" for="type">{{ $errors->first('type') }}</label>
+                @if ($errors->has('division_code'))
+                    <label class="error" for="division_code">{{ $errors->first('division_code') }}</label>
                 @endif
             </div>
         </div>
-
-
         <div class="row">
+
             <div class="form-group col-md-4">
-              <label class="form-control-label">Consumer Sub Type Name</label>
-              <input required type="text" value="{{ $record->name }}" class="form-control" name="name"
+              <label class="form-control-label">Code</label>
+              <input required type="text" value="{{ $record->sub_division_code }}" class="form-control" name="sub_division_code"
                 placeholder=""/>
-                @if ($errors->has('name'))
-                    <label class="error" for="test_title">{{ $errors->first('name') }}</label>
+                @if ($errors->has('sub_division_code'))
+                    <label class="error" for="division_code">{{ $errors->first('sub_division_code') }}</label>
                 @endif
             </div>
 
 
             <div class="form-group col-md-4">
+              <label class="form-control-label">Name</label>
+              <input required type="text" value="{{ $record->name }}" class="form-control" name="name"
+                placeholder=""/>
+                @if ($errors->has('name'))
+                    <label class="error" for="name">{{ $errors->first('name') }}</label>
+                @endif
+            </div>
+
+          <div class="form-group col-md-4">
             <label class="form-control-label">Status</label>
             <div>
               <div class="radio-custom radio-default radio-inline">
@@ -54,46 +64,16 @@
               </div>
             </div>
           </div>
-          </div>
 
 
+          
 
-     
 
          
-
-
-        <div class="row">
-            <div class="form-group col-md-4">
-              <label class="form-control-label">Unit from</label>
-              <input required type="number" value="{{ $record->category_conditon_start }}" class="form-control" name="unit_from"
-                placeholder=""/>
-                @if ($errors->has('unit_from'))
-                    <label class="error" for="test_title">{{ $errors->first('unit_from') }}</label>
-                @endif
-            </div>
-
-
-           
-            <div class="form-group col-md-4">
-              <label class="form-control-label">Unit To</label>
-              <input required type="number" value="{{ $record->category_conditon_end }}" class="form-control" name="unit_to"
-                placeholder=""/>
-                @if ($errors->has('unit_to'))
-                    <label class="error" for="test_title">{{ $errors->first('unit_to') }}</label>
-                @endif
-            </div>
-
-
-           
-            <div class="form-group col-md-4">
-              <label class="form-control-label">Check Previous Month</label>
-              <input required type="number" value="{{ $record->check_months }}" class="form-control" name="months"
-                placeholder=""/>
-                @if ($errors->has('months'))
-                    <label class="error" for="test_title">{{ $errors->first('months') }}</label>
-                @endif
-            </div>
+    
+          
+          
+         
           </div>
          
           <div class="form-group row">
@@ -117,9 +97,9 @@
 @section('javascript')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.full.min.js" integrity="sha512-/gPqsEnTjI8VpAkWa61qLLmZn4ySeH86yURIM9rck0iyCMhjMGfkDw298eXFLM2CuRJ93LFhYT1M+SGxJ8asIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-$("#type").select2({
+$("#division").select2({
         ajax: {
-            url: "{{route('get_all_consumer_category_where')}}",
+            url: "{{route('get_all_division')}}",
             dataType: 'json',
             data: function (params) {
                 var query = {
@@ -132,7 +112,7 @@ $("#type").select2({
                     results: $.map(data, function (item) {
                       console.log(item);
                         return {
-                            text:item.name,
+                            text: item.division_code+'-'+item.name,
                             id: item.id
                         }
                     })
