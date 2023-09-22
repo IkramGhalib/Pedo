@@ -620,7 +620,7 @@ body.site-gridmenu-active {
     padding: 0 30px;
 }
 .page-content {
-    padding: 30px 30px;
+    padding: 10px 5px;
 }
 @media (max-width:479px) {
     .page-content {
@@ -725,7 +725,7 @@ body.site-gridmenu-active {
 }
 .page-header {
     position: relative;
-    padding: 30px 30px;
+    padding: 10px 10px;
     margin-top: 0;
     margin-bottom: 0;
     background: 0 0;
