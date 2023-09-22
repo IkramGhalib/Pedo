@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\UserController;
 // use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ConsumerController;
 use App\Http\Controllers\ConsumerCategoryController;
+use App\Http\Controllers\Admin\ConsumerSubCategoryController;
 use App\Http\Controllers\GeneralController;
 // use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
@@ -86,7 +87,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get_all_division_where',[GeneralController::class,'get_all_division_where'])->name('get_all_division_where');
     Route::get('get_all_sub_division_where',[GeneralController::class,'get_all_sub_division_where'])->name('get_all_sub_division_where');
      
-
+    Route::get('get_all_consumer_category_where',[GeneralController::class,'get_all_consumer_category_where'])->name('get_all_consumer_category_where');
 
 
 
@@ -150,6 +151,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('admin/consumer-category-store', [ConsumerCategoryController::class, 'store'])->name('admin.ccategory.store');
         Route::get('admin/consumer-category-edit/{id}', [ConsumerCategoryController::class, 'edit'])->name('admin.ccategory.edit');
         Route::post('admin/consumer-category-update/{id}', [ConsumerCategoryController::class, 'update'])->name('admin.ccategory.update');
+
+
+         //Consumer Sub Category routes
+         Route::get('admin/cons-sub-category-list', [ConsumerSubCategoryController::class, 'index'])->name('admin.cons-sub-category.list');
+         Route::get('admin/cons-sub-category-form', [ConsumerSubCategoryController::class, 'create'])->name('admin.cons-sub-category.form');
+         Route::post('admin/cons-sub-category-store', [ConsumerSubCategoryController::class, 'store'])->name('admin.cons-sub-category.store');
+         Route::get('admin/cons-sub-category-edit/{id}', [ConsumerSubCategoryController::class, 'edit'])->name('admin.cons-sub-category.edit');
+         Route::post('admin/cons-sub-category-update/{id}', [ConsumerSubCategoryController::class, 'update'])->name('admin.cons-sub-category.update');
 
 
          //Division routes

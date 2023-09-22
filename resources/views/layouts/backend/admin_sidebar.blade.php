@@ -29,7 +29,8 @@
                             </a>
                         </li>
                         <li class="site-menu-item {{ request()->is('admin/config/pagedd-about') ? 'active' : '' }}">
-                            <a href="#">
+                            <a href="{{ route('admin.cons-sub-category.list') }}">
+                            
                                 <span class="site-menu-title">Sub Type</span>
                             </a>
                         </li>

@@ -17,6 +17,7 @@ use App\Models\Division;
 use App\Models\SubDivision;
 use App\Models\Feeder;
 
+use App\Models\ConsumerCategory;
 
 
 
@@ -66,6 +67,14 @@ class GeneralController extends Controller
     }
 
     
+
+
+    public function get_all_consumer_category_where(Request $request)
+    {
+            echo json_encode(ConsumerCategory::where('is_active',1)->where('name','like',$request->search.'%')->get());
+    }
+
+
 
     public function saveGroup(Request $r)
     {
