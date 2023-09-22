@@ -57,7 +57,7 @@
                     </a>
                     <ul class="site-menu-sub">
                         <li class="site-menu-item {{ request()->is('admin/config/page-home2') ? 'active' : '' }}">
-                            <a href="{{ route('admin.pageHome') }}">
+                            <a href="{{ route('admin.general-tax.list') }}">
                                 <span class="site-menu-title">General </span>
                             </a>
                         </li>

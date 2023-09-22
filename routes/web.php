@@ -20,7 +20,7 @@ use App\Http\Controllers\ConsumerController;
 use App\Http\Controllers\ConsumerCategoryController;
 use App\Http\Controllers\Admin\ConsumerSubCategoryController;
 use App\Http\Controllers\GeneralController;
-// use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\Admin\GeneralTaxController;
 use App\Http\Controllers\PaymentController;
 // use App\Http\Controllers\QuestionController;
 // use App\Http\Controllers\ResultController;
@@ -176,6 +176,14 @@ Route::group(['middleware' => 'auth'], function () {
          Route::post('admin/division-store', [DivisionController::class, 'store'])->name('admin.division.store');
          Route::get('admin/division-edit/{id}', [DivisionController::class, 'edit'])->name('admin.division.edit');
          Route::post('admin/division-update/{id}', [DivisionController::class, 'update'])->name('admin.division.update');
+
+         //GeneralTax routes
+         Route::get('admin/general-tax-list', [GeneralTaxController::class, 'index'])->name('admin.general-tax.list');
+         Route::get('admin/general-tax-form', [GeneralTaxController::class, 'create'])->name('admin.general-tax.form');
+         Route::post('admin/general-tax-store', [GeneralTaxController::class, 'store'])->name('admin.general-tax.store');
+         Route::get('admin/general-tax-edit/{id}', [GeneralTaxController::class, 'edit'])->name('admin.general-tax.edit');
+         Route::post('admin/general-tax-update/{id}', [GeneralTaxController::class, 'update'])->name('admin.general-tax.update');
+
 
 
           //Sub Division routes
