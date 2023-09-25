@@ -178,6 +178,19 @@ class ReadingController extends Controller
 
     }   
 
+
+    public function reading_approve(Request $request)
+    {
+        
+        $record=Reading::where('id',$request->id)->update(['is_verified'=>1,'varifier'=>Auth::id()]);
+        if($record)
+        echo json_encode(['success'=>'true','message'=>'Action Completed']);
+        else
+        echo json_encode(['success'=>'false','message'=>'Action Failed']);
+        // return $this->return_output('flash', 'success', 'Action Completed successfully', 'meter-reading-lists', '200');
+
+    }   
+
     public function readingList()
     {
         $paginate_count = 8;

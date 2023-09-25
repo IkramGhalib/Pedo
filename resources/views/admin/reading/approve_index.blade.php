@@ -69,8 +69,9 @@
                 </td>
                 <td>
 
-                  <a href="{{ url('meter-reading-disable/'.$i->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round" title="delete"  >
-                    <i class="fa fa-ban disabled-icon"></i>
+                  <a href="#" class="btn btn-xs btn-icon btn-inverse btn-round approve_button" id="row{{$i->id}}" data-record-id="{{$i->id}}" title="approve"  >
+                    <i class="icon wb-pencil"></i>
+                    approve
                   </a>
                 </td>
               </tr>
@@ -88,14 +89,91 @@
       </div>
       <!-- End Panel Basic -->
 </div>
-
+<div class="modal fade" id="formModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="formModalLabel">Confirmation</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="myForm" name="myForm" class="form-horizontal" novalidate="">
+                            <div class="form-group">
+                                <label>Are You Sure ? </label>
+                                <input type="hidden"  id="record_id" name="record_id" value="">
+                            </div>
+                            
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btn-save" value="add"> Yes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 @endsection
 
+
 @section('javascript')
-<script type="text/javascript">
-    $(document).ready(function()
-    { 
+<script>
+  $(document).ready(function(){
+    $('').click(function(){
 
     });
+  });
+
+
+    jQuery(document).ready(function($){
+    //----- Open model CREATE -----//
+    jQuery('.approve_button').click(function () {
+        // jQuery('#btn-save').val("add");
+        // jQuery('#myForm').trigger("reset");
+        jQuery('#formModal').modal('show');
+       var record_id= $(this).data('record-id');
+       var record_id= $('#record_id').val(record_id);
+      // console.log(record_id);
+    });
+    // CREATE
+    $("#btn-save").click(function (e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        e.preventDefault();
+        var id=jQuery('#record_id').val();
+        var formData = {
+            id: id,
+            // description: jQuery('#description').val(),
+        };
+        // var state = jQuery('#btn-save').val();
+        // var type = "POST";
+       
+       
+        $.ajax({
+            type: 'POST',
+            url: '{{route("reading.approve")}}',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                
+                jQuery('#formModal').modal('hide')
+                if(data.success=='true')
+                {
+                  $("#row"+id).closest('tr').remove();
+                  message('success',data.message);
+                }
+                else
+                message('error',data.message);
+              },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+});
 </script>
 @endsection

@@ -234,11 +234,11 @@ Route::group(['middleware' => 'auth'], function () {
         
 
         Route::get('meter-reading-approve-lists', [ReadingController::class, 'reading_approve_show'])->name('reading.approve.lists');
-        Route::get('meter-reading-approve-form', [ReadingController::class, 'reading_approve_form'])->name('reading.approve.form');
+        // Route::get('meter-reading-approve-form', [ReadingController::class, 'reading_approve_form'])->name('reading.approve.form');
         // Route::post('meter-reading-approve-form', [ReadingController::class, 'reading_approve_save'])->name('reading.save');
         // Route::get('meter-reading-approve-form-edit/{id}', [ReadingController::class, 'reading_approve_edit'])->name('reading.edit');
         // Route::post('meter-reading-approve-form-update/{id}', [ReadingController::class, 'reading_update'])->name('reading.update');
-        // Route::get('meter-reading-approve-disable/{id}', [ReadingController::class, 'reading_disable'])->name('reading.disable');
+        Route::post('meter-reading-approve', [ReadingController::class, 'reading_approve'])->name('reading.approve');
 
         Route::get('get_meter_info_against_ref_no', [GeneralController::class, 'get_meter_info_against_ref_no'])->name('get_meter_info_against_ref_no');
         // Route::get('assignMeter/{consumer_id}', [ConsumerController::class, 'assignMeter'])->name('consumer.assignMeter');
