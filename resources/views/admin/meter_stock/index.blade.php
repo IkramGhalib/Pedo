@@ -3,9 +3,9 @@
 <div class="page-header">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Area </li>
+    <li class="breadcrumb-item active">Neter</li>
   </ol>
-  <h1 class="page-title"> Division List</h1>
+  <h1 class="page-title"> Meter</h1>
 </div>
 
 <div class="page-content">
@@ -13,16 +13,16 @@
 <div class="panel">
         <div class="panel-heading">
             <div class="panel-title">
-              <a href="{{ route('admin.general-tax.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Add </a>
+              <a href="{{ route('admin.meter.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Add </a>
             </div>
           
           <div class="panel-actions">
-          <form method="GET" action="{{ route('admin.general-tax.list') }}">
+          <form method="GET" action="{{ route('admin.meter.list') }}">
               <div class="input-group">
                 <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ Request::input('search') }}">
                 <span class="input-group-btn">
                   <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Search"><i class="icon wb-search" aria-hidden="true"></i></button>
-                  <a href="{{ route('admin.general-tax.list') }}" class="btn btn-danger" data-toggle="tooltip" data-original-title="Clear Search"><i class="icon wb-close" aria-hidden="true"></i></a>
+                  <a href="{{ route('admin.meter.list') }}" class="btn btn-danger" data-toggle="tooltip" data-original-title="Clear Search"><i class="icon wb-close" aria-hidden="true"></i></a>
                 </span>
               </div>
           </form>
@@ -35,9 +35,8 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Tax Name</th>
-                <th>Tax Percentage</th>
-                <th> Status</th>
+                <th>Meter No#</th>
+                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -47,17 +46,17 @@
                 <td>{{ $key+1 }}</td>
                  <!-- <td>{{-- $test->user->first_name --}}</td>  -->
                 <!-- <td>{{-- $test->course->course_title --}}</td> -->
-                <td>{{$row->tax_name}}</td>
-                <td>{{$row->tax_percentage}} %</td>
+                <td>{{$row->meter_no}}</td>
+                
                 <td>
                   @if($row->is_active)
-                  <span class="badge badge-success">Free</span>
+                  <span class="badge badge-success">Active</span>
                   @else
-                  <span class="badge badge-danger">Assigned</span>
+                  <span class="badge badge-danger">Inactive</span>
                   @endif
                 </td>
                 <td>
-                  <a href="{{ route('admin.general-tax.edit',$row->id) }}" class="btn btn-sm btn-icon btn-inverse btn-round" data-toggle="tooltip" data-original-title="Edit">
+                  <a href="{{ route('admin.meter.edit',$row->meter_id) }}" class="btn btn-sm btn-icon btn-inverse btn-round" data-toggle="tooltip" data-original-title="Edit">
                     <i class="icon wb-pencil" aria-hidden="true"></i>
                   </a>
                   

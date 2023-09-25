@@ -48,6 +48,32 @@
                     </ul>
                 </li>
 
+                <!-- meter add -->
+
+                <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
+                    <a href="javascript:void(0)">
+                        <i class="site-menu-icon wb-file" aria-hidden="true"></i>
+                        <span class="site-menu-title">Meters</span>
+                        <span class="site-menu-arrow"></span>
+                    </a>
+                    <ul class="site-menu-sub">
+                        <li class="site-menu-item {{ request()->is('admin/configc/page-home') ? 'active' : '' }}">
+                            <a href="{{ route('admin.meter.list') }}">
+                                <span class="site-menu-title"> Meter Stock</span>
+                            </a>
+                        </li>
+                        <!-- <li class="site-menu-item {{ request()->is('admin/config/pagedd-about') ? 'active' : '' }}">
+                            <a href="{{ route('admin.cons-sub-category.list') }}">
+                            
+                                <span class="site-menu-title">Meter Assign</span>
+                            </a>
+                        </li> -->
+                        
+
+                        
+                    </ul>
+                </li>
+
 
                 <li class="site-menu-item has-sub {{ request()->is('admin/configd/page-*') ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
@@ -89,7 +115,7 @@
                         </li>
                         <li class="site-menu-item {{ request()->is('admin/config/page-abouta') ? 'active' : '' }}">
                             <a href="{{route('admin.feeder.list')}}">
-                                <span class="site-menu-title">Feder </span>
+                                <span class="site-menu-title">Feeder </span>
                             </a>
                         </li>
                         
