@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SubDivisionController;
 use App\Http\Controllers\Admin\DivisionController;
 use App\Http\Controllers\Admin\FeederController;
 use App\Http\Controllers\Admin\SlabController;
+use App\Http\Controllers\Admin\MeterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
@@ -183,6 +184,14 @@ Route::group(['middleware' => 'auth'], function () {
          Route::post('admin/general-tax-store', [GeneralTaxController::class, 'store'])->name('admin.general-tax.store');
          Route::get('admin/general-tax-edit/{id}', [GeneralTaxController::class, 'edit'])->name('admin.general-tax.edit');
          Route::post('admin/general-tax-update/{id}', [GeneralTaxController::class, 'update'])->name('admin.general-tax.update');
+
+        //  meter routes
+
+        Route::get('admin/meter-list', [MeterController::class, 'index'])->name('admin.meter.list');
+        Route::get('admin/meter-form', [MeterController::class, 'create'])->name('admin.meter.form');
+        Route::post('admin/meter-store', [MeterController::class, 'store'])->name('admin.meter.store');
+        Route::get('admin/meter-edit/{id}', [MeterController::class, 'edit'])->name('admin.meter.edit');
+        Route::post('admin/meter-update/{id}', [MeterController::class, 'update'])->name('admin.meter.update');
 
 
 
