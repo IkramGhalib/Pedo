@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\ConsumerSubCategoryController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\Admin\GeneralTaxController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Admin\ReadingController;
 // use App\Http\Controllers\QuestionController;
 // use App\Http\Controllers\ResultController;
 // use App\Http\Controllers\TestController;
@@ -209,7 +210,28 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('consumer-form-edit/{id}', [ConsumerController::class, 'consumer_edit'])->name('consumer.edit');
         Route::post('consumer-form-update/{id}', [ConsumerController::class, 'consumer_update'])->name('consumer.update');
         Route::get('consumer-disable/{id}', [ConsumerController::class, 'consumer_disable'])->name('consumer.disable');
+
+
         
+        // Reading Routes
+        Route::get('meter-reading-lists', [ReadingController::class, 'reading_show'])->name('reading.lists');
+        Route::get('meter-reading-form', [ReadingController::class, 'reading_form'])->name('reading.form');
+        Route::post('meter-reading-form', [ReadingController::class, 'reading_save'])->name('reading.save');
+        Route::get('meter-reading-form-edit/{id}', [ReadingController::class, 'reading_edit'])->name('reading.edit');
+        Route::post('meter-reading-form-update/{id}', [ReadingController::class, 'reading_update'])->name('reading.update');
+        Route::get('meter-reading-disable/{id}', [ReadingController::class, 'reading_disable'])->name('reading.disable');
+
+        Route::get('get_meter_info_against_ref_no', [GeneralController::class, 'get_meter_info_against_ref_no'])->name('get_meter_info_against_ref_no');
+        
+
+        Route::get('meter-reading-approve-lists', [ReadingController::class, 'reading_approve_show'])->name('reading.approve.lists');
+        Route::get('meter-reading-approve-form', [ReadingController::class, 'reading_approve_form'])->name('reading.approve.form');
+        // Route::post('meter-reading-approve-form', [ReadingController::class, 'reading_approve_save'])->name('reading.save');
+        // Route::get('meter-reading-approve-form-edit/{id}', [ReadingController::class, 'reading_approve_edit'])->name('reading.edit');
+        // Route::post('meter-reading-approve-form-update/{id}', [ReadingController::class, 'reading_update'])->name('reading.update');
+        // Route::get('meter-reading-approve-disable/{id}', [ReadingController::class, 'reading_disable'])->name('reading.disable');
+
+        Route::get('get_meter_info_against_ref_no', [GeneralController::class, 'get_meter_info_against_ref_no'])->name('get_meter_info_against_ref_no');
         // Route::get('assignMeter/{consumer_id}', [ConsumerController::class, 'assignMeter'])->name('consumer.assignMeter');
         
         Route::get('getSubDivisionsAgainstDivision', [SubDivisionController::class, 'getSubDivisionsAgainstDivision'])->name('subDivision.getSubDivisionsAgainstDivision');

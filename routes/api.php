@@ -5,16 +5,12 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\ApiDashboardController;
 use App\Http\Controllers\Api\Student\ApiCoursesController;
 use App\Http\Controllers\Api\ApiForgotPasswordController;
-use App\Http\Controllers\Api\ApiPaymentController;
+// use App\Http\Controllers\Api\ApiPaymentController;
 use App\Http\Controllers\Api\KuickPayPaymentController;
-use App\Http\Controllers\Api\Student\ApiTestController;
-use App\Http\Controllers\Api\Student\ApiResultController;
-use App\Http\Controllers\Api\testapi\TestController;
-
-require_once __DIR__ . '/api2.php';
-
-
-
+use App\Http\Controllers\Api\ApiReadingController;
+// use App\Http\Controllers\Api\Student\ApiTestController;
+// use App\Http\Controllers\Api\Student\ApiResultController;
+// use App\Http\Controllers\Api\testapi\TestController;
 /*
 
 |--------------------------------------------------------------------------
@@ -50,6 +46,8 @@ require_once __DIR__ . '/api2.php';
 Route::prefix('v1')->group(function () {
     Route::post('login', [LoginController::class, 'login']);
     Route::post('register', [LoginController::class, 'register']);
+    Route::post('reading_save', [ApiReadingController::class, 'reading_save']);
+    Route::get('get_ref_no_list', [ApiReadingController::class, 'get_ref_no_list']);
     
     // Route::post('forgot-password', [LoginController::class, 'forgot_password']);
     // Route::get('/dashboard', [ApiDashboardController::class, 'index']);
