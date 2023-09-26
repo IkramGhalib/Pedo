@@ -100,13 +100,13 @@ class BillGenerateController extends Controller
                 $record->month_year=$month_year;
                 $record->generated_by=Auth::id();
                 $record->save();
-                $reading=Reading::where('month',date('m',strtotime($month_year)))->where('year',date('Y',strtotime($month_year)))->get();
+                $reading=Reading::where('is_verified',1)->where('month',date('m',strtotime($month_year)))->where('year',date('Y',strtotime($month_year)))->get();
                 foreach ($reading as $key => $value) {
                     // $date = "2021-02-01";
                     $newDate = date('Y-m-d', strtotime($month_year. ' -1 months'));
                     // date('Y-m',strtotime($month_year))
                     // $previous_reading_record=ConsumerBill::where('bill_month_year',date('Y-m',strtotime($newDate)))->first();
-                    $previous_reading_record=Reading::where('ref_no',$value->ref_no)->where('month',date('m',strtotime($newDate)))->where('year',date('Y',strtotime($newDate)))->first();
+                    $previous_reading_record=Reading::where('is_verified',1)->where('ref_no',$value->ref_no)->where('month',date('m',strtotime($newDate)))->where('year',date('Y',strtotime($newDate)))->first();
                     // pr($previous_reading_record);
                     if($previous_reading_record)
                      {
@@ -117,7 +117,7 @@ class BillGenerateController extends Controller
                                                                     'generate_bill_id'=>$record->id,
                                                                     'reading_id'=>$value->id,
                                                                     'ref_no'=>$value->ref_no,
-                                                                    'billing_month_year'=>$value->billing_month_year,
+                                                                    'billing_month_year'=>$month_year,
                                                                     'offpeak_units'=>$currnt_offpeak_unit,
                                                                     'currentbill'=>0,
                                                                     'net_bill'=>0,
@@ -132,7 +132,7 @@ class BillGenerateController extends Controller
                                                                     'generate_bill_id'=>$record->id,
                                                                     'reading_id'=>$value->id,
                                                                     'ref_no'=>$value->ref_no,
-                                                                    'billing_month_year'=>$value->billing_month_year,
+                                                                    'billing_month_year'=>$month_year,
                                                                     'offpeak_units'=>$currnt_offpeak_unit,
                                                                     'currentbill'=>0,
                                                                     'net_bill'=>0,
