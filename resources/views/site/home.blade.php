@@ -6,9 +6,11 @@
         <div class="homepage-slide-blue">
             <h1 style="margin-top: 80px">{{ SiteHelpers::get_option('pageHome', 'banner_title') }}</h1>
             <span class="title-sub-header">{{ SiteHelpers::get_option('pageHome', 'banner_text') }}</span>
-            <form method="GET" action="">
+            <form method="GET" action="{{route('home')}}">
             <div class="searchbox-contrainer col-md-6 mx-auto">
-                <input name="keyword" type="text" class="searchbox d-none d-sm-inline-block" placeholder="Search "><input name="keyword" type="text" class="searchbox d-inline-block d-sm-none" placeholder="Search for courses"><button type="submit" class="searchbox-submit"><i class="fa fa-search"></i></button>
+                <input name="keyword" type="text" class="searchbox d-none d-sm-inline-block" placeholder="Search ">
+                <!-- <input name="keyword" type="text" class="searchbox d-inline-block d-sm-none" placeholder="Search for courses"> -->
+                <button type="submit" class="searchbox-submit"><i class="fa fa-search"></i></button>
             </div>
             </form>
         </div>

@@ -44,11 +44,11 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:api')->group(function () {
       //test api
-    Route::get('gettest',[TestController::class,'index']);
-    Route::post('gettest',[TestController::class,'store']);
-// result api
-    Route::get('Result',[ResultController::class,'index']);
-    Route::post('Result',[ResultController::class,'store']);
+//     Route::get('gettest',[TestController::class,'index']);
+//     Route::post('gettest',[TestController::class,'store']);
+// // result api
+//     Route::get('Result',[ResultController::class,'index']);
+//     Route::post('Result',[ResultController::class,'store']);
     
 
 

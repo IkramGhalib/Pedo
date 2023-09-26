@@ -319,52 +319,7 @@
                 $(this).toggleClass('fa-times');
             });
 
-            $("#becomeInstructorForm").validate({
-                rules: {
-                    first_name: {
-                        required: true
-                    },
-                    last_name: {
-                        required: true
-                    },
-                    contact_email:{
-                        required: true,
-                        email:true
-                    },
-                    telephone: {
-                        required: true
-                    },
-                    paypal_id:{
-                        required: true,
-                        email:true
-                    },
-                    biography: {
-                        required: true
-                    },
-                },
-                messages: {
-                    first_name: {
-                        required: 'The first name field is required.'
-                    },
-                    last_name: {
-                        required: 'The last name field is required.'
-                    },
-                    contact_email: {
-                        required: 'The contact email field is required.',
-                        email: 'The contact email must be a valid email address.'
-                    },
-                    telephone: {
-                        required: 'The telephone field is required.'
-                    },
-                    paypal_id: {
-                        required: 'The paypal id field is required.',
-                        email: 'The paypal id must be a valid email address.'
-                    },
-                    biography: {
-                        required: 'The biography field is required.'
-                    },
-                }
-            });
+         
         });
     </script>
     @yield('javascript')

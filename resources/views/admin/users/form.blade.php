@@ -69,6 +69,11 @@
                 <input type="checkbox" id="inputCheckboxInstructor" name="roles[]" value="incharge" @if($user->id &&  $user->hasRole('incharge')) checked @endif>
                 <label for="inputCheckboxInstructor">Incharge</label>
               </div>
+
+              <div class="checkbox-custom checkbox-default checkbox-inline">
+                <input type="checkbox" id="inputCheckboxInstructor" name="roles[]" value="admin" @if($user->id &&  $user->hasRole('admin')) checked @endif>
+                <label for="inputCheckboxInstructor">admin</label>
+              </div>
               <div id="role-div-error">
               @if ($errors->has('roles'))
                 <label class="error">{{ $errors->first('roles') }}</label>

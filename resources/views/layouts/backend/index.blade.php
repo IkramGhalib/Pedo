@@ -125,11 +125,13 @@
   </nav>
   <div class="site-menubar">
 
+    @include('layouts/backend/admin_sidebar')
+    {{--
     @if(Auth::user()->hasRole('admin'))
-        @include('layouts/backend/admin_sidebar')
     @elseif(Auth::user()->hasRole('instructor'))
         @include('layouts/backend/instructor_sidebar')
     @endif
+    --}}
   </div>
   
 

@@ -130,14 +130,39 @@
                         <span class="site-menu-arrow"></span>
                     </a>
                     <ul class="site-menu-sub">
+                    <!-- if(Auth::user()->hasRole('reader')) -->
                         <li class="site-menu-item {{ request()->is('admin/config/page-homec') ? 'active' : '' }}">
                             <a href="{{ route('reading.lists') }}">
                                 <span class="site-menu-title">Meter Reading </span>
                             </a>
                         </li>
+                        
                         <li class="site-menu-item {{ request()->is('admin/config/page-aboutb') ? 'active' : '' }}">
                             <a href="{{ route('reading.approve.lists') }}">
                                 <span class="site-menu-title">Verify Reading </span>
+                            </a>
+                        </li>
+                       
+                       
+                        
+                    </ul>
+                </li>
+
+                <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
+                    <a href="javascript:void(0)">
+                        <i class="site-menu-icon wb-file" aria-hidden="true"></i>
+                        <span class="site-menu-title">Bill</span>
+                        <span class="site-menu-arrow"></span>
+                    </a>
+                    <ul class="site-menu-sub">
+                        <li class="site-menu-item {{ request()->is('admin/config/page-homec') ? 'active' : '' }}">
+                            <a href="{{ route('bill.generate.lists') }}">
+                                <span class="site-menu-title">Generat Bill </span>
+                            </a>
+                        </li>
+                        <li class="site-menu-item {{ request()->is('admin/config/page-aboutb') ? 'active' : '' }}">
+                            <a href="{{ route('reading.approve.lists') }}">
+                                <span class="site-menu-title">Bill History </span>
                             </a>
                         </li>
                        

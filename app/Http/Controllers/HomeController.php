@@ -32,7 +32,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
       
-       
+    //    pr($request->all());
        
         
         // $latestTab_courses = DB::table('courses')
