@@ -191,20 +191,20 @@ class ReadingController extends Controller
 
     }   
 
-    public function readingList()
-    {
-        $paginate_count = 8;
+    // public function readingList()
+    // {
+    //     $paginate_count = 8;
         
-        $instructors = DB::table('instructors')->groupBy('instructors.id')->paginate($paginate_count);
-        return view('site.consumer', compact('instructors'));
+    //     $instructors = DB::table('instructors')->groupBy('instructors.id')->paginate($paginate_count);
+    //     return view('site.consumer', compact('instructors'));
         
-    }
+    // }
 
-    public function readingView($instructor_slug = '', Request $request)
-    {
-        $instructor = Instructor::where('instructor_slug', $instructor_slug)->first();
-        $metrics = Instructor::metrics($instructor->id);
-        return view('site.instructor_view', compact('instructor', 'metrics'));
-    }
+    // public function readingView($instructor_slug = '', Request $request)
+    // {
+    //     $instructor = Instructor::where('instructor_slug', $instructor_slug)->first();
+    //     $metrics = Instructor::metrics($instructor->id);
+    //     return view('site.instructor_view', compact('instructor', 'metrics'));
+    // }
 
 }
