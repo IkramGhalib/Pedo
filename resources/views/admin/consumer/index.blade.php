@@ -86,7 +86,7 @@
         </div>
           
           <div class="float-right">
-            {{-- {{ $instructor->appends(['search' => Request::input('search')])->links() }} --}}
+             {{ $instructors->appends(['search' => Request::input('search')])->links() }} 
           </div>
           
           

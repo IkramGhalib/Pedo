@@ -43,7 +43,7 @@ class ConsumerController extends Controller
 
     public function consumer_show()
     {
-        $paginate_count = 8;
+        $paginate_count = 10;
         
         $instructors = DB::table('consumers')->orderBy('consumers.id')->paginate($paginate_count);
         return view('admin.consumer.index', compact('instructors'));
@@ -96,7 +96,7 @@ class ConsumerController extends Controller
         $subDivision=SubDivision::find($request->sub_division);
         $feeder=Feeder::find($request->feeder);
 
-        $new_ref_no=$feeder->feeder_code.' '.$subDivision->sub_division_code.' '.$division->division_code.' '.$request->ref_no;
+        $new_ref_no=$feeder->feeder_code.''.$subDivision->sub_division_code.''.$division->division_code.''.$request->ref_no;
 
         $check_data=DB::table('consumer_meters')->where('ref_no',$new_ref_no)->first();
         if($check_data)

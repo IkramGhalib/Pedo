@@ -90,6 +90,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('get_all_division_where',[GeneralController::class,'get_all_division_where'])->name('get_all_division_where');
     Route::get('get_all_sub_division_where',[GeneralController::class,'get_all_sub_division_where'])->name('get_all_sub_division_where');
+    Route::get('get_all_feeder_where',[GeneralController::class,'get_all_feeder_where'])->name('get_all_feeder_where');
     
     Route::get('get_all_consumer_category_where',[GeneralController::class,'get_all_consumer_category_where'])->name('get_all_consumer_category_where');
     Route::get('get_all_consumer_sub_category_where',[GeneralController::class,'get_all_consumer_sub_category_where'])->name('get_all_consumer_sub_category_where');

@@ -264,10 +264,10 @@ $('.division').change(function (e)
 
           $.ajax({
                       method:"get",
-                      url: "{{Route('subDivision.getSubDivisionsAgainstDivision')}}",
+                      url: "{{Route('get_all_sub_division_where')}}",
                       dataType: "json",
                       data:{
-                          'id':$(this).val(),
+                          'division_id':$(this).val(),
                       },
                       success:function(response){
                         var sub_division='';
@@ -300,7 +300,7 @@ $('.sub_division').change(function (e)
 
           $.ajax({
                       method:"get",
-                      url: "{{Route('feeder.getFeedersAgainstSubDivision')}}",
+                      url: "{{Route('get_all_feeder_where')}}",
                       dataType: "json",
                       data:{
                           'id':$(this).val(),

@@ -67,6 +67,11 @@ class GeneralController extends Controller
             echo json_encode(Feeder::where('is_active',1) ->get());
     }
 
+    public function get_all_feeder_where(Request $request)
+    {
+            echo json_encode(Feeder::where('is_active',1)->where('sub_division_id',$request->id) ->get());
+    }
+
     
 
 
