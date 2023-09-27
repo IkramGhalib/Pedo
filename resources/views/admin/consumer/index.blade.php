@@ -41,6 +41,7 @@
                 <th>Father Name</th>
                 <th>CNIC</th>
                 <th>Contact</th>
+                <th>Assign Meter/Ref No</th>
                 <th>Status</th>
 
                 <th>Actions</th>
@@ -57,6 +58,21 @@
                 <td>{{ $instructor->father_name }}</td>
                 <td>{{ $instructor->cnic }}</td>
                 <td>{{ $instructor->mobile }}</td>
+                <td>
+                   
+                    @foreach($instructor->meters as $key => $row)
+                    {{ 'Meter#'.$row->meter->meter_no}}
+                    {{ 'Ref:'.$row->ref_no}}
+                    <br>
+
+                    @endforeach   
+
+                    {{--
+                      @endif
+                    @if($instructor->meters) {{$instructor->meters->meter->meter_no}} 
+                      @if($instructor->meters){{ $instructor->meters->ref_no}} @endif
+                      --}}
+                </td>
 
                 <td>
                   @if($instructor->status=="active")

@@ -90,7 +90,8 @@ class GeneralController extends Controller
     public function get_meter_info_against_ref_no(Request $request)
     {
         $record=DB::table('consumer_meters')
-        ->where('ref_no','like',$request->search.'%')
+        ->join('consumers','consumers.id','=','consumer_meters.consumer_id')
+        ->where('consumer_meters.ref_no','like',$request->search.'%')
         ->get();
         echo json_encode($record);
            

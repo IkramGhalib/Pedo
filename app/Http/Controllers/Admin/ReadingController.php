@@ -84,8 +84,8 @@ class ReadingController extends Controller
             'ref_no' => 'required',
             'month_year' => 'required',
             'offpeak' => 'required_without:peak',
-            'off_peak_image' =>Rule::when($request->offpeak != null, 'required'),
-            'peak_image' =>Rule::when($request->peak != null, 'required')
+            // 'off_peak_image' =>Rule::when($request->offpeak != null, 'required'),
+            // 'peak_image' =>Rule::when($request->peak != null, 'required')
         ]);
        $mont_year_array=explode('-',$request->month_year);
         $reading_record=Reading::where('ref_no',$request->ref_no)->where('year',$mont_year_array[0])->where('month',$mont_year_array[1])->first();

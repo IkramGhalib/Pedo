@@ -119,7 +119,7 @@ $("#ref_no").select2({
                     results: $.map(data, function (item) {
                       console.log(item);
                         return {
-                            text: item.ref_no,
+                            text: 'Ref:'+item.ref_no+'  Consumer Code: '+item.consumer_code+'  Consumer:'+item.full_name+' CNIC:'+item.cnic ,
                             id: item.ref_no
                         }
                     })

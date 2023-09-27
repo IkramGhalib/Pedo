@@ -248,7 +248,7 @@ Route::group(['middleware' => 'auth'], function () {
         // Route::post('meter-reading-approve-form-update/{id}', [ReadingController::class, 'reading_update'])->name('reading.update');
         Route::post('meter-reading-approve', [ReadingController::class, 'reading_approve'])->name('reading.approve');
 
-        Route::get('get_meter_info_against_ref_no', [GeneralController::class, 'get_meter_info_against_ref_no'])->name('get_meter_info_against_ref_no');
+        // Route::get('get_meter_info_against_ref_no', [GeneralController::class, 'get_meter_info_against_ref_no'])->name('get_meter_info_against_ref_no');
         // Route::get('assignMeter/{consumer_id}', [ConsumerController::class, 'assignMeter'])->name('consumer.assignMeter');
         
         Route::get('getSubDivisionsAgainstDivision', [SubDivisionController::class, 'getSubDivisionsAgainstDivision'])->name('subDivision.getSubDivisionsAgainstDivision');

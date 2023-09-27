@@ -8,11 +8,12 @@ use App\Models\Course;
 use App\Models\Category;
 use App\Models\Role;
 use App\Models\Consumer;
+use App\Models\ConsumerMeter;
 use App\Models\ConsumerCategory;
 use App\Models\Division;
 use App\Models\SubDivision;
 use App\Models\Feeder;
-use App\Models\Credit;
+// use App\Models\Credit;
 use App\Models\WithdrawRequest;
 use Illuminate\Support\Facades\Validator;
 use DB;
@@ -45,7 +46,8 @@ class ConsumerController extends Controller
     {
         $paginate_count = 10;
         
-        $instructors = DB::table('consumers')->orderBy('consumers.id')->paginate($paginate_count);
+        $instructors = Consumer::with('meters','meters.meter')->orderBy('consumers.id')->paginate($paginate_count);
+        // dd($instructors);
         return view('admin.consumer.index', compact('instructors'));
     }
 
