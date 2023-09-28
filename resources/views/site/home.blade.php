@@ -8,7 +8,7 @@
             <span class="title-sub-header">{{ SiteHelpers::get_option('pageHome', 'banner_text') }}</span>
             <form method="GET" action="{{route('home')}}">
             <div class="searchbox-contrainer col-md-6 mx-auto">
-                <input name="keyword" type="text" class="searchbox d-none d-sm-inline-block" placeholder="Search ">
+                <input name="keyword" type="text" class="searchbox d-none d-sm-inline-block" placeholder="Search " value="@if($_GET){{$_GET['keyword']}} @endif">
                 <!-- <input name="keyword" type="text" class="searchbox d-inline-block d-sm-none" placeholder="Search for courses"> -->
                 <button type="submit" class="searchbox-submit"><i class="fa fa-search"></i></button>
             </div>
@@ -110,13 +110,56 @@
         <!-- course list end -->
 
         <!-- dummy block start -->
+        @if($bill)
+        <article class="learn-block">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 pt-5">
+                        <table class="table table-bordered"> 
+                            <tr>
+                                <td> Name & Address</td> 
+                                <td> 	{{$bill->full_name.' ,   '.$bill->address}}</td> 
+                            </tr>
+
+                            <tr>
+                                <td> Bill Amount</td> 
+                                <td> Rs. 9132</td> 
+                            </tr>
+
+                            <tr>
+                                <td> Due Date</td> 
+                                <td> 	07 SEP 23</td> 
+                            </tr>
+
+                            <tr>
+                                <td> Late Payment Surcharge</td> 
+                                <td>	Rs. 720 </td> 
+                            </tr>
+                            <tr>
+                                <td> Amount After Due Date</td> 
+                                <td> Rs. 9852</td> 
+                            </tr>
+
+                        </table>
+                        <!-- <h3 class="dblock-heading"> abc </h3> -->
+                        <!-- <p class="dblock-text"> xyz</p> -->
+                        <a href="{{route('single.bill',$bill->bill_id)}}" class="btn btn-ulearn">View Complete Bill</a>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </article>
+        @endif
+
+
         <article class="learn-block">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-6 col-lg-6 col-md-6">
                         <h3 class="dblock-heading">{{ SiteHelpers::get_option('pageHome', 'learn_block_title') }}</h3>
                         <p class="dblock-text">{!! SiteHelpers::get_option('pageHome', 'learn_block_text') !!}</p>
-                        <a href="" class="btn btn-ulearn">Explore Courses</a>
+                        <a href="" class="btn btn-ulearn">Explore</a>
                     </div>
 
                     <div class="col-xl-6 col-lg-6 col-md-6 vertical-align">

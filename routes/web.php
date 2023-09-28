@@ -45,6 +45,7 @@ Route::post('paymentGateWay/return_url', [PaymentController::class, 'gateWayRetr
 Route::post('paymentGateWay/posting_url', [PaymentController::class, 'gateWayPostingUrl']);
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/single_bill/{id?}', [HomeController::class, 'single_bill'])->name('single.bill');
 Auth::routes();
 Route::get('logout', [LoginController::class, 'logout'])->name('logOut');
 Route::get('/login/{social}',[LoginController::class,'socialLogin'])->where('social','twitter|facebook|linkedin|google|github|bitbucket');

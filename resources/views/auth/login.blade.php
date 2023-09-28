@@ -14,7 +14,7 @@
 
             <div class="row">
                 <div class="col-xl-6 col-lg-6 col-md-6 vertical-align d-none d-lg-block">
-                    <img class="img-fluid" src="{{ asset('frontend/img/learn.png') }}" width="500px" height="500px">
+                    <img class="img-fluid" src="{{ asset('frontend/img/learning.png') }}" width="500px" height="500px">
                 </div>
                 <div class="col-xl-6 offset-xl-0 col-lg-6 offset-lg-0 col-md-8 offset-md-2">
                     <div class="rightRegisterForm">

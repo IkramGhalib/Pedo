@@ -87,11 +87,11 @@
                                 <span class="site-menu-title">General </span>
                             </a>
                         </li>
-                        <li class="site-menu-item {{ request()->is('admin/config/page-about1') ? 'active' : '' }}">
+                        <!-- <li class="site-menu-item {{ request()->is('admin/config/page-about1') ? 'active' : '' }}">
                             <a href="{{ route('admin.pageAbout') }}">
                                 <span class="site-menu-title">Special </span>
                             </a>
-                        </li>
+                        </li> -->
                         
                     </ul>
                 </li>

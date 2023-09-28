@@ -33,6 +33,21 @@ class HomeController extends Controller
     {
       
     //    pr($request->all());
+       $bill=[];
+       if($request->keyword)
+       {
+            $bill = DB::table('consumer_bills')
+                    ->select('consumer_bills.*', 'bill_generates.*', 'consumer_meters.*','consumer_bills.id as bill_id','consumers.*')
+                    // ->selectRaw('AVG(course_ratings.rating) AS average_rating')
+                    ->Join('bill_generates', 'bill_generates.id', '=', 'consumer_bills.generate_bill_id')
+                    ->Join('consumer_meters', 'consumer_meters.ref_no', '=', 'consumer_bills.ref_no')
+                    ->join('consumers', 'consumers.id', '=', 'consumer_meters.consumer_id')
+                    ->where('consumer_bills.ref_no',$request->keyword)
+                    // ->groupBy('courses.id')
+                    // ->limit(8)
+                    ->orderBy('consumer_bills.id', 'desc')
+                    ->first();
+       }
        
         
         // $latestTab_courses = DB::table('courses')
@@ -75,8 +90,10 @@ class HomeController extends Controller
         //                 ->groupBy('instructors.id')
         //                 ->limit(8)
         //                 ->get();
-        //     //  dd('testing');           
-        return view('site/home', );
+            //  dd($bill);  
+             
+            //  die('testing');         
+        return view('site/home', compact('bill') );
     }
 
     /**
@@ -86,13 +103,41 @@ class HomeController extends Controller
      *
      * @return true or false
      */
-    public function checkUserEmailExists(Request $request)
+
+     public function checkUserEmailExists(Request $request)
+     {
+         $email = $request->input('email');
+         
+         $users = User::where('email',$email)->first();
+         
+         echo $users ? "false" : "true";
+     }
+    public function single_bill($bill_id,Request $request)
     {
-        $email = $request->input('email');
+        // pr($request->all());
+        // $email = $request->input('email');
         
-        $users = User::where('email',$email)->first();
+        // $users = User::where('email',$email)->first();
         
-        echo $users ? "false" : "true";
+        // echo $users ? "false" : "true";
+        // return view('single_bill');
+
+
+           
+                $bill_data = DB::table('consumer_bills')
+                ->select('consumer_bills.*', 'bill_generates.*', 'consumer_meters.*','consumer_bills.id as bill_id')
+                // ->selectRaw('AVG(course_ratings.rating) AS average_rating')
+                ->Join('bill_generates', 'bill_generates.id', '=', 'consumer_bills.generate_bill_id')
+                ->Join('consumer_meters', 'consumer_meters.ref_no', '=', 'consumer_bills.ref_no')
+                ->join('consumers', 'consumers.id', '=', 'consumer_meters.consumer_id')
+                ->where('consumer_bills.id',$bill_id)
+                // ->groupBy('courses.id')
+                // ->limit(8)
+                ->orderBy('consumer_bills.id', 'desc')
+                ->first();
+
+
+        return view('single_bill_v2',compact('bill_data'));
     }
 
     public function blogList(Request $request)

@@ -39,7 +39,7 @@ class GeneralTaxController extends Controller
     {
 
         $request->validate([
-            'tax_percent' => 'required|integer',
+            'tax_percent' => 'required|numeric',
             'tax_name' => 'required|string',
             'status' => 'required',
            

@@ -30,7 +30,7 @@
             </div>
 
             <div class="form-group col-md-4">
-              <label class="form-control-label">Tax Percentage</label>
+              <label class="form-control-label">price</label>
               <input required type="text" class="form-control" name="tax_percent"
                 placeholder=""/>
                 @if ($errors->has('tax_percent'))
