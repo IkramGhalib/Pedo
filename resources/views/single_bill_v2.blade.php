@@ -44,7 +44,20 @@
         </form>
     </div>
 
-    
+    <?php 
+        $offpeak_units= $bill_data->offpeak_units;
+        $billing_month_year=date('M Y',strtotime($bill_data->billing_month_year));
+        $ref_no=$bill_data->ref_no;
+        $bill_no=$bill_data->bill_id;
+        $due_date=date('d M y');
+        $issue_date=date('d M y');
+        $payable='';
+        $payable_after_due_date='';
+        $previous_reading='';
+        $current_reading='';
+        $meter_connection_date=date('d M y',strtotime($bill_data->meter_connection_date));
+
+    ?>
 
     <div class="maincontent fontsize">
         
@@ -62,7 +75,7 @@
                 </h1>
                 <div>
                     <b style="color: #1a75ff;">YOUR BETTER SERVICE - OUR PRIDE</b>
-                    <b style="float: right; margin-right: 10px;"><a style="text-decoration: none; color: #1a75ff;" href="http://www.pesco.com.pk">www.pesco.com.pk</a></b>
+                    <b style="float: right; margin-right: 10px;"><a style="text-decoration: none; color: #1a75ff;" href="{{env('APP_URL')}}">{{env('APP_URL')}}</a></b>
                     <b style="color: #1a75ff; float: right; margin-right: 60px">
                         ELECTRICITY CONSUMER BILL</b>
                 </div>
@@ -96,7 +109,7 @@
             </tr>
             <tr style="height: 26px; width: 100%; font-size: .8em;" class="content">
                 <td class="border-rb" style="text-align: center;">
-                    30 OCT 20
+                   {{$meter_connection_date}}
                 </td>
                 <td class="border-rb" style="text-align: center;">
                     
@@ -106,16 +119,16 @@
                     
                 </td>
                 <td class="border-rb" style="text-align: center;">
-                    SEP 23
+                {{$billing_month_year}}
                 </td>
                 <td class="border-rb" style="text-align: center;">
                     08 SEP 23
                 </td>
                 <td class="border-rb" style="text-align: center;">
-                    13 SEP 23
+                {{$due_date}}
                 </td>
                 <td class="border-b" style="text-align: center;">
-                    27 SEP 23
+                    {{$due_date}}
                 </td>
             </tr>
         </tbody></table>
@@ -137,7 +150,7 @@
                 </tr>
                 <tr style="height: 27px;" class="fontsize content">
                     <td class="border-rb" style="text-align: center;">
-                        1263957501
+                    {{$bill_data->consumer_id}} 
                     </td>
                     <td class="border-rb" style="text-align: center;">
                         A-1a(01)
@@ -166,7 +179,7 @@
                 </tr>
                 <tr style="height: 27px;" class="fontsize content">
                     <td class="border-r" style="text-align: center;">
-                        08 26142 0391904 R
+                       {{$ref_no}} R
                         
                     </td>
                     <td class="border-r ">
@@ -188,7 +201,7 @@
                         <b>DIVISION</b>
                     </td>
                     <td style="text-align: center;" class="content border-b">
-                        CHARSADDA
+                    {{$bill_data->division_name}}
                     </td>
                 </tr>
                 <tr style="height: 27px; width: 100%;" class="fontsize">
@@ -196,7 +209,7 @@
                         <b>SUB DIVISION</b>
                     </td>
                     <td colspan="3" style="text-align: center;" class="content border-b">
-                        SARDHERI
+                    {{$bill_data->sub_division_name}}
                     </td>
                 </tr>
                 <tr style="height: 27px; width: 100%;" class="fontsize">
@@ -204,7 +217,7 @@
                         <b>FEEDER NAME</b>
                     </td>
                     <td colspan="3" style="text-align: center;" class="content border-b">
-                        SARDHERI           PSR 132KV-CHARSA
+                        {{$bill_data->feeder_name}}
                     </td>
                 </tr>
                 <tr style="height: 27px; width: 100%;" class="fontsize">
@@ -236,15 +249,15 @@
                                 <p style="margin: 0; text-align: left; padding-left: 5px">
                                     <span>NAME &amp; ADDRESS</span>
                                     <br>
-                                    <span>IKRAM ULLAH</span>
+                                    <span>{{$bill_data->full_name}}</span>
                                     <br>
-                                    <span>KHAN GHALIB</span>
+                                    <span>{{$bill_data->father_name}}</span>
                                     <br>
-                                    <span>NEW COLONY SARDHERI</span>
+                                    <span>{{$bill_data->address}}</span>
                                     <br>
-                                    <span>CHD</span>
-                                    <br>
-                                    <span></span>
+                                    <!-- <span>CHD</span> -->
+                                    <!-- <br> -->
+                                    <!-- <span></span> -->
                                     
                                     
                                 </p>
@@ -301,19 +314,19 @@
                         </tr>
                         <tr style="height: 30px" class="content">
                             <td class="border-r">
-                                S-P  2237139<br>
+                               {{$bill_data->meter_no}}<br>
                             </td>
                             <td class="border-r">
-                                4190<br>
+                                {{$previous_reading}}<br>
                             </td>
                             <td class="border-r">
-                                4440<br>
+                            {{$current_reading}}<br>
                             </td>
                             <td class="border-r">
                                 1<br>
                             </td>
                             <td class="border-r">
-                                250<br>
+                                {{$offpeak_units}}<br>
                             </td>
                             <td>
                                 
@@ -454,7 +467,7 @@
                     </td>
                     <td class="border-rb nestedtdwidth content">
                         
-                        250
+                        {{$offpeak_units}}
                         <br>
                         
                     </td>
@@ -666,7 +679,7 @@
                             </tr>
                             <tr class="content">
                                 <td>
-                                     27.1400 X 250<br><br>
+                                     27.1400 X {{ $offpeak_units}}<br><br>
                                 </td>
                             </tr>
                             <tr style="font-size: 14pt" class="content display-none">
@@ -1003,7 +1016,7 @@
                                             <h4>CONSUMER ID</h4>
                                         </td>
                                         <td class="border-rb border-t content">
-                                            1263957501
+                                            {{$bill_data->consumer_id}} 
                                         </td>
                                     </tr>
                                     
@@ -1014,7 +1027,7 @@
                 </div>
 
                 <div style="width: 15%; margin-top: 20px; float: right; display: inline-block">
-                    <span>BILL NO <br> 1729126</span>
+                    <span>BILL NO <br> {{$bill_no}}</span>
                     
                 </div>
 
@@ -1071,13 +1084,14 @@
                     </tr>
                     <tr style="height: 40px;">
                         <td class="border-rb content" style="width: 15%; text-align: center; border-left: 1px solid #78578e;">
-                            SEP 23
+                            <!-- SEP 23 -->
+                            {{$billing_month_year}}
                         </td>
                         <td class="border-rb content" style="width: 15%; text-align: center;">
-                            27 SEP 23
+                           {{$due_date}}
                         </td>
                         <td class="font-size border-rb content" style="width: 25%; text-align: Center;">
-                            08 26142 0391904 R
+                           {{$ref_no}} R
                             
                         </td>
                         <td class="border-rb" style="width: 25%; color: red;">

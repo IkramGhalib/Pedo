@@ -125,16 +125,23 @@ class HomeController extends Controller
 
            
                 $bill_data = DB::table('consumer_bills')
-                ->select('consumer_bills.*', 'bill_generates.*', 'consumer_meters.*','consumer_bills.id as bill_id')
+                ->select('consumer_bills.*', 'bill_generates.*', 'consumer_meters.connection_date as meter_connection_date','consumer_meters.*','consumer_bills.id as bill_id','consumers.*','feeders.name as feeder_name','sub_divisions.name as sub_division_name','divisions.name as division_name','meters.meter_no')
                 // ->selectRaw('AVG(course_ratings.rating) AS average_rating')
                 ->Join('bill_generates', 'bill_generates.id', '=', 'consumer_bills.generate_bill_id')
                 ->Join('consumer_meters', 'consumer_meters.ref_no', '=', 'consumer_bills.ref_no')
                 ->join('consumers', 'consumers.id', '=', 'consumer_meters.consumer_id')
+                ->join('feeders', 'feeders.id', '=', 'consumers.feeder_id')
+                ->join('sub_divisions', 'sub_divisions.id', '=', 'feeders.sub_division_id')
+                ->join('divisions', 'divisions.id', '=', 'sub_divisions.division_id')
+                ->join('meters', 'meters.meter_id', '=', 'consumer_meters.meter_id')
+                // ->join('consumer_meters', 'meters.meter_id', '=', 'consumer_meters.meter_id')
+                
                 ->where('consumer_bills.id',$bill_id)
                 // ->groupBy('courses.id')
                 // ->limit(8)
                 ->orderBy('consumer_bills.id', 'desc')
                 ->first();
+                // pr($bill_data);
 
 
         return view('single_bill_v2',compact('bill_data'));
