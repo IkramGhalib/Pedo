@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 21, 2023 at 08:15 AM
+-- Generation Time: Oct 03, 2023 at 02:14 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -24,17 +24,45 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category_slab`
+-- Table structure for table `bill_generates`
 --
 
-CREATE TABLE `category_slab` (
+CREATE TABLE `bill_generates` (
   `id` int(11) NOT NULL,
-  `sub_cat_id` int(11) NOT NULL,
-  `slab_start` int(11) NOT NULL,
-  `slab_end` int(11) NOT NULL,
-  `charges` float NOT NULL,
-  `is_active` int(11) NOT NULL DEFAULT 1
+  `month_year` date NOT NULL,
+  `status` varchar(50) DEFAULT 'generated',
+  `generated_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bill_generates`
+--
+
+INSERT INTO `bill_generates` (`id`, `month_year`, `status`, `generated_by`, `created_at`, `updated_at`) VALUES
+(19, '2023-10-01', 'generated', 1, '2023-10-03 11:29:50', '2023-10-03 11:29:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `charges`
+--
+
+CREATE TABLE `charges` (
+  `id` int(11) NOT NULL,
+  `title` text NOT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `charges`
+--
+
+INSERT INTO `charges` (`id`, `title`, `is_active`) VALUES
+(1, 'Fuel Price Adjustment', 1),
+(2, 'Financing Cost Surcharges life line Consumer a', 1),
+(10, 'aBC CHARGES a', 1);
 
 -- --------------------------------------------------------
 
@@ -65,21 +93,51 @@ CREATE TABLE `consumers` (
 --
 
 INSERT INTO `consumers` (`id`, `full_name`, `father_name`, `cnic`, `address`, `consumer_code`, `connection_date`, `telephone`, `mobile`, `total_credits`, `consumer_category_id`, `status`, `created_at`, `updated_at`, `feeder_id`) VALUES
-(1, 'Zarif Khan Afridi', NULL, NULL, NULL, NULL, NULL, NULL, '03025959967', 0.00, 1, 'active', '2023-09-01 04:52:19', '2023-09-01 04:52:19', 0),
-(2, 'Muhammad Bilal', NULL, NULL, NULL, NULL, NULL, NULL, '0335691919', 0.00, 1, 'active', '2023-09-01 04:52:58', '2023-09-01 04:52:58', 0),
-(3, 'Muhammad Sami', NULL, NULL, NULL, NULL, NULL, NULL, '0123123', 0.00, 1, 'active', '2023-09-01 06:36:45', '2023-09-01 06:36:45', 0),
-(4, 'Haider khan', NULL, NULL, NULL, NULL, NULL, NULL, '021233123', 0.00, 1, 'active', '2023-09-01 06:38:26', '2023-09-01 06:38:26', 0),
-(5, 'zairf khan', 'abc', '123123', 'kohat road', '0', NULL, NULL, '123213', 0.00, 2, 'active', NULL, NULL, 0),
-(6, 'zairf khan', 'abc', '123123', 'kohat road', NULL, NULL, NULL, '123213', 0.00, 2, 'active', '2023-09-20 03:47:35', '2023-09-20 03:47:35', 0),
-(7, 'zairf khan k', 'abc k', '12312340', 'kohat road k', '075', NULL, NULL, '12321360', 0.00, 2, 'active', '2023-09-20 03:51:18', '2023-09-21 01:14:24', 8),
-(8, 'abc', 'abc', '123123', 'afred', '12', NULL, NULL, '12312', 0.00, 2, 'de-active', '2023-09-20 03:52:25', '2023-09-20 23:46:56', 0),
-(9, 'zairf khan', 'abc', '123123', 'abc', NULL, NULL, NULL, '123123', 0.00, 2, 'active', '2023-09-20 03:58:16', '2023-09-20 03:58:16', 0),
-(10, 'ali', 'khan', '1231', 'kohat', '10', NULL, NULL, '123123213', 0.00, 2, 'active', '2023-09-20 05:25:45', '2023-09-20 05:25:45', 0),
-(11, 'ali', 'khan', '1231', 'kohat', '10', NULL, NULL, '123123213', 0.00, 2, 'active', '2023-09-20 05:26:06', '2023-09-20 05:26:06', 0),
-(12, 'shah', 'khalid', '1231231', 'test', '12', NULL, NULL, '0123', 0.00, 1, 'active', '2023-09-20 05:27:15', '2023-09-20 05:27:15', 0),
-(13, 'sha', 'ali', '123', 'ABC', '13', NULL, NULL, '123', 0.00, 1, 'active', '2023-09-20 05:28:18', '2023-09-20 05:28:18', 0),
-(14, 'Shoaib Afridi', 'afridi', '17301176840201', 'peshawar', '14', NULL, NULL, '012345678', 0.00, 1, 'active', '2023-09-20 23:33:45', '2023-09-20 23:33:45', 0),
-(15, 'zairf khan', 'abcccc', '1231230', 'abc', '15', NULL, NULL, '1212312312', 0.00, 1, 'active', '2023-09-20 23:38:39', '2023-09-20 23:38:39', 0);
+(1, 'IKRAM ULLAH', 'KHAN GHALIB', '1710142738347', 'new colony , sardheri charsadda', '1', NULL, NULL, '03335959967', 0.00, 1, 'active', '2023-09-27 05:43:11', '2023-09-27 05:43:11', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `consumer_bills`
+--
+
+CREATE TABLE `consumer_bills` (
+  `id` int(11) NOT NULL,
+  `generate_bill_id` int(11) NOT NULL,
+  `reading_id` int(11) NOT NULL,
+  `ref_no` varchar(100) NOT NULL,
+  `billing_month_year` date DEFAULT NULL,
+  `peak_units` int(11) NOT NULL DEFAULT 0,
+  `offpeak_units` double NOT NULL DEFAULT 0,
+  `PrevU` int(11) DEFAULT 0,
+  `PresU` int(11) DEFAULT 0,
+  `Units` int(11) DEFAULT 0,
+  `FreeU` int(11) DEFAULT 0,
+  `currentbill` int(11) DEFAULT 0,
+  `net_bill` double NOT NULL,
+  `Arrears` int(11) DEFAULT 0,
+  `GTotal` int(11) DEFAULT 0,
+  `charges_breakup` text DEFAULT NULL,
+  `WithinDuedate` int(11) NOT NULL DEFAULT 0,
+  `AfterdueDate` int(11) NOT NULL DEFAULT 0,
+  `Rec` int(11) DEFAULT 0,
+  `IssueDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `DueDate` datetime DEFAULT NULL,
+  `IsPayed` varchar(1) NOT NULL DEFAULT '0',
+  `paid_amount` double NOT NULL DEFAULT 0,
+  `paid_on` date DEFAULT NULL,
+  `paid_by` varchar(10) DEFAULT NULL,
+  `uploaded_datetime` datetime DEFAULT NULL,
+  `Observation` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `consumer_bills`
+--
+
+INSERT INTO `consumer_bills` (`id`, `generate_bill_id`, `reading_id`, `ref_no`, `billing_month_year`, `peak_units`, `offpeak_units`, `PrevU`, `PresU`, `Units`, `FreeU`, `currentbill`, `net_bill`, `Arrears`, `GTotal`, `charges_breakup`, `WithinDuedate`, `AfterdueDate`, `Rec`, `IssueDate`, `DueDate`, `IsPayed`, `paid_amount`, `paid_on`, `paid_by`, `uploaded_datetime`, `Observation`) VALUES
+(1, 16, 1, '8261420391904', '2023-09-01', 0, 250, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 0, 0, 0, '2023-09-27 10:45:14', NULL, '0', 0, NULL, NULL, NULL, NULL),
+(2, 19, 2, '8261420391904', '2023-10-01', 0, 350, 0, 0, 0, 0, 8500, 0, 0, 0, '[{\"units\":100,\"charges\":16.48},{\"units\":100,\"charges\":22.95},{\"units\":100,\"charges\":27.95},{\"units\":50,\"charges\":35.24}]', 0, 0, 0, '2023-10-03 11:29:50', NULL, '0', 0, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -100,8 +158,8 @@ CREATE TABLE `consumer_categories` (
 --
 
 INSERT INTO `consumer_categories` (`id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'Domestic', 1, NULL, NULL),
-(2, 'Commercial', 1, NULL, NULL);
+(1, 'Domestic', 1, '2023-09-27 05:36:16', '2023-09-27 05:36:16'),
+(2, 'Commericial', 1, '2023-09-27 05:36:25', '2023-09-27 05:36:25');
 
 -- --------------------------------------------------------
 
@@ -125,11 +183,7 @@ CREATE TABLE `consumer_meters` (
 --
 
 INSERT INTO `consumer_meters` (`cm_id`, `consumer_id`, `meter_id`, `ref_no`, `connection_date`, `definition_date`, `previous_reading`, `arrear`) VALUES
-(1, 11, 0, '8 8 1 01', '2023-09-20', '2023-09-20', 0, 0),
-(2, 12, 0, '8 8 1 02', '2023-09-20', '2023-09-20', 0, 0),
-(3, 13, 0, '8 8 1 03', '2023-09-20', '2023-09-20', 0, 0),
-(4, 1, 0, '8 8 1 075', '2023-09-21', '2023-09-21', 0, 0),
-(5, 15, 1, '8 8 1 123123222', '2023-09-21', '2023-09-21', 0, 0);
+(1, 1, 3, '8261420391904', '2023-08-27', '2023-09-01', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -154,8 +208,10 @@ CREATE TABLE `consumer_sub_categories` (
 --
 
 INSERT INTO `consumer_sub_categories` (`id`, `consumer_category_id`, `name`, `category_conditon_start`, `category_conditon_end`, `is_active`, `created_at`, `updated_at`, `check_months`) VALUES
-(1, 0, 'Domestic', 0, 0, 1, NULL, NULL, 0),
-(2, 0, 'Commercial', 0, 0, 1, NULL, NULL, 0);
+(1, 1, 'Life line', 1, 100, 1, NULL, NULL, 12),
+(2, 1, 'Protected', 101, 200, 1, NULL, NULL, 6),
+(3, 1, 'un-protected', 201, 700, 1, NULL, NULL, 1),
+(4, 2, 'Commerial', 1000, 70000, 1, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -176,8 +232,7 @@ CREATE TABLE `divisions` (
 --
 
 INSERT INTO `divisions` (`id`, `division_code`, `name`, `description`, `is_active`) VALUES
-(1, 1, 'Chitral', NULL, 1),
-(2, 2, 'Dir', NULL, 1);
+(1, 42, 'Charsadda', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -214,8 +269,35 @@ CREATE TABLE `feeders` (
 --
 
 INSERT INTO `feeders` (`id`, `feeder_code`, `name`, `is_active`, `sub_division_id`) VALUES
-(8, 8, 'feeder 8', 1, 8),
-(9, 9, 'feeder 9', 1, 8);
+(1, 8, 'Sardhari 132 kv charsada', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `general_taxs`
+--
+
+CREATE TABLE `general_taxs` (
+  `id` int(11) NOT NULL,
+  `tax_percentage` float NOT NULL,
+  `tax_name` text NOT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `general_taxs`
+--
+
+INSERT INTO `general_taxs` (`id`, `tax_percentage`, `tax_name`, `is_active`) VALUES
+(1, 2.1, 'Fuel Price Adjustment', 1),
+(2, 0, 'Financing Cost Surcharges life line Consumer', 1),
+(3, 0.43, 'Financing Cost Surcharges protected Consumer', 1),
+(4, 3.24, 'Financing Cost Surcharges un-protected Consumer', 1),
+(5, 1.24, 'Quarterly Tarrif Adjustment', 1),
+(6, 1.5, 'Electircity Duty Domestic', 1),
+(7, 3, 'Electricity duty Commercial', 1),
+(8, 0, 'G.S.T', 1),
+(9, 2, 'ab', 1);
 
 -- --------------------------------------------------------
 
@@ -407,8 +489,49 @@ CREATE TABLE `meters` (
 --
 
 INSERT INTO `meters` (`meter_id`, `meter_no`, `status`) VALUES
-(1, '01', 'assigned'),
-(2, '02', 'free');
+(1, '01', 'free'),
+(2, '02', 'free'),
+(3, '0391904', 'assigned'),
+(4, '039194', 'free');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `meter_readings`
+--
+
+CREATE TABLE `meter_readings` (
+  `id` int(11) NOT NULL,
+  `meter_no` varchar(50) DEFAULT NULL,
+  `ref_no` varchar(50) DEFAULT NULL,
+  `month_year` date DEFAULT NULL,
+  `year` varchar(20) DEFAULT NULL,
+  `month` varchar(20) DEFAULT NULL,
+  `offpeak` double DEFAULT 0,
+  `offpeak_units` int(11) NOT NULL DEFAULT 0,
+  `peak` double DEFAULT 0,
+  `peak_units` int(11) NOT NULL DEFAULT 0,
+  `pkimage` varchar(500) DEFAULT NULL,
+  `offpkimage` varchar(500) DEFAULT NULL,
+  `datetime` timestamp NULL DEFAULT current_timestamp(),
+  `longitude` varchar(20) DEFAULT NULL,
+  `latitude` varchar(20) DEFAULT NULL,
+  `Observation` varchar(50) DEFAULT NULL,
+  `retake` bit(1) DEFAULT b'0',
+  `varifier` varchar(50) DEFAULT NULL,
+  `mrid` varchar(50) DEFAULT NULL,
+  `sync` tinyint(4) NOT NULL DEFAULT 0,
+  `status` varchar(50) DEFAULT NULL,
+  `is_verified` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `meter_readings`
+--
+
+INSERT INTO `meter_readings` (`id`, `meter_no`, `ref_no`, `month_year`, `year`, `month`, `offpeak`, `offpeak_units`, `peak`, `peak_units`, `pkimage`, `offpkimage`, `datetime`, `longitude`, `latitude`, `Observation`, `retake`, `varifier`, `mrid`, `sync`, `status`, `is_verified`) VALUES
+(1, NULL, '8261420391904', '2023-09-01', '2023', '09', 250, 0, NULL, 0, NULL, NULL, '2023-09-27 10:44:35', NULL, NULL, NULL, b'0', '1', NULL, 0, NULL, 1),
+(2, NULL, '8261420391904', '2023-10-01', '2023', '10', 50, 350, 100, 100, NULL, NULL, '2023-10-03 06:09:10', NULL, NULL, NULL, b'0', '1', NULL, 0, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -588,8 +711,8 @@ INSERT INTO `options` (`id`, `code`, `option_key`, `option_value`) VALUES
 (1, 'pageHome', 'banner_title', 'PEDO'),
 (2, 'pageHome', 'banner_text', 'Search you bill by refrence Number from anywhere'),
 (3, 'pageHome', 'instructor_text', 'We have more than 200 skilled & professional Instructors'),
-(4, 'pageHome', 'learn_block_title', 'Learn every topic, everytime.'),
-(5, 'pageHome', 'learn_block_text', '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>'),
+(4, 'pageHome', 'learn_block_title', 'PEDO objective'),
+(5, 'pageHome', 'learn_block_text', '<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\"><strong style=\"box-sizing: border-box; padding: 0px; margin: 0px; border: none; outline: none;\">Established In 1986 as \"Small Hydel Development Organization\" with the objective to:</strong></p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">&nbsp;- Identify and develop hydel potential upto 5MW.</p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">&nbsp;- Construct small hydel stations for isolated load centers.</p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">&nbsp;- Operate and maintain off grid small Hydel Stations.</p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">In 1993, it was converted to an autonomous body under the 1993 Act and renamed as \"Sarhad Hydel Development Organization (SHYDO) \" In 2013, the name of organization was changed to \"Pakhtunkhwa Hydel Development Organization(PHYDO)\" Most recently in 2014 PHYDO was renamed as \"Pakhtunkhwa Energy Development Organization (PEDO)\" through passage of PEDO Act 2014.</p>'),
 (6, 'pageAbout', 'content', '<article class=\"container\">\r\n<div class=\"row\">\r\n<div class=\"col-12\">\r\n<h5 class=\"mt-3 underline-heading\">OUR MISSION IS SIMPLE</h5>\r\n<p>Cobem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla dolor sit amet, consectetuer adipiscing elit.</p>\r\n<p>Aenean commodo ligula eget dolor. Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, eta rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis. Lorem ipsum dolor sit amet,Aenean commodo ligula eget dolor. Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, eta rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis. Lorem ipsum dolor sit amet,</p>\r\n<ul class=\"ul-no-padding about-ul\">\r\n<li>Commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Commodo ligula eget dolor. Aenean massa. Port sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>\r\n<li>Dum sociis natoque penatibus et magnis dis parturient montes</li>\r\n<li>Nascetur ridiculus mus, Nulla consequat massa quis enim, Cum sociis natoque penatibus et magnis dis parturient montes</li>\r\n<li>Commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>\r\n<li>Nascetur ridiculus mus, Nulla consequat massa quis enim</li>\r\n<li>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus, Nulla consequat massa quis enim</li>\r\n<li>Consectetuer adipiscing elit. Aenean commodo ligula eget dolor</li>\r\n</ul>\r\n</div>\r\n</div>\r\n</article>\r\n<article class=\"count-block jumbotron\">\r\n<div class=\"container\">\r\n<div class=\"row\">\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">150</h3>\r\n<h6>COUNTRIES REACHED</h6>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">850</h3>\r\n<h6>COUNTRIES REACHED</h6>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">38300</h3>\r\n<h6>PASSED GRADUATES</h6>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">3400</h3>\r\n<h6>COURSES PUBLISHED</h6>\r\n</div>\r\n</div>\r\n</div>\r\n</article>\r\n<article class=\"about-features-block\">\r\n<div class=\"container\">\r\n<div class=\"row\">\r\n<div class=\"col-12 text-center seperator-head mt-3\">\r\n<h3>Why choose QCA</h3>\r\n<p class=\"mt-3\">Cum doctus civibus efficiantur in imperdiet deterruisset.</p>\r\n</div>\r\n</div>\r\n<div class=\"row mt-4 mb-5\">\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-file-signature\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Hi-Tech Learning</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-users-cog\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Course Discussion</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-shield-alt\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Website Security</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-chalkboard-teacher\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Qualified teachers</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-building\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Equiped class rooms</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-digital-tachograph\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Advanced teaching</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-puzzle-piece\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Adavanced study plans</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-bullseye\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Focus on target</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-thumbs-up\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Focus on success</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-tablet-alt\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Responsive Design</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-credit-card\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Payment Gateways</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-search-plus\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">SEO Friendly</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n</div>\r\n</div>\r\n</article>'),
 (7, 'pageContact', 'telephone', '+92 (302) 5959967'),
 (8, 'pageContact', 'email', 'qca@example.com'),
@@ -745,9 +868,9 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'reader', 'Student to learn course', '2023-07-12 23:56:24', '2023-07-12 23:56:24'),
-(2, 'incharge', 'Instructor to manage course', '2023-07-12 23:56:24', '2023-07-12 23:56:24'),
-(3, 'admin', 'Admin to manage the site', '2023-07-12 23:56:24', '2023-07-12 23:56:24');
+(1, 'reader', 'meter reading can put only', '2023-07-12 23:56:24', '2023-07-12 23:56:24'),
+(2, 'incharge', 'verify reading', '2023-07-12 23:56:24', '2023-07-12 23:56:24'),
+(3, 'admin', 'Admin Access of all application', '2023-07-12 23:56:24', '2023-07-12 23:56:24');
 
 -- --------------------------------------------------------
 
@@ -768,8 +891,59 @@ CREATE TABLE `role_user` (
 INSERT INTO `role_user` (`id`, `role_id`, `user_id`) VALUES
 (1, 3, 1),
 (4, 1, 2),
-(5, 2, 1),
-(6, 2, 1);
+(5, 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `slabs`
+--
+
+CREATE TABLE `slabs` (
+  `id` int(11) NOT NULL,
+  `sub_cat_id` int(11) NOT NULL,
+  `slab_start_unit` int(11) NOT NULL,
+  `slab_end_unit` int(11) NOT NULL,
+  `total_units` int(11) NOT NULL DEFAULT 0,
+  `charges` float NOT NULL,
+  `is_active` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `slabs`
+--
+
+INSERT INTO `slabs` (`id`, `sub_cat_id`, `slab_start_unit`, `slab_end_unit`, `total_units`, `charges`, `is_active`) VALUES
+(1, 1, 1, 50, 50, 3.95, 1),
+(2, 1, 51, 100, 50, 7.74, 1),
+(3, 2, 1, 100, 100, 7.74, 1),
+(4, 2, 101, 200, 100, 10.06, 1),
+(5, 3, 1, 100, 100, 16.48, 1),
+(6, 3, 101, 200, 100, 22.95, 1),
+(7, 3, 201, 300, 100, 27.95, 1),
+(8, 4, 1, 7000, 7000, 37.95, 1),
+(9, 3, 301, 400, 100, 35.24, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sub_category_charges`
+--
+
+CREATE TABLE `sub_category_charges` (
+  `scc_id` int(11) NOT NULL,
+  `sub_cat_id` int(11) NOT NULL,
+  `charges_id` int(11) NOT NULL,
+  `charges` float NOT NULL DEFAULT 0,
+  `is_active` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sub_category_charges`
+--
+
+INSERT INTO `sub_category_charges` (`scc_id`, `sub_cat_id`, `charges_id`, `charges`, `is_active`) VALUES
+(1, 1, 2, 2.1, 1);
 
 -- --------------------------------------------------------
 
@@ -791,8 +965,7 @@ CREATE TABLE `sub_divisions` (
 --
 
 INSERT INTO `sub_divisions` (`id`, `sub_division_code`, `name`, `description`, `is_active`, `division_id`) VALUES
-(8, 8, 'sub chitral', 'test', 1, 1),
-(9, 9, 'sub chitral2', 'test2', 1, 1);
+(1, 261, 'Sardhari', NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -844,8 +1017,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `email`, `password`, `is_active`, `remember_token`, `created_at`, `updated_at`, `reg_no`, `retrive_uniq_code`, `card_expire_at`) VALUES
-(1, 'Admin', 'admin@gmail.com', '$2a$12$lcNe9KsxRGEoKvU6vGDhdu5ZZeEhmMyttzqyx9urNxvEvh./39V/m', 1, NULL, '2023-07-12 23:56:24', '2023-07-12 23:56:24', NULL, NULL, NULL),
-(2, 'student', 'student1@gmail.com', '$2y$10$DbP06FE0rgJbAK2oMRYnBuHz0/n3Bsb7em0P3fRCLEqVQ5khQsmay', 1, NULL, '2023-09-01 05:32:55', '2023-09-01 05:32:55', NULL, NULL, NULL);
+(1, 'admin', 'admin@gmail.com', '$2a$12$lcNe9KsxRGEoKvU6vGDhdu5ZZeEhmMyttzqyx9urNxvEvh./39V/m', 1, NULL, '2023-07-12 23:56:24', '2023-07-12 23:56:24', NULL, NULL, NULL),
+(2, 'reader', 'reader@gmail.com', '$2a$12$lcNe9KsxRGEoKvU6vGDhdu5ZZeEhmMyttzqyx9urNxvEvh./39V/m', 1, NULL, '2023-09-01 05:32:55', '2023-09-01 05:32:55', NULL, NULL, NULL),
+(3, 'incharge', 'incharge@gmail.com', '$2a$12$lcNe9KsxRGEoKvU6vGDhdu5ZZeEhmMyttzqyx9urNxvEvh./39V/m', 1, NULL, '2023-09-01 05:32:55', '2023-09-01 05:32:55', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -891,15 +1065,27 @@ CREATE TABLE `withdraw_requests` (
 --
 
 --
--- Indexes for table `category_slab`
+-- Indexes for table `bill_generates`
 --
-ALTER TABLE `category_slab`
+ALTER TABLE `bill_generates`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `charges`
+--
+ALTER TABLE `charges`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `consumers`
 --
 ALTER TABLE `consumers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `consumer_bills`
+--
+ALTER TABLE `consumer_bills`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -940,6 +1126,12 @@ ALTER TABLE `feeders`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `general_taxs`
+--
+ALTER TABLE `general_taxs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `instruction_levels`
 --
 ALTER TABLE `instruction_levels`
@@ -968,6 +1160,12 @@ ALTER TABLE `master_categories`
 --
 ALTER TABLE `meters`
   ADD PRIMARY KEY (`meter_id`);
+
+--
+-- Indexes for table `meter_readings`
+--
+ALTER TABLE `meter_readings`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `migrations`
@@ -1067,6 +1265,18 @@ ALTER TABLE `role_user`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `slabs`
+--
+ALTER TABLE `slabs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sub_category_charges`
+--
+ALTER TABLE `sub_category_charges`
+  ADD PRIMARY KEY (`scc_id`);
+
+--
 -- Indexes for table `sub_divisions`
 --
 ALTER TABLE `sub_divisions`
@@ -1101,16 +1311,28 @@ ALTER TABLE `withdraw_requests`
 --
 
 --
--- AUTO_INCREMENT for table `category_slab`
+-- AUTO_INCREMENT for table `bill_generates`
 --
-ALTER TABLE `category_slab`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `bill_generates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `charges`
+--
+ALTER TABLE `charges`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `consumers`
 --
 ALTER TABLE `consumers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `consumer_bills`
+--
+ALTER TABLE `consumer_bills`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `consumer_categories`
@@ -1122,19 +1344,19 @@ ALTER TABLE `consumer_categories`
 -- AUTO_INCREMENT for table `consumer_meters`
 --
 ALTER TABLE `consumer_meters`
-  MODIFY `cm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `cm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `consumer_sub_categories`
 --
 ALTER TABLE `consumer_sub_categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `divisions`
 --
 ALTER TABLE `divisions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -1146,6 +1368,12 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `feeders`
 --
 ALTER TABLE `feeders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `general_taxs`
+--
+ALTER TABLE `general_taxs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
@@ -1176,7 +1404,13 @@ ALTER TABLE `master_categories`
 -- AUTO_INCREMENT for table `meters`
 --
 ALTER TABLE `meters`
-  MODIFY `meter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `meter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `meter_readings`
+--
+ALTER TABLE `meter_readings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -1245,10 +1479,22 @@ ALTER TABLE `role_user`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `slabs`
+--
+ALTER TABLE `slabs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `sub_category_charges`
+--
+ALTER TABLE `sub_category_charges`
+  MODIFY `scc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `sub_divisions`
 --
 ALTER TABLE `sub_divisions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `transactions`
@@ -1260,7 +1506,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user_balance`

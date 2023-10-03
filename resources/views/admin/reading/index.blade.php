@@ -67,7 +67,7 @@
                   @endif
                 </td>
                 <td>
-                  <a href="{{ url('meter-reading-form-edit/'.$i->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round" title="Edit" >
+                  <a href="{{ url('meter-reading-edit/'.$i->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round" title="Edit" >
                     <i class="icon wb-pencil" aria-hidden="true"></i>
                   </a>
 

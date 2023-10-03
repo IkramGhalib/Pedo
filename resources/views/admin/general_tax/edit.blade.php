@@ -4,7 +4,7 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
     <!-- <li class="breadcrumb-item"><a href="{{ route('admin.users') }}">Area</a></li> -->
-    <li class="breadcrumb-item active">General Tax</li>
+    <li class="breadcrumb-item active">Tax</li>
   </ol>
   <h1 class="page-title">Edit</h1>
 </div>
@@ -20,8 +20,8 @@
           <div class="row">
 
           <div class="form-group col-md-4">
-              <label class="form-control-label">Tax Name</label>
-              <input required type="text" value="{{ $record->tax_name }}" class="form-control" name="tax_name"
+              <label class="form-control-label">Name</label>
+              <input required type="text" value="{{ $record->tax_name }}" class="form-control" name="name"
                 placeholder=""/>
                 @if ($errors->has('tax_name'))
                     <label class="error" for="tax_name">{{ $errors->first('tax_name') }}</label>
@@ -29,8 +29,8 @@
             </div>
           
             <div class="form-group col-md-4">
-              <label class="form-control-label">Tax Percentage</label>
-              <input required type="text" value="{{ $record->tax_percentage }}" class="form-control" name="tax_percentage"
+              <label class="form-control-label">charges</label>
+              <input required type="text" value="{{ $record->tax_percentage }}" class="form-control" name="charges"
                 placeholder=""/>
                 @if ($errors->has('tax_percent'))
                     <label class="error" for="tax_percent">{{ $errors->first('tax_percent') }}</label>

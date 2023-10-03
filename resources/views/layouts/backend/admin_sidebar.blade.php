@@ -78,13 +78,19 @@
                 <li class="site-menu-item has-sub {{ request()->is('admin/configd/page-*') ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
                         <i class="site-menu-icon wb-file" aria-hidden="true"></i>
-                        <span class="site-menu-title">Taxes</span>
+                        <span class="site-menu-title">Charges</span>
                         <span class="site-menu-arrow"></span>
                     </a>
                     <ul class="site-menu-sub">
                         <li class="site-menu-item {{ request()->is('admin/config/page-home2') ? 'active' : '' }}">
                             <a href="{{ route('admin.general-tax.list') }}">
-                                <span class="site-menu-title">General </span>
+                                <span class="site-menu-title">Tax </span>
+                            </a>
+                        </li>
+
+                        <li class="site-menu-item {{ request()->is('admin/config/page-home2') ? 'active' : '' }}">
+                            <a href="{{ route('admin.charges.list') }}">
+                                <span class="site-menu-title">Other Charges </span>
                             </a>
                         </li>
                         <!-- <li class="site-menu-item {{ request()->is('admin/config/page-about1') ? 'active' : '' }}">
@@ -95,6 +101,8 @@
                         
                     </ul>
                 </li>
+
+                
 
                 <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
                     <a href="javascript:void(0)">

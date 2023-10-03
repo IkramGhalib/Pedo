@@ -8,12 +8,13 @@ use App\Models\User;
 // use App\Models\Category;
 use App\Models\Role;
 // use App\Models\Consumer;
-// use App\Models\ConsumerCategory;
+use App\Models\ConsumerSubCategory;
 // use App\Models\Division;
 // use App\Models\SubDivision;
 use App\Models\BillGenerate;
 use App\Models\ConsumerBill;
 use App\Models\Reading;
+use App\Models\ConsumerMeter;
 // use App\Models\Feeder;
 // use App\Models\Credit;
 // use App\Models\WithdrawRequest;
@@ -80,6 +81,69 @@ class BillGenerateController extends Controller
         // return view('admin.reading.form',compact('category','divisions','new_consumer_no','meters'));
         return view('admin.bill_generate.form');
     }
+    function find_consumer_category_slab_charges($record)
+    {
+        // $consumer_list=ConsumerSubCategory::where('is_active',1)->get();
+        // dd($record);
+    //    $current_all_cons_type= DB::table('consumer_meters')
+    //         ->select('consumers.consumer_category_id','consumer_categories.*')
+    //         ->join('consumers','consumers.id','=','consumer_meters.consumer_id')
+    //         ->join('consumer_categories','consumer_categories.id','=','consumers.consumer_category_id')
+    //         ->where('consumer_meters.ref_no',$record->ref_no)
+    //         ->first();
+
+            // $current_cons_type= ConsumerMeter::with('bConsumer','bConsumer.bConsumerCategory','bConsumer.bConsumerCategory.hMConSubCategory','bConsumer.bConsumerCategory.hMConSubCategory.hMSlabs')->
+            $current_cons_type= ConsumerMeter::with('bConsumer.bConsumerCategory.hMConSubCategory.hMSlabs')->
+            where('ref_no',$record->ref_no)
+            ->first();
+
+            $data=$current_cons_type->bConsumer->bConsumerCategory->hMConSubCategory;
+            $data_with_slab=$data->where('category_conditon_start','<=',$record->offpeak_units) ->where('category_conditon_end','>=',$record->offpeak_units)->first();
+            // dd($data_with_slab);
+            $new_data = array();
+            $units=$record->offpeak_units;
+            $slab_total_units=0;
+            // $start_unit=1;
+            $total_electricity_charges=0;
+            $previou_end_unit=0;
+            foreach ($data_with_slab->hMSlabs as $key => $value) {
+                if($key==0)
+                {
+                    $slab_total_units=$value->slab_end_unit;
+                    $previou_end_unit=$value->slab_end_unit;
+                    
+                }
+                else
+                {
+                    $slab_total_units=$value->slab_end_unit-$previou_end_unit;
+                    $previou_end_unit=$value->slab_end_unit;
+                }
+                    if( $units >= $slab_total_units)
+                    {
+                        $units=$units-$slab_total_units;
+                        $total_electricity_charges+=($slab_total_units*$value->charges);
+                        $new_data[]=['units'=>$slab_total_units,'charges'=>$value->charges];
+                    }
+                    else
+                    {
+                        $new_data[]=['units'=>$units,'charges'=>$value->charges];
+                        $total_electricity_charges+=($units*$value->charges);
+                        break;
+                    }
+            }
+            // dd($new_data);
+
+            $bill_data['total_electricity_charges']=$total_electricity_charges;
+            $bill_data['slab_wise_charges']=$new_data;
+
+            return $bill_data;
+
+            // if($current_cons_type->bConsumer->bConsumerCategory->flat_rate==1)
+            // {
+                
+            // }
+        // dd($consumer_list);
+    }
 
     public function save(Request $request)
     {
@@ -90,56 +154,63 @@ class BillGenerateController extends Controller
        $month_year=$request->month_year.'-01';
     //    pr($month_year);
         $reading_record=BillGenerate::where('month_year',$month_year)->first();
+        // pr($reading_record);
        if($reading_record)
        {
         return redirect()->back()->with(['error'=>'Record Already Exits']);
        }else
        {
+                
         // pr('testing');
                 $record=new BillGenerate();
-                $record->month_year=$month_year;
+                $record->month_year=$month_year.'-01';
                 $record->generated_by=Auth::id();
                 $record->save();
-                $reading=Reading::where('is_verified',1)->where('month',date('m',strtotime($month_year)))->where('year',date('Y',strtotime($month_year)))->get();
+                $reading=Reading::where('is_verified',1)->where('month_year',$month_year)->get();
+                // pr($reading);
                 foreach ($reading as $key => $value) {
+                    $finded_cateogry_slab_chareges=$this->find_consumer_category_slab_charges($value);
+                    $currnt_offpeak_unit=$value->offpeak_units;
+                    // pr($finded_cateogry_slab_chareges);
                     // $date = "2021-02-01";
-                    $newDate = date('Y-m-d', strtotime($month_year. ' -1 months'));
+                    // $newDate = date('Y-m-d', strtotime($month_year. ' -1 months'));
                     // date('Y-m',strtotime($month_year))
                     // $previous_reading_record=ConsumerBill::where('bill_month_year',date('Y-m',strtotime($newDate)))->first();
-                    $previous_reading_record=Reading::where('is_verified',1)->where('ref_no',$value->ref_no)->where('month',date('m',strtotime($newDate)))->where('year',date('Y',strtotime($newDate)))->first();
+                    // $previous_reading_record=Reading::where('is_verified',1)->where('ref_no',$value->ref_no)->where('month_year',$newDate)->first();
                     // pr($previous_reading_record);
-                    if($previous_reading_record)
-                     {
+                    // if($previous_reading_record)
+                    //  {
                        
-                        $currnt_offpeak_unit=$value->offpeak-$previous_reading_record->offpeak;
+                    //     $currnt_offpeak_unit=$value->offpeak-$previous_reading_record->offpeak;
+                    //     $reading_record=ConsumerBill::insert(
+                    //                                             [
+                    //                                                 'generate_bill_id'=>$record->id,
+                    //                                                 'reading_id'=>$value->id,
+                    //                                                 'ref_no'=>$value->ref_no,
+                    //                                                 'billing_month_year'=>$month_year,
+                    //                                                 'offpeak_units'=>$currnt_offpeak_unit,
+                    //                                                 'currentbill'=>0,
+                    //                                                 'net_bill'=>0,
+                    //                                             ]
+                    //                                         );
+                    //  } 
+                    //  else
+                    //  {
+                    //     $currnt_offpeak_unit=$value->offpeak;
                         $reading_record=ConsumerBill::insert(
                                                                 [
                                                                     'generate_bill_id'=>$record->id,
                                                                     'reading_id'=>$value->id,
                                                                     'ref_no'=>$value->ref_no,
                                                                     'billing_month_year'=>$month_year,
-                                                                    'offpeak_units'=>$currnt_offpeak_unit,
-                                                                    'currentbill'=>0,
-                                                                    'net_bill'=>0,
-                                                                ]
-                                                                );
-                     } 
-                     else
-                     {
-                        $currnt_offpeak_unit=$value->offpeak;
-                        $reading_record=ConsumerBill::insert(
-                                                                [
-                                                                    'generate_bill_id'=>$record->id,
-                                                                    'reading_id'=>$value->id,
-                                                                    'ref_no'=>$value->ref_no,
-                                                                    'billing_month_year'=>$month_year,
-                                                                    'offpeak_units'=>$currnt_offpeak_unit,
-                                                                    'currentbill'=>0,
+                                                                    'offpeak_units'=>$value->offpeak_units,
+                                                                    'currentbill'=>$finded_cateogry_slab_chareges['total_electricity_charges'],
+                                                                    'charges_breakup'=>json_encode($finded_cateogry_slab_chareges['slab_wise_charges']),
                                                                     'net_bill'=>0,
                                                                 ]
                                                             
                                                                 );
-                     }  
+                    //  }  
                     # code...
                 }
                 // pr($reading);

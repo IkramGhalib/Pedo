@@ -98,6 +98,7 @@ class ReadingController extends Controller
                 $record->ref_no=$request->ref_no;
                 $record->year=$mont_year_array[0];
                 $record->month=$mont_year_array[1];
+                $record->month_year=$request->month_year.'-01';
                 $record->offpeak=$request->offpeak;
                 $record->peak=$request->peak;
                 if($request->hasFile('peak_image'))
@@ -139,6 +140,7 @@ class ReadingController extends Controller
             // 'off_peak_image' =>Rule::when($request->offpeak != null, 'required'),
             // 'peak_image' =>Rule::when($request->peak != null, 'required')
         ]);
+        // pr($request->all());
         
        $mont_year_array=explode('-',$request->month_year);
         // $reading_record=Reading::where('ref_no',$request->ref_no)->where('year',$mont_year_array[0])->where('month',$mont_year_array[1])->first();
@@ -151,6 +153,7 @@ class ReadingController extends Controller
                 $record->ref_no=$request->ref_no;
                 $record->year=$mont_year_array[0];
                 $record->month=$mont_year_array[1];
+                $record->month_year=$request->month_year.'-01';
                 $record->offpeak=$request->offpeak;
                 $record->peak=$request->peak;
                 if($request->hasFile('peak_image'))
@@ -182,7 +185,22 @@ class ReadingController extends Controller
     public function reading_approve(Request $request)
     {
         
-        $record=Reading::where('id',$request->id)->update(['is_verified'=>1,'varifier'=>Auth::id()]);
+        $record=Reading::where('id',$request->id)->first();
+        $off_peak_units=0;
+        $peak_units=0;
+        $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($record->month_year.' -1 month' ))))->first();
+        if($pre_record)
+        {
+            $off_peak_units=abs($pre_record->offpeak-$record->offpeak );
+            $peak_units=abs($pre_record->peak-$record->peak );
+        }
+        else
+        {
+            $off_peak_units=abs($record->offpeak);
+            $peak_units=abs($record->peak);
+        }
+        
+        $record=Reading::where('id',$request->id)->update(['is_verified'=>1,'varifier'=>Auth::id(),'offpeak_units'=>$off_peak_units,'peak_units'=>$peak_units]);
         if($record)
         echo json_encode(['success'=>'true','message'=>'Action Completed']);
         else

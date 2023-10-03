@@ -13,6 +13,10 @@ class Consumer extends Model
     {
         return $this->hasMany(ConsumerMeter::class,'consumer_id','id');
     }
+    public function bConsumerCategory()
+    {
+        return $this->hasOne(ConsumerCategory::class,'id','consumer_category_id');
+    }
 
     
 }

@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\GeneralTaxController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\ReadingController;
 use App\Http\Controllers\Admin\BillGenerateController;
+use App\Http\Controllers\Admin\ChargesController;
 // use App\Http\Controllers\QuestionController;
 // use App\Http\Controllers\ResultController;
 // use App\Http\Controllers\TestController;
@@ -188,6 +189,19 @@ Route::group(['middleware' => 'auth'], function () {
          Route::post('admin/general-tax-store', [GeneralTaxController::class, 'store'])->name('admin.general-tax.store');
          Route::get('admin/general-tax-edit/{id}', [GeneralTaxController::class, 'edit'])->name('admin.general-tax.edit');
          Route::post('admin/general-tax-update/{id}', [GeneralTaxController::class, 'update'])->name('admin.general-tax.update');
+
+        // Charges list
+        //  Route::get('admin/charges-list', [ChargesController::class, 'index'])->name('admin.charges.list');
+        //  Route::get('admin/charges-form', [ChargesController::class, 'create'])->name('admin.charges.form');
+        //  Route::post('admin/charges-store', [ChargesController::class, 'store'])->name('admin.charges.store');
+        //  Route::get('admin/charges-edit/{id}', [ChargesController::class, 'edit'])->name('admin.charges.edit');
+        //  Route::post('admin/charges-update/{id}', [ChargesController::class, 'update'])->name('admin.charges.update');
+
+         Route::get('admin/charges-list', [ChargesController::class, 'index'])->name('admin.charges.list');
+         Route::get('admin/charges-form', [ChargesController::class, 'create'])->name('admin.charges.form');
+         Route::post('admin/charges-store', [ChargesController::class, 'store'])->name('admin.charges.store');
+         Route::get('admin/charges-edit/{id}', [ChargesController::class, 'edit'])->name('admin.charges.edit');
+         Route::post('admin/charges-update/{id}', [ChargesController::class, 'update'])->name('admin.charges.update');
 
         //  meter routes
 

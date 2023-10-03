@@ -14,4 +14,9 @@ class ConsumerMeter extends Model
     {
         return $this->hasOne(Meter::class,'meter_id','meter_id');
     }
+
+    public function bConsumer()
+    {
+        return $this->hasOne(Consumer::class,'id','consumer_id');
+    }
 }

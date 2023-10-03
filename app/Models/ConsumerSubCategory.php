@@ -13,5 +13,9 @@ class ConsumerSubCategory extends Model
 	{
 		return $this->belongsTo(ConsumerCategory::class,'consumer_category_id','id');
 	}
+    public function hMSlabs()
+    {
+        return $this->hasMany(Slab::class,'sub_cat_id','id');
+    }
     
 }
