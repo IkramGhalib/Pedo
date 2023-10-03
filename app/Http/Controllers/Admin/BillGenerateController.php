@@ -10,6 +10,8 @@ use App\Models\Role;
 // use App\Models\Consumer;
 use App\Models\ConsumerSubCategory;
 // use App\Models\Division;
+use App\Models\SubCategoryCharges;
+use App\Models\GeneralTax;
 // use App\Models\SubDivision;
 use App\Models\BillGenerate;
 use App\Models\ConsumerBill;
@@ -98,8 +100,20 @@ class BillGenerateController extends Controller
             ->first();
 
             $data=$current_cons_type->bConsumer->bConsumerCategory->hMConSubCategory;
+            // dd($data);
             $data_with_slab=$data->where('category_conditon_start','<=',$record->offpeak_units) ->where('category_conditon_end','>=',$record->offpeak_units)->first();
             // dd($data_with_slab);
+
+            $charges=SubCategoryCharges::with('bChargesType')->where('sub_cat_id',$data_with_slab->id)->get();
+            $charges_data=[];
+            if($charges)
+            {
+                foreach ($charges as $ky => $chgrow) {
+                    $charges_data[]=['charges'=>$chgrow->charges,'calculated_charges'=>$record->offpeak_units*$chgrow->charges,'charges_type'=>$chgrow->bChargesType->title];
+                }
+            }
+            // dd($charges_data);
+
             $new_data = array();
             $units=$record->offpeak_units;
             $slab_total_units=0;
@@ -135,6 +149,7 @@ class BillGenerateController extends Controller
 
             $bill_data['total_electricity_charges']=$total_electricity_charges;
             $bill_data['slab_wise_charges']=$new_data;
+            $bill_data['charges']=$charges_data;
 
             return $bill_data;
 
@@ -144,7 +159,26 @@ class BillGenerateController extends Controller
             // }
         // dd($consumer_list);
     }
+    public function find_taxes($row)
+    {
+        $g_tax=GeneralTax::where('is_active',1)->get();
+        $g_total_taxes=[];
+        foreach ($g_tax as $key => $value) {
+            $g_total_taxes[]=['tax_type'=>$value->tax_name,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$row->offpeak_units];
+        }
+        return $g_total_taxes;
 
+    }
+    // public function find_charges($row)
+    // {
+    //     $g_tax=GeneralTax::where('is_active',1)->get();
+    //     $g_total_taxes=[];
+    //     foreach ($g_tax as $key => $value) {
+    //         $g_total_taxes[]=['tax_type'=>$value->tax_name,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$row->offpeak_units];
+    //     }
+    //     return $g_total_taxes;
+
+    // }
     public function save(Request $request)
     {
         $request->validate([
@@ -170,6 +204,9 @@ class BillGenerateController extends Controller
                 // pr($reading);
                 foreach ($reading as $key => $value) {
                     $finded_cateogry_slab_chareges=$this->find_consumer_category_slab_charges($value);
+
+                    $finded_taxes=$this->find_taxes($value);
+                    // $finded_charges=$this->find_charges($value);
                     $currnt_offpeak_unit=$value->offpeak_units;
                     // pr($finded_cateogry_slab_chareges);
                     // $date = "2021-02-01";
@@ -205,7 +242,9 @@ class BillGenerateController extends Controller
                                                                     'billing_month_year'=>$month_year,
                                                                     'offpeak_units'=>$value->offpeak_units,
                                                                     'currentbill'=>$finded_cateogry_slab_chareges['total_electricity_charges'],
-                                                                    'charges_breakup'=>json_encode($finded_cateogry_slab_chareges['slab_wise_charges']),
+                                                                    'off_peak_bill_breakup'=>json_encode($finded_cateogry_slab_chareges['slab_wise_charges']),
+                                                                    'charges_breakup'=>json_encode($finded_cateogry_slab_chareges['charges']),
+                                                                    'taxes_breakup'=>json_encode($finded_taxes),
                                                                     'net_bill'=>0,
                                                                 ]
                                                             

@@ -5,7 +5,7 @@
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
     <li class="breadcrumb-item active">Charges </li>
   </ol>
-  <h1 class="page-title"> Other Charges List</h1>
+  <h1 class="page-title"> Charges Type List</h1>
 </div>
 
 <div class="page-content">
@@ -13,16 +13,16 @@
 <div class="panel">
         <div class="panel-heading">
             <div class="panel-title">
-              <a href="{{ route('admin.charges.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Add </a>
+              <a href="{{ route('admin.charges.type.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Add </a>
             </div>
           
           <div class="panel-actions">
-          <form method="GET" action="{{ route('admin.charges.list') }}">
+          <form method="GET" action="{{ route('admin.charges.type.list') }}">
               <div class="input-group">
                 <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ Request::input('search') }}">
                 <span class="input-group-btn">
                   <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Search"><i class="icon wb-search" aria-hidden="true"></i></button>
-                  <a href="{{ route('admin.charges.list') }}" class="btn btn-danger" data-toggle="tooltip" data-original-title="Clear Search"><i class="icon wb-close" aria-hidden="true"></i></a>
+                  <a href="{{ route('admin.charges.type.list') }}" class="btn btn-danger" data-toggle="tooltip" data-original-title="Clear Search"><i class="icon wb-close" aria-hidden="true"></i></a>
                 </span>
               </div>
           </form>
@@ -36,7 +36,7 @@
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Charges</th>
+                {{-- <th>Charges</th> --}}
                 <th> Status</th>
                 <th>Actions</th>
               </tr>
@@ -48,7 +48,6 @@
                  <!-- <td>{{-- $test->user->first_name --}}</td>  -->
                 <!-- <td>{{-- $test->course->course_title --}}</td> -->
                 <td>{{$row->title}}</td>
-                <td>{{$row->charges}} </td>
                 <td>
                   @if($row->is_active)
                   <span class="badge badge-success">Active</span>
@@ -57,7 +56,7 @@
                   @endif
                 </td>
                 <td>
-                  <a href="{{ route('admin.charges.edit',$row->id) }}" class="btn btn-sm btn-icon btn-inverse btn-round" data-toggle="tooltip" data-original-title="Edit">
+                  <a href="{{ route('admin.charges.type.edit',$row->id) }}" class="btn btn-sm btn-icon btn-inverse btn-round"  title="Edit">
                     <i class="icon wb-pencil" aria-hidden="true"></i>
                   </a>
                   

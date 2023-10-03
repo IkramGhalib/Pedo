@@ -19,16 +19,35 @@
          
           <div class="row">
 
-          <div class="form-group col-md-4">
-              <label class="form-control-label">Name / Title</label>
-              <input required type="text" value="{{ $record->title }}" class="form-control" name="title"
-                placeholder=""/>
-                @if ($errors->has('title'))
-                    <label class="error" for="title">{{ $errors->first('title') }}</label>
+            <div class="form-group col-md-3">
+              <label class="form-control-label">Charges Type</label>
+              <select name="charges_type" id="charges_type" class="form-control">
+                    <option value="">-- Type --</option>
+                    @foreach($charges as $c => $row)
+                    <option value="{{$row->id}}" @if($row->id==$record->charges_type_id) {{'selected'}} @endif>{{$row->title}}</option>
+                    @endforeach
+                  </select>
+                @if ($errors->has('charges_type'))
+                    <label class="error" for="charges_type">{{ $errors->first('charges_type') }}</label>
                 @endif
             </div>
+
+
+            <div class="form-group col-md-3">
+              <label class="form-control-label">Consumer  Type</label>
+              <select name="consumer_type" id="consumer_type" class="form-control">
+                    <option value="">-- Type --</option>
+                    @foreach($types as $t => $tr)
+                    <option value="{{$tr->id}}" @if($tr->id==$record->sub_cat_id) {{'selected'}} @endif>{{$tr->name}}</option>
+                    @endforeach
+                  </select>
+                @if ($errors->has('consumer_type'))
+                    <label class="error" for="consumer_type">{{ $errors->first('consumer_type') }}</label>
+                @endif
+            </div>
+
           
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label class="form-control-label">charges</label>
               <input required type="text" value="{{ $record->charges }}" class="form-control" name="charges"
                 placeholder=""/>
@@ -40,7 +59,7 @@
 
            
 
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-3">
             <label class="form-control-label">Status</label>
             <div>
               <div class="radio-custom radio-default radio-inline">

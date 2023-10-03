@@ -55,13 +55,10 @@
         $payable=$bill_data->currentbill;
         $cost_of_electricity=$bill_data->currentbill;
         
-        $payable_after_due_date=0;
-        $lp_surcharge=720;
+        $payable_after_due_date='';
         $previous_reading='';
         $current_reading=$bill_data->offpeak_units;
         $meter_connection_date=date('d M y',strtotime($bill_data->meter_connection_date));
-
-        $current_bill=0;
 
     ?>
 
@@ -467,68 +464,187 @@
                         <b>GOVT CHARGES</b>
                     </td>
                 </tr>
-                <tr style="border-bottom:1px solid gray;">
-                    <?php $pesco_total=0;?>
-                    <?php $gov_total=0;?>
-                    <td colspan="2" style="vertical-align: top;">
+                <tr>
+                    <td colspan="2">
                         <table width="100%">
                             <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">UNITS CONSUMED</td>
-                                <td class="border-rb nestedtdwidth content">{{$offpeak_units}} </td>
+                                <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">T1 td1</td>
+                                <td class="border-rb nestedtdwidth content">T1 td 2 </td>
                             </tr>
-
-                            <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">COST OF ELECTRICITY</td>
-                                <td class="border-rb nestedtdwidth content">{{$cost_of_electricity}} </td>
-                                <?php $pesco_total+=$cost_of_electricity ?>
-                            </tr>
-                            @foreach (json_decode($bill_data->charges_breakup) as $chbkey => $charges_b_row )
-                            <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">{{$charges_b_row->charges_type}}</td>
-                                <td class="border-rb nestedtdwidth content">{{$charges_b_row->calculated_charges}} </td>
-                            </tr>
-                            <?php $pesco_total+=$charges_b_row->calculated_charges; ?>
-                            @endforeach
-
-                            <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">TOTAL</td>
-                                <td class="border-rb nestedtdwidth content">{{$pesco_total}} </td>
-                            </tr>
-
-
                         </table>
                     </td>
-                    <td colspan="2" style="vertical-align: top;">
+                    <td colspan="2">
                         <table width="100%">
                             <tr class="fontsize" style="height: 24px;">
                                 <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">T1 td1</td>
                                 <td class="border-rb nestedtdwidth content">T1 td 2 </td>
                             </tr>
-                            @foreach (json_decode($bill_data->taxes_breakup) as $tbkey => $tb_row )
-                            <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">{{$tb_row->tax_type}}</td>
-                                <td class="border-rb nestedtdwidth content">{{$tb_row->calculated_tax}} </td>
-                            </tr>
-                            <?php $gov_total+=$tb_row->calculated_tax; ?>
-                            @endforeach
-                            <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">TOTAL</td>
-                                <td class="border-rb nestedtdwidth content">{{$gov_total}} </td>
-                            </tr>
-                            
                         </table>
                     </td>
                 </tr>
-                
-                
-                
-                
-               
-                
-                
-                
-                
-                
+                <tr class="fontsize" style="height: 24px;">
+                    <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">
+                        <b>UNITS CONSUMED</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        
+                        {{$offpeak_units}}
+                        <br>
+                        
+                    </td>
+                    <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">
+                        <b>ELECTRICITY DUTY</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        106
+                    </td>
+                </tr>
+                <tr class="fontsize" style="height: 24px;">
+                    <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">
+                        <b>COST OF ELECTRICITY</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        {{$cost_of_electricity}} 
+                        <br>
+                        
+                    </td>
+                    <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">
+                        <b>TV FEE</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        35
+                    </td>
+                </tr>
+                <tr class="fontsize" style="height: 24px;">
+                    <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">
+                        <b>METER RENT</b>
+                        <br>
+                        <b>Fix Charges</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        
+                        <br>
+                        
+                    </td>
+                    <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">
+                        <b>GST</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        1316
+                    </td>
+                </tr>
+                <tr class="fontsize" style="height: 24px;">
+                    <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">
+                        <b>SERVICE RENT</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        
+                    </td>
+                    <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">
+                        <b>INCOME TAX</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        
+                    </td>
+                </tr>
+                <tr style="height: 24px;" class="fontsize">
+                    <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF;">
+                        <b>FUEL PRICE ADJUSTMENT</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        392.65
+                    </td>
+                    <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">
+                        <b>EXTRA TAX</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        
+                    </td>
+                </tr>
+                <tr style="height: 24px;" class="fontsize">
+                    <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF;">
+                        <b>F.C SURCHARGE </b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        107.50
+                        <br>
+                        
+                    </td>
+                    <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">
+                        <b>FURTHER TAX</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        
+                        <br>
+                        
+                    </td>
+                </tr>
+                <tr style="height: 24px;" class="fontsize">
+                    <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF;">
+                        
+                        
+                        
+                        
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        
+                    </td>
+                    <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">
+                        
+                        
+
+                        
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        
+                        
+                    </td>
+                </tr>
+                <tr style="height: 24px;" class="fontsize">
+                    <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF;">
+                        
+                        <div> <b>QTR TARRIF ADJ/DMC</b> </div>
+                        
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        
+                        <div id="aqtaCrValue">312.23 </div>
+                        
+                    </td>
+
+                    <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">
+                        <b>RETAILER STAX</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        
+                    </td>
+                </tr>
+                <tr class="fontsize" style="height: 24px;">
+
+                    <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">
+                        <b>TOTAL</b>
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        7597.38
+                    </td>
+                    <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2">
+
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+
+                    </td>
+                </tr>
+                <tr class="fontsize" style="height: 24px;">
+                    <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF"></td>
+                    <td class="border-rb nestedtdwidth content"></td>
+                    <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2">
+                        
+                    </td>
+                    <td class="border-rb nestedtdwidth content">
+                        
+                           
+                    </td>
+                </tr>
                 <tr class="fontsize" style="height: 24px;">
                     <td class="border-r" colspan="2">
                         <h3>BILL CALCULATION</h3>
@@ -720,11 +836,7 @@
                         <b>CURRENT BILL</b>
                     </td>
                     <td colspan="3" class="border-b  nestedtd2width content">
-                       <?php  $current_bill=(int)($pesco_total+$gov_total);
-                                $payable=$current_bill;
-                                $payable_after_due_date=$payable+$lp_surcharge;
-                                echo $current_bill; 
-                       ?>
+                        8662
                     </td>
                 </tr>
                 <tr class="fontsize" style="height: 24px;">
@@ -783,7 +895,7 @@
                     <td colspan="3" class="border-b  nestedtd2width content">
                         
                         <div>
-                            0
+                            470
                         </div>
                         <div hidden="">
                             
@@ -801,7 +913,7 @@
                         <b>PAYABLE WITHIN DUE DATE</b>
                     </td>
                     <td colspan="3" class="border-b nestedtd2width content">
-                        {{$payable}}
+                        9132
                         
                         <br>
                         <span></span>
@@ -812,7 +924,7 @@
                         <b>L.P.SURCHARGE</b>
                     </td>
                     <td colspan="3" class="border-b  nestedtd2width content">
-                       {{$lp_surcharge}}
+                        720
                     </td>
                 </tr>
                 <tr class="fontsize" style="height: 24px;">
@@ -820,7 +932,7 @@
                         <b>PAYABLE AFTER DUE DATE</b>
                     </td>
                     <td colspan="3" class="border-b  nestedtd2width content">
-                        {{$payable_after_due_date}}
+                        9852
                         
                         <br>
                         <span> </span>
@@ -988,7 +1100,7 @@
                             <h4>PAYABLE WITHIN DUE DATE</h4>
                         </td>
                         <td class="border-b border-t border-r content" style="width: 20%;">
-                            {{$payable}}
+                            9132
                             
                             <br>
                             <span></span>
@@ -1010,7 +1122,7 @@
                             <h4>PAYABLE AFTER DUE DATE</h4>
                         </td>
                         <td class="font-size border-rb border-r content" style="width: 15%;">
-                            {{$payable_after_due_date}}
+                            9852
                             
                             <br>
                             <span></span>

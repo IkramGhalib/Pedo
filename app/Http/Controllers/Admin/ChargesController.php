@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 // use App\Models\GeneralTax;
-use App\Models\Charges;
-use App\Models\ConsumerCategory;
+use App\Models\ChargesType;
+use App\Models\ConsumerSubCategory;
 use App\Models\SubCategoryCharges;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,24 +19,24 @@ class ChargesController extends Controller
         $paginate_count = 10;
         if($request->has('search')){
             $search = $request->input('search');
-            $list = Charges::where('title', 'LIKE', '%' . $search . '%')
+            $list = SubCategoryCharges::where('title', 'LIKE', '%' . $search . '%')
                            ->paginate($paginate_count);
         }
         else {
-            $list = Charges::paginate($paginate_count);
+            $list = SubCategoryCharges::with('bChargesType','bConSubCat')->paginate($paginate_count);
 
         }
-        // pr($list);
+        // dd($list);
 
 
         // $test=Test::all();
-        return view('admin.charges.index',compact('list'));
+        return view('admin.sub_category_charges.index',compact('list'));
     }
     public function create()
     {
-        $charges=Charges::where('is_active',1)->get();
-        $types=ConsumerCategory::where('is_active',1)->get();
-        return view('admin.charges.create',compact('charges','types'));
+        $charges=ChargesType::where('is_active',1)->get();
+        $types=ConsumerSubCategory::where('is_active',1)->get();
+        return view('admin.sub_category_charges.create',compact('charges','types'));
     }
 
     public function store(Request $request)
@@ -49,20 +49,20 @@ class ChargesController extends Controller
             'status' => 'required',
            
         ]);    
-        $record=SubCategoryCharges::where('charges_id',$request->charges_type)->where('sub_cat_id',$request->consumer_type)->first();
+        $record=SubCategoryCharges::where('charges_type_id',$request->charges_type)->where('sub_cat_id',$request->consumer_type)->first();
         
         if($record)
         {
             $record=SubCategoryCharges::where('scc_id ',$record->scc_id )->update(['is_active'=>$request->status,
-                'charges_id'=>$request->charges_type,'sub_cat_id'=>$request->consumer_type,'charges'=>$request->charges]);
-
+                'charges_type_id'=>$request->charges_type,'sub_cat_id'=>$request->consumer_type,'charges'=>$request->charges]);
+                return $this->return_output('flash', 'success', 'successfully Updated', 'admin/charges-list', '200');
         }
         else
         {
 
             $record=new SubCategoryCharges();
             $record->is_active=$request->status;
-            $record->charges_id=$request->charges_type;
+            $record->charges_type_id=$request->charges_type;
             $record->sub_cat_id=$request->consumer_type;
             $record->charges=$request->charges;
             // dd($test);
@@ -74,18 +74,21 @@ class ChargesController extends Controller
 // edit function
     public function edit($id)
     {
-        $record=Charges::find($id);
+        $charges=ChargesType::where('is_active',1)->get();
+        $types=ConsumerSubCategory::where('is_active',1)->get();
+
+        $record=SubCategoryCharges::find($id);
         // $courses = Course::all();
-        return view('admin.charges.edit',compact('record'));
+        return view('admin.sub_category_charges.edit',compact('record','charges','types'));
     }
 
     public function update($id,Request $request)
     {
-        $record=Charges::find($id);
-        $record->charges=$request->charges;
-        $record->title=$request->title;
-       
+        $record=SubCategoryCharges::find($id);
         $record->is_active=$request->status;
+        $record->charges_type_id=$request->charges_type;
+        $record->sub_cat_id=$request->consumer_type;
+        $record->charges=$request->charges;
         // dd($test);
         $record->save();
         return $this->return_output('flash', 'success', 'successfully updated', 'admin/charges-list', '200');

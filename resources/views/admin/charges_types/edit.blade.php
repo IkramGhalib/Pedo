@@ -4,7 +4,7 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
     <!-- <li class="breadcrumb-item"><a href="{{ route('admin.users') }}">Area</a></li> -->
-    <li class="breadcrumb-item active">Tax</li>
+    <li class="breadcrumb-item active">Charges Type</li>
   </ol>
   <h1 class="page-title">Edit</h1>
 </div>
@@ -14,7 +14,7 @@
 
     <div class="panel">
       <div class="panel-body">
-        <form method="POST" action="{{ route('admin.charges.update',$record->id) }}" id="userForm">
+        <form method="POST" action="{{ route('admin.charges.type.update',$record->id) }}" id="userForm">
           {{ csrf_field() }}
          
           <div class="row">
@@ -25,15 +25,6 @@
                 placeholder=""/>
                 @if ($errors->has('title'))
                     <label class="error" for="title">{{ $errors->first('title') }}</label>
-                @endif
-            </div>
-          
-            <div class="form-group col-md-4">
-              <label class="form-control-label">charges</label>
-              <input required type="text" value="{{ $record->charges }}" class="form-control" name="charges"
-                placeholder=""/>
-                @if ($errors->has('charges'))
-                    <label class="error" for="charges">{{ $errors->first('charges') }}</label>
                 @endif
             </div>
 

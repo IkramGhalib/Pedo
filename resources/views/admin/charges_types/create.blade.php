@@ -4,7 +4,7 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="#">Charges</a></li>
-    <li class="breadcrumb-item active">Other Charges</li>
+    <li class="breadcrumb-item active"> Charges Types</li>
   </ol>
   <h1 class="page-title">Add </h1>
 </div>
@@ -14,7 +14,7 @@
 
     <div class="panel">
       <div class="panel-body">
-        <form method="POST" action="{{ route('admin.charges.store') }}" id="userForm">
+        <form method="POST" action="{{ route('admin.charges.type.store') }}" id="userForm">
           {{ csrf_field() }}
           {{-- <input type="hidden" name="user_id" value="{{ $user->id }}"> --}}
           <div class="row">
@@ -37,36 +37,6 @@
                     <label class="error" for="charges">{{ $errors->first('charges') }}</label>
                 @endif
             </div> -->
-            
-
-            <div class="form-group col-md-4">
-              <label class="form-control-label">Charges Type</label>
-              <select name="type" id="charges_type" class="form-control">
-                    <option value="">-- Type --</option>
-                    @foreach($charges as $c => $row)
-                    <option value="{{$row->id}}">{{$row->title}}</option>
-                    @endforeach
-                  </select>
-                @if ($errors->has('charges_type'))
-                    <label class="error" for="charges_type">{{ $errors->first('charges_type') }}</label>
-                @endif
-            </div>
-
-
-            <div class="form-group col-md-4">
-              <label class="form-control-label">Consumer  Type</label>
-              <select name="type" id="consumer_type" class="form-control">
-                    <option value="">-- Type --</option>
-                    @foreach($types as $t => $tr)
-                    <option value="{{$tr->id}}">{{$tr->name}}</option>
-                    @endforeach
-                  </select>
-                @if ($errors->has('consumer_type'))
-                    <label class="error" for="consumer_type">{{ $errors->first('consumer_type') }}</label>
-                @endif
-            </div>
-
-
           <div class="form-group col-md-4">
             <label class="form-control-label">Status</label>
             <div>

@@ -9,10 +9,14 @@ class SubCategoryCharges extends Model
     public $timestamps = false;
     protected $guarded = array();
 
-    // public function consumerCategory()
-	// {
-	// 	return $this->belongsTo(ConsumerCategory::class,'consumer_category_id','id');
-	// }
+    public function bChargesType()
+	{
+		return $this->belongsTo(ChargesType::class,'charges_type_id','id');
+	}
+    public function bConSubCat()
+	{
+		return $this->belongsTo(ConsumerSubCategory::class,'sub_cat_id','id');
+	}
     // public function hMSlabs()
     // {
     //     return $this->hasMany(Slab::class,'sub_cat_id','id');
