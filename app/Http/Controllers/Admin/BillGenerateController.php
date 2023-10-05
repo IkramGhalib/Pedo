@@ -183,9 +183,11 @@ class BillGenerateController extends Controller
     {
         $request->validate([
             'month_year' => 'required',
+            'due_date' => 'required',
         ]);
     //    $mont_year_array=explode($request->month_year);
        $month_year=$request->month_year.'-01';
+    //    $month_year=$request->due_date;
     //    pr($month_year);
         $reading_record=BillGenerate::where('month_year',$month_year)->first();
         // pr($reading_record);
@@ -198,6 +200,7 @@ class BillGenerateController extends Controller
         // pr('testing');
                 $record=new BillGenerate();
                 $record->month_year=$month_year.'-01';
+                $record->due_date=$request->due_date;
                 $record->generated_by=Auth::id();
                 $record->save();
                 $reading=Reading::where('is_verified',1)->where('month_year',$month_year)->get();

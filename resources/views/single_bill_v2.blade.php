@@ -49,8 +49,10 @@
         $billing_month_year=date('M Y',strtotime($bill_data->billing_month_year));
         $ref_no=$bill_data->ref_no;
         $bill_no=$bill_data->bill_id;
-        $due_date=date('d M y');
-        $issue_date=date('d M y');
+        // $due_date=date('d M y');
+        $due_date=date('d M y',strtotime($bill_data->due_date));
+        $issue_date=date('d M y',strtotime($bill_data->bill_generate_date));
+        // $issue_date=date('d M y');
 
         $payable=$bill_data->currentbill;
         $cost_of_electricity=$bill_data->currentbill;
@@ -342,8 +344,8 @@
                     </tbody></table>
                 </td>
 
-                <td style="float: right; width: 300pt; height: 243pt">
-                    <table style="height: 248pt" class="nested6 ">
+                <td style="float: right; width: 300pt; height: 200pt">
+                    <table style="height: 200pt" class="nested6 ">
                         <tbody><tr style="margin-top: -1px; height: 25px">
                             <td class="border-b " style="width: 25%;">
                                 <h4>MONTH</h4>
@@ -362,94 +364,79 @@
                       
                         <tr style="height: 17px" class="content">
                             <td class="border-r">
-                                Mar23
+                               
                             </td>
                             <td class="border-r">
                                   
-                                29
+                               
                             </td>
                             <td class="border-r">
-                                2488
+                               
                             </td>
                             <td>
-                                2488
+                               
                             </td>
                         </tr>
                         <tr style="height: 17px" class="content">
                             <td class="border-r">
-                                Apr23
+                                
                             </td>
                             <td class="border-r">
                                   
-                                91
+                                
                             </td>
                             <td class="border-r">
-                                1027
+                                
                             </td>
                             <td>
-                                1027
+                               
                             </td>
                         </tr>
                         <tr style="height: 17px" class="content">
                             <td class="border-r">
-                                May23
+                               
                             </td>
                             <td class="border-r">
                                   
-                                80
+                               
                             </td>
                             <td class="border-r">
-                                1506
+                               
                             </td>
                             <td>
-                                1506
+                                
                             </td>
                         </tr>
                         <tr style="height: 17px" class="content">
                             <td class="border-r">
-                                Jun23
+                                
                             </td>
                             <td class="border-r">
                                   
-                                202
+                                
                             </td>
                             <td class="border-r">
-                                5924
+                                
                             </td>
                             <td>
-                                5924
+                                
                             </td>
                         </tr>
                         <tr style="height: 17px" class="content">
                             <td class="border-r">
-                                Jul23
-                            </td>
+                                
                             <td class="border-r">
                                   
-                                161
+                                
                             </td>
                             <td class="border-r">
-                                4247
+                               
                             </td>
                             <td>
-                                4247
+                                
                             </td>
                         </tr>
-                        <tr style="height: 17px" class="content">
-                            <td class="border-r">
-                                Aug23
-                            </td>
-                            <td class="border-r">
-                                  
-                                357
-                            </td>
-                            <td class="border-r">
-                                16430
-                            </td>
-                            <td>
-                                16430
-                            </td>
-                        </tr>
+                        
                     </tbody></table>
                 </td>
             </tr>
@@ -500,10 +487,10 @@
                     </td>
                     <td colspan="2" style="vertical-align: top;">
                         <table width="100%">
-                            <tr class="fontsize" style="height: 24px;">
+                            <!-- <tr class="fontsize" style="height: 24px;">
                                 <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">T1 td1</td>
                                 <td class="border-rb nestedtdwidth content">T1 td 2 </td>
-                            </tr>
+                            </tr> -->
                             @foreach (json_decode($bill_data->taxes_breakup) as $tbkey => $tb_row )
                             <tr class="fontsize" style="height: 24px;">
                                 <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">{{$tb_row->tax_type}}</td>
@@ -621,12 +608,12 @@
                             </tr>
                             <tr>
                                 <td><b>Import(kWh) : </b></td>
-                                <td>250</td>
+                                <td>0</td>
                                 <td>0 </td>
                             </tr>
                             <tr>
                                 <td><b>Net(kWh) : </b></td>
-                                <td>250</td>
+                                <td>0</td>
                                 <td>0 </td>
                             </tr>
                         </tbody></table>
@@ -640,7 +627,7 @@
                             </tr>
                             <tr>
                                 <td><b>Month Count = </b></td>
-                                <td>3/3 / 3</td>
+                                <td>0/0 / 0</td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -832,7 +819,7 @@
                             <tbody><tr>
                             <td id="idmtr1img" style="height: 142px;">
                                     
-                                    <img id="mtr1img" src="http://snaps.pitc.com.pk/26000/26100/26140/202309-08/202309082614203919041E.jpg" style="height:100%;width:95%;">
+                                    <!-- <img id="mtr1img" src="http://snaps.pitc.com.pk/26000/26100/26140/202309-08/202309082614203919041E.jpg" style="height:100%;width:95%;"> -->
                                 </td>
 
                                 

@@ -29,6 +29,15 @@
                 @endif
             </div>
 
+            <div class="form-group col-md-4">
+              <label class="form-control-label"> Due Date</label>
+              <input required type="date" class="form-control" name="dute_date" value="{{old('dute_date')}}"
+                />
+                @if ($errors->has('dute_date'))
+                    <label class="error" for="dute_date">{{ $errors->first('dute_date') }}</label>
+                @endif
+            </div>
+
           </div>
 
           <!-- <hr> -->
