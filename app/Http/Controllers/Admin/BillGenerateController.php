@@ -185,6 +185,7 @@ class BillGenerateController extends Controller
             'month_year' => 'required',
             'due_date' => 'required',
         ]);
+        // dd('testing');
     //    $mont_year_array=explode($request->month_year);
        $month_year=$request->month_year.'-01';
     //    $month_year=$request->due_date;
