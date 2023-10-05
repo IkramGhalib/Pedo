@@ -126,8 +126,8 @@
                 <ul>
                     <li class="mb-1"><b>Quick Links</b></li>
                     <li><a href="{{ route('home') }}">Home Page</a></li>
-                    <li><a href="">Courses List</a></li>
-                    <li><a href="">Instructors List</a></li>
+                    <!-- <li><a href="">Courses List</a></li> -->
+                    <!-- <li><a href="">Instructors List</a></li> -->
                     <li><a href="{{ route('blogs') }}">Blogs List</a></li>
                 </ul>
             </div>
@@ -136,7 +136,7 @@
                     <li class="mb-1"><b>Resources</b></li>
                     <li><a href="{{ route('page.about') }}">About Us</a></li>
                     <li><a href="{{ route('page.contact') }}">Contact Us</a></li>
-                    <li><a href="{{ route('register') }}">Register Page</a></li>
+                    <!-- <li><a href="{{ route('register') }}">Register Page</a></li> -->
                     <li><a href="{{ route('login') }}">Login Page</a></li>
                 </ul>
             </div>

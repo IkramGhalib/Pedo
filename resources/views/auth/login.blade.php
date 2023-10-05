@@ -8,7 +8,7 @@
             <nav class="navbar clearfix secondary-nav pt-0 pb-0 login-page-seperator">
                 <ul class="list mt-0">
                      <li><a href="{{ route('login') }}" class="active">Login</a></li>
-                     <li><a href="{{ route('register') }}">Register</a></li>
+                     <!-- <li><a href="{{ route('register') }}">Register</a></li> -->
                 </ul>
             </nav>
 
