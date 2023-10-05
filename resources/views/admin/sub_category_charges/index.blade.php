@@ -35,7 +35,8 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>
+                <th>Charges Type</th>
+                <th>Consumer Type</th>
                 <th>Charges</th>
                 <th> Status</th>
                 <th>Actions</th>
@@ -47,7 +48,8 @@
                 <td>{{ $key+1 }}</td>
                  <!-- <td>{{-- $test->user->first_name --}}</td>  -->
                 <!-- <td>{{-- $test->course->course_title --}}</td> -->
-                <td>{{$row->title}}</td>
+                <td>{{$row->bChargesType->title}}</td>
+                <td>{{$row->bConSubCat->name}}</td>
                 <td>{{$row->charges}} </td>
                 <td>
                   @if($row->is_active)
@@ -57,7 +59,7 @@
                   @endif
                 </td>
                 <td>
-                  <a href="{{ route('admin.charges.edit',$row->id) }}" class="btn btn-sm btn-icon btn-inverse btn-round" data-toggle="tooltip" data-original-title="Edit">
+                  <a href="{{ route('admin.charges.edit',$row->id) }}" class="btn btn-sm btn-icon btn-inverse btn-round" title="Edit">
                     <i class="icon wb-pencil" aria-hidden="true"></i>
                   </a>
                   

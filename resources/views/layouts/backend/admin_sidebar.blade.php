@@ -87,12 +87,19 @@
                                 <span class="site-menu-title">Tax </span>
                             </a>
                         </li>
+                        <li class="site-menu-item {{ request()->is('admin/config/page-home2') ? 'active' : '' }}">
+                            <a href="{{ route('admin.charges.type.list') }}">
+                                <span class="site-menu-title">Charges Types </span>
+                            </a>
+                        </li>
 
                         <li class="site-menu-item {{ request()->is('admin/config/page-home2') ? 'active' : '' }}">
                             <a href="{{ route('admin.charges.list') }}">
-                                <span class="site-menu-title">Other Charges </span>
+                                <span class="site-menu-title">Charges </span>
                             </a>
                         </li>
+
+                        
                         <!-- <li class="site-menu-item {{ request()->is('admin/config/page-about1') ? 'active' : '' }}">
                             <a href="{{ route('admin.pageAbout') }}">
                                 <span class="site-menu-title">Special </span>
