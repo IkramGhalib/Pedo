@@ -128,7 +128,7 @@
 
                             <tr>
                                 <td> Due Date</td> 
-                                <td> 	07 SEP 23</td> 
+                                <td> 	{{date('d M y',strtotime($bill->due_date))}}</td> 
                             </tr>
 
                             <tr>
