@@ -235,6 +235,29 @@
                     </ul>
                 </li>
 
+                <li class="site-menu-item has-sub {{ request()->is('admin/report/*') ? 'active open' : '' }}">
+                    <a href="javascript:void(0)">
+                        <i class="site-menu-icon fas fa-cogs" aria-hidden="true"></i>
+                        <span class="site-menu-title">Reports</span>
+                        <span class="site-menu-arrow"></span>
+                    </a>
+                    <ul class="site-menu-sub">
+                        <li class="site-menu-item {{ request()->is('admin/report/reading_report_form') ? 'active' : '' }}">
+                            <a href="{{ route('admin.report.reading.form') }}">  
+                                <span class="site-menu-title">Reading</span>
+                            </a>
+                        </li>
+
+                        <li class="site-menu-item {{ request()->is('admin/report/bill_report_form') ? 'active' : '' }}">
+                            <a href="{{ route('admin.report.bill.form') }}">  
+                                <span class="site-menu-title">Bills</span>
+                            </a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
             </ul>
 
 

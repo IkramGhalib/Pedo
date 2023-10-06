@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\ReadingController;
 use App\Http\Controllers\Admin\BillGenerateController;
 use App\Http\Controllers\Admin\ChargesController;
 use App\Http\Controllers\Admin\ChargesTypeController;
+use App\Http\Controllers\Admin\ReportController;
 // use App\Http\Controllers\QuestionController;
 // use App\Http\Controllers\ResultController;
 // use App\Http\Controllers\TestController;
@@ -336,7 +337,11 @@ Route::group(['middleware' => 'auth'], function () {
         // Route::get('admin/invoice-form-edit/{id}', [InvoiceController::class, 'admin_invoice_edit'])->name('admin.invoice.edit');
         // Route::post('admin/invoice-form-update/{id}', [InvoiceController::class, 'admin_invoice_update'])->name('admin.invoice.update');
 
-      
+        Route::get('admin/report/reading_report_form', [ReportController::class, 'reading_report_form'])->name('admin.report.reading.form');
+        Route::post('admin/report/reading_report_process', [ReportController::class, 'reading_report_process'])->name('admin.report.reading.process');
+
+        Route::get('admin/report/bill_report_form', [ReportController::class, 'bill_report_form'])->name('admin.report.bill.form');
+        Route::post('admin/report/bill_report_process', [ReportController::class, 'bill_report_process'])->name('admin.report.bill.process');
 
 });
 

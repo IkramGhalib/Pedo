@@ -125,3 +125,9 @@ function prs()
     echo "</pre>";
     die;
 }
+
+
+function app_month_format($date)
+{
+    return date('F Y',strtotime($date));
+}
