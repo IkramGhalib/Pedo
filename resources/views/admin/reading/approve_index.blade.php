@@ -14,7 +14,7 @@
         <div class="panel-heading">
             <div class="panel-title">
               &nbsp;
-              <!-- <a href="{{ route('reading.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Add  </a> -->
+              <a href="{{ route('reading.approve.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Add  Approval</a>
             </div>
           
           <div class="panel-actions">
@@ -37,14 +37,14 @@
               <tr>
                 <th>#</th>
                
-                <th> Ref #</th>
+                <!-- <th> Ref #</th> -->
                 <th>Month-Year</th>
-                <th>Peak R</th>
-                <th>Offpeak R</th>
+                <!-- <th>Peak R</th> -->
+                <!-- <th>Offpeak R</th> -->
                
                 <th>Verified</th>
 
-                <th>Actions</th>
+                <!-- <th>Actions</th> -->
                 
 
               </tr>
@@ -53,10 +53,7 @@
               @foreach($list as $key=>$i)
               <tr>
                 <td>{{ $key+1}}</td>
-                <td>{{ $i->ref_no}}</td>
-                <td>{{ $i->month.'-'.$i->year }} </td>
-                <td>{{ $i->peak}}</td>
-                <td>{{ $i->offpeak}}</td>
+                <td>{{ app_month_format($i->month_year) }} </td>
               
                 
 
@@ -68,11 +65,12 @@
                   @endif
                 </td>
                 <td>
-
+                  @if($i->is_verified !=1)
                   <a href="#" class="btn btn-xs btn-icon btn-inverse btn-round approve_button" id="row{{$i->id}}" data-record-id="{{$i->id}}" title="approve"  >
                     <i class="icon wb-pencil"></i>
                     approve
                   </a>
+                  @endif
                 </td>
               </tr>
               @endforeach
@@ -89,7 +87,7 @@
       </div>
       <!-- End Panel Basic -->
 </div>
-<div class="modal fade" id="formModal" aria-hidden="true">
+<!-- <div class="modal fade" id="formModal" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -113,12 +111,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 @endsection
 
 
 @section('javascript')
-<script>
+<!-- <script>
   $(document).ready(function(){
     $('').click(function(){
 
@@ -127,16 +125,11 @@
 
 
     jQuery(document).ready(function($){
-    //----- Open model CREATE -----//
     jQuery('.approve_button').click(function () {
-        // jQuery('#btn-save').val("add");
-        // jQuery('#myForm').trigger("reset");
         jQuery('#formModal').modal('show');
        var record_id= $(this).data('record-id');
        var record_id= $('#record_id').val(record_id);
-      // console.log(record_id);
     });
-    // CREATE
     $("#btn-save").click(function (e) {
         $.ajaxSetup({
             headers: {
@@ -147,10 +140,7 @@
         var id=jQuery('#record_id').val();
         var formData = {
             id: id,
-            // description: jQuery('#description').val(),
         };
-        // var state = jQuery('#btn-save').val();
-        // var type = "POST";
        
        
         $.ajax({
@@ -175,5 +165,5 @@
         });
     });
 });
-</script>
+</script> -->
 @endsection

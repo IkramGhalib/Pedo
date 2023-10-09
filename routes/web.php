@@ -259,6 +259,7 @@ Route::group(['middleware' => 'auth'], function () {
         
 
         Route::get('meter-reading-approve-lists', [ReadingController::class, 'reading_approve_show'])->name('reading.approve.lists');
+        Route::get('meter-reading-approve-form', [ReadingController::class, 'reading_approve_form'])->name('reading.approve.form');
         // Route::get('meter-reading-approve-form', [ReadingController::class, 'reading_approve_form'])->name('reading.approve.form');
         // Route::post('meter-reading-approve-form', [ReadingController::class, 'reading_approve_save'])->name('reading.save');
         // Route::get('meter-reading-approve-form-edit/{id}', [ReadingController::class, 'reading_approve_edit'])->name('reading.edit');
