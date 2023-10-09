@@ -13,7 +13,7 @@
 <div class="panel">
         <div class="panel-heading">
             <div class="panel-title">
-              <a href="{{ route('bill.generate.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Generate  </a>
+              <a href="{{ route('bill.generate.form') }}" class="btn btn-success btn-sm show-confirmation"><i class="icon wb-plus" aria-hidden="true"></i> Generate  </a>
             </div>
           
           <div class="panel-actions">

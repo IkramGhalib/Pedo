@@ -314,6 +314,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('admin/config/setting-general', [ConfigController::class, 'settingGeneral'])->name('admin.settingGeneral');
         Route::get('admin/config/setting-payment', [ConfigController::class, 'settingPayment'])->name('admin.settingPayment');
+        Route::get('admin/config/setting-charge', [ConfigController::class, 'settingCharge'])->name('admin.settingCharge');
         //category
         
         Route::get('admin/config/setting-category', [ConfigController::class, 'categoryIndex'])->name('admin.categoryIndex');
@@ -343,6 +344,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('admin/report/bill_report_form', [ReportController::class, 'bill_report_form'])->name('admin.report.bill.form');
         Route::post('admin/report/bill_report_process', [ReportController::class, 'bill_report_process'])->name('admin.report.bill.process');
+
+        Route::get('admin/report/consumer_report_form', [ReportController::class, 'consumer_report_form'])->name('admin.report.consumer.form');
+        Route::post('admin/report/consumer_report_process', [ReportController::class, 'consumer_report_process'])->name('admin.report.consumer.process');
 
 });
 

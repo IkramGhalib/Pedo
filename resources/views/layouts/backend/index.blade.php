@@ -236,6 +236,29 @@
             });
         });
 
+
+         $('.show-confirmation').click(function(event)
+        {
+            var url = $(this).attr('href');
+            event.preventDefault();
+            alertify.confirm('Are you sure to do this Action  ?', function () {
+                window.location.href = url;
+            }, function () {    
+                return true;
+            });
+        });
+
+         $('.show-confirmation-form').click(function(event)
+        {
+            event.preventDefault();
+            alertify.confirm('Are you sure to do this Action  ?', function () {
+                // window.location.href = url;
+                $('.from_submission').submit();
+            }, function () {    
+                return true;
+            });
+        });
+
         /* Toastr messages */
         toastr.options.closeButton = true;
         toastr.options.timeOut = 5000;

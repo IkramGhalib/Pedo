@@ -106,6 +106,14 @@ class ConfigController extends Controller
         return view('admin.config.setting_payment', compact('config'));
     }
 
+
+     public function settingCharge(Request $request)
+    {
+        $config = Config::get_options('settingCharges');
+        // dd($config);
+        return view('admin.config.setting_charge', compact('config'));
+    }
+
     public function settingEmail(Request $request)
     {
         $config = Config::get_options('settingEmail');

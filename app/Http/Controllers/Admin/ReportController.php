@@ -21,9 +21,10 @@ use DB;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use App\Models\Reading;
 use App\Models\ConsumerBill;
+use App\Models\Consumer;
 class ReportController extends Controller
 {
-    // -------------------------------Group Report -------------------------------------------------------
+    // -------------------------------Reading Report -------------------------------------------------------
     public function reading_report_form( Request $request,$category_id='')
     {
         return view('admin.report.reading.form');
@@ -44,7 +45,7 @@ class ReportController extends Controller
     }
     // -------------------------------Group Report -------------------------------------------------------
 
-     // -------------------------------Group Report -------------------------------------------------------
+     // -------------------------------Bill Report -------------------------------------------------------
      public function bill_report_form( Request $request,$category_id='')
      {
          return view('admin.report.bill.form');
@@ -61,11 +62,31 @@ class ReportController extends Controller
          $record=$record->where('ref_no','>=',$request->start_refrence);
         if($request->end_refrence )
         $record=$record->where('ref_no','<=',$request->end_refrence);
-    
+        
         $record=$record->get();
         $fields=$request->all();
         // dd($fields);
          return view('admin.report.bill.index',compact('record','fields'));
+     }
+     // -------------------------------Group Report -------------------------------------------------------
+
+     // -------------------------------Bill Report -------------------------------------------------------
+     public function consumer_report_form( Request $request,$category_id='')
+     {
+         return view('admin.report.consumer.form');
+     }
+ 
+     function consumer_report_process(Request $request)
+     {
+         $validatedData = $request->validate([
+             'report_type' => 'required',
+         ]);
+         if($request->report_type !='all' )
+         $record=Consumer::where('status',$request->report_type)->get();
+         else
+         $record=Consumer::get();
+        $fields=$request->report_type;
+         return view('admin.report.consumer.index',compact('record','fields'));
      }
      // -------------------------------Group Report -------------------------------------------------------
 }

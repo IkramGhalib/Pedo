@@ -98,7 +98,7 @@ class ConsumerController extends Controller
         $subDivision=SubDivision::find($request->sub_division);
         $feeder=Feeder::find($request->feeder);
 
-        $new_ref_no=$feeder->feeder_code.''.$subDivision->sub_division_code.''.$division->division_code.''.$request->ref_no;
+        $new_ref_no=$division->division_code.$subDivision->sub_division_code.$feeder->feeder_code.$request->ref_no;
 
         $check_data=DB::table('consumer_meters')->where('ref_no',$new_ref_no)->first();
         if($check_data)

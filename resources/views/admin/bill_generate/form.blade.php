@@ -14,7 +14,7 @@
 
     <div class="panel">
       <div class="panel-body">
-        <form method="POST" action="{{ route('bill.generate.save') }}" id="userForm" enctype="multipart/form-data">
+        <form method="POST" class="from_submission" action="{{ route('bill.generate.save') }}" id="form" enctype="multipart/form-data">
           {{ csrf_field() }}
           {{-- <input type="hidden" name="user_id" value="{{ $user->id }}"> --}}
      
@@ -43,7 +43,7 @@
           <!-- <hr> -->
           <div class="form-group row">
             <div class="col-md-4">
-              <button type="submit" class="btn btn-primary">Generate</button>
+              <button type="submit" class="btn btn-primary show-confirmation-form">Generate</button>
               <button type="reset" class="btn btn-default btn-outline">Reset</button>
             </div>
           </div>

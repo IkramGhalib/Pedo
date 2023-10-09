@@ -7,6 +7,7 @@ use App\Models\User;
 // use App\Models\Course;
 // use App\Models\Category;
 use App\Models\Role;
+use App\Models\Config;
 // use App\Models\Consumer;
 use App\Models\ConsumerSubCategory;
 // use App\Models\Division;
@@ -194,6 +195,11 @@ class BillGenerateController extends Controller
         ]);
        $month_year=$request->month_year.'-01';
         $reading_record=BillGenerate::where('month_year',$month_year)->first();
+        
+        $s_p_surcharge=1;
+        $config=Config::get_option('settingCharges','late_fee_surcharge');
+        if($config)
+        $s_p_surcharge=$config;
        if($reading_record)
        {
         return redirect()->back()->with(['error'=>'Record Already Exits']);
@@ -225,10 +231,10 @@ class BillGenerateController extends Controller
                                                                     'taxes_breakup'=>json_encode($finded_taxes),
                                                                     'WithinDuedate'=>$finded_cateogry_slab_chareges['total_electricity_charges'],
                                                                     'net_bill'=>0,
-                                                                    'DueDate'=>$request->due_date
+                                                                    'DueDate'=>$request->due_date,
+                                                                    'AfterdueDate'=>($finded_cateogry_slab_chareges['total_electricity_charges']*($s_p_surcharge/100))
                                                                 ]
-                                                            
-                                                                );
+                                                        );
                 }
                 return redirect()->back()->with(['success'=>'Action Completed']); 
                 

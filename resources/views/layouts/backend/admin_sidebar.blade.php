@@ -217,6 +217,12 @@
                         <span class="site-menu-arrow"></span>
                     </a>
                     <ul class="site-menu-sub">
+                       <!--  <li class="site-menu-item  request()->is('admin/config/setting-general') ? 'active' : '' ">
+                            <a href=" route('admin.settingGeneral') ">
+                                <span class="site-menu-title">General</span>
+                            </a>
+                        </li> -->
+
                         <li class="site-menu-item {{ request()->is('admin/config/setting-general') ? 'active' : '' }}">
                             <a href="{{ route('admin.settingGeneral') }}">
                                 <span class="site-menu-title">General</span>
@@ -225,6 +231,11 @@
                         <li class="site-menu-item {{ request()->is('admin/config/setting-payment') ? 'active' : '' }}">
                             <a href="{{ route('admin.settingPayment') }}">
                                 <span class="site-menu-title">Payment</span>
+                            </a>
+                        </li>
+                         <li class="site-menu-item {{ request()->is('admin/config/setting-charge') ? 'active' : '' }}">
+                            <a href="{{ route('admin.settingCharge') }}">
+                                <span class="site-menu-title">Charges</span>
                             </a>
                         </li>
                         <!-- <li class="site-menu-item {{ request()->is('admin/config/setting-email') ? 'active' : '' }}">
@@ -251,6 +262,12 @@
                         <li class="site-menu-item {{ request()->is('admin/report/bill_report_form') ? 'active' : '' }}">
                             <a href="{{ route('admin.report.bill.form') }}">  
                                 <span class="site-menu-title">Bills</span>
+                            </a>
+                        </li>
+
+                        <li class="site-menu-item {{ request()->is('admin/report/consumer_report_form') ? 'active' : '' }}">
+                            <a href="{{ route('admin.report.consumer.form') }}">  
+                                <span class="site-menu-title">Consumer</span>
                             </a>
                         </li>
                         

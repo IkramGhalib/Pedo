@@ -31,7 +31,7 @@
               <option value="all"> List of Bills </option>
               <option value="design"> Print Bill With Design </option>
               <option value="without-design"> Print Bill With out Design </option>
-              <!-- <option value="<"> Less </option> -->
+              <option value="bill-summary"> Bill Summary </option>
               <!-- <option value="="> Equal </option> -->
 
           </select>   
