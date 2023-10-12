@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\ReadingController;
 use App\Http\Controllers\Admin\BillGenerateController;
 use App\Http\Controllers\Admin\ChargesController;
 use App\Http\Controllers\Admin\ChargesTypeController;
+use App\Http\Controllers\Admin\TaxTypeController;
 use App\Http\Controllers\Admin\ReportController;
 // use App\Http\Controllers\QuestionController;
 // use App\Http\Controllers\ResultController;
@@ -198,6 +199,13 @@ Route::group(['middleware' => 'auth'], function () {
          Route::post('admin/charges-type-store', [ChargesTypeController::class, 'store'])->name('admin.charges.type.store');
          Route::get('admin/charges-type-edit/{id}', [ChargesTypeController::class, 'edit'])->name('admin.charges.type.edit');
          Route::post('admin/charges-type-update/{id}', [ChargesTypeController::class, 'update'])->name('admin.charges.type.update');
+
+         // Tax Type Route
+         Route::get('admin/tax-type-list', [TaxTypeController::class, 'index'])->name('admin.tax.type.list');
+         Route::get('admin/tax-type-form', [TaxTypeController::class, 'create'])->name('admin.tax.type.form');
+         Route::post('admin/tax-type-store', [TaxTypeController::class, 'store'])->name('admin.tax.type.store');
+         Route::get('admin/tax-type-edit/{id}', [TaxTypeController::class, 'edit'])->name('admin.tax.type.edit');
+         Route::post('admin/tax-type-update/{id}', [TaxTypeController::class, 'update'])->name('admin.tax.type.update');
 
          Route::get('admin/charges-list', [ChargesController::class, 'index'])->name('admin.charges.list');
          Route::get('admin/charges-form', [ChargesController::class, 'create'])->name('admin.charges.form');

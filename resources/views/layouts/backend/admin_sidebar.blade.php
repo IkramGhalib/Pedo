@@ -83,10 +83,17 @@
                     </a>
                     <ul class="site-menu-sub">
                         <li class="site-menu-item {{ request()->is('admin/config/page-home2') ? 'active' : '' }}">
+                            <a href="{{ route('admin.tax.type.list') }}">
+                                <span class="site-menu-title">Tax Title</span>
+                            </a>
+                        </li>
+
+                        <li class="site-menu-item {{ request()->is('admin/config/page-home2') ? 'active' : '' }}">
                             <a href="{{ route('admin.general-tax.list') }}">
                                 <span class="site-menu-title">Tax </span>
                             </a>
                         </li>
+
                         <li class="site-menu-item {{ request()->is('admin/config/page-home2') ? 'active' : '' }}">
                             <a href="{{ route('admin.charges.type.list') }}">
                                 <span class="site-menu-title">Charges Types </span>

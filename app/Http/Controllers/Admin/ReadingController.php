@@ -48,9 +48,9 @@ class ReadingController extends Controller
 
     public function reading_show()
     {
-        $paginate_count = 8;
+        $paginate_count = 5000;
         
-        $list = DB::table('meter_readings')->orderBy('id')->paginate($paginate_count);
+        $list = DB::table('meter_readings')->orderBy('id')->where('is_verified',0)->paginate($paginate_count);
         return view('admin.reading.index', compact('list'));
     }
 

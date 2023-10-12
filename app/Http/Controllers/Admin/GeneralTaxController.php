@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\GeneralTax;
+use App\Models\TaxType;
+use App\Models\ConsumerCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
@@ -16,14 +18,14 @@ class GeneralTaxController extends Controller
         $paginate_count = 10;
         if($request->has('search')){
             $search = $request->input('search');
-            $list = GeneralTax::where('tax_name', 'LIKE', '%' . $search . '%')
+            $list = GeneralTax::with('bTaxType')->where('tax_name', 'LIKE', '%' . $search . '%')
                            ->paginate($paginate_count);
         }
         else {
-            $list = GeneralTax::paginate($paginate_count);
+            $list = GeneralTax::with('bTaxType')->paginate($paginate_count);
 
         }
-        // pr($list);
+        // dd($list);
 
 
         // $test=Test::all();
@@ -31,8 +33,8 @@ class GeneralTaxController extends Controller
     }
     public function create()
     {
-        // $courses=Division::all();
-        return view('admin.general_tax.create');
+        $record=TaxType::all();
+        return view('admin.general_tax.create',compact('record'));
     }
 
     public function store(Request $request)
@@ -40,14 +42,21 @@ class GeneralTaxController extends Controller
 
         $request->validate([
             'charges' => 'required|numeric',
-            'name' => 'required|string',
+            'tax_title' => 'required|integer',
+            'type' => 'required|integer',
             'status' => 'required',
            
-        ]);     
+        ]); 
+        $check_rec=GeneralTax::where(['con_cat_id'=>$request->tax_title,'tax_type_id'=>$request->type])->first();    
+        if($check_rec)
+        return back()->withError('Record Already Exits');
+        // return $this->return_output('flash', 'error', 'Record Already Exits. Need Updation', 'admin/general-tax-list', '200');
+
         $record=new GeneralTax();
         $record->is_active=$request->status;
         $record->tax_percentage=$request->charges;
-        $record->tax_name=$request->name;
+        $record->tax_type_id=$request->tax_title;
+        $record->con_cat_id=$request->type;
         // dd($test);
         $record->save();
         return $this->return_output('flash', 'success', 'successfully added', 'admin/general-tax-list', '200');
@@ -57,18 +66,29 @@ class GeneralTaxController extends Controller
     public function edit($id)
     {
         $record=GeneralTax::find($id);
+        $consumer_category=ConsumerCategory::find($record->id);
+        $record_list=TaxType::all();
         // $courses = Course::all();
-        return view('admin.general_tax.edit',compact('record'));
+        return view('admin.general_tax.edit',compact('record','record_list','consumer_category'));
     }
 
     public function update($id,Request $request)
     {
+        $request->validate([
+            'charges' => 'required|numeric',
+            'tax_title' => 'required|integer',
+            'type' => 'required|integer',
+            'status' => 'required',
+           
+        ]); 
         $record=GeneralTax::find($id);
-        $record->tax_name=$request->name;
-        $record->tax_percentage=$request->charges;
        
         $record->is_active=$request->status;
-        // dd($test);
+        $record->tax_percentage=$request->charges;
+        $record->tax_type_id=$request->tax_title;
+        $record->con_cat_id=$request->type;
+       
+        $record->is_active=$request->status;
         $record->save();
         return $this->return_output('flash', 'success', 'successfully updated', 'admin/general-tax-list', '200');
     }

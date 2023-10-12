@@ -15,8 +15,13 @@ class GeneralTax extends Model
     use HasFactory;
 
 
-    // public function subDivisions()
-    // {
-    //     return $this->hasMany(SubDivision::class,'division_id','id');
-    // }
+    public function bTaxType()
+    {
+        return $this->belongsTo(TaxType::class,'tax_type_id','id');
+    }
+
+    public function bConsumerCategory()
+    {
+        return $this->belongsTo(ConsumerCategory::class,'con_cat_id','id');
+    }
 }

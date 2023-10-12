@@ -94,7 +94,7 @@
                     </a>
                 --}}
             @guest
-            <a class="btn btn-learna" href="{{ route('login') }}">Login / Sign Up</a>
+            <a class="btn btn-learna" href="{{ route('login') }}">Login </a>
             @else
             <div class="dropdown float-xl-left float-sm-right float-right ml-4">
               <span id="dropdownMenuButtonRight" data-toggle="dropdown">{{ Auth::user()->first_name }} &nbsp;<i class="fa fa-caret-down"></i></span>
