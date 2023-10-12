@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\ChargesController;
 use App\Http\Controllers\Admin\ChargesTypeController;
 use App\Http\Controllers\Admin\TaxTypeController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\ReceivePaymentController;
 // use App\Http\Controllers\QuestionController;
 // use App\Http\Controllers\ResultController;
 // use App\Http\Controllers\TestController;
@@ -280,8 +281,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('getSubDivisionsAgainstDivision', [SubDivisionController::class, 'getSubDivisionsAgainstDivision'])->name('subDivision.getSubDivisionsAgainstDivision');
         Route::get('getFeedersAgainstSubDivision', [FeederController::class, 'getFeedersAgainstSubDivision'])->name('feeder.getFeedersAgainstSubDivision');
 
-
-
+        // payment Routes
+        Route::get('receive-payment-lists', [ReceivePaymentController::class, 'show'])->name('receive.payment.lists');
+        Route::get('receive-payment-form', [ReceivePaymentController::class, 'add_form'])->name('receive.payment.form');
+        Route::post('receive-payment-save', [ReceivePaymentController::class, 'save'])->name('receive.payment.save');
+        // Route::get('meter-reading-edit/{id}', [ReceivePaymentController::class, 'reading_edit'])->name('reading.edit');
+        // Route::post('meter-reading-update/{id}', [ReceivePaymentController::class, 'reading_update'])->name('reading.update');
+        Route::get('receive-payment-disable/{id}', [ReceivePaymentController::class, 'receive_payment_disable'])->name('receive.payment.disable');
 
         Route::get('admin/dashboard', DashboardController::class)->name('admin.dashboard');
 

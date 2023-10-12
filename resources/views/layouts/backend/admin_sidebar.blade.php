@@ -170,6 +170,28 @@
                     </ul>
                 </li>
 
+
+                <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
+                    <a href="javascript:void(0)">
+                        <i class="site-menu-icon wb-file" aria-hidden="true"></i>
+                        <span class="site-menu-title">Payments</span>
+                        <span class="site-menu-arrow"></span>
+                    </a>
+                    <ul class="site-menu-sub">
+                    <!-- if(Auth::user()->hasRole('reader')) -->
+                        <li class="site-menu-item {{ request()->is('admin/config/page-homec') ? 'active' : '' }}">
+                            <a href="{{ route('receive.payment.lists') }}">
+                                <span class="site-menu-title">Receive Payement </span>
+                            </a>
+                        </li>
+                        
+                        
+                       
+                       
+                        
+                    </ul>
+                </li>
+
                 <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
                         <i class="site-menu-icon wb-file" aria-hidden="true"></i>

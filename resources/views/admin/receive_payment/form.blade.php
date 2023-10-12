@@ -1,0 +1,159 @@
+@extends('layouts.backend.index')
+@section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" integrity="sha512-YHJ091iDoDM1PZZA9QLuBvpo0VXBBiGHsvdezDoc3p56S3SOMPRjX+zlCbfkOV5k3BmH5O9FqrkKxBRhkdtOkQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="page-header">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('consumer.form') }}">Payments </a></li>
+    <li class="breadcrumb-item active">Add </li>
+  </ol>
+  <!-- <h1 class="page-title">Add </h1> -->
+</div>
+
+
+<div class="page-content">
+
+    <div class="panel">
+      <div class="panel-body">
+        <form method="POST" action="{{ route('reading.save') }}" id="userForm" enctype="multipart/form-data">
+          {{ csrf_field() }}
+          {{-- <input type="hidden" name="user_id" value="{{ $user->id }}"> --}}
+      <div class="row">
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Refrence No</label>
+              <select name="ref_no" id="ref_no" class="form-control">
+                    <option value="">-- Select --</option>
+                  </select>
+                @if ($errors->has('ref_no'))
+                    <label class="error" for="ref_no">{{ $errors->first('ref_no') }}</label>
+                @endif
+            </div>
+      </div>
+          <div class="row">
+
+            <div class="form-group col-md-3">
+              <label class="form-control-label"> Payment Month</label>
+              <input required type="month" class="form-control payment_month" name="payment_month" value="{{old('payment_month')}}"
+                />
+                @if ($errors->has('payment_month'))
+                    <label class="error" for="payment_month">{{ $errors->first('payment_month') }}</label>
+                @endif
+            </div>
+
+            <div class="form-group col-md-3">
+              <label class="form-control-label"> Payment date</label>
+              <input required type="date" class="form-control payment_date" name="payment_date" value="{{old('payment_date')}}"
+                />
+                @if ($errors->has('payment_date'))
+                    <label class="error" for="payment_date">{{ $errors->first('payment_date') }}</label>
+                @endif
+            </div>
+            <div class="form-group col-md-3">
+              <label class="form-control-label">Bank</label>
+              <select name="bank" id="bank" class="form-control">
+                <option value="">-- Select --</option>
+                @foreach($banks as $b => $brow)
+                <option value="{{$brow->id}}">{{$brow->code}} | {{$brow->title}}</option>
+                @endforeach
+                  </select>
+                @if ($errors->has('ref_no'))
+                    <label class="error" for="ref_no">{{ $errors->first('ref_no') }}</label>
+                @endif
+            </div>
+
+          </div>
+          <div class="row">
+
+           
+
+              <div class="form-group col-md-4">
+                <label class="form-control-label">Amount</label>
+                <input type="number" step="any" class="form-control amount" name="amount" value="{{old('amount')}}"
+                  />
+                  @if ($errors->has('amount'))
+                      <label class="error" for="amount">{{ $errors->first('amount') }}</label>
+                  @endif
+              </div>
+        </div>
+
+          <!-- <hr> -->
+          <div class="form-group row">
+            <div class="col-md-4">
+              <button type="submit" class="btn btn-primary save-btn">Submit</button>
+              <button type="reset" class="btn btn-default btn-outline">Reset</button>
+            </div>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+    
+           
+          <!-- End Panel Basic -->
+    </div>
+@endsection
+@section('javascript')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.full.min.js" integrity="sha512-/gPqsEnTjI8VpAkWa61qLLmZn4ySeH86yURIM9rck0iyCMhjMGfkDw298eXFLM2CuRJ93LFhYT1M+SGxJ8asIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+$("#ref_no").select2({
+        ajax: {
+            url: "{{route('get_meter_info_against_ref_no')}}",
+            dataType: 'json',
+            data: function (params) {
+                var query = {
+                    search: params.term,
+                }
+                return query;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                      console.log(item);
+                        return {
+                            text: 'Ref:'+item.ref_no+'  Consumer Code: '+item.consumer_code+'  Consumer:'+item.full_name+' CNIC:'+item.cnic ,
+                            id: item.ref_no
+                        }
+                    })
+                };
+            }
+        },
+        cache: true,
+        placeholder: 'Search ',
+        minimumInputLength: 3
+    });
+
+    $(".save-btn").click( function(e){
+      e.preventDefault();
+      var v1=$('#ref_no').val();
+      var v2=$('.payment_month').val();
+      var v3=$('.payment_date').val();
+      var v4=$('#bank').val();
+      var v5=$('.amount').val();
+      $.ajax({
+
+          type:'POST',
+
+          url:"{{route('receive.payment.save')}}",
+
+          data:{'ref_no':v1,'payment_month':v2,'payment_date':v3,'bank':v4,'amount':v5},
+
+          success:function(data){
+            if(data.success=='true')
+            message('success',data.message);
+            else
+            message('error',data.message);
+
+          //  console.log(data);
+
+          }
+
+          });
+    
+       
+    });
+
+
+</script>
+@endsection
+
+
