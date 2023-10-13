@@ -58,7 +58,7 @@
         $cost_of_electricity=$bill_data->currentbill;
         
         $payable_after_due_date=0;
-        $lp_surcharge=720;
+        $lp_surcharge=$bill_data->l_p_surcharge;
         $previous_reading='';
         $current_reading=$bill_data->offpeak_units;
         $meter_connection_date=date('d M y',strtotime($bill_data->meter_connection_date));

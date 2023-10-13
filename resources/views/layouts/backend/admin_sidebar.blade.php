@@ -293,6 +293,11 @@
                                 <span class="site-menu-title">Bills</span>
                             </a>
                         </li>
+                        <li class="site-menu-item {{ request()->is('admin/report/payment_report_form') ? 'active' : '' }}">
+                            <a href="{{ route('admin.report.payment.form') }}">  
+                                <span class="site-menu-title">Payments</span>
+                            </a>
+                        </li>
 
                         <li class="site-menu-item {{ request()->is('admin/report/consumer_report_form') ? 'active' : '' }}">
                             <a href="{{ route('admin.report.consumer.form') }}">  

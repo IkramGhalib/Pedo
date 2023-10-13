@@ -135,6 +135,7 @@ a {
   </style>
   <div id="print_section"><a href=""  style="background-color:#3e8ef7;padding:5px;color:white"> &nbsp;&nbsp;Back&nbsp;&nbsp; </a> &nbsp; <a href="#" style="background-color:#3e8ef7;padding:5px;color:white" onclick="window.print();return false;" > &nbsp;&nbsp;Print&nbsp;&nbsp; </a> </div>
 <div class="header">
+<p><img src="{{asset(env('LOGO'))}}" width="100px;" height="100px;"></p>
   <p>Bill Report</p>
   <p style="font-size:18px !important;">{{app_month_format($fields['month'])}}</p>
 </div>

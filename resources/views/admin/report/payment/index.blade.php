@@ -24,7 +24,7 @@ body {
 .header {
   width: 100%;
   float: left;
-  font-size: 2em;
+  font-size: 1.3em;
   text-align:center;
 }
 
@@ -85,23 +85,23 @@ body {
   font-weight: 500;
 }
 
-.printTable .col1 {
+/* .printTable .col1 {
   width: 10%;
-}
+} */
 
-.printTable .col2 {
+/* .printTable .col2 {
   width: 20%;
-}
+} */
 
-.printTable .col3 {
-  /* text-align: right; */
+/* .printTable .col3 {
+  /* text-align: right; 
   width: 60%;
-}
+} */
 
-.printTable .col4 {
-  /* text-align: right; */
+/* .printTable .col4 {
+  /* text-align: right; 
   width: 15%;
-}
+} */
 .text-right{
   text-align: right;
 }
@@ -133,20 +133,15 @@ a {
 
 .right-align {display: -webkit-box; display: -webkit-flex; display: flex; justify-content: flex-end; -webkit-justify-content: flex-end; text-align:right;}
   </style>
-  <div id="print_section"><a href="{{route('admin.report.reading.form')}}"  style="background-color:#3e8ef7;padding:5px;color:white"> &nbsp;&nbsp;Back&nbsp;&nbsp; </a> &nbsp; <a href="#" style="background-color:#3e8ef7;padding:5px;color:white" onclick="window.print();return false;" > &nbsp;&nbsp;Print&nbsp;&nbsp; </a> </div>
+  <div id="print_section"><a href="{{route('admin.report.payment.form')}}"  style="background-color:#3e8ef7;padding:5px;color:white"> &nbsp;&nbsp;Back&nbsp;&nbsp; </a> &nbsp; <a href="#" style="background-color:#3e8ef7;padding:5px;color:white" onclick="window.print();return false;" > &nbsp;&nbsp;Print&nbsp;&nbsp; </a> </div>
 <div class="header">
-<p><img src="{{asset(env('LOGO'))}}" width="100px;" height="100px;"></p>
-  <p>Reading Report</p>
+  <p><img src="{{asset(env('LOGO'))}}" width="100px;" height="100px;"></p>
+  <p>Payments Report</p>
   <p style="font-size:18px !important;">{{app_month_format($fields['month'])}}</p>
 </div>
 
 <table class="printTable">
-  <tr class="titleTr">
-    <td class="titleTd" colspan='3'> @if($fields['unit'])  Condition:  {{'Units '.$fields['condition'].' '.$fields['unit']}} @endif <br/>
-    </td>
-    <!-- <td class="titleTd col4 text-right" colspan=2>Reporting Period</td> -->
-    <td class="titleTd col4 text-right" colspan='1'></td>
-  </tr>
+ 
   <tr class="subtitleTr">
     <td class="titleTd col1" colspan=2></td>
     <td class="titleTd col4 text-right" colspan=2> &nbsp;  &nbsp; </td>
@@ -155,14 +150,15 @@ a {
   <tr></tr>
 
   <tr class="headingTr">
-  <td class="text-center strong" colspan="4"> Readings</td>
+  <td class="text-center strong" colspan="6"> Records</td>
   </tr>
   <tr class="headingTr">
     <td class="headingTd col1">#</td>
     <td class="headingTd col2">Refrence No</td>
     <td class="headingTd col3">Month </td>
-    {{-- <td class="headingTd col1">PAID FROM</td> --}}
-    <td class="headingTd col4 text-right">Units</td>
+     <td class="headingTd col1">Payment Date </td> 
+     <td class="headingTd col1">Bank</td> 
+    <td class="headingTd col4 text-right">Amount</td>
   </tr>
   <?php $c=1; 
   $total=0;
@@ -174,17 +170,18 @@ a {
   <tr>
     <td class="col1">{{$c}}</td>
     <td class="col2">{{$row->ref_no}}</td>
-    <td class="col3">{{app_month_format($row->month_year)}}</td>
-    {{-- <td class="col1"> {{$row->offpeak_units}}</td> --}}
-    <td class="col4 text-right">{{$row->offpeak_units}}</td>
+    <td class="col3">{{app_month_format($row->payment_month)}}</td>
+    <td class="col1"> {{$row->payment_date}}</td> 
+    <td class="col1"> {{$row->bBank->code.' - '.$row->bBank->title}}</td> 
+    <td class="col1 text-right">{{$row->payment_amount}}</td>
   </tr>
-  <?php $c++; $total+=$row->offpeak_units ?>
+  <?php $c++; $total+=$row->payment_amount ?>
   @endforeach
   
  
 
   <tr class="headingTr">
-    <td class="headingTd col1" colspan="2"></td>
+    <td class="headingTd col1" colspan="4"></td>
     <td class="headingTd col3 text-right">TOTAL</td>
     <td class="headingTd col4 text-right">
       <?= $total ?></td>

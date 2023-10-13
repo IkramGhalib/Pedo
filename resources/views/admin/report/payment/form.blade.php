@@ -13,7 +13,7 @@
 
 <div class="panel">
   <div class="panel-body">
-    <form method="POST" action="{{route('admin.report.reading.process')}}" id="categoryForm">
+    <form method="POST" action="{{route('admin.report.payment.process')}}" id="categoryForm">
       {{ csrf_field() }}
       {{-- <input type="hidden" name="category_id" value="{{ $category->id }}"> --}}
       <div class="row">
@@ -37,31 +37,6 @@
               <label class="error" for="group">{{ $errors->first('month') }}</label>
           @endif
       </div>
-      <div class="form-group col-md-3 ">
-          <label class="form-control-label"> Condition</label>
-          <select name="condition" class="form-control"> 
-              <option value=">"> Greater </option>
-              <option value="<"> Less </option>
-              <option value="="> Equal </option>
-
-          </select>   
-          @if ($errors->has('condition'))
-              <label class="error" for="condition">{{ $errors->first('condition') }}</label>
-          @endif       
-          
-      </div>
-
-
-      <div class="form-group col-md-3 ">
-          <label class="form-control-label"> Enter Units</label>
-          <input type="number" class="form-control" name="unit">
-          
-          @if ($errors->has('unit'))
-              <label class="error" for="unit">{{ $errors->first('unit') }}</label>
-          @endif
-      </div>
-      
-    
 
       </div>
       <hr>

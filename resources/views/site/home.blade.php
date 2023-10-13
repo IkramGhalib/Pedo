@@ -133,11 +133,11 @@
 
                             <tr>
                                 <td> Late Payment Surcharge</td> 
-                                <td>	Rs. 0 </td> 
+                                <td>	Rs. {{$bill->l_p_surcharge}} </td> 
                             </tr>
                             <tr>
                                 <td> Amount After Due Date</td> 
-                                <td> Rs. {{$bill->currentbill}}</td> 
+                                <td> Rs. {{$bill->currentbill+$bill->l_p_surcharge}}</td> 
                             </tr>
 
                         </table>

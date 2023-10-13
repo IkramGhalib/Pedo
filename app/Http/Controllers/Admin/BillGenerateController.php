@@ -120,6 +120,8 @@ class BillGenerateController extends Controller
             $current_cons_type= ConsumerMeter::with('bConsumer.bConsumerCategory.hMConSubCategory.hMSlabs')->where('ref_no',$record->ref_no)
             ->first();
 
+            // dd($current_cons_type);
+
             $data=$current_cons_type->bConsumer->bConsumerCategory->hMConSubCategory;
             $data_with_slab=$data->where('category_conditon_start','<=',$record->offpeak_units) ->where('category_conditon_end','>=',$record->offpeak_units)->first();
 
@@ -169,11 +171,17 @@ class BillGenerateController extends Controller
     }
     public function find_taxes($row)
     {
-        $g_tax=GeneralTax::where('is_active',1)->get();
+        $g_tax=ConsumerMeter::with(['bConsumer.bConsumerCategory','bConsumer.bConsumerCategory.hMtax'=>function($q){
+            return $q->where('is_active',1);
+        },'bConsumer.bConsumerCategory.hMtax.bTaxType'])->first();
+        // dd($g_tax->bConsumer->bConsumerCategory->hMtax);
+        // $g_tax=GeneralTax::where('is_active',1)->get();
         $g_total_taxes=[];
-        foreach ($g_tax as $key => $value) {
-            $g_total_taxes[]=['tax_type'=>$value->tax_name,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$row->offpeak_units];
+        foreach ($g_tax->bConsumer->bConsumerCategory->hMtax as $key => $value) {
+            $g_total_taxes[]=['tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$row->offpeak_units];
         }
+
+        // pr($g_total_taxes);
         return $g_total_taxes;
 
     }
@@ -196,10 +204,10 @@ class BillGenerateController extends Controller
        $month_year=$request->month_year.'-01';
         $reading_record=BillGenerate::where('month_year',$month_year)->first();
         
-        $s_p_surcharge=1;
+        $l_p_surcharge_percentage=0;
         $config=Config::get_option('settingCharges','late_fee_surcharge');
         if($config)
-        $s_p_surcharge=$config;
+        $l_p_surcharge_percentage=$config;
        if($reading_record)
        {
         return redirect()->back()->with(['error'=>'Record Already Exits']);
@@ -232,7 +240,8 @@ class BillGenerateController extends Controller
                                                                     'WithinDuedate'=>$finded_cateogry_slab_chareges['total_electricity_charges'],
                                                                     'net_bill'=>0,
                                                                     'DueDate'=>$request->due_date,
-                                                                    'AfterdueDate'=>($finded_cateogry_slab_chareges['total_electricity_charges']*($s_p_surcharge/100))
+                                                                    'AfterdueDate'=>($finded_cateogry_slab_chareges['total_electricity_charges']*($s_p_surcharge/100)),
+                                                                    'l_p_surcharge'=>($l_p_surcharge_percentage/100*$finded_cateogry_slab_chareges['total_electricity_charges'])
                                                                 ]
                                                         );
                 }

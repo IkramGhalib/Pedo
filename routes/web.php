@@ -356,6 +356,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('admin/report/reading_report_form', [ReportController::class, 'reading_report_form'])->name('admin.report.reading.form');
         Route::post('admin/report/reading_report_process', [ReportController::class, 'reading_report_process'])->name('admin.report.reading.process');
 
+        Route::get('admin/report/payment_report_form', [ReportController::class, 'payment_report_form'])->name('admin.report.payment.form');
+        Route::post('admin/report/payment_report_process', [ReportController::class, 'payment_report_process'])->name('admin.report.payment.process');
+
         Route::get('admin/report/bill_report_form', [ReportController::class, 'bill_report_form'])->name('admin.report.bill.form');
         Route::post('admin/report/bill_report_process', [ReportController::class, 'bill_report_process'])->name('admin.report.bill.process');
 

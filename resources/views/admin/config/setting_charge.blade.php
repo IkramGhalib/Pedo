@@ -17,7 +17,7 @@
       <input type="hidden" name="code" value="settingCharges">
         <div class="row">
             <div class="form-group col-md-6">
-              <label class="form-control-label">F.C Surcharge</label>
+              <label class="form-control-label">L.P Surcharge %</label>
               <input type="text" class="form-control" name="late_fee_surcharge" 
                 placeholder="" value="{{ isset($config['late_fee_surcharge']) ? $config['late_fee_surcharge'] : '' }}" />
             </div>

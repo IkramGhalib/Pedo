@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
 use DB;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use App\Models\Reading;
+use App\Models\PaymentReceive;
 use App\Models\ConsumerBill;
 use App\Models\Consumer;
 class ReportController extends Controller
@@ -41,9 +42,65 @@ class ReportController extends Controller
 
         $record=$reading->get();
         $fields=$request->all();
-        return view('admin.report.reading.index',compact('record','fields'));
+        if($request->report_style=='v')
+        {
+
+            return view('admin.report.reading.index',compact('record','fields'));
+        }
+        else
+        {
+            
+            $record=$reading=Reading::where('month_year',$request->month.'-01')->count();
+            $total_consumer=Consumer::where('status','active')->count();
+            // pr($total_consumer);
+            // dd($total_consumer);
+            return view('admin.report.reading.index_chart',compact('record','fields','total_consumer'));
+        }
     }
-    // -------------------------------Group Report -------------------------------------------------------
+    // ------------------------------- Report -------------------------------------------------------
+
+
+    // -------------------------------payment Report -------------------------------------------------------
+    public function payment_report_form( Request $request,$category_id='')
+    {
+        return view('admin.report.payment.form');
+    }
+
+    function payment_report_process(Request $request)
+	{
+		$validatedData = $request->validate([
+            'month' => 'required',
+        ]);
+        
+        $fields=$request->all();
+        if($request->report_style=='v')
+        {
+            $reading=PaymentReceive::where('payment_month',$request->month.'-01');
+            $record=$reading->get();
+
+            return view('admin.report.payment.index',compact('record','fields'));
+        }
+        else
+        {
+            $req_month=$request->month.'-01';
+            $months[date('M-Y',strtotime($req_month))]=PaymentReceive::where('payment_month',$req_month)->sum('payment_amount');
+            $pre_1_m=date('Y-m-d', strtotime(date($req_month)." -1 month"));
+            // pr($pre_1_m);
+            $months[date('M-Y',strtotime($pre_1_m))]=PaymentReceive::where('payment_month',$pre_1_m)->sum('payment_amount');
+            $months[date('M-Y', strtotime(date($req_month)." -2 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -2 month")))->sum('payment_amount');
+            $months[date('M-Y', strtotime(date($req_month)." -3 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -3 month")))->sum('payment_amount');
+            $months[date('M-Y', strtotime(date($req_month)." -4 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -4 month")))->sum('payment_amount');
+            $months[date('M-Y', strtotime(date($req_month)." -5 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -5 month")))->sum('payment_amount');
+            $months[date('M-Y', strtotime(date($req_month)." -6 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -6 month")))->sum('payment_amount');
+            // $total_consumer=Consumer::where('status','active')->count();
+            // pr($total_consumer);
+
+            
+            // dd($months);
+            return view('admin.report.payment.index_chart',compact('fields','months'));
+        }
+    }
+    // ------------------------------- Report -------------------------------------------------------
 
      // -------------------------------Bill Report -------------------------------------------------------
      public function bill_report_form( Request $request,$category_id='')
