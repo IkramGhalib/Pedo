@@ -204,11 +204,11 @@
                                 <span class="site-menu-title">Generat Bill </span>
                             </a>
                         </li>
-                        <li class="site-menu-item {{ request()->is('admin/config/page-aboutb') ? 'active' : '' }}">
+                        <!-- <li class="site-menu-item {{ request()->is('admin/config/page-aboutb') ? 'active' : '' }}">
                             <a href="{{ route('reading.approve.lists') }}">
                                 <span class="site-menu-title">Bill History </span>
                             </a>
-                        </li>
+                        </li> -->
                        
                         
                     </ul>
@@ -252,16 +252,16 @@
                             </a>
                         </li> -->
 
-                        <li class="site-menu-item {{ request()->is('admin/config/setting-general') ? 'active' : '' }}">
+                        <!-- <li class="site-menu-item {{ request()->is('admin/config/setting-general') ? 'active' : '' }}">
                             <a href="{{ route('admin.settingGeneral') }}">
                                 <span class="site-menu-title">General</span>
                             </a>
-                        </li>
-                        <li class="site-menu-item {{ request()->is('admin/config/setting-payment') ? 'active' : '' }}">
+                        </li> -->
+                        <!-- <li class="site-menu-item {{ request()->is('admin/config/setting-payment') ? 'active' : '' }}">
                             <a href="{{ route('admin.settingPayment') }}">
                                 <span class="site-menu-title">Payment</span>
                             </a>
-                        </li>
+                        </li> -->
                          <li class="site-menu-item {{ request()->is('admin/config/setting-charge') ? 'active' : '' }}">
                             <a href="{{ route('admin.settingCharge') }}">
                                 <span class="site-menu-title">Charges</span>

@@ -23,6 +23,7 @@ use App\Models\Reading;
 use App\Models\PaymentReceive;
 use App\Models\ConsumerBill;
 use App\Models\Consumer;
+use App\Models\ConsumerCategory;
 class ReportController extends Controller
 {
     // -------------------------------Reading Report -------------------------------------------------------
@@ -114,16 +115,34 @@ class ReportController extends Controller
              'month' => 'required',
              'condition' => 'required',
          ]);
-         $record=ConsumerBill::where('billing_month_year',$request->month.'-01');
-         if($request->start_refrence )
-         $record=$record->where('ref_no','>=',$request->start_refrence);
-        if($request->end_refrence )
-        $record=$record->where('ref_no','<=',$request->end_refrence);
+        //  $record=ConsumerBill::where('billing_month_year',$request->month.'-01');
+        //  if($request->start_refrence )
+        //  $record=$record->where('ref_no','>=',$request->start_refrence);
+        // if($request->end_refrence )
+        // $record=$record->where('ref_no','<=',$request->end_refrence);
         
-        $record=$record->get();
+        // $record=$record->get();
         $fields=$request->all();
         // dd($fields);
-         return view('admin.report.bill.index',compact('record','fields'));
+        if($request->condition=='bill-summary')
+        {
+            $record=ConsumerCategory::with('hMConSubCategory')->where('is_active',1)->get();
+            
+            // dd($cc);
+            return view('admin.report.bill.summary',compact('record','fields'));
+        }
+        else
+        {
+            $record=ConsumerBill::where('billing_month_year',$request->month.'-01');
+            if($request->start_refrence )
+            $record=$record->where('ref_no','>=',$request->start_refrence);
+            if($request->end_refrence )
+            $record=$record->where('ref_no','<=',$request->end_refrence);
+            
+            $record=$record->get();
+            // $fields=$request->all();
+            return view('admin.report.bill.index',compact('record','fields'));
+        }
      }
      // -------------------------------Group Report -------------------------------------------------------
 

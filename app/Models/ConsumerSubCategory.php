@@ -17,5 +17,11 @@ class ConsumerSubCategory extends Model
     {
         return $this->hasMany(Slab::class,'sub_cat_id','id');
     }
+
+
+    public function hMbills()
+    {
+        return $this->hasMany(ConsumerBill::class,'sub_cat_finded_id','id');
+    }
     
 }

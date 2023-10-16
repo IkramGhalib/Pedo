@@ -64,7 +64,7 @@
                   <span class="badge badge-danger">No</span>
                   @endif
                 </td>
-                <td>
+                {{--<td>
                   @if($i->is_verified !=1)
                   <a href="#" class="btn btn-xs btn-icon btn-inverse btn-round approve_button" id="row{{$i->id}}" data-record-id="{{$i->id}}" title="approve"  >
                     <i class="icon wb-pencil"></i>
@@ -72,6 +72,7 @@
                   </a>
                   @endif
                 </td>
+                --}}
               </tr>
               @endforeach
             </tbody>

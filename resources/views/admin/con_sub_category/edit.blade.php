@@ -4,8 +4,8 @@
 <div class="page-header">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('admin.users') }}">Area</a></li>
-    <li class="breadcrumb-item active">Division</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.users') }}">Consumer</a></li>
+    <li class="breadcrumb-item active">Sub Type</li>
   </ol>
   <h1 class="page-title">Edit</h1>
 </div>
@@ -15,14 +15,14 @@
 
     <div class="panel">
       <div class="panel-body">
-        <form method="POST" action="{{ route('admin.sub_division.update',$record->id) }}" id="userForm">
+        <form method="POST" action="{{ route('admin.cons-sub-category.update',$record->id) }}" id="userForm">
           {{ csrf_field() }}
          
           <div class="row">
        
             <div class="form-group col-md-4">
-              <label class="form-control-label">Divison</label>
-              <select name="division" id="division" class="form-control">
+              <label class="form-control-label">Consumer Type</label>
+              <select name="type" id="division" class="form-control">
                     <option value="{{$parant_record->id}}" selected>{{$parant_record->division_code.' - '.$parant_record->name}}</option>
                   </select>
                 @if ($errors->has('division_code'))
@@ -32,14 +32,7 @@
         </div>
         <div class="row">
 
-            <div class="form-group col-md-4">
-              <label class="form-control-label">Code</label>
-              <input required type="text" value="{{ $record->sub_division_code }}" class="form-control" name="sub_division_code"
-                placeholder=""/>
-                @if ($errors->has('sub_division_code'))
-                    <label class="error" for="division_code">{{ $errors->first('sub_division_code') }}</label>
-                @endif
-            </div>
+            
 
 
             <div class="form-group col-md-4">
@@ -62,6 +55,17 @@
                 <input  type="radio" id="inputBasicInactive" name="status" value="0" @if($record->is_active==0) checked @endif />
                 <label for="inputBasicInactive">Inactive</label>
               </div>
+            </div>
+           
+          </div>
+          <div class="form-group col-md-4">
+            <label class="form-control-label"></label>
+            <div>
+              <div class=" radio-inline">
+                <input type="checkbox" id="inputBasicActive" name="last_slab_apply" @if($record->last_slab_apply)  {{'checked'}} @endif  value="1"   />
+                <label for="inputBasicActive">Last slab apply</label>
+              </div>
+              
             </div>
           </div>
 
@@ -99,7 +103,7 @@
 <script>
 $("#division").select2({
         ajax: {
-            url: "{{route('get_all_division_where')}}",
+            url: "{{route('get_all_consumer_category_where')}}",
             dataType: 'json',
             data: function (params) {
                 var query = {
@@ -112,7 +116,7 @@ $("#division").select2({
                     results: $.map(data, function (item) {
                       console.log(item);
                         return {
-                            text: item.division_code+'-'+item.name,
+                            text:item.name,
                             id: item.id
                         }
                     })

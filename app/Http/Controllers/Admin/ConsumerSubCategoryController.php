@@ -49,6 +49,7 @@ class ConsumerSubCategoryController extends Controller
         $record=new ConsumerSubCategory();
         $record->is_active=$request->status;
         $record->name=$request->name;
+        $record->last_slab_apply=($request->last_slab_apply) ? $request->last_slab_apply : 0 ;
         $record->consumer_category_id=$request->type;
 
         $record->category_conditon_start=$request->unit_from;
@@ -76,6 +77,7 @@ class ConsumerSubCategoryController extends Controller
         $record->is_active=$request->status;
         $record->name=$request->name;
         $record->consumer_category_id=$request->type;
+        $record->last_slab_apply=($request->last_slab_apply) ? $request->last_slab_apply : 0 ;
 
         $record->category_conditon_start=$request->unit_from;
         $record->category_conditon_end=$request->unit_to;
