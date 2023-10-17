@@ -55,9 +55,9 @@ class MeterController extends Controller
 // edit function
     public function edit($id)
     {
-        $record=MeterAdd::find($id);
+        $record=MeterAdd::where('meter_id',$id)->first();
         // $courses = Course::all();
-        return view('admin.meter.edit',compact('record'));
+        return view('admin.meter_stock.edit',compact('record'));
     }
 
     public function update($id,Request $request)
@@ -65,10 +65,10 @@ class MeterController extends Controller
         $record=new MeterAdd();
         $record->status=$request->status;
         // $record->tax_percentage=$request->tax_percent;
-        $record->meter_no=$request->meter;;
+        $record->meter_no=$request->meter_no;;
         // dd($test);
         $record->save();
-        return $this->return_output('flash', 'success', 'successfully updated', 'admin/meter.list', '200');
+        return $this->return_output('flash', 'success', 'successfully updated', 'admin/meter-list', '200');
     }
 
     // public function destroy($id)

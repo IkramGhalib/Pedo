@@ -49,10 +49,10 @@
                 <td>{{$row->meter_no}}</td>
                 
                 <td>
-                  @if($row->is_active)
-                  <span class="badge badge-success">Active</span>
+                  @if($row->status=='free')
+                  <span class="badge badge-success">Free</span>
                   @else
-                  <span class="badge badge-danger">Inactive</span>
+                  <span class="badge badge-danger">Assigned</span>
                   @endif
                 </td>
                 <td>

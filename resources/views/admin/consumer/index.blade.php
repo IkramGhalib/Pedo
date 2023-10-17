@@ -82,11 +82,11 @@
                   @endif
                 </td>
                 <td>
-                  <a href="{{ url('consumer-form-edit/'.$instructor->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round" data-toggle="tooltip" data-original-title="Edit" >
+                  <a href="{{ url('consumer-form-edit/'.$instructor->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round" title="Edit" >
                     <i class="icon wb-pencil" aria-hidden="true"></i>
                   </a>
 
-                  <a href="{{ url('consumer-disable/'.$instructor->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round" data-toggle="tooltip"  >
+                  <a href="{{ url('consumer-disable/'.$instructor->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round"  title="disabled"  >
                     <i class="fa fa-ban disabled-icon"></i>
                   </a>
                 </td>

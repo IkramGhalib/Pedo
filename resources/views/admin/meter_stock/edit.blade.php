@@ -14,13 +14,13 @@
 
     <div class="panel">
       <div class="panel-body">
-        <form method="POST" action="{{ route('admin.meter.edit',$record->id) }}" id="userForm">
+        <form method="POST" action="{{ route('admin.meter.update',$record->meter_id) }}" id="userForm">
           {{ csrf_field() }}
          
           <div class="row">
           
             <div class="form-group col-md-4">
-              <label class="form-control-label">Meter Percentage</label>
+              <label class="form-control-label">Meter No</label>
               <input required type="text" value="{{ $record->meter_no }}" class="form-control" name="meter_no"
                 placeholder=""/>
                 @if ($errors->has('meter_no'))
@@ -35,11 +35,11 @@
             <label class="form-control-label">Status</label>
             <div>
               <div class="radio-custom radio-default radio-inline">
-                <input  type="radio" id="inputBasicActive" name="status"  value="1" @if($record->is_active==1) checked @endif  />
+                <input  type="radio" id="inputBasicActive" name="status"  value="free" @if($record->status=="free") checked @endif  />
                 <label for="inputBasicActive">Active</label>
               </div>
               <div class="radio-custom radio-default radio-inline">
-                <input  type="radio" id="inputBasicInactive" name="status" value="0" @if($record->is_active==0) checked @endif />
+                <input  type="radio" id="inputBasicInactive" name="status" value="assigned" @if($record->status=='assigned') checked @endif />
                 <label for="inputBasicInactive">Inactive</label>
               </div>
             </div>
