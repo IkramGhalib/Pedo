@@ -125,13 +125,15 @@ class BillGenerateController extends Controller
             $data=$current_cons_type->bConsumer->bConsumerCategory->hMConSubCategory;
             $data_with_slab=$data->where('category_conditon_start','<=',$record->offpeak_units) ->where('category_conditon_end','>=',$record->offpeak_units)->first();
 
+            // dd($data);
             $charges=SubCategoryCharges::with('bChargesType')->where('sub_cat_id',$data_with_slab->id)->get();
-            // dd($data_with_slab);
             $charges_data=[];
+            $total_charges_data=0;
             if($charges)
             {
                 foreach ($charges as $ky => $chgrow) {
                     $charges_data[]=['charges'=>$chgrow->charges,'calculated_charges'=>$record->offpeak_units*$chgrow->charges,'charges_type'=>$chgrow->bChargesType->title];
+                    $total_charges_data+=$record->offpeak_units*$chgrow->charges;
                 }
             }
 
@@ -192,9 +194,10 @@ class BillGenerateController extends Controller
 
             $bill_data['slab_wise_charges']=$new_data;
             $bill_data['charges']=$charges_data;
+            $bill_data['total_charges_data']=$total_charges_data;
             return $bill_data;
     }
-    public function find_taxes($row)
+    public function find_taxes($row,$finded_cateogry_slab_chareges)
     {
         $g_tax=ConsumerMeter::with(['bConsumer.bConsumerCategory','bConsumer.bConsumerCategory.hMtax'=>function($q){
             return $q->where('is_active',1);
@@ -203,7 +206,11 @@ class BillGenerateController extends Controller
         // $g_tax=GeneralTax::where('is_active',1)->get();
         $g_total_taxes=[];
         foreach ($g_tax->bConsumer->bConsumerCategory->hMtax as $key => $value) {
-            $g_total_taxes[]=['tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$row->offpeak_units];
+            if($value->applicable_on=='units')
+                $g_total_taxes[]=['tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$row->offpeak_units];
+            else
+                $g_total_taxes[]=['tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$finded_cateogry_slab_chareges['total_electricity_charges']];
+
         }
 
         // pr($g_total_taxes);
@@ -249,7 +256,7 @@ class BillGenerateController extends Controller
                     $finded_cateogry_slab_chareges=$this->find_consumer_category_slab_charges($value);
                     // dd($finded_cateogry_slab_chareges);
 
-                    $finded_taxes=$this->find_taxes($value);
+                    $finded_taxes=$this->find_taxes($value,$finded_cateogry_slab_chareges);
                     $total_taxes=0;
                     foreach ($finded_taxes as $tk => $tv) {
                         $total_taxes+=$tv['calculated_tax'];
@@ -265,14 +272,15 @@ class BillGenerateController extends Controller
                                                                     'offpeak_units'=>$value->offpeak_units,
                                                                     'currentbill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']),
                                                                     'total_taxes'=>round($total_taxes),
+                                                                    'total_charges'=>round($finded_cateogry_slab_chareges['total_charges_data']),
                                                                     'off_peak_bill_breakup'=>json_encode($finded_cateogry_slab_chareges['slab_wise_charges']),
                                                                     'charges_breakup'=>json_encode($finded_cateogry_slab_chareges['charges']),
                                                                     'taxes_breakup'=>json_encode($finded_taxes),
-                                                                    'WithinDuedate'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes),
-                                                                    'net_bill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes),
-                                                                    'GTotal'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes),
+                                                                    'WithinDuedate'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),
+                                                                    'net_bill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),
+                                                                    'GTotal'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),
                                                                     'DueDate'=>$request->due_date,
-                                                                    'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes),
+                                                                    'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),
                                                                     'l_p_surcharge'=>round($l_p_surcharge_percentage/100*$finded_cateogry_slab_chareges['total_electricity_charges']),
                                                                     'sub_cat_finded_id'=>$finded_cateogry_slab_chareges['sub_cat_finded_id']
                                                                 ]

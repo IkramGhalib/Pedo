@@ -38,6 +38,8 @@
                 <th>Tax Title</th>
                 <th>Consumer Type</th>
                 <th>Charges</th>
+                <th>Code</th>
+                <th>Applicable On</th>
                 <th> Status</th>
                 <th>Actions</th>
               </tr>
@@ -51,6 +53,8 @@
                 <td>{{$row->bTaxType->title}}</td>
                 <td>{{$row->bConsumerCategory->name}}</td>
                 <td>{{$row->tax_percentage}} </td>
+                <td>{{$row->code}} </td>
+                <td>{{$row->applicable_on}} </td>
                 <td>
                   @if($row->is_active)
                   <span class="badge badge-success">Active</span>

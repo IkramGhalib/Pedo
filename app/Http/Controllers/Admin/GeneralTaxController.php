@@ -45,6 +45,7 @@ class GeneralTaxController extends Controller
             'tax_title' => 'required|integer',
             'type' => 'required|integer',
             'status' => 'required',
+            'applicable' => 'required|in:units,charges',
            
         ]); 
         $check_rec=GeneralTax::where(['con_cat_id'=>$request->tax_title,'tax_type_id'=>$request->type])->first();    
@@ -57,6 +58,8 @@ class GeneralTaxController extends Controller
         $record->tax_percentage=$request->charges;
         $record->tax_type_id=$request->tax_title;
         $record->con_cat_id=$request->type;
+        $record->applicable_on=$request->applicable;
+        $record->code=$request->code;
         // dd($test);
         $record->save();
         return $this->return_output('flash', 'success', 'successfully added', 'admin/general-tax-list', '200');
@@ -66,7 +69,8 @@ class GeneralTaxController extends Controller
     public function edit($id)
     {
         $record=GeneralTax::find($id);
-        $consumer_category=ConsumerCategory::find($record->id);
+        $consumer_category=ConsumerCategory::find($record->con_cat_id);
+        // dd($consumer_category);
         $record_list=TaxType::all();
         // $courses = Course::all();
         return view('admin.general_tax.edit',compact('record','record_list','consumer_category'));
@@ -79,6 +83,7 @@ class GeneralTaxController extends Controller
             'tax_title' => 'required|integer',
             'type' => 'required|integer',
             'status' => 'required',
+            'applicable' => 'required|in:units,charges',
            
         ]); 
         $record=GeneralTax::find($id);
@@ -87,8 +92,10 @@ class GeneralTaxController extends Controller
         $record->tax_percentage=$request->charges;
         $record->tax_type_id=$request->tax_title;
         $record->con_cat_id=$request->type;
+        $record->applicable_on=$request->applicable;
        
         $record->is_active=$request->status;
+        $record->code=$request->code;
         $record->save();
         return $this->return_output('flash', 'success', 'successfully updated', 'admin/general-tax-list', '200');
     }

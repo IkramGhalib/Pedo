@@ -47,12 +47,23 @@
             </div>
 
           
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
               <label class="form-control-label">charges</label>
               <input required type="text" value="{{ $record->charges }}" class="form-control" name="charges"
                 placeholder=""/>
                 @if ($errors->has('charges'))
                     <label class="error" for="charges">{{ $errors->first('charges') }}</label>
+                @endif
+            </div>
+
+            <div class="form-group col-md-2">
+              <label class="form-control-label">Applicable on</label>
+              <select name="applicable" class="form-control"> 
+                <option value="units" @if($record->applicable_on=='units') {{'selected'}}@endif> Units</option>
+                <option value="charges" @if($record->applicable_on=='charges') {{'selected'}}@endif> Charges</option>
+              </select>
+                @if ($errors->has('applicable'))
+                    <label class="error" for="applicable">{{ $errors->first('applicable') }}</label>
                 @endif
             </div>
 

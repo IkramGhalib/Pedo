@@ -47,7 +47,7 @@
             </div>
 
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-2">
               <label class="form-control-label">charges</label>
               <input required type="text" value="{{ $record->tax_percentage }}" class="form-control" name="charges"
                 placeholder=""/>
@@ -56,6 +56,16 @@
                 @endif
             </div>
 
+            <div class="form-group col-md-2">
+              <label class="form-control-label">Applicable on</label>
+              <select name="applicable" class="form-control"> 
+                <option value="units" @if($record->applicable_on=='units') {{'selected'}}@endif> Units</option>
+                <option value="charges" @if($record->applicable_on=='charges') {{'selected'}}@endif> Charges</option>
+              </select>
+                @if ($errors->has('applicable'))
+                    <label class="error" for="applicable">{{ $errors->first('applicable') }}</label>
+                @endif
+            </div>
 
            
 
@@ -75,7 +85,20 @@
 
 
           
-
+          <div class="form-group col-md-4">
+            <label class="form-control-label">Code</label>
+            
+            <select name="code" class="form-control"> 
+              <option value=""> Select Code</option>
+            @foreach (config('code.code_type') as $r =>$row )
+            <option value="{{$r}}" @if($r==$record->code) {{'selected'}} @endif> {{$r}}</option>
+            @endforeach 
+  
+          </select>
+                @if ($errors->has('code'))
+                <label class="error" for="code">{{ $errors->first('code') }}</label>
+                @endif
+          </div>
 
          
     

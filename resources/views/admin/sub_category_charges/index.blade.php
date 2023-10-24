@@ -38,6 +38,7 @@
                 <th>Charges Type</th>
                 <th>Consumer Type</th>
                 <th>Charges</th>
+                <th>Applicable On</th>
                 <th> Status</th>
                 <th>Actions</th>
               </tr>
@@ -51,6 +52,7 @@
                 <td>{{$row->bChargesType->title}}</td>
                 <td>{{$row->bConSubCat->name}}</td>
                 <td>{{$row->charges}} </td>
+                <td>{{$row->applicable_on}} </td>
                 <td>
                   @if($row->is_active)
                   <span class="badge badge-success">Active</span>

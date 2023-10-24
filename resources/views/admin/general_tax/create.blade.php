@@ -47,12 +47,23 @@
             </div>
           
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-2">
               <label class="form-control-label">charges</label>
               <input required type="number" step="any" class="form-control" name="charges"
                 placeholder=""/>
                 @if ($errors->has('charges'))
                     <label class="error" for="charges">{{ $errors->first('charges') }}</label>
+                @endif
+            </div>
+
+            <div class="form-group col-md-2">
+              <label class="form-control-label">Applicable on</label>
+              <select name="applicable" class="form-control"> 
+                <option value="units"> Units</option>
+                <option value="charges"> Charges</option>
+              </select>
+                @if ($errors->has('applicable'))
+                    <label class="error" for="applicable">{{ $errors->first('applicable') }}</label>
                 @endif
             </div>
 
@@ -71,6 +82,24 @@
               </div>
             </div>
           </div>
+
+          <div class="form-group col-md-4">
+            <label class="form-control-label">Code</label>
+            
+            <select name="code" class="form-control"> 
+              <option value=""> Select Code</option>
+            @foreach (config('code.code_type') as $r =>$row )
+            <option value="{{$r}}"> {{$r}}</option>
+            @endforeach 
+  
+          </select>
+                @if ($errors->has('code'))
+                <label class="error" for="code">{{ $errors->first('code') }}</label>
+                @endif
+          </div>
+          
+          
+          
           </div>
           
           <div class="form-group row">

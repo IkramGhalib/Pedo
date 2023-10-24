@@ -36,7 +36,8 @@
               <tr>
                 <th>#</th>
                
-                <th>Consumer Code</th>
+                <th>C.Type</th>
+                <th>C.Code</th>
                 <th>Name</th>
                 <th>Father Name</th>
                 <th>CNIC</th>
@@ -53,6 +54,7 @@
               @foreach($instructors as $key=>$instructor)
               <tr>
                 <td>{{ $key+1}}</td>
+                <td>{{ $instructor->bConsumerCategory->name}}</td>
                 <td>{{ $instructor->consumer_code}}</td>
                 <td>{{ $instructor->full_name }} </td>
                 <td>{{ $instructor->father_name }}</td>

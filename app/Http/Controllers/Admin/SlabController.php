@@ -55,6 +55,7 @@ class SlabController extends Controller
 
         $record->slab_start_unit=$request->slab_start_unit;
         $record->slab_end_unit=$request->slab_end_unit;
+        $record->total_units=$request->slab_end_unit-$request->slab_start_unit+1;
 
         $record->sub_cat_id=$request->sub_type;
         $record->charges=$request->price;
@@ -76,10 +77,22 @@ class SlabController extends Controller
 
     public function update($id,Request $request)
     {
+        $request->validate([
+            // 'name' => 'required|string',
+            'slab_start_unit' => 'required|integer',
+            'slab_end_unit' => 'required|integer',
+            'sub_type' => 'required|integer',
+            'type' => 'required|integer',
+            'status' => 'required',
+            'price' => 'required|numeric',
+           
+        ]);    
+
         $record=Slab::find($id);
         $record->sub_cat_id=$request->sub_type;
         $record->slab_start_unit=$request->slab_start_unit;
         $record->slab_end_unit=$request->slab_end_unit;
+        $record->total_units=$request->slab_end_unit-$request->slab_start_unit+1;
         $record->charges=$request->price;
         $record->is_active=$request->status;
         $record->save();

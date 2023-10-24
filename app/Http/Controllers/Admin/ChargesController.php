@@ -47,6 +47,7 @@ class ChargesController extends Controller
             'charges_type' => 'required',
             'consumer_type' => 'required',
             'status' => 'required',
+            'applicable' => 'required|in:units,charges',
            
         ]);    
         $record=SubCategoryCharges::where('charges_type_id',$request->charges_type)->where('sub_cat_id',$request->consumer_type)->first();
@@ -65,6 +66,7 @@ class ChargesController extends Controller
             $record->charges_type_id=$request->charges_type;
             $record->sub_cat_id=$request->consumer_type;
             $record->charges=$request->charges;
+            $record->applicable_on=$request->applicable;
             // dd($test);
             $record->save();
         }
@@ -84,11 +86,20 @@ class ChargesController extends Controller
 
     public function update($id,Request $request)
     {
+        $request->validate([
+            'charges' => 'required|numeric',
+            'charges_type' => 'required',
+            'consumer_type' => 'required',
+            'status' => 'required',
+            'applicable' => 'required|in:units,charges',
+           
+        ]);    
         $record=SubCategoryCharges::find($id);
         $record->is_active=$request->status;
         $record->charges_type_id=$request->charges_type;
         $record->sub_cat_id=$request->consumer_type;
         $record->charges=$request->charges;
+        $record->applicable_on=$request->applicable;
         // dd($test);
         $record->save();
         return $this->return_output('flash', 'success', 'successfully updated', 'admin/charges-list', '200');

@@ -68,6 +68,40 @@
               
             </div>
           </div>
+        </div>
+
+          <div class="row">
+            <div class="form-group col-md-4">
+              <label class="form-control-label">Unit from</label>
+              <input required type="number" class="form-control" name="unit_from" value="{{$record->category_conditon_start}}"/>
+                @if ($errors->has('unit_from'))
+                    <label class="error" for="test_title">{{ $errors->first('unit_from') }}</label>
+                @endif
+            </div>
+
+
+           
+            <div class="form-group col-md-4">
+              <label class="form-control-label">Unit To</label>
+              <input required type="number" class="form-control" name="unit_to" value="{{$record->category_conditon_end}}"/>
+                @if ($errors->has('unit_to'))
+                    <label class="error" for="test_title">{{ $errors->first('unit_to') }}</label>
+                @endif
+            </div>
+
+
+           
+            <div class="form-group col-md-4">
+              <label class="form-control-label">Check Previous Month</label>
+              <input required type="number" class="form-control" name="months" value="{{$record->check_months}}"/>
+                @if ($errors->has('months'))
+                    <label class="error" for="test_title">{{ $errors->first('months') }}</label>
+                @endif
+            </div>
+
+
+          
+          
 
 
           

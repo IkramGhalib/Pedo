@@ -65,7 +65,7 @@ class ConsumerSubCategoryController extends Controller
     {
         $record=ConsumerSubCategory::find($id);
         $parant_record=ConsumerCategory::find($record->consumer_category_id);
-        // pr($record);
+        // dd($record);
 
         // $courses = Course::all();
         return view('admin.con_sub_category.edit',compact('record','parant_record'));
