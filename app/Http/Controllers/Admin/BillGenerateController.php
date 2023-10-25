@@ -16,6 +16,7 @@ use App\Models\GeneralTax;
 // use App\Models\SubDivision;
 use App\Models\BillGenerate;
 use App\Models\ConsumerBill;
+use App\Models\ConsumerLedger;
 use App\Models\Reading;
 use App\Models\ConsumerMeter;
 // use App\Models\Feeder;
@@ -120,60 +121,53 @@ class BillGenerateController extends Controller
             $current_cons_type= ConsumerMeter::with('bConsumer.bConsumerCategory.hMConSubCategory.hMSlabs')->where('ref_no',$record->ref_no)
             ->first();
 
-            // dd($current_cons_type);
+            // dd($record);
 
             $data=$current_cons_type->bConsumer->bConsumerCategory->hMConSubCategory;
+            //find catgory
             $data_with_slab=$data->where('category_conditon_start','<=',$record->offpeak_units) ->where('category_conditon_end','>=',$record->offpeak_units)->first();
 
             // dd($data);
             $charges=SubCategoryCharges::with('bChargesType')->where('sub_cat_id',$data_with_slab->id)->get();
-            $charges_data=[];
-            $total_charges_data=0;
-            if($charges)
-            {
-                foreach ($charges as $ky => $chgrow) {
-                    $charges_data[]=['charges'=>$chgrow->charges,'calculated_charges'=>$record->offpeak_units*$chgrow->charges,'charges_type'=>$chgrow->bChargesType->title];
-                    $total_charges_data+=$record->offpeak_units*$chgrow->charges;
-                }
-            }
+           
 
             $new_data = array();
             $units=$record->offpeak_units;
             $total_electricity_charges=0;
-
+            // if last slab is not applicable category
             if($data_with_slab->last_slab_apply==0)
             {
-            // $new_data = array();
-            // $units=$record->offpeak_units;
-            $slab_total_units=0;
-            // $total_electricity_charges=0;
-            $previou_end_unit=0;
-            foreach ($data_with_slab->hMSlabs as $key => $value) {
-                if($key==0)
-                {
-                    $slab_total_units=$value->slab_end_unit;
-                    $previou_end_unit=$value->slab_end_unit;
-                }
-                else
-                {
-                    $slab_total_units=$value->slab_end_unit-$previou_end_unit;
-                    $previou_end_unit=$value->slab_end_unit;
-                }
-                    if( $units >= $slab_total_units)
+                // $new_data = array();
+                // $units=$record->offpeak_units;
+                $slab_total_units=0;
+                // $total_electricity_charges=0;
+                $previou_end_unit=0;
+                foreach ($data_with_slab->hMSlabs as $key => $value) {
+                    if($key==0)
                     {
-                        $units=$units-$slab_total_units;
-                        $total_electricity_charges+=($slab_total_units*$value->charges);
-                        $new_data[]=['units'=>$slab_total_units,'charges'=>$value->charges];
+                        $slab_total_units=$value->slab_end_unit;
+                        $previou_end_unit=$value->slab_end_unit;
                     }
                     else
                     {
-                        $new_data[]=['units'=>$units,'charges'=>$value->charges];
-                        $total_electricity_charges+=($units*$value->charges);
-                        break;
+                        $slab_total_units=$value->slab_end_unit-$previou_end_unit;
+                        $previou_end_unit=$value->slab_end_unit;
                     }
+                        if( $units >= $slab_total_units)
+                        {
+                            $units=$units-$slab_total_units;
+                            $total_electricity_charges+=($slab_total_units*$value->charges);
+                            $new_data[]=['units'=>$slab_total_units,'charges'=>$value->charges];
+                        }
+                        else
+                        {
+                            $new_data[]=['units'=>$units,'charges'=>$value->charges];
+                            $total_electricity_charges+=($units*$value->charges);
+                            break;
+                        }
+                }
             }
-            }
-            else
+            else // if last slab is applicable category
             {
 
             
@@ -191,8 +185,44 @@ class BillGenerateController extends Controller
             }
             $bill_data['total_electricity_charges']=$total_electricity_charges;
             $bill_data['sub_cat_finded_id']=$data_with_slab->id;
-
             $bill_data['slab_wise_charges']=$new_data;
+
+            $charges_data=[];
+            $total_charges_data=0;
+            if($charges) // find charges
+            {
+                foreach ($charges as $ky => $chgrow) {
+                    if($chgrow->code==='FPA')
+                    {
+                        // get 2 months prevous reading
+                        $record->month_year;
+                        $previous_reading=DB::table('meter_readings')->where('month_year',(date('y-m-d ',strtotime($record->month_year.' -2 month' ))))->first();
+                        if($previous_reading)
+                        {
+                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>$previous_reading->offpeak_units*($chgrow->charges/100),'charges_type'=>$chgrow->bChargesType->title];
+                                $total_charges_data+=$previous_reading->offpeak_units*($chgrow->charges/100);
+                            
+                        }
+                    }
+                    else
+                    {
+                        if($chgrow->applicable_on==='units')
+                            {
+                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>$record->offpeak_units*($chgrow->charges/100),'charges_type'=>$chgrow->bChargesType->title];
+                                $total_charges_data+=$record->offpeak_units*($chgrow->charges/100);
+                            }  
+                            else
+                            {
+                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>$total_electricity_charges*($chgrow->charges/100),'charges_type'=>$chgrow->bChargesType->title];
+                                $total_charges_data+=$total_electricity_charges*($chgrow->charges/100);
+                            }
+                    }
+                }
+            }
+
+            // dd($charges);
+
+
             $bill_data['charges']=$charges_data;
             $bill_data['total_charges_data']=$total_charges_data;
             return $bill_data;
@@ -202,18 +232,69 @@ class BillGenerateController extends Controller
         $g_tax=ConsumerMeter::with(['bConsumer.bConsumerCategory','bConsumer.bConsumerCategory.hMtax'=>function($q){
             return $q->where('is_active',1);
         },'bConsumer.bConsumerCategory.hMtax.bTaxType'])->first();
-        // dd($g_tax->bConsumer->bConsumerCategory->hMtax);
+        // dd($finded_cateogry_slab_chareges);
         // $g_tax=GeneralTax::where('is_active',1)->get();
         $g_total_taxes=[];
         foreach ($g_tax->bConsumer->bConsumerCategory->hMtax as $key => $value) {
-            if($value->applicable_on=='units')
-                $g_total_taxes[]=['tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$row->offpeak_units];
+               
+                if($value->applicable_on=='units')
+                $g_total_taxes[]=['code'=>$value->code,'tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$row->offpeak_units];
             else
-                $g_total_taxes[]=['tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$finded_cateogry_slab_chareges['total_electricity_charges']];
+                $g_total_taxes[]=['code'=>$value->code,'tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$finded_cateogry_slab_chareges['total_electricity_charges']];
+            
+            
 
         }
+        // dd($g_total_taxes);
+        // calculate some tax on already calculated charges
+        foreach ($g_total_taxes as $key2 => $value2) {
+            if($value2['code']==='ED')
+            {
+                // filter charges array for QTRTA code charges. ED = % electricity charges+ Qurter Adjust
+                $arr = array_filter($finded_cateogry_slab_chareges['charges'], function($ar) {
+                    if($ar['code'] == 'QTRTA')
+                    return ['calculated_charges'=>$ar['calculated_charges']];
+                    else
+                    return [];
+                    });
 
-        // pr($g_total_taxes);
+                    // dd($arr);
+                    if(empty($arr))
+                        $g_total_taxes[$key2]['calculated_tax']=($value2['percentage']/100)* ($finded_cateogry_slab_chareges['total_electricity_charges']);
+                    else
+                    {
+                        $re_index_array=array_values($arr); 
+                        $g_total_taxes[$key2]['calculated_tax']=($value2['percentage']/100)*($finded_cateogry_slab_chareges['total_electricity_charges'] + $re_index_array[0]['calculated_charges'] );
+                        
+                    }
+                
+            }
+            else if($value2['code']==='EDFPA')
+            {
+                $arr = array_filter($finded_cateogry_slab_chareges['charges'], function($ar) {
+                    if($ar['code'] == 'FPA')
+                    return ['calculated_charges'=>$ar['calculated_charges']];
+                    else
+                    return [];
+                    });
+
+                    // dd($arr);
+
+                    // dd($arr);
+                    if(empty($arr))
+                        $g_total_taxes[$key2]['calculated_tax']=0 ;
+                    else
+                    {
+                        $re_index_array=array_values($arr); 
+                        $g_total_taxes[$key2]['calculated_tax']=($value2['percentage']/100)* $re_index_array[0]['calculated_charges'] ;
+                        
+                    }
+            }
+        }
+
+        // dd($g_total_taxes);
+       
+
         return $g_total_taxes;
 
     }
@@ -263,28 +344,37 @@ class BillGenerateController extends Controller
                     }
                     $currnt_offpeak_unit=$value->offpeak_units;
                     $l_p_surcharge_value=$finded_cateogry_slab_chareges['total_electricity_charges']*($l_p_surcharge_percentage/100);
-                    $reading_record=ConsumerBill::insert(
-                                                                [
-                                                                    'generate_bill_id'=>$record->id,
-                                                                    'reading_id'=>$value->id,
-                                                                    'ref_no'=>$value->ref_no,
-                                                                    'billing_month_year'=>$month_year,
-                                                                    'offpeak_units'=>$value->offpeak_units,
-                                                                    'currentbill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']),
-                                                                    'total_taxes'=>round($total_taxes),
-                                                                    'total_charges'=>round($finded_cateogry_slab_chareges['total_charges_data']),
-                                                                    'off_peak_bill_breakup'=>json_encode($finded_cateogry_slab_chareges['slab_wise_charges']),
-                                                                    'charges_breakup'=>json_encode($finded_cateogry_slab_chareges['charges']),
+
+                    
+                    $arrear=ConsumerLedger::where('consumer_id',$value->consumer_id)->sum('amount');
+                    // pr($arrear);
+                    $id=ConsumerBill::insertGetId(
+                        [
+                            'generate_bill_id'=>$record->id,
+                            'reading_id'=>$value->id,
+                            'consumer_id'=>$value->consumer_id,
+                            'ref_no'=>$value->ref_no,
+                            'billing_month_year'=>$month_year,
+                            'offpeak_units'=>$value->offpeak_units,
+                            'arrears'=>round($arrear),
+                            'currentbill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']),
+                            'total_taxes'=>round($total_taxes),
+                            'total_charges'=>round($finded_cateogry_slab_chareges['total_charges_data']),
+                            'off_peak_bill_breakup'=>json_encode($finded_cateogry_slab_chareges['slab_wise_charges']),
+                            'charges_breakup'=>json_encode($finded_cateogry_slab_chareges['charges']),
                                                                     'taxes_breakup'=>json_encode($finded_taxes),
-                                                                    'WithinDuedate'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),
+                                                                    'WithinDuedate'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+round($arrear)),
                                                                     'net_bill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),
-                                                                    'GTotal'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),
+                                                                    'GTotal'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+round($arrear)),
                                                                     'DueDate'=>$request->due_date,
-                                                                    'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),
+                                                                    'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+round($arrear)),
                                                                     'l_p_surcharge'=>round($l_p_surcharge_percentage/100*$finded_cateogry_slab_chareges['total_electricity_charges']),
                                                                     'sub_cat_finded_id'=>$finded_cateogry_slab_chareges['sub_cat_finded_id']
-                                                                ]
-                                                        );
+                                                                    ]
+                                                                );
+                                                                
+                                                                // add in ledger of consumer
+                            ConsumerLedger::insert(['consumer_id'=>$value->consumer_id,'amount'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),'bill_id'=>$id]);                            
                 }
                 return redirect()->back()->with(['success'=>'Action Completed']); 
                 

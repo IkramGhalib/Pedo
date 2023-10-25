@@ -79,6 +79,23 @@
                 @endif
             </div>
 
+            <div class="form-group col-md-4">
+              <label class="form-control-label">Code</label>
+              
+              <select name="code" class="form-control"> 
+                <option value=""> Select Code</option>
+              @foreach (config('chargescode.code_type') as $r =>$row )
+              <option value="{{$r}}"> {{$r}}</option>
+              @endforeach 
+    
+            </select>
+                  @if ($errors->has('code'))
+                  <label class="error" for="code">{{ $errors->first('code') }}</label>
+                  @endif
+            </div>
+
+            
+
 
           <div class="form-group col-md-3">
             <label class="form-control-label">Status</label>
@@ -94,6 +111,7 @@
             </div>
           </div>
 
+          
           </div>
           
           <div class="form-group row">

@@ -56,11 +56,12 @@
 
         $payable=$bill_data->currentbill;
         $cost_of_electricity=$bill_data->currentbill;
-        
+        $arrear=$bill_data->arrears;
         $payable_after_due_date=0;
         $lp_surcharge=$bill_data->l_p_surcharge;
-        $previous_reading='';
-        $current_reading=$bill_data->offpeak_units;
+        $previous_reading=$bill_data->prev_offpeak_reading;
+        $current_reading=$bill_data->offpeak_current_reading;
+        $total_units=0;
         $meter_connection_date=date('d M y',strtotime($bill_data->meter_connection_date));
 
         $current_bill=0;
@@ -123,7 +124,12 @@
                     
                 </td>
                 <td class="border-rb" style="text-align: center;">
-                    1.5%
+                    
+                    @foreach (json_decode($bill_data->taxes_breakup) as $kk =>$roww )
+                            @if($roww->code=='ED')
+                                {{$roww->percentage}} %
+                            @endif
+                    @endforeach
                     
                 </td>
                 <td class="border-rb" style="text-align: center;">
@@ -241,20 +247,8 @@
                 <td colspan="4" style="width: 453pt" class="border-r">
                     <table class="nested4">
                         <tbody><tr>
-                            <td colspan="1"></td>
-                            <td colspan="2">
-                                <h2 class="zeroMargin" id="govtMsg" visible="false"></h2>
-                            </td>
-                            <td colspan="2">
-                                <h2 class="zeroMargin display-none"> Net Metering Conn. </h2>
-                            </td>
-                            <td colspan="2">
-                                <h2 class="zeroMargin" hidden=""> Life Line Consumer</h2>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <p style="margin: 0; text-align: left; padding-left: 5px">
+                            <td colspan="3">
+                                <p style="margin: 0; text-align: left; padding-left: 20px">
                                     <span>NAME &amp; ADDRESS</span>
                                     <br>
                                     <span>{{$bill_data->full_name}}</span>
@@ -269,8 +263,37 @@
                                     
                                     
                                 </p>
+
                             </td>
-                            <td colspan="3" style="text-align: left">
+                            {{-- <td colspan="1">
+                                <h2 class="zeroMargin" id="govtMsg" visible="false"></h2>
+                            </td> --}}
+                            <td colspan="2">
+                                <h2 class="zeroMargin display-none"> Net Metering Conn. </h2>
+                            </td>
+                            <td colspan="2">
+                                <h2 class="zeroMargin" hidden=""> Life Line Consumer</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{-- <p style="margin: 0; text-align: left; padding-left: 20px">
+                                    <span>NAME &amp; ADDRESS</span>
+                                    <br>
+                                    <span>{{$bill_data->full_name}}</span>
+                                    <br>
+                                    <span>{{$bill_data->father_name}}</span>
+                                    <br>
+                                    <span>{{$bill_data->address}}</span>
+                                    <br>
+                                    <!-- <span>CHD</span> -->
+                                    <!-- <br> -->
+                                    <!-- <span></span> -->
+                                    
+                                    
+                                </p> --}}
+                            </td>
+                            <td colspan="3" style="text-align: left;">
                                 <h2 class="color-red">Say No To Corruption</h2>
                                 
 
@@ -296,7 +319,8 @@
                             </td> 
                             <td colspan="5" style="margin-top: 0;" class="border-b">
                                 <strong lang="ur" dir="rtl" style="font-size: 16px">
-                                                                        معزز صارف : بجلی کے بل میں ایندھن کی قیمت کا فرق   (FPA)دو ماہ بعد شامل کیا جاتا ہے آپ کے  اس بل میں JUL 23 کے صرف شدہ 161 یونٹس کے ایندھن کی قیمت کے  469.54 روپے بھی شامل ہیں
+                                    &nbsp;
+                                                                        {{-- معزز صارف : بجلی کے بل میں ایندھن کی قیمت کا فرق   (FPA)دو ماہ بعد شامل کیا جاتا ہے آپ کے  اس بل میں JUL 23 کے صرف شدہ 161 یونٹس کے ایندھن کی قیمت کے  469.54 روپے بھی شامل ہیں --}}
                                 </strong>
                             </td>
                         </tr>
@@ -331,7 +355,7 @@
                             {{$current_reading}}<br>
                             </td>
                             <td class="border-r">
-                                1<br>
+                                <br>
                             </td>
                             <td class="border-r">
                                 {{$offpeak_units}}<br>
@@ -362,80 +386,29 @@
                         </tr>
                        
                       
+                        @foreach ($payment_and_bill as $pabkey => $rpnb )
                         <tr style="height: 17px" class="content">
+                                
                             <td class="border-r">
+                                {{date('M,y',strtotime($rpnb->billing_month_year))}}
+                            </td>
+                           
+                            <td class="border-r">
+                                  {{$rpnb->offpeak_units}}
                                
                             </td>
                             <td class="border-r">
-                                  
-                               
-                            </td>
-                            <td class="border-r">
-                               
+                                {{$rpnb->WithinDuedate}}
                             </td>
                             <td>
-                               
+                                {{$rpnb->paid_amount}}
                             </td>
                         </tr>
-                        <tr style="height: 17px" class="content">
-                            <td class="border-r">
-                                
-                            </td>
-                            <td class="border-r">
-                                  
-                                
-                            </td>
-                            <td class="border-r">
-                                
-                            </td>
-                            <td>
-                               
-                            </td>
-                        </tr>
-                        <tr style="height: 17px" class="content">
-                            <td class="border-r">
-                               
-                            </td>
-                            <td class="border-r">
-                                  
-                               
-                            </td>
-                            <td class="border-r">
-                               
-                            </td>
-                            <td>
-                                
-                            </td>
-                        </tr>
-                        <tr style="height: 17px" class="content">
-                            <td class="border-r">
-                                
-                            </td>
-                            <td class="border-r">
-                                  
-                                
-                            </td>
-                            <td class="border-r">
-                                
-                            </td>
-                            <td>
-                                
-                            </td>
-                        </tr>
-                        <tr style="height: 17px" class="content">
-                            <td class="border-r">
-                                
-                            <td class="border-r">
-                                  
-                                
-                            </td>
-                            <td class="border-r">
-                               
-                            </td>
-                            <td>
-                                
-                            </td>
-                        </tr>
+                        @endforeach
+                        
+                        
+                        
+                        
                         
                     </tbody></table>
                 </td>
@@ -446,7 +419,7 @@
                 <tbody><tr class="fontsize" style="height: 28px; width: 100%">
                     <td colspan="2" class="border-rb" style="text-align: center; font-size: 16px; background-color: #B2E6FF">
                         <b>
-                            PESCO
+                            PEDO
                             CHARGES
                         </b>
                     </td>
@@ -522,30 +495,16 @@
                     </td>
                     <td class="border-rb" style="background-color: #FFB2B2;" rowspan="3">
                         
-                        <b>GST ON FPA </b>
-                        <br>
-                        <b>ED ON FPA </b>
-                        <br>
-                        <b>FURTHER TAX ON FPA</b>
-                        <br>
-                        <b>S.TAX ON FPA</b>
-                        <br>
-                        <b>IT ON FPA </b>
-                        <br>
-                        <b>ET ON FPA</b>
-                        <br>
-                        <span>&ensp;-----------------------------&ensp;</span>
-                        <br>
-                        <b>TOTAL TAXES ON FPA</b>
+                        
                         
                     </td>
                     <td class="border-rb content" rowspan="3">
                         
-                        71
+                        
                         <br>
-                        5.89
+                        
                         <br>
-                        `
+                        
                                 
                         <br>
                         
@@ -554,7 +513,7 @@
                         <br>
                         
                         <br>
-                        <span>&ensp;-----------------------------&ensp;</span><br> 76.89
+                        &ensp;&ensp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                         
                     </td>
@@ -646,7 +605,7 @@
                         <b>TOTAL</b>
                     </td>
                     <td class="border-rb content" style="text-align: center">
-                        1533.89
+                        {{$gov_total}}
                     </td>
                 </tr>
                 <tr style="height: 32px;" class="fontsize">
@@ -699,7 +658,7 @@
                         <b>ARREAR/AGE</b>
                     </td>
                     <td colspan="3" class="border-b  nestedtd2width content">
-                        0
+                        {{$arrear}}
                     </td>
                 </tr>
                 <tr class="fontsize" style="height: 24px;">

@@ -176,9 +176,9 @@ a {
     <td class="col2">{{$row->ref_no}}</td>
     <td class="col3">{{app_month_format($row->billing_month_year)}}</td>
     {{-- <td class="col1"> {{$row->offpeak_units}}</td> --}}
-    <td class="col4 text-right">{{$row->currentbill}}</td>
+    <td class="col4 text-right">{{$row->gTotal}}</td>
   </tr>
-  <?php $c++; $total+=$row->currentbill ?>
+  <?php $c++; $total+=$row->gTotal ?>
   @endforeach
   
  

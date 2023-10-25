@@ -97,20 +97,60 @@ class ReadingController extends Controller
             // 'off_peak_image' =>Rule::when($request->offpeak != null, 'required'),
             // 'peak_image' =>Rule::when($request->peak != null, 'required')
         ]);
-       $mont_year_array=explode('-',$request->month_year);
-        $reading_record=Reading::where('ref_no',$request->ref_no)->where('year',$mont_year_array[0])->where('month',$mont_year_array[1])->first();
-       if($reading_record)
+        // dd($request->all());
+    //    $mont_year=explode('-',$request->month_year.'-01');
+       $mont_year=date('y-m-d ',strtotime($request->month_year));
+        $reading_record=Reading::where('ref_no',$request->ref_no)->where('month_year',$mont_year)->first();
+        if($reading_record)
        {
-        return redirect()->back()->with(['error'=>'Record Already Exits']);
-       }else
-       {
+           return redirect()->back()->with(['error'=>'Record Already Exits']);
+        }else
+        {
+           $rec=DB::table('consumer_meters')->select('consumer_id')->where('ref_no',$request->ref_no)->first();
+        //  --------------------------------------------------------------
+        // offpeak_prev
+        // $current_record=Reading::where('month_year',(date('y-m-d ',strtotime($approve_record->month_year))))->first();
+          
+        // {
+            
+            // Reading::where('id',$reading_record->id)->update(['is_verified'=>1,'varifier'=>Auth::id(),'offpeak_units'=>$off_peak_units,'peak_units'=>$peak_units]);
+        // }
+        //  --------------------------------------------------------------
+
+
                 $record=new Reading();
                 $record->ref_no=$request->ref_no;
-                $record->year=$mont_year_array[0];
-                $record->month=$mont_year_array[1];
-                $record->month_year=$request->month_year.'-01';
+                $record->year=(date('y',strtotime($mont_year)));
+                $record->month=(date('m',strtotime($mont_year)));
+                $record->month_year=$mont_year;
                 $record->offpeak=$request->offpeak;
                 $record->peak=$request->peak;
+                $record->consumer_id=$rec->consumer_id;
+
+                $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($mont_year.' -1 month' ))))->first();
+                $off_peak_units=0;
+                $peak_units=0;
+                $offpeak_pre=0;
+            
+                if($pre_record)
+                {
+                    $off_peak_units=abs($pre_record->offpeak-$request->offpeak );
+                    $peak_units=abs($pre_record->peak-$request->peak );
+
+                    $offpeak_pre=abs($pre_record->offpeak );
+                }
+                else
+                {
+                    $off_peak_units=abs($request->offpeak);
+                    $peak_units=abs($request->peak);
+                    $offpeak_pre=0;
+                }
+
+                $record->peak_units=$peak_units;
+                $record->offpeak_units=$off_peak_units;
+                $record->offpeak_prev=$offpeak_pre;
+
+
                 if($request->hasFile('peak_image'))
                     {
                         $food_image = time().'p'. '.' . $request->peak_image->getClientOriginalExtension();
@@ -164,6 +204,35 @@ class ReadingController extends Controller
                 $record->month_year=$request->month_year.'-01';
                 $record->offpeak=$request->offpeak;
                 $record->peak=$request->peak;
+
+                $rec=DB::table('consumer_meters')->select('consumer_id')->where('ref_no',$request->ref_no)->first();
+
+                $record->consumer_id=$rec->consumer_id;
+
+                $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' ))))->first();
+                $off_peak_units=0;
+                $peak_units=0;
+                $offpeak_pre=0;
+            
+                if($pre_record)
+                {
+                    $off_peak_units=abs($pre_record->offpeak-$request->offpeak );
+                    $peak_units=abs($pre_record->peak-$request->peak );
+
+                    $offpeak_pre=abs($pre_record->offpeak );
+                }
+                else
+                {
+                    $off_peak_units=abs($reading_record->offpeak);
+                    $peak_units=abs($reading_record->peak);
+                    $offpeak_pre=0;
+                }
+
+                $record->peak_units=$peak_units;
+                $record->offpeak_units=$off_peak_units;
+                $record->offpeak_pre=$offpeak_pre;
+
+
                 if($request->hasFile('peak_image'))
                     {
                         $food_image = time().'p'. '.' . $request->peak_image->getClientOriginalExtension();
@@ -209,21 +278,22 @@ class ReadingController extends Controller
                 $current_record=Reading::where('month_year',(date('y-m-d ',strtotime($approve_record->month_year))))->first();
                 foreach ($current_record as $key => $value) 
                 {
-                    $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($current_record->month_year.' -1 month' ))))->first();
-                    $off_peak_units=0;
-                    $peak_units=0;
+                    // $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($current_record->month_year.' -1 month' ))))->first();
+                    // $off_peak_units=0;
+                    // $peak_units=0;
                 
-                    if($pre_record)
-                    {
-                        $off_peak_units=abs($pre_record->offpeak-$current_record->offpeak );
-                        $peak_units=abs($pre_record->peak-$current_record->peak );
-                    }
-                    else
-                    {
-                        $off_peak_units=abs($current_record->offpeak);
-                        $peak_units=abs($current_record->peak);
-                    }
-                    Reading::where('id',$current_record->id)->update(['is_verified'=>1,'varifier'=>Auth::id(),'offpeak_units'=>$off_peak_units,'peak_units'=>$peak_units]);
+                    // if($pre_record)
+                    // {
+                    //     $off_peak_units=abs($pre_record->offpeak-$current_record->offpeak );
+                    //     $peak_units=abs($pre_record->peak-$current_record->peak );
+                    // }
+                    // else
+                    // {
+                    //     $off_peak_units=abs($current_record->offpeak);
+                    //     $peak_units=abs($current_record->peak);
+                    // }
+                    // Reading::where('id',$current_record->id)->update(['is_verified'=>1,'varifier'=>Auth::id(),'offpeak_units'=>$off_peak_units,'peak_units'=>$peak_units]);
+                    Reading::where('id',$current_record->id)->update(['is_verified'=>1,'varifier'=>Auth::id()]);
                 }
                 DB::table('reading_approve')->where('id',$request->id)->update(['is_verified'=>1]);
                 DB::commit();

@@ -14,6 +14,7 @@ use App\Models\Role;
 // use App\Models\Reading;
 use App\Models\PaymentReceive;
 use App\Models\ReadingApprove;
+use App\Models\ConsumerLedger;
 // use App\Models\Feeder;
 // use App\Models\Credit;
 // use App\Models\WithdrawRequest;
@@ -125,21 +126,26 @@ class ReceivePaymentController extends Controller
        $payment_month=date('Y-m-d',strtotime($request->payment_month));
     //    pr($payment_month);
         $data=PaymentReceive::where('ref_no',$request->ref_no)->where('payment_month',$payment_month)->first();
+        $bill_data=ConsumerBill::where('ref_no',$request->ref_no)->where('payment_month',$payment_month)->first();
         // pr($record);
        if($data)
        {
         return response()->json(['success'=>'false','message'=>'Record Exits. Cant not Add Again']);
        }else
        {
+                $rec=DB::table('consumer_meters')->select('consumer_id')->where('ref_no',$request->ref_no)->first();
                 $record=new PaymentReceive();
                 $record->ref_no=$request->ref_no;
                 $record->payment_month=$payment_month;
                 $record->payment_date=$request->payment_date;
                 $record->bank_id=$request->bank;
                 $record->payment_amount=$request->amount;
-                // $record->peak=$request->peak;
-                
+                $record->conumer_id=$rec->consumer_id;
+                $record->bill_id=$bill_data->id;
                 $record->save();
+
+
+                ConsumerLedger::insert(['consumer_id'=>$rec->consumer_id,'amount'=> -($request->amount),'payment_id'=>$record->id]);
                 // return redirect()->back()->with(['success'=>'Action Completed']); 
                 return response()->json(['success'=>'true','message'=>'Action Completed']); 
 

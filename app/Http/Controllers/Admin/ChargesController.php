@@ -67,6 +67,7 @@ class ChargesController extends Controller
             $record->sub_cat_id=$request->consumer_type;
             $record->charges=$request->charges;
             $record->applicable_on=$request->applicable;
+            $record->code=$request->code;
             // dd($test);
             $record->save();
         }
@@ -100,6 +101,7 @@ class ChargesController extends Controller
         $record->sub_cat_id=$request->consumer_type;
         $record->charges=$request->charges;
         $record->applicable_on=$request->applicable;
+        $record->code=$request->code;
         // dd($test);
         $record->save();
         return $this->return_output('flash', 'success', 'successfully updated', 'admin/charges-list', '200');

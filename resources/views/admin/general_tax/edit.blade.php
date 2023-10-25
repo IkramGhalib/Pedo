@@ -90,7 +90,7 @@
             
             <select name="code" class="form-control"> 
               <option value=""> Select Code</option>
-            @foreach (config('code.code_type') as $r =>$row )
+            @foreach (config('taxcode.code_type') as $r =>$row )
             <option value="{{$r}}" @if($r==$record->code) {{'selected'}} @endif> {{$r}}</option>
             @endforeach 
   
