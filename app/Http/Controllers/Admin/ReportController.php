@@ -40,9 +40,10 @@ class ReportController extends Controller
         $reading=Reading::where('month_year',$request->month.'-01');
         if($request->condition && $request->unit)
         $reading=$reading->where('offpeak_units',$request->condition,$request->unit);
-
-        $record=$reading->get();
-        $fields=$request->all();
+    
+    $record=$reading->get();
+    $fields=$request->all();
+    // dd($record);
         if($request->report_style=='v')
         {
 

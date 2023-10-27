@@ -208,8 +208,8 @@ class BillGenerateController extends Controller
                     {
                         if($chgrow->applicable_on==='units')
                             {
-                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>$record->offpeak_units*($chgrow->charges/100),'charges_type'=>$chgrow->bChargesType->title];
-                                $total_charges_data+=$record->offpeak_units*($chgrow->charges/100);
+                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>$record->offpeak_units*($chgrow->charges),'charges_type'=>$chgrow->bChargesType->title];
+                                $total_charges_data+=$record->offpeak_units*($chgrow->charges);
                             }  
                             else
                             {

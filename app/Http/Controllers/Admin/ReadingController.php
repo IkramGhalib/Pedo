@@ -275,7 +275,7 @@ class ReadingController extends Controller
                     $approve_record->save();
                 }
 
-                $current_record=Reading::where('month_year',(date('y-m-d ',strtotime($approve_record->month_year))))->first();
+                $current_record=Reading::where('month_year',$approve_record->month_year)->get();
                 foreach ($current_record as $key => $value) 
                 {
                     // $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($current_record->month_year.' -1 month' ))))->first();
@@ -293,7 +293,7 @@ class ReadingController extends Controller
                     //     $peak_units=abs($current_record->peak);
                     // }
                     // Reading::where('id',$current_record->id)->update(['is_verified'=>1,'varifier'=>Auth::id(),'offpeak_units'=>$off_peak_units,'peak_units'=>$peak_units]);
-                    Reading::where('id',$current_record->id)->update(['is_verified'=>1,'varifier'=>Auth::id()]);
+                    Reading::where('id',$value->id)->update(['is_verified'=>1,'varifier'=>Auth::id()]);
                 }
                 DB::table('reading_approve')->where('id',$request->id)->update(['is_verified'=>1]);
                 DB::commit();

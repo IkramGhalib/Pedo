@@ -15,6 +15,7 @@ use App\Models\Role;
 use App\Models\PaymentReceive;
 use App\Models\ReadingApprove;
 use App\Models\ConsumerLedger;
+use App\Models\ConsumerBill;
 // use App\Models\Feeder;
 // use App\Models\Credit;
 // use App\Models\WithdrawRequest;
@@ -126,7 +127,7 @@ class ReceivePaymentController extends Controller
        $payment_month=date('Y-m-d',strtotime($request->payment_month));
     //    pr($payment_month);
         $data=PaymentReceive::where('ref_no',$request->ref_no)->where('payment_month',$payment_month)->first();
-        $bill_data=ConsumerBill::where('ref_no',$request->ref_no)->where('payment_month',$payment_month)->first();
+        $bill_data=ConsumerBill::where('ref_no',$request->ref_no)->where('billing_month_year',$payment_month)->first();
         // pr($record);
        if($data)
        {
