@@ -80,7 +80,7 @@ class ConsumerController extends Controller
             'cnic' => 'required|string|unique:consumers',
             'mobile' => 'required|string',
             'consumer_code' => 'required|string',
-            'ref_no' => 'required|string',
+            'mannual_ref_no' => 'required|integer|unique:consumer_meters',
             'address' => 'required|string',
             'connection_date' => 'required|string',
             'meter_no' => 'required',
@@ -98,7 +98,7 @@ class ConsumerController extends Controller
         $subDivision=SubDivision::find($request->sub_division);
         $feeder=Feeder::find($request->feeder);
 
-        $new_ref_no=$division->division_code.$subDivision->sub_division_code.$feeder->feeder_code.$request->ref_no;
+        $new_ref_no=$division->division_code.$subDivision->sub_division_code.$feeder->feeder_code.$request->mannual_ref_no;
 
         $check_data=DB::table('consumer_meters')->where('ref_no',$new_ref_no)->first();
         if($check_data)
@@ -135,8 +135,11 @@ class ConsumerController extends Controller
 
         // pr($meter_data);
        
-        DB::table('consumer_meters')->insert(['ref_no'=>$new_ref_no,
-        'consumer_id'=>$cousumer->id,
+        DB::table('consumer_meters')->insert(
+        [
+            'mannual_ref_no'=>$request->mannual_ref_no,
+            'ref_no'=>$new_ref_no,
+            'consumer_id'=>$cousumer->id,
         'meter_id'=>$request->meter_no,
         'connection_date'=>$request->connection_date,
         'definition_date'=>$request->definition_date,
@@ -149,8 +152,9 @@ class ConsumerController extends Controller
                 DB::commit();
                 return redirect()->back()->with(['success'=>'Action Completed']); 
         } catch (\Exception $e) {  
+            // dd($e->getMessage());
             DB::rollback();
-            return redirect()->back()->with(['error'=>'Action Failed']); 
+            return redirect()->back()->with(['error'=>'Action Failed '.$e->getMessage()]); 
         }  
 
        

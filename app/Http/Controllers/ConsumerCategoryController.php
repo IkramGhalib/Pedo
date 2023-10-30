@@ -40,12 +40,15 @@ class ConsumerCategoryController extends Controller
 
         $request->validate([
             'name' => 'required|string',
+            'tarrif_code' => 'required|string',
             'status' => 'required',
            
         ]);     
         $record=new ConsumerCategory();
         $record->is_active=$request->status;
+
         $record->name=$request->name;
+        $record->tarrif_code=$request->tarrif_code;
         // dd($test);
         $record->save();
         return $this->return_output('flash', 'success', 'successfully added', 'admin/consumer-category-list', '200');
@@ -63,6 +66,7 @@ class ConsumerCategoryController extends Controller
     {
         $record=ConsumerCategory::find($id);
         $record->name=$request->name;
+        $record->tarrif_code=$request->tarrif_code;
        
         $record->is_active=$request->status;
         // dd($test);

@@ -148,21 +148,23 @@ a {
     <td class="titleTd col4 text-right" colspan='1'></td>
   </tr>
   <tr class="subtitleTr">
-    <td class="titleTd col1" colspan=2></td>
-    <td class="titleTd col4 text-right" colspan=2> &nbsp;  &nbsp; </td>
+    <td class="titleTd " colspan=2></td>
+    <td class="titleTd  text-right" colspan=2> &nbsp;  &nbsp; </td>
   </tr>
 
   <tr></tr>
 
   <tr class="headingTr">
-  <td class="text-center strong" colspan="4"> Readings</td>
+  <td class="text-center strong" colspan="6"> Readings</td>
   </tr>
   <tr class="headingTr">
-    <td class="headingTd col1">#</td>
-    <td class="headingTd col2">Refrence No</td>
-    <td class="headingTd col3">Month </td>
-    {{-- <td class="headingTd col1">PAID FROM</td> --}}
-    <td class="headingTd col4 text-right">Units</td>
+    <td class="headingTd ">#</td>
+    <td class="headingTd ">Refrence No</td>
+    <td class="headingTd ">Month </td>
+    <td class="headingTd ">Prev.Reading </td>
+    <td class="headingTd ">Cur.Reading </td>
+    {{-- <td class="headingTd ">PAID FROM</td> --}}
+    <td class="headingTd  text-right">Units</td>
   </tr>
   <?php $c=1; 
   $total=0;
@@ -172,11 +174,13 @@ a {
   
 
   <tr>
-    <td class="col1">{{$c}}</td>
-    <td class="col2">{{$row->ref_no}}</td>
-    <td class="col3">{{app_month_format($row->month_year)}}</td>
-    {{-- <td class="col1"> {{$row->offpeak_units}}</td> --}}
-    <td class="col4 text-right">{{$row->offpeak_units}}</td>
+    <td class="">{{$c}}</td>
+    <td class="">{{$row->ref_no}}</td>
+    <td class="">{{app_month_format($row->month_year)}}</td>
+    {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
+    <td >{{$row->offpeak_prev}}</td>
+    <td >{{$row->offpeak}}</td>
+    <td class=" text-right">{{$row->offpeak_units}}</td>
   </tr>
   <?php $c++; $total+=$row->offpeak_units ?>
   @endforeach
@@ -184,9 +188,9 @@ a {
  
 
   <tr class="headingTr">
-    <td class="headingTd col1" colspan="2"></td>
-    <td class="headingTd col3 text-right">TOTAL</td>
-    <td class="headingTd col4 text-right">
+    <td class="headingTd " colspan="4"></td>
+    <td class="headingTd  text-right">TOTAL</td>
+    <td class="headingTd  text-right">
       <?= $total ?></td>
   </tr>
   

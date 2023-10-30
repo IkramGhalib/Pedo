@@ -48,7 +48,7 @@ class ReadingController extends Controller
 
     public function reading_show()
     {
-        $paginate_count = 5000;
+        $paginate_count = 50;
         
         $list = DB::table('meter_readings')->orderBy('id')->where('is_verified',0)->paginate($paginate_count);
         return view('admin.reading.index', compact('list'));
@@ -90,20 +90,30 @@ class ReadingController extends Controller
 
     public function reading_save(Request $request)
     {
-        $request->validate([
+        // $request->validate([
+        //     'ref_no' => 'required',
+        //     'month_year' => 'required',
+        //     'offpeak' => 'required_without:peak',
+        //     // 'off_peak_image' =>Rule::when($request->offpeak != null, 'required'),
+        //     // 'peak_image' =>Rule::when($request->peak != null, 'required')
+        // ]);
+        $validator = Validator::make($request->all(), [
             'ref_no' => 'required',
             'month_year' => 'required',
             'offpeak' => 'required_without:peak',
             // 'off_peak_image' =>Rule::when($request->offpeak != null, 'required'),
             // 'peak_image' =>Rule::when($request->peak != null, 'required')
         ]);
+        if ($validator->fails()) return error('Fill Required Filed.', $validator->errors(), 422);
+
         // dd($request->all());
     //    $mont_year=explode('-',$request->month_year.'-01');
        $mont_year=date('y-m-d ',strtotime($request->month_year));
         $reading_record=Reading::where('ref_no',$request->ref_no)->where('month_year',$mont_year)->first();
         if($reading_record)
        {
-           return redirect()->back()->with(['error'=>'Record Already Exits']);
+        //    return redirect()->back()->with(['error'=>'Record Already Exits']);
+           return error('Record Already Exits', [], 422);
         }else
         {
            $rec=DB::table('consumer_meters')->select('consumer_id')->where('ref_no',$request->ref_no)->first();
@@ -127,14 +137,17 @@ class ReadingController extends Controller
                 $record->peak=$request->peak;
                 $record->consumer_id=$rec->consumer_id;
 
-                $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($mont_year.' -1 month' ))))->first();
+                $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($mont_year.' -1 month' ))))->where('ref_no',$request->ref_no)->first();
                 $off_peak_units=0;
                 $peak_units=0;
                 $offpeak_pre=0;
             
                 if($pre_record)
                 {
-                    $off_peak_units=abs($pre_record->offpeak-$request->offpeak );
+                    $off_peak_units=$request->offpeak-$pre_record->offpeak;
+                    if($off_peak_units<0)
+                    return error('Reading is Wrong', [], 422);
+
                     $peak_units=abs($pre_record->peak-$request->peak );
 
                     $offpeak_pre=abs($pre_record->offpeak );
@@ -165,12 +178,25 @@ class ReadingController extends Controller
                         $record->offpkimage=$food_image;
                     }
                 $record->save();
-                return redirect()->back()->with(['success'=>'Action Completed']); 
+                // return redirect()->back()->with(['success'=>'Action Completed']); 
+                return success('Action Completed',[] );
                 
        }
     }
 
-    
+    public function get_data_agaist_reading(Request $request)
+    {
+    //    $m= date('Y-m-d',strtotime($request->month_year));
+        $record=DB::table('meter_readings')
+        // ->join('consumers','consumers.id','=','consumer_meters.consumer_id')
+        ->where('ref_no',$request->ref_no)
+        ->where('month_year',date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' )))
+        ->first();
+        // echo json_encode($record);
+        return success('right',$record );
+           
+            // echo json_encode(ConsumerSubCategory::where('is_active',1)->where('consumer_category_id',$request->parent_id)->where('name','like',$request->search.'%')->get());
+    }
     public function reading_edit($id)
     {
         
@@ -209,7 +235,7 @@ class ReadingController extends Controller
 
                 $record->consumer_id=$rec->consumer_id;
 
-                $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' ))))->first();
+                $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' ))))->where('ref_no',$request->ref_no)->first();
                 $off_peak_units=0;
                 $peak_units=0;
                 $offpeak_pre=0;
@@ -270,14 +296,16 @@ class ReadingController extends Controller
                 else
                 {
                     $approve_record= new ReadingApprove();
-                    $approve_record->month_year= date('y-m-d ',strtotime($request->month_year));
+                    $approve_record->month_year= date('y-m-d',strtotime($request->month_year));
                     $approve_record->is_verified= 1;
+                    $approve_record->varify_by= auth()->user()->id;
+                    
                     $approve_record->save();
                 }
 
                 $current_record=Reading::where('month_year',$approve_record->month_year)->get();
-                foreach ($current_record as $key => $value) 
-                {
+                // foreach ($current_record as $key => $value) 
+                // {
                     // $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($current_record->month_year.' -1 month' ))))->first();
                     // $off_peak_units=0;
                     // $peak_units=0;
@@ -293,9 +321,11 @@ class ReadingController extends Controller
                     //     $peak_units=abs($current_record->peak);
                     // }
                     // Reading::where('id',$current_record->id)->update(['is_verified'=>1,'varifier'=>Auth::id(),'offpeak_units'=>$off_peak_units,'peak_units'=>$peak_units]);
-                    Reading::where('id',$value->id)->update(['is_verified'=>1,'varifier'=>Auth::id()]);
-                }
-                DB::table('reading_approve')->where('id',$request->id)->update(['is_verified'=>1]);
+                    // Reading::where('id',$value->id)->update(['is_verified'=>1,'varifier'=>Auth::id()]);
+                // }
+                Reading::where('month_year',$approve_record->month_year)->update(['is_verified'=>1]);
+
+                // DB::table('reading_approve')->where('id',$request->id)->update(['is_verified'=>1]);
                 DB::commit();
                 // echo json_encode(['success'=>'true','message'=>'Action Completed']);
                 return $this->return_output('flash', 'success', 'Record Add successfully', 'meter-reading-approve-lists', '200');

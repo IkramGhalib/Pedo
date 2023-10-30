@@ -260,6 +260,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('meter-reading-lists', [ReadingController::class, 'reading_show'])->name('reading.lists');
         Route::get('meter-reading-form', [ReadingController::class, 'reading_form'])->name('reading.form');
         Route::post('meter-reading-form', [ReadingController::class, 'reading_save'])->name('reading.save');
+
+        Route::get('get_data_agaist_reading', [ReadingController::class, 'get_data_agaist_reading'])->name('get_data_agaist_reading');
+        
+
         Route::get('meter-reading-edit/{id}', [ReadingController::class, 'reading_edit'])->name('reading.edit');
         Route::post('meter-reading-update/{id}', [ReadingController::class, 'reading_update'])->name('reading.update');
         Route::get('meter-reading-disable/{id}', [ReadingController::class, 'reading_disable'])->name('reading.disable');

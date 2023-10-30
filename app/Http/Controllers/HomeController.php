@@ -162,6 +162,7 @@ class HomeController extends Controller
                 
                 ->leftJoin('payment_receives', 'payment_receives.bill_id', '=', 'consumer_bills.id')
                 ->where('consumer_bills.consumer_id',$bill_data->consumer_id)
+                ->where('consumer_bills.id','!=',$bill_id)
                 // ->groupBy('courses.id')
                 // ->limit(8)
                 ->orderBy('consumer_bills.id', 'desc')

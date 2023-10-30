@@ -167,10 +167,10 @@
                     {{$bill_data->consumer_id}} 
                     </td>
                     <td class="border-rb" style="text-align: center;">
-                        A-1a(01)
+                    {{$bill_data->tarrif_code}} 
                     </td>
                     <td class="border-rb" style="text-align: center;">
-                        2
+                        
                     </td>
                     <td class="border-rb" style="text-align: center;">
                         

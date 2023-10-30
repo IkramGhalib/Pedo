@@ -28,6 +28,15 @@
                 @endif
             </div>
 
+            <div class="form-group col-md-2">
+              <label class="form-control-label">Tarrif Code</label>
+              <input required type="text" class="form-control" name="tarrif_code" value="{{ $record->tarrif_code }}"
+                />
+                @if ($errors->has('tarrif_code'))
+                    <label class="error" for="tarrif_code">{{ $errors->first('tarrif_code') }}</label>
+                @endif
+            </div>
+
           <div class="form-group col-md-4">
             <label class="form-control-label">Status</label>
             <div>

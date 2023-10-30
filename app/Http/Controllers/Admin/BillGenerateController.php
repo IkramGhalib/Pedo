@@ -121,7 +121,7 @@ class BillGenerateController extends Controller
             $current_cons_type= ConsumerMeter::with('bConsumer.bConsumerCategory.hMConSubCategory.hMSlabs')->where('ref_no',$record->ref_no)
             ->first();
 
-            // dd($record);
+            // dd($current_cons_type);
 
             $data=$current_cons_type->bConsumer->bConsumerCategory->hMConSubCategory;
             //find catgory
@@ -225,14 +225,17 @@ class BillGenerateController extends Controller
 
             $bill_data['charges']=$charges_data;
             $bill_data['total_charges_data']=$total_charges_data;
+            $bill_data['tarrif_code']=$current_cons_type->bConsumer->bConsumerCategory->tarrif_code;
+            
             return $bill_data;
     }
     public function find_taxes($row,$finded_cateogry_slab_chareges)
     {
+        // dd($row);
         $g_tax=ConsumerMeter::with(['bConsumer.bConsumerCategory','bConsumer.bConsumerCategory.hMtax'=>function($q){
             return $q->where('is_active',1);
-        },'bConsumer.bConsumerCategory.hMtax.bTaxType'])->first();
-        // dd($finded_cateogry_slab_chareges);
+        },'bConsumer.bConsumerCategory.hMtax.bTaxType'])->where('ref_no',$row->ref_no)->first();
+        // dd($g_tax);
         // $g_tax=GeneralTax::where('is_active',1)->get();
         $g_total_taxes=[];
         foreach ($g_tax->bConsumer->bConsumerCategory->hMtax as $key => $value) {
@@ -333,11 +336,13 @@ class BillGenerateController extends Controller
                 $record->generated_by=Auth::id();
                 $record->save();
                 $reading=Reading::where('is_verified',1)->where('month_year',$month_year)->get();
+                // dd($reading);
                 foreach ($reading as $key => $value) {
                     $finded_cateogry_slab_chareges=$this->find_consumer_category_slab_charges($value);
                     // dd($finded_cateogry_slab_chareges);
 
                     $finded_taxes=$this->find_taxes($value,$finded_cateogry_slab_chareges);
+                    
                     $total_taxes=0;
                     foreach ($finded_taxes as $tk => $tv) {
                         $total_taxes+=$tv['calculated_tax'];
@@ -369,7 +374,8 @@ class BillGenerateController extends Controller
                                                                     'DueDate'=>$request->due_date,
                                                                     'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+round($arrear)),
                                                                     'l_p_surcharge'=>round($l_p_surcharge_percentage/100*$finded_cateogry_slab_chareges['total_electricity_charges']),
-                                                                    'sub_cat_finded_id'=>$finded_cateogry_slab_chareges['sub_cat_finded_id']
+                                                                    'sub_cat_finded_id'=>$finded_cateogry_slab_chareges['sub_cat_finded_id'],
+                                                                    'tarrif_code'=>$finded_cateogry_slab_chareges['tarrif_code']
                                                                     ]
                                                                 );
                                                                 

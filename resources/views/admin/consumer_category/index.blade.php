@@ -36,6 +36,7 @@
               <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Tarrif Code</th>
                 <th> Status</th>
                 <th>Actions</th>
               </tr>
@@ -47,6 +48,7 @@
                  <!-- <td>{{-- $test->user->first_name --}}</td>  -->
                 <!-- <td>{{-- $test->course->course_title --}}</td> -->
                 <td>{{$row->name}}</td>
+                <td>{{$row->tarrif_code}}</td>
                 <td>
                   @if($row->is_active)
                   <span class="badge badge-success">Active</span>
