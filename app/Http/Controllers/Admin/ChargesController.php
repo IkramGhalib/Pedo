@@ -47,7 +47,7 @@ class ChargesController extends Controller
             'charges_type' => 'required',
             'consumer_type' => 'required',
             'status' => 'required',
-            'applicable' => 'required|in:units,charges',
+            'applicable' => 'required|in:units,cost',
            
         ]);    
         $record=SubCategoryCharges::where('charges_type_id',$request->charges_type)->where('sub_cat_id',$request->consumer_type)->first();
@@ -92,7 +92,7 @@ class ChargesController extends Controller
             'charges_type' => 'required',
             'consumer_type' => 'required',
             'status' => 'required',
-            'applicable' => 'required|in:units,charges',
+            'applicable' => 'required|in:units,cost',
            
         ]);    
         $record=SubCategoryCharges::find($id);

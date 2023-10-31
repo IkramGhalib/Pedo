@@ -61,7 +61,7 @@
                     <i class="icon wb-pencil" aria-hidden="true"></i>
                   </a> -->
 
-                  <a href="{{ url('receive-payment-disable/'.$i->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round" title="delete"  >
+                  <a href="{{ url('receive-payment-disable/'.$i->id) }}" class="btn btn-xs btn-icon btn-inverse btn-round delete-record" title="delete"  >
                     <i class="fa fa-ban disabled-icon"></i>
                   </a>
                 </td>

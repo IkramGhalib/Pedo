@@ -60,7 +60,7 @@
               <label class="form-control-label">Applicable on</label>
               <select name="applicable" class="form-control"> 
                 <option value="units"> Units</option>
-                <option value="charges"> Charges</option>
+                <option value="cost"> Cost</option>
               </select>
                 @if ($errors->has('applicable'))
                     <label class="error" for="applicable">{{ $errors->first('applicable') }}</label>

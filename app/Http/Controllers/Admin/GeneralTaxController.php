@@ -45,7 +45,7 @@ class GeneralTaxController extends Controller
             'tax_title' => 'required|integer',
             'type' => 'required|integer',
             'status' => 'required',
-            'applicable' => 'required|in:units,charges',
+            'applicable' => 'required|in:units,cost',
            
         ]); 
         $check_rec=GeneralTax::where(['con_cat_id'=>$request->tax_title,'tax_type_id'=>$request->type])->first();    
@@ -83,7 +83,7 @@ class GeneralTaxController extends Controller
             'tax_title' => 'required|integer',
             'type' => 'required|integer',
             'status' => 'required',
-            'applicable' => 'required|in:units,charges',
+            'applicable' => 'required|in:units,cost',
            
         ]); 
         $record=GeneralTax::find($id);

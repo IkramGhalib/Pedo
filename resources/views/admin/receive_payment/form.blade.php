@@ -1,5 +1,6 @@
 @extends('layouts.backend.index')
 @section('content')
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" integrity="sha512-YHJ091iDoDM1PZZA9QLuBvpo0VXBBiGHsvdezDoc3p56S3SOMPRjX+zlCbfkOV5k3BmH5O9FqrkKxBRhkdtOkQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <div class="page-header">
   <ol class="breadcrumb">
@@ -31,6 +32,8 @@
       </div>
           <div class="row">
 
+        
+
             <div class="form-group col-md-3">
               <label class="form-control-label"> Payment Month</label>
               <input required type="month" class="form-control payment_month" name="payment_month" value="{{old('payment_month')}}"
@@ -39,15 +42,34 @@
                     <label class="error" for="payment_month">{{ $errors->first('payment_month') }}</label>
                 @endif
             </div>
+            <div class="form-group col-md-3">
+
+                <div class="input-group date" data-provide="datepicker">
+                <!-- <label class="form-control-label"> Payment Month</label> -->
+                    <input type="text" class="form-control payment_month" value="{{date('d-m-Y')}}">
+                    <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                    @if ($errors->has('payment_month'))
+                        <label class="error" for="payment_month">{{ $errors->first('payment_month') }}</label>
+                    @endif
+              </div>
+            </div>
+
 
             <div class="form-group col-md-3">
               <label class="form-control-label"> Payment date</label>
-              <input required type="date" class="form-control payment_date" name="payment_date" value="{{old('payment_date')}}"
+              <input required type="text" class="form-control payment_date " data-provide="datepicker-inline" name="payment_date" value="{{old('payment_date')}}"
                 />
                 @if ($errors->has('payment_date'))
                     <label class="error" for="payment_date">{{ $errors->first('payment_date') }}</label>
                 @endif
+
+                
             </div>
+
+
+
             <div class="form-group col-md-3">
               <label class="form-control-label">Bank</label>
               <select name="bank" id="bank" class="form-control">
@@ -56,8 +78,8 @@
                 <option value="{{$brow->id}}">{{$brow->code}} | {{$brow->title}}</option>
                 @endforeach
                   </select>
-                @if ($errors->has('ref_no'))
-                    <label class="error" for="ref_no">{{ $errors->first('ref_no') }}</label>
+                @if ($errors->has('bank'))
+                    <label class="error" for="bank">{{ $errors->first('bank') }}</label>
                 @endif
             </div>
 
@@ -95,6 +117,17 @@
 @section('javascript')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.full.min.js" integrity="sha512-/gPqsEnTjI8VpAkWa61qLLmZn4ySeH86yURIM9rck0iyCMhjMGfkDw298eXFLM2CuRJ93LFhYT1M+SGxJ8asIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+  $(document).ready(function(){
+
+    // var date = $('.payment_date').datepicker();
+    // $( ".payment_date" ).datepicker({ dateFormat: 'dd-mm-yy' });
+    $('.date').datepicker({
+    format: 'dd-mm-yyyy',
+    // startDate: '-3d',
+    autoclose: true,
+});
+    // var dateTypeVar = $('payment_date').datepicker('getDate');
+  });
 $("#ref_no").select2({
         ajax: {
             url: "{{route('get_meter_info_against_ref_no')}}",
@@ -129,25 +162,83 @@ $("#ref_no").select2({
       var v3=$('.payment_date').val();
       var v4=$('#bank').val();
       var v5=$('.amount').val();
-      $.ajax({
+      if(v1 && v2 && v3 && v4 && v5)
+      {
+        $.ajax({
 
-          type:'POST',
+                type:'POST',
 
-          url:"{{route('receive.payment.save')}}",
+                url:"{{route('receive.payment.save')}}",
 
-          data:{'ref_no':v1,'payment_month':v2,'payment_date':v3,'bank':v4,'amount':v5},
+                data:{'ref_no':v1,'payment_month':v2,'payment_date':v3,'bank':v4,'amount':v5},
 
-          success:function(data){
-            if(data.success=='true')
-            message('success',data.message);
-            else
-            message('error',data.message);
+                success:function(data){
+                  if(data.success=='true')
+                  {
 
-          //  console.log(data);
+                    message('success',data.message);
+                    // $('#ref_no').focus();
+                    $('#ref_no').select2('open');
+                    // $('#ref_no').select2('focus');
+                  }
+                  else
+                  message('error',data.message);
 
-          }
+                //  console.log(data);
 
-          });
+                }
+
+                });
+      }
+      else
+      {
+        message('error','Please Fill Required Field');
+      }
+      
+    
+       
+    });
+    // $("#ref_no,.payment_month").change( function(){
+    //   // e.preventDefault();
+    //   change_in_ref_month();
+    // });
+    $("#ref_no,.payment_month").change( function()
+    {
+
+    
+         var v1=$('#ref_no').val();
+         var v2=$('.payment_month').val();
+
+         if(v1 && v2)
+      {
+          $.ajax({
+
+              type:'get',
+
+              url:"{{route('get_user_bill')}}",
+
+              data:{'ref_no':v1,payment_month:v2},
+
+              success:function(data){
+                console.log(data.data.amount);
+                if(data.success==true)
+                {
+                  $('.amount').val(parseFloat(data.data.amount));
+                }
+                else
+                {
+                  $('.amount').val(0);
+                }
+                // message('success',data.message);
+                // else
+                // message('error',data.message);
+
+              //  console.log(data);
+
+              }
+
+              });
+      }        
     
        
     });

@@ -288,6 +288,7 @@ Route::group(['middleware' => 'auth'], function () {
         // payment Routes
         Route::get('receive-payment-lists', [ReceivePaymentController::class, 'show'])->name('receive.payment.lists');
         Route::get('receive-payment-form', [ReceivePaymentController::class, 'add_form'])->name('receive.payment.form');
+        Route::get('get-user-bill', [ReceivePaymentController::class, 'get_user_bill'])->name('get_user_bill');
         Route::post('receive-payment-save', [ReceivePaymentController::class, 'save'])->name('receive.payment.save');
         // Route::get('meter-reading-edit/{id}', [ReceivePaymentController::class, 'reading_edit'])->name('reading.edit');
         // Route::post('meter-reading-update/{id}', [ReceivePaymentController::class, 'reading_update'])->name('reading.update');

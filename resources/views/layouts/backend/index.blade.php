@@ -25,6 +25,8 @@
   <link rel="stylesheet" href="{{ asset('backend/vendor/asscrollable/asScrollable.min599c.css?v4.0.2') }}">
   <link rel="stylesheet" href="{{ asset('backend/vendor/flag-icon-css/flag-icon.min599c.css?v4.0.2') }}">
 
+  <link rel="stylesheet" href="{{ asset('backend/vendor/bootstrap-datepicker/bootstrap-datepicker.min599c.css') }}">
+
   <link rel="stylesheet" href="{{ asset('backend/vendor/toastr/toastr.min599c.css?v4.0.2') }}">
   <link rel="stylesheet" href="{{ asset('backend/vendor/alertify/alertify.min599c.css?v4.0.2') }}">
 
@@ -200,6 +202,8 @@
   <script src="{{ asset('backend/vendor/jquery-form/jquery.form.js?v4.0.2') }}"></script>
 
   <script src="{{ asset('backend/vendor/tinymce/tinymce.min.js?v4.0.2') }}"></script>
+
+  <script src="{{ asset('backend/vendor/bootstrap-datepicker/bootstrap-datepicker.min599c.js') }}"></script>
 
   
    <script>

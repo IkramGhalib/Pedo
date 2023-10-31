@@ -128,6 +128,10 @@ class ReceivePaymentController extends Controller
     //    pr($payment_month);
         $data=PaymentReceive::where('ref_no',$request->ref_no)->where('payment_month',$payment_month)->first();
         $bill_data=ConsumerBill::where('ref_no',$request->ref_no)->where('billing_month_year',$payment_month)->first();
+        if(!$bill_data)
+       {
+        return response()->json(['success'=>'false','message'=>'Bill Not Found']);
+       }
         // pr($record);
        if($data)
        {
@@ -160,6 +164,23 @@ class ReceivePaymentController extends Controller
         
         $record=PaymentReceive::find($id);
         return view('admin.receive_payment.edit',compact('record'));
+    }
+
+
+    public function get_user_bill(Request $r)
+    {
+        
+        $record=DB::table('consumer_bills')
+                // ->join('consumer_meters','consumer_meters.consumer_id','=','consumer_ledgers.consumer_id')
+                ->where('consumer_bills.ref_no',$r->ref_no)
+                ->where('consumer_bills.billing_month_year',date('Y-m-d',strtotime($r->payment_month)))
+                ->first();
+        // pr($record);
+        if($record)
+        return success('',['amount'=>$record->gTotal]);
+
+        return success('',['amount'=>0]);
+        // return view('admin.receive_payment.edit',compact('record'));
     }
 
     
@@ -209,6 +230,7 @@ class ReceivePaymentController extends Controller
     public function receive_payment_disable($id)
     {
         $record=PaymentReceive::where('id',$id)->delete();
+        $record=DB::table('consumer_ledgers')->where('payment_id',$id)->delete();
         return $this->return_output('flash', 'success', 'Action Completed successfully', 'receive-payment-lists', '200');
 
     }   
