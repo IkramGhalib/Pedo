@@ -10,5 +10,8 @@ class ConsumerBill extends Model
     // public $timestamps=false;
     protected $guarded = array();
 
-    
+    public function hOSubCategory()
+    {
+        return $this->hasOne(ConsumerSubCategory::class,'id','sub_cat_finded_id');
+    }
 }

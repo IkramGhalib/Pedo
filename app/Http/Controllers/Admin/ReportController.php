@@ -134,7 +134,8 @@ class ReportController extends Controller
         }
         else
         {
-            $record=ConsumerBill::where('billing_month_year',$request->month.'-01');
+            $record=ConsumerBill::with('hOSubCategory')->where('billing_month_year',$request->month.'-01');
+            // dd($record->get());
             if($request->start_refrence )
             $record=$record->where('ref_no','>=',$request->start_refrence);
             if($request->end_refrence )

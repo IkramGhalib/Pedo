@@ -155,11 +155,12 @@ a {
   <tr></tr>
 
   <tr class="headingTr">
-  <td class="text-center strong" colspan="4"> Bills</td>
+  <td class="text-center strong" colspan="5"> Bills</td>
   </tr>
   <tr class="headingTr">
     <td class="headingTd col1">#</td>
     <td class="headingTd col2">Refrence No</td>
+    <td class="headingTd col2">Bill Gen Category</td>
     <td class="headingTd col3">Month </td>
     {{-- <td class="headingTd col1">PAID FROM</td> --}}
     <td class="headingTd col4 text-right">Amount</td>
@@ -174,6 +175,7 @@ a {
   <tr>
     <td class="col1">{{$c}}</td>
     <td class="col2">{{$row->ref_no}}</td>
+    <td class="col2">{{$row->hOSubCategory->name}}</td>
     <td class="col3">{{app_month_format($row->billing_month_year)}}</td>
     {{-- <td class="col1"> {{$row->offpeak_units}}</td> --}}
     <td class="col4 text-right">{{$row->gTotal}}</td>
@@ -184,7 +186,7 @@ a {
  
 
   <tr class="headingTr">
-    <td class="headingTd col1" colspan="2"></td>
+    <td class="headingTd col1" colspan="3"></td>
     <td class="headingTd col3 text-right">TOTAL</td>
     <td class="headingTd col4 text-right">
       <?= $total ?></td>

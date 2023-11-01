@@ -1,5 +1,10 @@
 @extends('layouts.backend.index')
 @section('content')
+<style> 
+div.date {
+  z-index: 10000 !important;
+}
+</style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" integrity="sha512-YHJ091iDoDM1PZZA9QLuBvpo0VXBBiGHsvdezDoc3p56S3SOMPRjX+zlCbfkOV5k3BmH5O9FqrkKxBRhkdtOkQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <div class="page-header">
@@ -42,22 +47,38 @@
                     <label class="error" for="payment_month">{{ $errors->first('payment_month') }}</label>
                 @endif
             </div>
-            <div class="form-group col-md-3">
 
-                <div class="input-group date" data-provide="datepicker">
-                <!-- <label class="form-control-label"> Payment Month</label> -->
-                    <input type="text" class="form-control payment_month" value="{{date('d-m-Y')}}">
+            <div class="form-group col-md-3 mt-2 pt-1">
+
+              <label class=""> Payment date</label>
+                <div class="input-group " data-provide="datepicker">
+                    <input type="text" class="form-control payment_date date  " value="{{date('d-m-Y')}}">
                     <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
                     </div>
-                    @if ($errors->has('payment_month'))
-                        <label class="error" for="payment_month">{{ $errors->first('payment_month') }}</label>
+                    @if ($errors->has('payment_date'))
+                        <label class="error" for="payment_date">{{ $errors->first('payment_date') }}</label>
                     @endif
               </div>
             </div>
+            
+
+            <!-- <div class="form-group col-md-3 mt-2 pt-1">
+
+              <label class=""> Payment date</label>
+                <div class="input-group date" data-provide="datepicker">
+                    <input type="text" class="form-control payment_date" value="{{date('d-m-Y')}}">
+                    <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                    @if ($errors->has('payment_date'))
+                        <label class="error" for="payment_date">{{ $errors->first('payment_date') }}</label>
+                    @endif
+              </div>
+            </div> -->
 
 
-            <div class="form-group col-md-3">
+            <!-- <div class="form-group col-md-3">
               <label class="form-control-label"> Payment date</label>
               <input required type="text" class="form-control payment_date " data-provide="datepicker-inline" name="payment_date" value="{{old('payment_date')}}"
                 />
@@ -66,7 +87,7 @@
                 @endif
 
                 
-            </div>
+            </div> -->
 
 
 
@@ -122,7 +143,7 @@
     // var date = $('.payment_date').datepicker();
     // $( ".payment_date" ).datepicker({ dateFormat: 'dd-mm-yy' });
     $('.date').datepicker({
-    format: 'dd-mm-yyyy',
+      dateFormat: 'dd-mm-yy',
     // startDate: '-3d',
     autoclose: true,
 });

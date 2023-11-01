@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="{{ asset('backend/vendor/asscrollable/asScrollable.min599c.css?v4.0.2') }}">
   <link rel="stylesheet" href="{{ asset('backend/vendor/flag-icon-css/flag-icon.min599c.css?v4.0.2') }}">
 
-  <link rel="stylesheet" href="{{ asset('backend/vendor/bootstrap-datepicker/bootstrap-datepicker.min599c.css') }}">
+  <!-- <link rel="stylesheet" href="{{ asset('backend/vendor/bootstrap-datepicker/bootstrap-datepicker.min599c.css') }}"> -->
 
   <link rel="stylesheet" href="{{ asset('backend/vendor/toastr/toastr.min599c.css?v4.0.2') }}">
   <link rel="stylesheet" href="{{ asset('backend/vendor/alertify/alertify.min599c.css?v4.0.2') }}">
@@ -40,6 +40,8 @@
   <link rel="stylesheet" href="{{ asset('backend/vendor/datatables.net-bs4/dataTables.bootstrap4.min599c.css?v4.0.2') }}">
 
   <link rel="stylesheet" href="{{ asset('backend/vendor/croppie/croppie.css?v4.0.2') }}">
+  <link rel="stylesheet" type="text/css" media="all"
+      href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"    />
   <style>
      .for-screen {display: block;}
         .for-print {display: none;}
@@ -203,7 +205,7 @@
 
   <script src="{{ asset('backend/vendor/tinymce/tinymce.min.js?v4.0.2') }}"></script>
 
-  <script src="{{ asset('backend/vendor/bootstrap-datepicker/bootstrap-datepicker.min599c.js') }}"></script>
+  <!-- <script src="{{ asset('backend/vendor/bootstrap-datepicker/bootstrap-datepicker.min599c.js') }}"></script> -->
 
   
    <script>
@@ -224,6 +226,12 @@
       var Site = window.Site;
       $(document).ready(function() {
         Site.run();
+
+        $('.date').datepicker({
+          dateFormat: 'dd-mm-yy',
+        // startDate: '-3d',
+        autoclose: true,
+       });
 
 
         //override defaults for alertify
