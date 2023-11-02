@@ -56,7 +56,7 @@ class ReadingController extends Controller
 
     public function reading_approve_show()
     {
-        $paginate_count = 8;
+        $paginate_count = 13;
         
         $list = DB::table('reading_approve')->orderBy('id')->paginate($paginate_count);
         return view('admin.reading.approve_index', compact('list'));

@@ -130,16 +130,17 @@ class BillGenerateController extends Controller
             // dd($current_cons_type);
             
             $data=$current_cons_type->bConsumer->bConsumerCategory->hMConSubCategory;
-            // if($record->ref_no=='1682261')
-            // dd($data);
+         
             // for getting consumer type logic start here  -----------------------------------------------------
             $count_record=$c_bill_data->count(); // get number of bills generated
-            if($count_record<=0) // if new user and under 6 months
+            // dd($count_record);
+            if($count_record < 7) // if new user and under 6 months
             {
                 $data_with_slab=$data->where('priority',1)->first();
                
                
             }
+            else
             { 
                 if($data->count()==1)// for those category who have only one category like commercial 
                 {
@@ -151,19 +152,29 @@ class BillGenerateController extends Controller
                         $c_bill_all_record= collect($c_bill_data);
                         // $c_bill_6month_record=$c_bill_all_record->limit(6)->get();
                         $c_bill_6month_record=array_slice($c_bill_all_record->toArray(), 0, 5);
+
                         $check_6month_max_units=collect($c_bill_6month_record)->max('offpeak_units');
-                        if($c_bill_all_record->max('offpeak_units')<=100) // life line consumer
-                            $data_with_slab=$data->where('priority',3)->first();
-                        elseif($check_6month_max_units >=101 && $check_6month_max_units<=200 ) // protected consumer
-                            $data_with_slab=$data->where('priority',2)->first();
-                        else  // un-protected
-                            $data_with_slab=$data->where('priority',1)->first();
+                        if($check_6month_max_units >200) // un-protected consumer
+                        $data_with_slab=$data->where('priority',1)->first();
+                        elseif($c_bill_all_record->max('offpeak_units') <=100 &&   $count_record==12) // lifeline consumer
+                        $data_with_slab=$data->where('priority',3)->first();
+                        else  // protected
+                        $data_with_slab=$data->where('priority',2)->first();
+
+                        // if($c_bill_all_record->max('offpeak_units')<=100 && $count_record >= 12) // life line consumer
+                        //     $data_with_slab=$data->where('priority',3)->first();
+                        // elseif($check_6month_max_units >=101 && $check_6month_max_units<=200 ) // protected consumer
+                        //     $data_with_slab=$data->where('priority',2)->first();
+                        // else  // un-protected
+                        //     $data_with_slab=$data->where('priority',1)->first();
                 }    
             }
             //find catgory
             // $data_with_slab=$data->where('category_conditon_start','<=',$record->offpeak_units) ->where('category_conditon_end','>=',$record->offpeak_units)->first();
             // if($record->ref_no=='1682261')
             // dd($data_with_slab);
+            // dd($data_with_slab);
+            // if($record->ref_no=='42261812')
             // dd($data_with_slab);
             $charges=SubCategoryCharges::with('bChargesType')->where('sub_cat_id',$data_with_slab->id)->get();
            
