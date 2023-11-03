@@ -95,8 +95,10 @@ class ReceivePaymentController extends Controller
         // $meters=DB::table('meters')->where('status','free')->get();
         // dd($divisions);
         // return view('admin.reading.form',compact('category','divisions','new_consumer_no','meters'));
+        $bill_payment_month=DB::table('bill_generates')->orderBy('id','desc')->first();
         $banks=DB::table('banks')->get();
-        return view('admin.receive_payment.form',compact('banks'));
+        // dd($bill_payment_month);
+        return view('admin.receive_payment.form',compact('banks','bill_payment_month'));
     }
 
     public function save(Request $request)
@@ -142,7 +144,7 @@ class ReceivePaymentController extends Controller
                 $record=new PaymentReceive();
                 $record->ref_no=$request->ref_no;
                 $record->payment_month=$payment_month;
-                $record->payment_date=$request->payment_date;
+                $record->payment_date=date('y-m-d',strtotime($request->payment_date));
                 $record->bank_id=$request->bank;
                 $record->payment_amount=$request->amount;
                 $record->conumer_id=$rec->consumer_id;

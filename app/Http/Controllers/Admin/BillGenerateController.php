@@ -62,7 +62,8 @@ class BillGenerateController extends Controller
     }
     public function form()
     {
-        return view('admin.bill_generate.form');
+        $last_date=DB::table('bill_generates')->orderBy('id','desc')->first();
+        return view('admin.bill_generate.form',compact('last_date'));
     }
     // function find_consumer_category_slab_charges($record)
     // {
@@ -246,8 +247,8 @@ class BillGenerateController extends Controller
                         $previous_reading=DB::table('meter_readings')->where('month_year',(date('y-m-d ',strtotime($record->month_year.' -2 month' ))))->first();
                         if($previous_reading)
                         {
-                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>$previous_reading->offpeak_units*($chgrow->charges/100),'charges_type'=>$chgrow->bChargesType->title];
-                                $total_charges_data+=$previous_reading->offpeak_units*($chgrow->charges/100);
+                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>$previous_reading->offpeak_units*($chgrow->charges),'charges_type'=>$chgrow->bChargesType->title];
+                                $total_charges_data+=$previous_reading->offpeak_units*($chgrow->charges);
                             
                         }
                     }
@@ -267,7 +268,7 @@ class BillGenerateController extends Controller
                 }
             }
 
-            // dd($charges);
+            // dd($charges_data);
 
 
             $bill_data['charges']=$charges_data;

@@ -57,7 +57,7 @@
               <tr>
                 <td>{{ $key+1}}</td>
                 <td>{{ $i->ref_no}}</td>
-                <td>{{ $i->month.'-'.$i->year }} </td>
+                <td>{{ date('M Y',strtotime($i->month_year)) }} </td>
                 <!-- <td>{{ $i->peak}}</td> -->
                 <td>{{ $i->offpeak_prev}}</td>
                 <td>{{ $i->offpeak}}</td>

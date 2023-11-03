@@ -33,8 +33,23 @@
 
             <div class="form-group col-md-4">
               <label class="form-control-label"> Year-Month</label>
-              <input required type="month" class="form-control month_year " name="month_year" value="{{old('month_year')}}"
+              <!-- <input required type="month" class="form-control month_year " name="month_year" value="{{old('month_year')}}"
+                /> -->
+              
+                @if($last_date) 
+                @php
+                $new_date=date('Y-m',strtotime($last_date->month_year.'+1 month'));
+                
+                @endphp
+                @else
+               @php
+                $new_date=null;
+                @endphp
+                @endif
+                
+                <input required type="month" class="form-control month_year " name="month_year"  min="@if($new_date){{$new_date}}@endif" max="@if($new_date){{$new_date}}@endif" value="@if($new_date){{$new_date}}@endif"
                 />
+               
                 @if ($errors->has('month_year'))
                     <label class="error" for="full_name">{{ $errors->first('month_year') }}</label>
                 @endif

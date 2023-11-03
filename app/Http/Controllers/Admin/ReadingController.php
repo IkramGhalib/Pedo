@@ -58,7 +58,7 @@ class ReadingController extends Controller
     {
         $paginate_count = 13;
         
-        $list = DB::table('reading_approve')->orderBy('id')->paginate($paginate_count);
+        $list = DB::table('reading_approve')->orderBy('id','desc')->paginate($paginate_count);
         return view('admin.reading.approve_index', compact('list'));
         // return view('admin.reading.approve_index');
     }
@@ -68,7 +68,8 @@ class ReadingController extends Controller
         // $paginate_count = 8;
         
         // $list = DB::table('meter_readings')->orderBy('id')->where('is_verified',0)->paginate($paginate_count);
-        return view('admin.reading.reading_approval_form');
+        $last_date=DB::table('reading_approve')->orderBy('id','desc')->first();
+        return view('admin.reading.reading_approval_form',compact('last_date'));
     }
 
 
@@ -85,7 +86,8 @@ class ReadingController extends Controller
         // $meters=DB::table('meters')->where('status','free')->get();
         // dd($divisions);
         // return view('admin.reading.form',compact('category','divisions','new_consumer_no','meters'));
-        return view('admin.reading.form');
+        $last_date=DB::table('reading_approve')->orderBy('id','desc')->first();
+        return view('admin.reading.form',compact('last_date'));
     }
 
     public function reading_save(Request $request)

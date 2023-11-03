@@ -19,11 +19,11 @@ class ChargesController extends Controller
         $paginate_count = 10;
         if($request->has('search')){
             $search = $request->input('search');
-            $list = SubCategoryCharges::where('title', 'LIKE', '%' . $search . '%')
+            $list = SubCategoryCharges::orderBy('charges_type_id')->where('title', 'LIKE', '%' . $search . '%')
                            ->paginate($paginate_count);
         }
         else {
-            $list = SubCategoryCharges::with('bChargesType','bConSubCat')->paginate($paginate_count);
+            $list = SubCategoryCharges::orderBy('charges_type_id')->with('bChargesType','bConSubCat')->paginate($paginate_count);
 
         }
         // dd($list);

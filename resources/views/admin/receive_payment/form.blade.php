@@ -41,7 +41,9 @@ div.date {
 
             <div class="form-group col-md-3">
               <label class="form-control-label"> Payment Month</label>
-              <input required type="month" class="form-control payment_month" name="payment_month" value="{{old('payment_month')}}"
+              <!-- <input required type="month" class="form-control payment_month" name="payment_month" value="{{old('payment_month')}}"
+                /> -->
+                <input required type="month" class="form-control payment_month" name="payment_month" min="@if($bill_payment_month){{date('Y-m',strtotime($bill_payment_month->month_year))}}@endif" max="@if($bill_payment_month){{date('Y-m',strtotime($bill_payment_month->month_year))}}@endif" value="@if($bill_payment_month){{date('Y-m',strtotime($bill_payment_month->month_year))}}@endif"
                 />
                 @if ($errors->has('payment_month'))
                     <label class="error" for="payment_month">{{ $errors->first('payment_month') }}</label>

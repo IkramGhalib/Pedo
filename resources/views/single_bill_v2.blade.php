@@ -54,10 +54,10 @@
         $issue_date=date('d M y',strtotime($bill_data->bill_generate_date));
         // $issue_date=date('d M y');
 
-        $payable=$bill_data->currentbill;
         $cost_of_electricity=$bill_data->currentbill;
         $arrear=$bill_data->arrears;
-        $payable_after_due_date=0;
+        $payable=$bill_data->WithinDuedate;
+        $payable_after_due_date=$bill_data->AfterdueDate;
         $lp_surcharge=$bill_data->l_p_surcharge;
         $previous_reading=$bill_data->prev_offpeak_reading;
         $current_reading=$bill_data->offpeak_current_reading;
@@ -136,7 +136,7 @@
                 {{$billing_month_year}}
                 </td>
                 <td class="border-rb" style="text-align: center;">
-                    08 SEP 23
+                    {{date('d M y',strtotime($bill_data->reading_date))}}
                 </td>
                 <td class="border-rb" style="text-align: center;">
                 {{$due_date}}
@@ -401,7 +401,7 @@
                                 {{$rpnb->WithinDuedate}}
                             </td>
                             <td>
-                                {{$rpnb->paid_amount}}
+                                {{$rpnb->pay_amount}}
                             </td>
                         </tr>
                         @endforeach
@@ -667,7 +667,7 @@
                     </td>
                     <td colspan="3" class="border-b  nestedtd2width content">
                        <?php  $current_bill=(int)($pesco_total+$gov_total);
-                                $payable=$current_bill;
+                                // $payable=$current_bill;
                                 $payable_after_due_date=$payable+$lp_surcharge;
                                 echo $current_bill; 
                        ?>

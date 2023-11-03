@@ -128,7 +128,7 @@ class HomeController extends Controller
 
            
                 $bill_data = DB::table('consumer_bills')
-                ->select('meter_readings.offpeak_prev as prev_offpeak_reading','meter_readings.offpeak as offpeak_current_reading','consumer_bills.*', 'bill_generates.*',  'bill_generates.created_at as bill_generate_date','consumer_meters.connection_date as meter_connection_date','consumer_meters.*','consumer_bills.id as bill_id','consumers.*','feeders.name as feeder_name','sub_divisions.name as sub_division_name','divisions.name as division_name','meters.meter_no')
+                ->select('meter_readings.offpeak_prev as prev_offpeak_reading','meter_readings.offpeak as offpeak_current_reading','meter_readings.datetime as reading_date','consumer_bills.*', 'bill_generates.*',  'bill_generates.created_at as bill_generate_date','consumer_meters.connection_date as meter_connection_date','consumer_meters.*','consumer_bills.id as bill_id','consumers.*','feeders.name as feeder_name','sub_divisions.name as sub_division_name','divisions.name as division_name','meters.meter_no')
                 // ->selectRaw('AVG(course_ratings.rating) AS average_rating')
                 ->Join('meter_readings', 'meter_readings.id', '=', 'consumer_bills.reading_id')
                 ->Join('bill_generates', 'bill_generates.id', '=', 'consumer_bills.generate_bill_id')
@@ -148,7 +148,7 @@ class HomeController extends Controller
                 // pr($bill_data);
 
                 $payment_and_bill = DB::table('consumer_bills')
-                // ->select('consumer_bills.*','consumer_bills.id as bill_id','consumer_ledgers.*')
+                ->select('consumer_bills.*','payment_receives.payment_amount as pay_amount')
                 // ->selectRaw('AVG(course_ratings.rating) AS average_rating')
                 // ->Join('meter_readings', 'meter_readings.id', '=', 'consumer_bills.reading_id')
                 // ->Join('bill_generates', 'bill_generates.id', '=', 'consumer_bills.generate_bill_id')
