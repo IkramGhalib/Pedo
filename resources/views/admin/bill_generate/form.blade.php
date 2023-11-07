@@ -41,12 +41,19 @@
 
             <div class="form-group col-md-4">
               <label class="form-control-label"> Due Date</label>
-              <input required type="date" class="form-control" name="due_date" value="{{old('due_date')}}"
+              <div class="input-group " data-provide="datepicker">
+              <input required type="text" class="form-control date" name="due_date" value="@if(old('due_date')){{date('Y-m-d',strtotime(old('due_date')))}}@else{{date('Y-m-d')}}@endif "
                 />
+                <div class="input-group-addon">
+                <span class="fa fa-calendar"></span>
+                </div>
                 @if ($errors->has('due_date'))
                     <label class="error" for="due_date">{{ $errors->first('due_date') }}</label>
                 @endif
+              </div>
             </div>
+
+
 
           </div>
 

@@ -141,8 +141,8 @@ class ConsumerController extends Controller
             'ref_no'=>$new_ref_no,
             'consumer_id'=>$cousumer->id,
         'meter_id'=>$request->meter_no,
-        'connection_date'=>$request->connection_date,
-        'definition_date'=>$request->definition_date,
+        'connection_date'=>db_date_format($request->connection_date),
+        'definition_date'=>db_date_format($request->definition_date),
         'previous_reading'=>$request->previous_reading,
         'arrear'=>$request->arrear
         ] );

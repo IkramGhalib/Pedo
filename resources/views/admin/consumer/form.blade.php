@@ -161,7 +161,8 @@
 
             <div class="form-group col-md-2">
               <label class="form-control-label"> connection date</label>
-              <input type="date"  class="form-control feeder" name="connection_date"  required>
+              <input type="text"  class="form-control feeder date
+              " name="connection_date" value="@if(old('connection_date')){{app_date_format(old('connection_date'))}}@else{{date('d-m-Y')}}@endif"  required>
              
               @if ($errors->has('connection_date'))
               <label class="error" for="connection_date">{{ $errors->first('connection_date') }}</label>
@@ -175,7 +176,7 @@
 
             <div class="form-group col-md-2">
               <label class="form-control-label"> Definiation date</label>
-              <input type="date"  class="form-control feeder" name="definition_date" required>
+              <input type="text"  class="form-control feeder date" value="@if(old('definition_date')){{app_date_format(old('definition_date'))}}@else{{date('d-m-Y')}}@endif" name="definition_date" required>
              
               @if ($errors->has('definition_date'))
               <label class="error" for="Feder">{{ $errors->first('definition_date') }}</label>

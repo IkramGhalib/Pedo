@@ -292,6 +292,11 @@ class ReadingController extends Controller
         // $record=Reading::where('id',$request->id)->first();
         DB::beginTransaction();
         try {
+                $reading_record=Reading::where('month_year',(date('y-m-d ',strtotime($request->month_year.'-01'))))->count();
+                // dd($reading_record);
+                if($reading_record==0)
+                 return back()->withError('Error ! Reading Not Available');
+
                 $approve_record=DB::table('reading_approve')->where('month_year',date('y-m-d ',strtotime($request->month_year)))->first();
                 if($approve_record)
                 return back()->withError('Already Approved ! Cant be Apporve Again');

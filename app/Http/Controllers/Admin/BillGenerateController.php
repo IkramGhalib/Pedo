@@ -231,7 +231,7 @@ class BillGenerateController extends Controller
                         
                 }
             }
-            $bill_data['total_electricity_charges']=$total_electricity_charges;
+            $bill_data['total_electricity_charges']=round($total_electricity_charges,2);
             $bill_data['sub_cat_finded_id']=$data_with_slab->id;
             $bill_data['slab_wise_charges']=$new_data;
 
@@ -244,10 +244,10 @@ class BillGenerateController extends Controller
                     {
                         // get 2 months prevous reading
                         $record->month_year;
-                        $previous_reading=DB::table('meter_readings')->where('month_year',(date('y-m-d ',strtotime($record->month_year.' -2 month' ))))->first();
+                        $previous_reading=DB::table('meter_readings')->where('consumer_id',$record->consumer_id)->where('month_year',(date('y-m-d ',strtotime($record->month_year.' -2 month' ))))->first();
                         if($previous_reading)
                         {
-                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>$previous_reading->offpeak_units*($chgrow->charges),'charges_type'=>$chgrow->bChargesType->title];
+                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>round($previous_reading->offpeak_units*($chgrow->charges),2),'charges_type'=>$chgrow->bChargesType->title];
                                 $total_charges_data+=$previous_reading->offpeak_units*($chgrow->charges);
                             
                         }
@@ -256,12 +256,12 @@ class BillGenerateController extends Controller
                     {
                         if($chgrow->applicable_on==='units')
                             {
-                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>$record->offpeak_units*($chgrow->charges),'charges_type'=>$chgrow->bChargesType->title];
+                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>round($record->offpeak_units*($chgrow->charges),2),'charges_type'=>$chgrow->bChargesType->title];
                                 $total_charges_data+=$record->offpeak_units*($chgrow->charges);
                             }  
                             else
                             {
-                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>$total_electricity_charges*($chgrow->charges/100),'charges_type'=>$chgrow->bChargesType->title];
+                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>round($total_electricity_charges*($chgrow->charges/100),2),'charges_type'=>$chgrow->bChargesType->title];
                                 $total_charges_data+=$total_electricity_charges*($chgrow->charges/100);
                             }
                     }
@@ -272,7 +272,29 @@ class BillGenerateController extends Controller
 
 
             $bill_data['charges']=$charges_data;
-            $bill_data['total_charges_data']=$total_charges_data;
+            $bill_data['total_charges_data']=round($total_charges_data,2);
+            $bill_data['minimum_charges_limit']=round($total_charges_data,2);
+
+
+             // if bill is less then current consumer type minimum bill limit  then apply minimum limit 
+            //  if($finded_cateogry_slab_chareges['total_electricity_charges']<= 75 )
+            //  {
+               $check_minimum_bill= DB::table('consumers')
+                     ->join('options','options.ref_id','=','consumers.consumer_category_id')
+                     ->where('consumers.id',$record->consumer_id)->first();
+                 if($check_minimum_bill)
+                 {
+                     if($total_electricity_charges<=(int)$check_minimum_bill->option_value)
+                     {
+                        $bill_data['total_electricity_charges']=(int)$check_minimum_bill->option_value;
+                      
+                        $bill_data['minimum_charges_limit']=(int)$check_minimum_bill->option_value;
+                        $bill_data['slab_wise_charges']=[];
+                     }
+
+                 }
+            //  }
+
             $bill_data['tarrif_code']=$current_cons_type->bConsumer->bConsumerCategory->tarrif_code;
             
             return $bill_data;
@@ -289,9 +311,9 @@ class BillGenerateController extends Controller
         foreach ($g_tax->bConsumer->bConsumerCategory->hMtax as $key => $value) {
                
                 if($value->applicable_on=='units')
-                $g_total_taxes[]=['code'=>$value->code,'tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$row->offpeak_units];
+                $g_total_taxes[]=['code'=>$value->code,'tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>round(($value->tax_percentage/100)*$row->offpeak_units,2)];
             else
-                $g_total_taxes[]=['code'=>$value->code,'tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>($value->tax_percentage/100)*$finded_cateogry_slab_chareges['total_electricity_charges']];
+                $g_total_taxes[]=['code'=>$value->code,'tax_type'=>$value->bTaxType->title,'percentage'=>$value->tax_percentage,'calculated_tax'=>round(($value->tax_percentage/100)*$finded_cateogry_slab_chareges['total_electricity_charges'],2)];
             
             
 
@@ -311,11 +333,11 @@ class BillGenerateController extends Controller
 
                     // dd($arr);
                     if(empty($arr))
-                        $g_total_taxes[$key2]['calculated_tax']=($value2['percentage']/100)* ($finded_cateogry_slab_chareges['total_electricity_charges']);
+                        $g_total_taxes[$key2]['calculated_tax']=round(($value2['percentage']/100)* ($finded_cateogry_slab_chareges['total_electricity_charges']),2);
                     else
                     {
                         $re_index_array=array_values($arr); 
-                        $g_total_taxes[$key2]['calculated_tax']=($value2['percentage']/100)*($finded_cateogry_slab_chareges['total_electricity_charges'] + $re_index_array[0]['calculated_charges'] );
+                        $g_total_taxes[$key2]['calculated_tax']=round(($value2['percentage']/100)*($finded_cateogry_slab_chareges['total_electricity_charges'] + $re_index_array[0]['calculated_charges'] ),2);
                         
                     }
                 
@@ -337,7 +359,7 @@ class BillGenerateController extends Controller
                     else
                     {
                         $re_index_array=array_values($arr); 
-                        $g_total_taxes[$key2]['calculated_tax']=($value2['percentage']/100)* $re_index_array[0]['calculated_charges'] ;
+                        $g_total_taxes[$key2]['calculated_tax']=round(($value2['percentage']/100)* $re_index_array[0]['calculated_charges'],2) ;
                         
                     }
             }
@@ -368,21 +390,31 @@ class BillGenerateController extends Controller
        $month_year=$request->month_year.'-01';
         $reading_record=BillGenerate::where('month_year',$month_year)->first();
         
-        $l_p_surcharge_percentage=0;
-        $config=Config::get_option('settingCharges','late_fee_surcharge');
-        if($config)
-        $l_p_surcharge_percentage=$config;
+        
        if($reading_record)
        {
         return redirect()->back()->with(['error'=>'Record Already Exits']);
        }else
        {
+               
+
+                // if approve reading is not present
+                $check_reading=Reading::where('is_verified',1)->where('month_year',$month_year)->count();
+                if($check_reading==0)
+                return back()->withError('Error ! Reading Not Available');
+
+                 // geting late charges 
+                 $l_p_surcharge_percentage=0;
+                 $config=Config::get_option('settingCharges','late_fee_surcharge');
+                 if($config)
+                 $l_p_surcharge_percentage=$config;
                 
                 $record=new BillGenerate();
                 $record->month_year=$month_year.'-01';
-                $record->due_date=$request->due_date;
+                $record->due_date=date('y-m-d',strtotime($request->due_date));
                 $record->generated_by=Auth::id();
                 $record->save();
+                // dd($record);
                 $reading=Reading::where('is_verified',1)->where('month_year',$month_year)->get();
                 // dd($reading);
                 foreach ($reading as $key => $value) {
@@ -399,36 +431,38 @@ class BillGenerateController extends Controller
                     $l_p_surcharge_value=$finded_cateogry_slab_chareges['total_electricity_charges']*($l_p_surcharge_percentage/100);
 
                     
-                    $arrear=ConsumerLedger::where('consumer_id',$value->consumer_id)->sum('amount');
+                    $arrear=round(ConsumerLedger::where('consumer_id',$value->consumer_id)->sum('amount'),2);
+                    
                     // pr($arrear);
-                    $id=ConsumerBill::insertGetId(
-                        [
-                            'generate_bill_id'=>$record->id,
-                            'reading_id'=>$value->id,
-                            'consumer_id'=>$value->consumer_id,
-                            'ref_no'=>$value->ref_no,
-                            'billing_month_year'=>$month_year,
-                            'offpeak_units'=>$value->offpeak_units,
-                            'arrears'=>round($arrear),
-                            'currentbill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']),
-                            'total_taxes'=>round($total_taxes),
-                            'total_charges'=>round($finded_cateogry_slab_chareges['total_charges_data']),
-                            'off_peak_bill_breakup'=>json_encode($finded_cateogry_slab_chareges['slab_wise_charges']),
-                            'charges_breakup'=>json_encode($finded_cateogry_slab_chareges['charges']),
-                                                                    'taxes_breakup'=>json_encode($finded_taxes),
-                                                                    'WithinDuedate'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+round($arrear)),
-                                                                    'net_bill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),
-                                                                    'GTotal'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+round($arrear)),
-                                                                    'DueDate'=>$request->due_date,
-                                                                    'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+round($arrear)),
-                                                                    'l_p_surcharge'=>round($l_p_surcharge_percentage/100*$finded_cateogry_slab_chareges['total_electricity_charges']),
-                                                                    'sub_cat_finded_id'=>$finded_cateogry_slab_chareges['sub_cat_finded_id'],
-                                                                    'tarrif_code'=>$finded_cateogry_slab_chareges['tarrif_code']
-                                                                    ]
-                                                                );
+                    $bill_array=[
+                        'generate_bill_id'=>$record->id,
+                        'reading_id'=>$value->id,
+                        'consumer_id'=>$value->consumer_id,
+                        'ref_no'=>$value->ref_no,
+                        'billing_month_year'=>$month_year,
+                        'offpeak_units'=>$value->offpeak_units,
+                        'arrears'=>$arrear,
+                        'currentbill'=>$finded_cateogry_slab_chareges['total_electricity_charges'],
+                        'total_taxes'=>round($total_taxes),
+                        'total_charges'=>$finded_cateogry_slab_chareges['total_charges_data'],
+                        'off_peak_bill_breakup'=>json_encode($finded_cateogry_slab_chareges['slab_wise_charges']),
+                        'charges_breakup'=>json_encode($finded_cateogry_slab_chareges['charges']),
+                        'taxes_breakup'=>json_encode($finded_taxes),
+                        'WithinDuedate'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,2),
+                        'net_bill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data'],2),
+                        'GTotal'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,2),
+                        'DueDate'=>$request->due_date,
+                        'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,2),
+                        'l_p_surcharge'=>round($l_p_surcharge_value,2),
+                        'sub_cat_finded_id'=>$finded_cateogry_slab_chareges['sub_cat_finded_id'],
+                        'tarrif_code'=>$finded_cateogry_slab_chareges['tarrif_code']
+                    ];
+
+                   
+                    $id=ConsumerBill::insertGetId($bill_array);
                                                                 
-                                                                // add in ledger of consumer
-                            ConsumerLedger::insert(['consumer_id'=>$value->consumer_id,'amount'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),'bill_id'=>$id]);                            
+                    // add in ledger of consumer
+                    ConsumerLedger::insert(['consumer_id'=>$value->consumer_id,'amount'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),'bill_id'=>$id]);                            
                 }
                 return redirect()->back()->with(['success'=>'Action Completed']); 
                 

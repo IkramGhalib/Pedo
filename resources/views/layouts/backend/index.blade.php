@@ -233,6 +233,8 @@
         autoclose: true,
        });
 
+      
+
 
         //override defaults for alertify
         alertify.theme('bootstrap');

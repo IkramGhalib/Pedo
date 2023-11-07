@@ -131,3 +131,13 @@ function app_month_format($date)
 {
     return date('F Y',strtotime($date));
 }
+
+function db_date_format($date)
+{
+    return date('y-m-d',strtotime($date));
+}
+
+function app_date_format($date)
+{
+    return date('y-m-d',strtotime($date));
+}

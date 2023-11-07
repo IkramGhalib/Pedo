@@ -30,7 +30,7 @@
 
     <div id="printBtn" class="noprint">
         <br>
-        <form method="post" action="./general?refno=08261420391904" id="ctl00">
+        <!-- <form method="post" action="#" id="0x"> -->
 <div class="aspNetHidden">
 <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="OPkKXZQIV8WRGTdt0PzoHkeCKyK358klvNBvjC9WFwd3Nt3fxvJt3pDEK25+WzEeubFWHnR01KzVg8bHYzjum1rhev+8RZq602sUg885u7jf/J/IN/yRkAeGRKZL0BNcD54B/880vXNsnZQZJNrMpJxxXnRFT0OzWR3HrgrH1EiOSNan99uZ4A7LPwYGdsUOHKDxlBkMzO9WOpn7rhAqFAefbXC78UBoez7quxuh8PslpE1Pmlvt2mHsH7eSN11huYFSQTzp4vB6/EV0yNuetGXn8XDQy3zBKsDfT8IvR2bAvYXqyl0ScQuPihtJNFq73/1kajIv0T9bEEJyoXLC/Q==">
 </div>
@@ -40,8 +40,9 @@
 	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="34C80342">
 	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="cEk+pgyPGUEF+AGULmHJ6IbkvHRKPHPuJYvjKxFizGp5H7rKWTI9yhbQ3TzFAPE834Tbew4ubYQ1p1Rz96/AzaFb6Ls/c4jPYbU89P8LoKaxjzks+gQh9rGGUEJjypDm">
 </div>
-            <input type="submit" name="id_btn_print" value="Print Bill" onclick="window.print();" id="id_btn_print" class="auto-center btn btn-secondary" style="font-size: 14px; padding: 5px; width: 75px;">
-        </form>
+            <!-- <input type="submit" name="id_btn_print" value="Print Bill" onclick="window.print();" id="id_btn_print" class="auto-center btn btn-secondary" style="font-size: 14px; padding: 5px; width: 75px;"> -->
+        <!-- </form> -->
+        <button type='button' class="auto-center btn btn-secondary" onclick="window.print();"    style="font-size: 14px; padding: 5px; width: 75px;"> Print Bill </button>
     </div>
 
     <?php 

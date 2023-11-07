@@ -50,7 +50,7 @@ div.date {
                 @endif
             </div>
 
-            <div class="form-group col-md-3 mt-2 pt-1">
+            <div class="form-group col-md-2 mt-2 pt-1">
 
               <label class=""> Payment date</label>
                 <div class="input-group " data-provide="datepicker">
