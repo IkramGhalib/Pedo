@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.1deb5ubuntu1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 03, 2023 at 02:14 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.1.17
+-- Host: localhost:3306
+-- Generation Time: Nov 07, 2023 at 12:55 PM
+-- Server version: 8.0.34-0ubuntu0.22.04.1
+-- PHP Version: 8.1.2-1ubuntu2.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,45 +24,60 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bill_generates`
+-- Table structure for table `banks`
 --
 
-CREATE TABLE `bill_generates` (
-  `id` int(11) NOT NULL,
-  `month_year` date NOT NULL,
-  `status` varchar(50) DEFAULT 'generated',
-  `generated_by` int(11) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL
+CREATE TABLE `banks` (
+  `id` int NOT NULL,
+  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `bank_desc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `bill_generates`
+-- Dumping data for table `banks`
 --
 
-INSERT INTO `bill_generates` (`id`, `month_year`, `status`, `generated_by`, `created_at`, `updated_at`) VALUES
-(19, '2023-10-01', 'generated', 1, '2023-10-03 11:29:50', '2023-10-03 11:29:50');
+INSERT INTO `banks` (`id`, `code`, `title`, `bank_desc`) VALUES
+(1, '0013', 'HBL', 'kohat road branch');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `charges`
+-- Table structure for table `bill_generates`
 --
 
-CREATE TABLE `charges` (
-  `id` int(11) NOT NULL,
-  `title` text NOT NULL,
-  `is_active` tinyint(4) NOT NULL DEFAULT 0
+CREATE TABLE `bill_generates` (
+  `id` int NOT NULL,
+  `month_year` date NOT NULL,
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'generated',
+  `generated_by` int NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `due_date` date DEFAULT NULL,
+  `is_verified` tinyint NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `charges_types`
+--
+
+CREATE TABLE `charges_types` (
+  `id` int NOT NULL,
+  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `is_active` tinyint NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `charges`
+-- Dumping data for table `charges_types`
 --
 
-INSERT INTO `charges` (`id`, `title`, `is_active`) VALUES
-(1, 'Fuel Price Adjustment', 1),
-(2, 'Financing Cost Surcharges life line Consumer a', 1),
-(10, 'aBC CHARGES a', 1);
+INSERT INTO `charges_types` (`id`, `title`, `is_active`) VALUES
+(1, 'F.S Surcharge', 1),
+(2, 'F.P.A', 1),
+(3, 'Q.T Adjustment', 1);
 
 -- --------------------------------------------------------
 
@@ -71,21 +86,21 @@ INSERT INTO `charges` (`id`, `title`, `is_active`) VALUES
 --
 
 CREATE TABLE `consumers` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `full_name` varchar(255) NOT NULL,
-  `father_name` varchar(100) DEFAULT NULL,
-  `cnic` varchar(20) DEFAULT NULL,
-  `address` text DEFAULT NULL,
-  `consumer_code` varchar(50) DEFAULT NULL,
+  `id` int UNSIGNED NOT NULL,
+  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `father_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cnic` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `consumer_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `connection_date` date DEFAULT NULL,
-  `telephone` varchar(255) DEFAULT NULL,
-  `mobile` varchar(255) DEFAULT NULL,
-  `total_credits` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `consumer_category_id` int(11) NOT NULL,
-  `status` varchar(255) NOT NULL DEFAULT 'active',
+  `telephone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mobile` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `total_credits` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `consumer_category_id` int NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'active',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `feeder_id` int(11) NOT NULL
+  `feeder_id` int NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -93,7 +108,11 @@ CREATE TABLE `consumers` (
 --
 
 INSERT INTO `consumers` (`id`, `full_name`, `father_name`, `cnic`, `address`, `consumer_code`, `connection_date`, `telephone`, `mobile`, `total_credits`, `consumer_category_id`, `status`, `created_at`, `updated_at`, `feeder_id`) VALUES
-(1, 'IKRAM ULLAH', 'KHAN GHALIB', '1710142738347', 'new colony , sardheri charsadda', '1', NULL, NULL, '03335959967', 0.00, 1, 'active', '2023-09-27 05:43:11', '2023-09-27 05:43:11', 1);
+(1, 'IKRAM ULLAH', 'KHAN GHALIB', '1710142738347', 'new colony , sardheri charsadda', '1', NULL, NULL, '03335959967', '0.00', 1, 'active', '2023-09-27 05:43:11', '2023-10-17 05:39:42', 1),
+(2, 'Khan', 'Khan Ghalib', '12587945666', 'Peshawar', '2', NULL, NULL, '034812334568', '0.00', 1, 'active', '2023-10-17 06:32:43', '2023-10-17 06:32:43', 1),
+(3, 'Sultan Murad', 'Khan', '111', 'Village Reshun Chitral', '3', NULL, NULL, '0', '0.00', 1, 'active', '2023-10-19 05:09:39', '2023-10-31 05:35:00', 3),
+(4, 'ali', 'ahmad', '1', 'chitral', '4', NULL, NULL, '2', '0.00', 2, 'active', '2023-10-19 05:29:02', '2023-10-20 05:59:29', 3),
+(5, 'shop', 'shah', '11111', 'chitral', '5', NULL, NULL, '1', '0.00', 2, 'active', '2023-10-20 06:27:38', '2023-10-20 06:27:38', 3);
 
 -- --------------------------------------------------------
 
@@ -102,42 +121,42 @@ INSERT INTO `consumers` (`id`, `full_name`, `father_name`, `cnic`, `address`, `c
 --
 
 CREATE TABLE `consumer_bills` (
-  `id` int(11) NOT NULL,
-  `generate_bill_id` int(11) NOT NULL,
-  `reading_id` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `generate_bill_id` int NOT NULL,
+  `reading_id` int NOT NULL,
+  `consumer_id` int NOT NULL,
   `ref_no` varchar(100) NOT NULL,
   `billing_month_year` date DEFAULT NULL,
-  `peak_units` int(11) NOT NULL DEFAULT 0,
-  `offpeak_units` double NOT NULL DEFAULT 0,
-  `PrevU` int(11) DEFAULT 0,
-  `PresU` int(11) DEFAULT 0,
-  `Units` int(11) DEFAULT 0,
-  `FreeU` int(11) DEFAULT 0,
-  `currentbill` int(11) DEFAULT 0,
+  `peak_units` int NOT NULL DEFAULT '0',
+  `offpeak_units` double NOT NULL DEFAULT '0',
+  `PrevU` int DEFAULT '0',
+  `PresU` int DEFAULT '0',
+  `Units` int DEFAULT '0',
+  `FreeU` int DEFAULT '0',
+  `currentbill` double NOT NULL DEFAULT '0',
+  `total_taxes` double NOT NULL DEFAULT '0',
+  `total_charges` double NOT NULL DEFAULT '0',
   `net_bill` double NOT NULL,
-  `Arrears` int(11) DEFAULT 0,
-  `GTotal` int(11) DEFAULT 0,
-  `charges_breakup` text DEFAULT NULL,
-  `WithinDuedate` int(11) NOT NULL DEFAULT 0,
-  `AfterdueDate` int(11) NOT NULL DEFAULT 0,
-  `Rec` int(11) DEFAULT 0,
-  `IssueDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `arrears` double DEFAULT '0',
+  `gTotal` double NOT NULL DEFAULT '0',
+  `off_peak_bill_breakup` text,
+  `charges_breakup` text,
+  `taxes_breakup` text,
+  `WithinDuedate` double NOT NULL DEFAULT '0',
+  `AfterdueDate` double NOT NULL DEFAULT '0',
+  `Rec` int DEFAULT '0',
+  `IssueDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `DueDate` datetime DEFAULT NULL,
   `IsPayed` varchar(1) NOT NULL DEFAULT '0',
-  `paid_amount` double NOT NULL DEFAULT 0,
+  `paid_amount` double NOT NULL DEFAULT '0',
   `paid_on` date DEFAULT NULL,
   `paid_by` varchar(10) DEFAULT NULL,
   `uploaded_datetime` datetime DEFAULT NULL,
-  `Observation` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `consumer_bills`
---
-
-INSERT INTO `consumer_bills` (`id`, `generate_bill_id`, `reading_id`, `ref_no`, `billing_month_year`, `peak_units`, `offpeak_units`, `PrevU`, `PresU`, `Units`, `FreeU`, `currentbill`, `net_bill`, `Arrears`, `GTotal`, `charges_breakup`, `WithinDuedate`, `AfterdueDate`, `Rec`, `IssueDate`, `DueDate`, `IsPayed`, `paid_amount`, `paid_on`, `paid_by`, `uploaded_datetime`, `Observation`) VALUES
-(1, 16, 1, '8261420391904', '2023-09-01', 0, 250, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 0, 0, 0, '2023-09-27 10:45:14', NULL, '0', 0, NULL, NULL, NULL, NULL),
-(2, 19, 2, '8261420391904', '2023-10-01', 0, 350, 0, 0, 0, 0, 8500, 0, 0, 0, '[{\"units\":100,\"charges\":16.48},{\"units\":100,\"charges\":22.95},{\"units\":100,\"charges\":27.95},{\"units\":50,\"charges\":35.24}]', 0, 0, 0, '2023-10-03 11:29:50', NULL, '0', 0, NULL, NULL, NULL, NULL);
+  `Observation` varchar(20) DEFAULT NULL,
+  `l_p_surcharge` float NOT NULL DEFAULT '0',
+  `sub_cat_finded_id` int DEFAULT NULL,
+  `tarrif_code` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -146,8 +165,9 @@ INSERT INTO `consumer_bills` (`id`, `generate_bill_id`, `reading_id`, `ref_no`, 
 --
 
 CREATE TABLE `consumer_categories` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `id` int UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tarrif_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -157,9 +177,27 @@ CREATE TABLE `consumer_categories` (
 -- Dumping data for table `consumer_categories`
 --
 
-INSERT INTO `consumer_categories` (`id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'Domestic', 1, '2023-09-27 05:36:16', '2023-09-27 05:36:16'),
-(2, 'Commericial', 1, '2023-09-27 05:36:25', '2023-09-27 05:36:25');
+INSERT INTO `consumer_categories` (`id`, `name`, `tarrif_code`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Domestic', 'A1', 1, '2023-09-27 05:36:16', '2023-10-30 01:27:31'),
+(2, 'Commericial', 'A2', 1, '2023-09-27 05:36:25', '2023-09-27 05:36:25'),
+(3, 'Industrial', 'A3', 1, '2023-10-17 05:43:15', '2023-10-17 05:43:25'),
+(4, 'ABC', 'A+', 1, '2023-10-30 01:25:07', '2023-10-30 01:25:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `consumer_ledgers`
+--
+
+CREATE TABLE `consumer_ledgers` (
+  `id` int NOT NULL,
+  `consumer_id` int NOT NULL,
+  `amount` int NOT NULL,
+  `remarks` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `bill_id` int DEFAULT NULL,
+  `payment_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -168,22 +206,27 @@ INSERT INTO `consumer_categories` (`id`, `name`, `is_active`, `created_at`, `upd
 --
 
 CREATE TABLE `consumer_meters` (
-  `cm_id` int(11) NOT NULL,
-  `consumer_id` int(11) NOT NULL,
-  `meter_id` int(11) NOT NULL,
-  `ref_no` varchar(100) NOT NULL,
+  `cm_id` int NOT NULL,
+  `consumer_id` int NOT NULL,
+  `meter_id` int NOT NULL,
+  `ref_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `mannual_ref_no` bigint NOT NULL DEFAULT '0',
   `connection_date` date DEFAULT NULL,
   `definition_date` date DEFAULT NULL,
-  `previous_reading` int(11) NOT NULL DEFAULT 0,
-  `arrear` float NOT NULL DEFAULT 0
+  `previous_reading` int NOT NULL DEFAULT '0',
+  `arrear` float NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `consumer_meters`
 --
 
-INSERT INTO `consumer_meters` (`cm_id`, `consumer_id`, `meter_id`, `ref_no`, `connection_date`, `definition_date`, `previous_reading`, `arrear`) VALUES
-(1, 1, 3, '8261420391904', '2023-08-27', '2023-09-01', 0, 0);
+INSERT INTO `consumer_meters` (`cm_id`, `consumer_id`, `meter_id`, `ref_no`, `mannual_ref_no`, `connection_date`, `definition_date`, `previous_reading`, `arrear`) VALUES
+(1, 1, 3, '8261420391904', 10, '2023-08-27', '2023-09-01', 0, 0),
+(2, 2, 6, '42261812', 20, '2023-10-16', '2023-10-17', 0, 0),
+(3, 3, 7, '16822600001000', 30, '2023-10-01', '2023-10-01', 2, 1),
+(4, 4, 1, '16822600001010', 40, '2023-10-10', '2023-10-10', 2, 0),
+(5, 5, 2, '1682261', 50, '2023-10-21', '2023-10-19', 5, 0);
 
 -- --------------------------------------------------------
 
@@ -192,26 +235,29 @@ INSERT INTO `consumer_meters` (`cm_id`, `consumer_id`, `meter_id`, `ref_no`, `co
 --
 
 CREATE TABLE `consumer_sub_categories` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `consumer_category_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `category_conditon_start` int(11) NOT NULL,
-  `category_conditon_end` int(11) NOT NULL,
+  `id` int UNSIGNED NOT NULL,
+  `consumer_category_id` int NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `category_conditon_start` int NOT NULL,
+  `category_conditon_end` int NOT NULL,
+  `priority` int NOT NULL DEFAULT '1',
   `is_active` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `check_months` int(11) NOT NULL
+  `check_months` int NOT NULL,
+  `last_slab_apply` int NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `consumer_sub_categories`
 --
 
-INSERT INTO `consumer_sub_categories` (`id`, `consumer_category_id`, `name`, `category_conditon_start`, `category_conditon_end`, `is_active`, `created_at`, `updated_at`, `check_months`) VALUES
-(1, 1, 'Life line', 1, 100, 1, NULL, NULL, 12),
-(2, 1, 'Protected', 101, 200, 1, NULL, NULL, 6),
-(3, 1, 'un-protected', 201, 700, 1, NULL, NULL, 1),
-(4, 2, 'Commerial', 1000, 70000, 1, NULL, NULL, 0);
+INSERT INTO `consumer_sub_categories` (`id`, `consumer_category_id`, `name`, `category_conditon_start`, `category_conditon_end`, `priority`, `is_active`, `created_at`, `updated_at`, `check_months`, `last_slab_apply`) VALUES
+(1, 1, 'Life line', 1, 100, 3, 1, NULL, NULL, 12, 0),
+(2, 1, 'Protected', 101, 200, 2, 1, NULL, NULL, 6, 0),
+(3, 1, 'un-protected', 201, 70000, 1, 1, NULL, NULL, 6, 1),
+(4, 2, 'Commerial', 1, 70000, 1, 1, NULL, NULL, 0, 1),
+(7, 3, 'industrial', 1, 100000, 1, 1, NULL, NULL, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -220,11 +266,11 @@ INSERT INTO `consumer_sub_categories` (`id`, `consumer_category_id`, `name`, `ca
 --
 
 CREATE TABLE `divisions` (
-  `id` int(11) NOT NULL,
-  `division_code` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `description` text DEFAULT NULL,
-  `is_active` tinyint(4) NOT NULL DEFAULT 0
+  `id` int NOT NULL,
+  `division_code` int NOT NULL,
+  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `is_active` tinyint NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -232,7 +278,9 @@ CREATE TABLE `divisions` (
 --
 
 INSERT INTO `divisions` (`id`, `division_code`, `name`, `description`, `is_active`) VALUES
-(1, 42, 'Charsadda', NULL, 1);
+(1, 42, 'Charsadda', NULL, 1),
+(2, 6, 'Dir', NULL, 1),
+(3, 1, 'Chitral', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -241,13 +289,13 @@ INSERT INTO `divisions` (`id`, `division_code`, `name`, `description`, `is_activ
 --
 
 CREATE TABLE `failed_jobs` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `uuid` varchar(255) NOT NULL,
-  `connection` text NOT NULL,
-  `queue` text NOT NULL,
-  `payload` longtext NOT NULL,
-  `exception` longtext NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `id` bigint UNSIGNED NOT NULL,
+  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -257,11 +305,11 @@ CREATE TABLE `failed_jobs` (
 --
 
 CREATE TABLE `feeders` (
-  `id` int(11) NOT NULL,
-  `feeder_code` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `is_active` tinyint(4) NOT NULL DEFAULT 0,
-  `sub_division_id` int(11) DEFAULT NULL
+  `id` int NOT NULL,
+  `feeder_code` int NOT NULL,
+  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `is_active` tinyint NOT NULL DEFAULT '0',
+  `sub_division_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -269,7 +317,9 @@ CREATE TABLE `feeders` (
 --
 
 INSERT INTO `feeders` (`id`, `feeder_code`, `name`, `is_active`, `sub_division_id`) VALUES
-(1, 8, 'Sardhari 132 kv charsada', 1, 1);
+(1, 8, 'Sardhari 132 kv charsada', 1, 1),
+(2, 26, 'Chitral Area', 1, 2),
+(3, 6, 'Reshun', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -278,26 +328,24 @@ INSERT INTO `feeders` (`id`, `feeder_code`, `name`, `is_active`, `sub_division_i
 --
 
 CREATE TABLE `general_taxs` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `tax_percentage` float NOT NULL,
-  `tax_name` text NOT NULL,
-  `is_active` tinyint(4) NOT NULL DEFAULT 0
+  `tax_type_id` int NOT NULL,
+  `is_active` tinyint NOT NULL DEFAULT '0',
+  `con_cat_id` int NOT NULL,
+  `applicable_on` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'units',
+  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `general_taxs`
 --
 
-INSERT INTO `general_taxs` (`id`, `tax_percentage`, `tax_name`, `is_active`) VALUES
-(1, 2.1, 'Fuel Price Adjustment', 1),
-(2, 0, 'Financing Cost Surcharges life line Consumer', 1),
-(3, 0.43, 'Financing Cost Surcharges protected Consumer', 1),
-(4, 3.24, 'Financing Cost Surcharges un-protected Consumer', 1),
-(5, 1.24, 'Quarterly Tarrif Adjustment', 1),
-(6, 1.5, 'Electircity Duty Domestic', 1),
-(7, 3, 'Electricity duty Commercial', 1),
-(8, 0, 'G.S.T', 1),
-(9, 2, 'ab', 1);
+INSERT INTO `general_taxs` (`id`, `tax_percentage`, `tax_type_id`, `is_active`, `con_cat_id`, `applicable_on`, `code`) VALUES
+(15, 1.5, 14, 1, 1, 'charges', 'ED'),
+(16, 3, 14, 1, 2, 'charges', 'ED'),
+(17, 1.5, 15, 1, 1, 'charges', 'EDFPA'),
+(18, 3, 15, 1, 2, 'units', 'EDFPA');
 
 -- --------------------------------------------------------
 
@@ -306,8 +354,8 @@ INSERT INTO `general_taxs` (`id`, `tax_percentage`, `tax_name`, `is_active`) VAL
 --
 
 CREATE TABLE `instruction_levels` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `level` varchar(50) NOT NULL
+  `id` int UNSIGNED NOT NULL,
+  `level` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -327,40 +375,23 @@ INSERT INTO `instruction_levels` (`id`, `level`) VALUES
 --
 
 CREATE TABLE `invoices` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` varchar(255) NOT NULL,
-  `created_by` int(11) NOT NULL,
-  `status` varchar(255) NOT NULL DEFAULT 'un-paid',
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_by` int NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'un-paid',
   `created_at` timestamp NULL DEFAULT NULL,
-  `create_from_place` varchar(30) DEFAULT NULL,
+  `create_from_place` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `uploaded_receipt` text DEFAULT NULL,
+  `uploaded_receipt` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `uploaded_receipt_date` datetime DEFAULT NULL,
-  `invoice_amount` int(11) NOT NULL DEFAULT 0,
-  `other_charges` int(11) NOT NULL DEFAULT 0,
-  `other_charges_desc` text DEFAULT NULL,
-  `discount` int(11) NOT NULL DEFAULT 0,
-  `invoice_total_amount` int(11) NOT NULL DEFAULT 0,
-  `paid_from` varchar(50) DEFAULT NULL,
-  `total_paid_amount` int(11) NOT NULL DEFAULT 0
+  `invoice_amount` int NOT NULL DEFAULT '0',
+  `other_charges` int NOT NULL DEFAULT '0',
+  `other_charges_desc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `discount` int NOT NULL DEFAULT '0',
+  `invoice_total_amount` int NOT NULL DEFAULT '0',
+  `paid_from` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `total_paid_amount` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `invoices`
---
-
-INSERT INTO `invoices` (`id`, `user_id`, `created_by`, `status`, `created_at`, `create_from_place`, `updated_at`, `uploaded_receipt`, `uploaded_receipt_date`, `invoice_amount`, `other_charges`, `other_charges_desc`, `discount`, `invoice_total_amount`, `paid_from`, `total_paid_amount`) VALUES
-(1, '1', 1, 'paid', '2023-09-01 05:30:18', 'FEP', '2023-09-01 18:22:00', NULL, NULL, 0, 0, NULL, 0, 0, NULL, 0),
-(2, '2', 2, 'paid', '2023-09-01 05:33:13', 'FEP', '2023-09-01 05:36:48', 'uploads_receipt_evidance/2.jpg', '2023-08-31 22:35:05', 0, 0, NULL, 0, 0, NULL, 0),
-(3, '2', 2, 'paid', '2023-08-31 17:20:58', 'FEP', '2023-08-31 17:25:26', NULL, NULL, 0, 0, NULL, 0, 0, NULL, 0),
-(4, '2', 2, 'paid', '2023-09-06 01:44:25', 'FEP', '2023-09-06 02:30:40', NULL, NULL, 0, 0, NULL, 0, 0, NULL, 0),
-(5, '2', 2, 'un-paid', '2023-09-11 05:08:00', 'FEP', '2023-09-11 05:08:00', NULL, NULL, 0, 0, NULL, 0, 0, NULL, 0),
-(6, '2', 2, 'un-paid', '2023-09-12 02:27:48', 'FEP', '2023-09-12 02:27:48', NULL, NULL, 0, 0, NULL, 0, 0, NULL, 0),
-(7, '2', 2, 'un-paid', '2023-09-12 04:29:09', 'FEP', '2023-09-12 04:29:09', NULL, NULL, 0, 0, NULL, 0, 0, NULL, 0),
-(8, '2', 2, 'un-paid', '2023-09-15 00:58:57', 'FEP', '2023-09-15 00:58:57', NULL, NULL, 0, 0, NULL, 0, 0, NULL, 0),
-(9, '2', 2, 'un-paid', '2023-09-15 05:52:16', 'FEP', '2023-09-15 05:52:16', NULL, NULL, 0, 0, NULL, 0, 10500, NULL, 0),
-(10, '1', 0, 'paid', '2023-09-19 00:24:29', NULL, '2023-09-19 00:24:29', NULL, NULL, 0, 0, NULL, 0, 0, NULL, 0),
-(11, '1', 0, 'paid', '2023-09-19 00:28:08', NULL, '2023-09-19 00:28:08', NULL, NULL, 0, 0, NULL, 0, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -369,80 +400,18 @@ INSERT INTO `invoices` (`id`, `user_id`, `created_by`, `status`, `created_at`, `
 --
 
 CREATE TABLE `invoice_details` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `invoice_id` varchar(255) NOT NULL,
-  `group_id` varchar(255) DEFAULT NULL,
-  `category_id` varchar(255) DEFAULT NULL,
-  `course_id` varchar(255) DEFAULT NULL,
-  `qty` int(11) NOT NULL DEFAULT 1,
-  `price` varchar(255) DEFAULT NULL,
-  `discount` int(11) NOT NULL DEFAULT 0,
-  `fee_type` varchar(50) NOT NULL DEFAULT 'course' COMMENT 'course/exam',
+  `id` bigint UNSIGNED NOT NULL,
+  `invoice_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `group_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `course_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `qty` int NOT NULL DEFAULT '1',
+  `price` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `discount` int NOT NULL DEFAULT '0',
+  `fee_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'course' COMMENT 'course/exam',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `invoice_details`
---
-
-INSERT INTO `invoice_details` (`id`, `invoice_id`, `group_id`, `category_id`, `course_id`, `qty`, `price`, `discount`, `fee_type`, `created_at`, `updated_at`) VALUES
-(52, '73', '23', NULL, NULL, 1, '650', 0, 'course', '2023-08-21 02:49:54', '2023-08-21 02:49:54'),
-(53, '', NULL, NULL, NULL, 1, NULL, 0, 'course', '2023-08-21 23:48:59', '2023-08-21 23:48:59'),
-(54, '', NULL, NULL, NULL, 1, NULL, 0, 'course', '2023-08-22 00:02:32', '2023-08-22 00:02:32'),
-(55, '', NULL, NULL, NULL, 1, NULL, 0, 'course', '2023-08-22 00:09:12', '2023-08-22 00:09:12'),
-(56, '', NULL, NULL, NULL, 1, NULL, 0, 'course', '2023-08-22 00:10:48', '2023-08-22 00:10:48'),
-(57, '', NULL, NULL, NULL, 1, NULL, 0, 'course', '2023-08-22 00:29:54', '2023-08-22 00:29:54'),
-(58, '83', '23', '29', '28', 1, '350', 0, 'course', NULL, NULL),
-(59, '83', '23', '29', '27', 1, '300', 0, 'course', NULL, NULL),
-(60, '83', '24', '30', '30', 1, '300', 0, 'course', NULL, NULL),
-(61, '83', '24', '30', '29', 1, '140', 0, 'course', NULL, NULL),
-(62, '84', '23', '29', '28', 1, '350', 0, 'course', NULL, NULL),
-(63, '84', '23', '29', '27', 1, '300', 0, 'course', NULL, NULL),
-(64, '85', '24', '30', '30', 1, '300', 0, 'course', NULL, NULL),
-(65, '85', '24', '30', '29', 1, '140', 0, 'course', NULL, NULL),
-(66, '85', '23', '29', '28', 1, '350', 0, 'course', NULL, NULL),
-(67, '85', '23', '29', '27', 1, '300', 0, 'course', NULL, NULL),
-(68, '86', '24', '30', '30', 1, '300', 0, 'course', NULL, NULL),
-(69, '87', '23', '29', '28', 1, '350', 0, 'course', NULL, NULL),
-(70, '87', '23', '29', '27', 1, '300', 0, 'course', NULL, NULL),
-(71, '87', '24', '30', '29', 1, '140', 0, 'course', NULL, NULL),
-(72, '88', '23', '29', '28', 1, '350', 0, 'course', NULL, NULL),
-(73, '88', '23', '29', '27', 1, '300', 0, 'course', NULL, NULL),
-(74, '89', '24', '30', '30', 1, '300', 0, 'course', NULL, NULL),
-(75, '89', '24', '30', '29', 1, '140', 0, 'course', NULL, NULL),
-(76, '1', '1', '1', '1', 1, '1000', 0, 'course', NULL, NULL),
-(77, '1', '1', '1', '2', 1, '2000', 0, 'course', NULL, NULL),
-(78, '1', '1', '1', '3', 1, '3000', 0, 'course', NULL, NULL),
-(79, '1', '1', '1', '4', 1, '4000', 0, 'course', NULL, NULL),
-(80, '2', '1', '1', '1', 1, '1000', 0, 'course', NULL, NULL),
-(81, '2', '1', '1', '2', 1, '2000', 0, 'course', NULL, NULL),
-(82, '2', '1', '1', '3', 1, '3000', 0, 'course', NULL, NULL),
-(83, '2', '1', '1', '4', 1, '4000', 0, 'course', NULL, NULL),
-(84, '3', '3', '3', '9', 1, '10000.00', 0, 'course', NULL, NULL),
-(85, '3', '3', '3', '10', 1, '20000.00', 0, 'course', NULL, NULL),
-(86, '4', '1', '1', '1', 1, '1000', 0, 'course', NULL, NULL),
-(87, '4', '1', '1', '2', 1, '2000', 0, 'course', NULL, NULL),
-(88, '4', '1', '1', '3', 1, '3000', 0, 'course', NULL, NULL),
-(89, '4', '1', '1', '4', 1, '4000', 0, 'course', NULL, NULL),
-(90, '5', '1', '1', '1', 1, '1000', 0, 'course', NULL, NULL),
-(91, '5', '1', '1', '2', 1, '2000', 0, 'course', NULL, NULL),
-(92, '5', '1', '1', '3', 1, '3000', 0, 'course', NULL, NULL),
-(93, '5', '1', '1', '4', 1, '4000', 0, 'course', NULL, NULL),
-(94, '6', '1', '1', '1', 1, '1000', 0, 'course', NULL, NULL),
-(95, '6', '1', '1', '2', 1, '2000', 0, 'course', NULL, NULL),
-(96, '6', '1', '1', '3', 1, '3000', 0, 'course', NULL, NULL),
-(97, '6', '1', '1', '4', 1, '4000', 0, 'course', NULL, NULL),
-(98, '7', '1', '1', '1', 1, '1000', 0, 'course', NULL, NULL),
-(99, '7', '1', '1', '2', 1, '2000', 0, 'course', NULL, NULL),
-(100, '7', '1', '1', '3', 1, '3000', 0, 'course', NULL, NULL),
-(101, '7', '1', '1', '4', 1, '4000', 0, 'course', NULL, NULL),
-(102, '8', NULL, NULL, NULL, 1, '500', 0, 'test', NULL, NULL),
-(103, '9', '1', '1', '1', 1, '1000', 0, 'course', NULL, NULL),
-(104, '9', '1', '1', '2', 1, '2000', 0, 'course', NULL, NULL),
-(105, '9', '1', '1', '3', 1, '3000', 0, 'course', NULL, NULL),
-(106, '9', '1', '1', '4', 1, '4000', 0, 'course', NULL, NULL),
-(107, '9', NULL, NULL, NULL, 1, '500', 0, 'test', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -451,26 +420,14 @@ INSERT INTO `invoice_details` (`id`, `invoice_id`, `group_id`, `category_id`, `c
 --
 
 CREATE TABLE `master_categories` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `slug` varchar(255) DEFAULT NULL,
-  `icon_class` varchar(255) NOT NULL,
+  `id` int UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `icon_class` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `master_categories`
---
-
-INSERT INTO `master_categories` (`id`, `name`, `slug`, `icon_class`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'ETEA', 'etea', 'fa-user', 1, '2023-09-01 04:12:10', '2023-09-01 04:12:10'),
-(2, 'MDCAT', 'mdcat', 'fa-user', 1, '2023-09-01 04:12:25', '2023-09-01 04:12:25'),
-(6, '1st Year', '1st-year', 'fa-user', 1, '2023-09-01 04:13:44', '2023-09-01 04:13:44'),
-(4, '10th', '10th', 'fa-user', 1, '2023-09-01 04:12:52', '2023-09-01 04:12:52'),
-(5, '9th', '9th', 'fa-user', 1, '2023-09-01 04:13:05', '2023-09-01 04:13:05'),
-(7, '2nd Year', '2nd-year', 'fa-user', 1, '2023-09-01 04:13:58', '2023-09-01 04:13:58');
 
 -- --------------------------------------------------------
 
@@ -479,9 +436,9 @@ INSERT INTO `master_categories` (`id`, `name`, `slug`, `icon_class`, `is_active`
 --
 
 CREATE TABLE `meters` (
-  `meter_id` int(11) NOT NULL,
-  `meter_no` varchar(100) NOT NULL,
-  `status` varchar(20) NOT NULL DEFAULT 'free'
+  `meter_id` int NOT NULL,
+  `meter_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'free'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -489,10 +446,13 @@ CREATE TABLE `meters` (
 --
 
 INSERT INTO `meters` (`meter_id`, `meter_no`, `status`) VALUES
-(1, '01', 'free'),
-(2, '02', 'free'),
+(1, '01', 'assigned'),
+(2, '02', 'assigned'),
 (3, '0391904', 'assigned'),
-(4, '039194', 'free');
+(4, '039194', 'assigned'),
+(5, '09584', 'free'),
+(6, '123', 'assigned'),
+(7, '1234', 'assigned');
 
 -- --------------------------------------------------------
 
@@ -501,37 +461,31 @@ INSERT INTO `meters` (`meter_id`, `meter_no`, `status`) VALUES
 --
 
 CREATE TABLE `meter_readings` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `meter_no` varchar(50) DEFAULT NULL,
+  `consumer_id` int NOT NULL,
   `ref_no` varchar(50) DEFAULT NULL,
   `month_year` date DEFAULT NULL,
   `year` varchar(20) DEFAULT NULL,
   `month` varchar(20) DEFAULT NULL,
-  `offpeak` double DEFAULT 0,
-  `offpeak_units` int(11) NOT NULL DEFAULT 0,
-  `peak` double DEFAULT 0,
-  `peak_units` int(11) NOT NULL DEFAULT 0,
+  `offpeak_prev` int NOT NULL DEFAULT '0',
+  `offpeak` double DEFAULT '0',
+  `offpeak_units` int NOT NULL DEFAULT '0',
+  `peak` double DEFAULT '0',
+  `peak_units` int NOT NULL DEFAULT '0',
   `pkimage` varchar(500) DEFAULT NULL,
   `offpkimage` varchar(500) DEFAULT NULL,
-  `datetime` timestamp NULL DEFAULT current_timestamp(),
+  `datetime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `longitude` varchar(20) DEFAULT NULL,
   `latitude` varchar(20) DEFAULT NULL,
   `Observation` varchar(50) DEFAULT NULL,
   `retake` bit(1) DEFAULT b'0',
   `varifier` varchar(50) DEFAULT NULL,
   `mrid` varchar(50) DEFAULT NULL,
-  `sync` tinyint(4) NOT NULL DEFAULT 0,
+  `sync` tinyint NOT NULL DEFAULT '0',
   `status` varchar(50) DEFAULT NULL,
-  `is_verified` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `meter_readings`
---
-
-INSERT INTO `meter_readings` (`id`, `meter_no`, `ref_no`, `month_year`, `year`, `month`, `offpeak`, `offpeak_units`, `peak`, `peak_units`, `pkimage`, `offpkimage`, `datetime`, `longitude`, `latitude`, `Observation`, `retake`, `varifier`, `mrid`, `sync`, `status`, `is_verified`) VALUES
-(1, NULL, '8261420391904', '2023-09-01', '2023', '09', 250, 0, NULL, 0, NULL, NULL, '2023-09-27 10:44:35', NULL, NULL, NULL, b'0', '1', NULL, 0, NULL, 1),
-(2, NULL, '8261420391904', '2023-10-01', '2023', '10', 50, 350, 100, 100, NULL, NULL, '2023-10-03 06:09:10', NULL, NULL, NULL, b'0', '1', NULL, 0, NULL, 1);
+  `is_verified` int NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -540,9 +494,9 @@ INSERT INTO `meter_readings` (`id`, `meter_no`, `ref_no`, `month_year`, `year`, 
 --
 
 CREATE TABLE `migrations` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) NOT NULL,
-  `batch` int(11) NOT NULL
+  `id` int UNSIGNED NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -579,11 +533,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `oauth_access_tokens` (
-  `id` varchar(100) NOT NULL,
-  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `client_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(191) DEFAULT NULL,
-  `scopes` text DEFAULT NULL,
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `client_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `revoked` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -618,10 +572,10 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 --
 
 CREATE TABLE `oauth_auth_codes` (
-  `id` varchar(100) NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `client_id` bigint(20) UNSIGNED NOT NULL,
-  `scopes` text DEFAULT NULL,
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `client_id` bigint UNSIGNED NOT NULL,
+  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `revoked` tinyint(1) NOT NULL,
   `expires_at` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -633,12 +587,12 @@ CREATE TABLE `oauth_auth_codes` (
 --
 
 CREATE TABLE `oauth_clients` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `name` varchar(191) NOT NULL,
-  `secret` varchar(100) DEFAULT NULL,
-  `provider` varchar(191) DEFAULT NULL,
-  `redirect` text NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `secret` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `redirect` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `personal_access_client` tinyint(1) NOT NULL,
   `password_client` tinyint(1) NOT NULL,
   `revoked` tinyint(1) NOT NULL,
@@ -663,8 +617,8 @@ INSERT INTO `oauth_clients` (`id`, `user_id`, `name`, `secret`, `provider`, `red
 --
 
 CREATE TABLE `oauth_personal_access_clients` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `client_id` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `client_id` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -684,8 +638,8 @@ INSERT INTO `oauth_personal_access_clients` (`id`, `client_id`, `created_at`, `u
 --
 
 CREATE TABLE `oauth_refresh_tokens` (
-  `id` varchar(100) NOT NULL,
-  `access_token_id` varchar(100) NOT NULL,
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `access_token_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `revoked` tinyint(1) NOT NULL,
   `expires_at` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -697,51 +651,55 @@ CREATE TABLE `oauth_refresh_tokens` (
 --
 
 CREATE TABLE `options` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `code` varchar(255) NOT NULL,
-  `option_key` varchar(255) NOT NULL,
-  `option_value` text DEFAULT NULL
+  `id` int UNSIGNED NOT NULL,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `option_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `option_value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `ref_id` int DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `options`
 --
 
-INSERT INTO `options` (`id`, `code`, `option_key`, `option_value`) VALUES
-(1, 'pageHome', 'banner_title', 'PEDO'),
-(2, 'pageHome', 'banner_text', 'Search you bill by refrence Number from anywhere'),
-(3, 'pageHome', 'instructor_text', 'We have more than 200 skilled & professional Instructors'),
-(4, 'pageHome', 'learn_block_title', 'PEDO objective'),
-(5, 'pageHome', 'learn_block_text', '<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\"><strong style=\"box-sizing: border-box; padding: 0px; margin: 0px; border: none; outline: none;\">Established In 1986 as \"Small Hydel Development Organization\" with the objective to:</strong></p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">&nbsp;- Identify and develop hydel potential upto 5MW.</p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">&nbsp;- Construct small hydel stations for isolated load centers.</p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">&nbsp;- Operate and maintain off grid small Hydel Stations.</p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">In 1993, it was converted to an autonomous body under the 1993 Act and renamed as \"Sarhad Hydel Development Organization (SHYDO) \" In 2013, the name of organization was changed to \"Pakhtunkhwa Hydel Development Organization(PHYDO)\" Most recently in 2014 PHYDO was renamed as \"Pakhtunkhwa Energy Development Organization (PEDO)\" through passage of PEDO Act 2014.</p>'),
-(6, 'pageAbout', 'content', '<article class=\"container\">\r\n<div class=\"row\">\r\n<div class=\"col-12\">\r\n<h5 class=\"mt-3 underline-heading\">OUR MISSION IS SIMPLE</h5>\r\n<p>Cobem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla dolor sit amet, consectetuer adipiscing elit.</p>\r\n<p>Aenean commodo ligula eget dolor. Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, eta rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis. Lorem ipsum dolor sit amet,Aenean commodo ligula eget dolor. Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, eta rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis. Lorem ipsum dolor sit amet,</p>\r\n<ul class=\"ul-no-padding about-ul\">\r\n<li>Commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Commodo ligula eget dolor. Aenean massa. Port sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>\r\n<li>Dum sociis natoque penatibus et magnis dis parturient montes</li>\r\n<li>Nascetur ridiculus mus, Nulla consequat massa quis enim, Cum sociis natoque penatibus et magnis dis parturient montes</li>\r\n<li>Commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>\r\n<li>Nascetur ridiculus mus, Nulla consequat massa quis enim</li>\r\n<li>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus, Nulla consequat massa quis enim</li>\r\n<li>Consectetuer adipiscing elit. Aenean commodo ligula eget dolor</li>\r\n</ul>\r\n</div>\r\n</div>\r\n</article>\r\n<article class=\"count-block jumbotron\">\r\n<div class=\"container\">\r\n<div class=\"row\">\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">150</h3>\r\n<h6>COUNTRIES REACHED</h6>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">850</h3>\r\n<h6>COUNTRIES REACHED</h6>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">38300</h3>\r\n<h6>PASSED GRADUATES</h6>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">3400</h3>\r\n<h6>COURSES PUBLISHED</h6>\r\n</div>\r\n</div>\r\n</div>\r\n</article>\r\n<article class=\"about-features-block\">\r\n<div class=\"container\">\r\n<div class=\"row\">\r\n<div class=\"col-12 text-center seperator-head mt-3\">\r\n<h3>Why choose QCA</h3>\r\n<p class=\"mt-3\">Cum doctus civibus efficiantur in imperdiet deterruisset.</p>\r\n</div>\r\n</div>\r\n<div class=\"row mt-4 mb-5\">\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-file-signature\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Hi-Tech Learning</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-users-cog\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Course Discussion</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-shield-alt\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Website Security</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-chalkboard-teacher\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Qualified teachers</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-building\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Equiped class rooms</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-digital-tachograph\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Advanced teaching</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-puzzle-piece\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Adavanced study plans</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-bullseye\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Focus on target</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-thumbs-up\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Focus on success</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-tablet-alt\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Responsive Design</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-credit-card\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Payment Gateways</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-search-plus\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">SEO Friendly</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n</div>\r\n</div>\r\n</article>'),
-(7, 'pageContact', 'telephone', '+92 (302) 5959967'),
-(8, 'pageContact', 'email', 'qca@example.com'),
-(9, 'pageContact', 'address', 'University Town, Peshawar , pakistan'),
-(10, 'pageContact', 'map', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.940622898076!2d-74.00543578509465!3d40.74133204375838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf14f1f51f%3A0xcc1b5ab35bd75df0!2sGoogle!5e0!3m2!1sen!2sin!4v1542693598934\" width=\"100%\" height=\"100%\" frameborder=\"0\" style=\"border:0\" allowfullscreen></iframe>'),
-(11, 'settingGeneral', 'application_name', 'pedo'),
-(12, 'settingGeneral', 'meta_key', 'Quality Coaching Academy'),
-(13, 'settingGeneral', 'meta_description', 'Learn every topic. On time. Every time.'),
-(14, 'settingGeneral', 'admin_commission', '20'),
-(15, 'settingGeneral', 'admin_email', 'info@qca.com'),
-(16, 'settingGeneral', 'minimum_withdraw', '100'),
-(17, 'settingGeneral', 'header_logo', 'config/logo.png'),
-(18, 'settingGeneral', 'fav_icon', 'config/favicon.ico'),
-(19, 'settingGeneral', 'footer_logo', 'config/logo_footer.png'),
-(20, 'settingPayment', 'username', ''),
-(21, 'settingPayment', 'password', ''),
-(22, 'settingPayment', 'signature', ''),
-(23, 'settingPayment', 'test_mode', '1'),
-(24, 'settingPayment', 'is_active', '1'),
-(25, 'settingEmail', 'smtp_host', NULL),
-(26, 'settingEmail', 'smtp_port', NULL),
-(27, 'settingEmail', 'smtp_secure', NULL),
-(28, 'settingEmail', 'smtp_username', NULL),
-(29, 'settingEmail', 'smtp_password', NULL),
-(30, 'settingGeneral', 'old_header_logo', 'config/logo.png'),
-(31, 'settingGeneral', 'old_footer_logo', 'config/logo_footer.png'),
-(32, 'settingGeneral', 'old_fav_icon', 'config/favicon.ico'),
-(33, 'testFee', 'online_fee', '500'),
-(34, 'testFee', 'offline_fee', '300');
+INSERT INTO `options` (`id`, `code`, `option_key`, `option_value`, `ref_id`) VALUES
+(1, 'pageHome', 'banner_title', 'PEDO', NULL),
+(2, 'pageHome', 'banner_text', 'Search you bill by refrence Number from anywhere', NULL),
+(3, 'pageHome', 'instructor_text', 'We have more than 200 skilled & professional Instructors', NULL),
+(4, 'pageHome', 'learn_block_title', 'PEDO objective', NULL),
+(5, 'pageHome', 'learn_block_text', '<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\"><strong style=\"box-sizing: border-box; padding: 0px; margin: 0px; border: none; outline: none;\">Established In 1986 as \"Small Hydel Development Organization\" with the objective to:</strong></p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">&nbsp;- Identify and develop hydel potential upto 5MW.</p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">&nbsp;- Construct small hydel stations for isolated load centers.</p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">&nbsp;- Operate and maintain off grid small Hydel Stations.</p>\r\n<p style=\"box-sizing: border-box; padding: 0px; margin: 0px 0px 10px; border: none; outline: none; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 14px; text-align: justify; background-color: #ffffff; color: #000000 !important;\">In 1993, it was converted to an autonomous body under the 1993 Act and renamed as \"Sarhad Hydel Development Organization (SHYDO) \" In 2013, the name of organization was changed to \"Pakhtunkhwa Hydel Development Organization(PHYDO)\" Most recently in 2014 PHYDO was renamed as \"Pakhtunkhwa Energy Development Organization (PEDO)\" through passage of PEDO Act 2014.</p>', NULL),
+(6, 'pageAbout', 'content', '<article class=\"container\">\r\n<div class=\"row\">\r\n<div class=\"col-12\">\r\n<h5 class=\"mt-3 underline-heading\">OUR MISSION IS SIMPLE</h5>\r\n<p>Cobem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla dolor sit amet, consectetuer adipiscing elit.</p>\r\n<p>Aenean commodo ligula eget dolor. Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, eta rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis. Lorem ipsum dolor sit amet,Aenean commodo ligula eget dolor. Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, eta rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis. Lorem ipsum dolor sit amet,</p>\r\n<ul class=\"ul-no-padding about-ul\">\r\n<li>Commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Commodo ligula eget dolor. Aenean massa. Port sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>\r\n<li>Dum sociis natoque penatibus et magnis dis parturient montes</li>\r\n<li>Nascetur ridiculus mus, Nulla consequat massa quis enim, Cum sociis natoque penatibus et magnis dis parturient montes</li>\r\n<li>Commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>\r\n<li>Nascetur ridiculus mus, Nulla consequat massa quis enim</li>\r\n<li>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus, Nulla consequat massa quis enim</li>\r\n<li>Consectetuer adipiscing elit. Aenean commodo ligula eget dolor</li>\r\n</ul>\r\n</div>\r\n</div>\r\n</article>\r\n<article class=\"count-block jumbotron\">\r\n<div class=\"container\">\r\n<div class=\"row\">\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">150</h3>\r\n<h6>COUNTRIES REACHED</h6>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">850</h3>\r\n<h6>COUNTRIES REACHED</h6>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">38300</h3>\r\n<h6>PASSED GRADUATES</h6>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6\">\r\n<h3 class=\"underline-heading\">3400</h3>\r\n<h6>COURSES PUBLISHED</h6>\r\n</div>\r\n</div>\r\n</div>\r\n</article>\r\n<article class=\"about-features-block\">\r\n<div class=\"container\">\r\n<div class=\"row\">\r\n<div class=\"col-12 text-center seperator-head mt-3\">\r\n<h3>Why choose QCA</h3>\r\n<p class=\"mt-3\">Cum doctus civibus efficiantur in imperdiet deterruisset.</p>\r\n</div>\r\n</div>\r\n<div class=\"row mt-4 mb-5\">\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-file-signature\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Hi-Tech Learning</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-users-cog\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Course Discussion</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-shield-alt\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Website Security</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-chalkboard-teacher\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Qualified teachers</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-building\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Equiped class rooms</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-digital-tachograph\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Advanced teaching</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-puzzle-piece\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Adavanced study plans</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-bullseye\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Focus on target</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-thumbs-up\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Focus on success</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-tablet-alt\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Responsive Design</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-credit-card\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">Payment Gateways</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n<div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6\">\r\n<div class=\"feature-box mx-auto text-center\"><main><i class=\"fas fa-search-plus\"></i>\r\n<div class=\"col-md-12\">\r\n<h6 class=\"instructor-title\">SEO Friendly</h6>\r\n<p>Aenean massa. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n</div>\r\n</main></div>\r\n</div>\r\n</div>\r\n</div>\r\n</article>', NULL),
+(7, 'pageContact', 'telephone', '+92 (302) 5959967', NULL),
+(8, 'pageContact', 'email', 'qca@example.com', NULL),
+(9, 'pageContact', 'address', 'University Town, Peshawar , pakistan', NULL),
+(10, 'pageContact', 'map', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.940622898076!2d-74.00543578509465!3d40.74133204375838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf14f1f51f%3A0xcc1b5ab35bd75df0!2sGoogle!5e0!3m2!1sen!2sin!4v1542693598934\" width=\"100%\" height=\"100%\" frameborder=\"0\" style=\"border:0\" allowfullscreen></iframe>', NULL),
+(11, 'settingGeneral', 'application_name', 'pedo', NULL),
+(12, 'settingGeneral', 'meta_key', 'Quality Coaching Academy', NULL),
+(13, 'settingGeneral', 'meta_description', 'Learn every topic. On time. Every time.', NULL),
+(14, 'settingGeneral', 'admin_commission', '20', NULL),
+(15, 'settingGeneral', 'admin_email', 'info@qca.com', NULL),
+(16, 'settingGeneral', 'minimum_withdraw', '100', NULL),
+(17, 'settingGeneral', 'header_logo', 'config/logo.png', NULL),
+(18, 'settingGeneral', 'fav_icon', 'config/favicon.ico', NULL),
+(19, 'settingGeneral', 'footer_logo', 'config/logo_footer.png', NULL),
+(20, 'settingPayment', 'username', '', NULL),
+(21, 'settingPayment', 'password', '', NULL),
+(22, 'settingPayment', 'signature', '', NULL),
+(23, 'settingPayment', 'test_mode', '1', NULL),
+(24, 'settingPayment', 'is_active', '1', NULL),
+(25, 'settingEmail', 'smtp_host', NULL, NULL),
+(26, 'settingEmail', 'smtp_port', NULL, NULL),
+(27, 'settingEmail', 'smtp_secure', NULL, NULL),
+(28, 'settingEmail', 'smtp_username', NULL, NULL),
+(29, 'settingEmail', 'smtp_password', NULL, NULL),
+(30, 'settingGeneral', 'old_header_logo', 'config/logo.png', NULL),
+(31, 'settingGeneral', 'old_footer_logo', 'config/logo_footer.png', NULL),
+(32, 'settingGeneral', 'old_fav_icon', 'config/favicon.ico', NULL),
+(33, 'testFee', 'online_fee', '500', NULL),
+(34, 'testFee', 'offline_fee', '300', NULL),
+(38, 'settingCharges', 'late_fee_surcharge', '10', NULL),
+(39, 'zaroBillPayment', 'if_unit_zero_for_domistic', '60', 2),
+(40, 'zaroBillPayment', 'if_unit_zero_for_commerical', '75', 1);
 
 -- --------------------------------------------------------
 
@@ -750,71 +708,27 @@ INSERT INTO `options` (`id`, `code`, `option_key`, `option_value`) VALUES
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(120) NOT NULL,
-  `token` varchar(255) NOT NULL,
+  `email` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payemnt_collection_methods`
+-- Table structure for table `payment_receives`
 --
 
-CREATE TABLE `payemnt_collection_methods` (
-  `id` int(11) NOT NULL,
-  `payment_title` varchar(100) NOT NULL,
-  `pay_method` varchar(30) NOT NULL,
-  `unique_code` varchar(100) NOT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT 1,
-  `pay_details` text DEFAULT '[]',
-  `description` text DEFAULT NULL,
-  `slab_charges` text NOT NULL DEFAULT '[]'
+CREATE TABLE `payment_receives` (
+  `id` int NOT NULL,
+  `payment_month` date NOT NULL,
+  `payment_date` date NOT NULL,
+  `payment_amount` float NOT NULL,
+  `ref_no` bigint NOT NULL,
+  `bank_id` int NOT NULL,
+  `conumer_id` int NOT NULL,
+  `bill_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `payemnt_collection_methods`
---
-
-INSERT INTO `payemnt_collection_methods` (`id`, `payment_title`, `pay_method`, `unique_code`, `status`, `pay_details`, `description`, `slab_charges`) VALUES
-(1, 'Bank Deposit', 'offline', 'BankDeposit', 1, '[{\"Bank Name\":\"Hbl\"},{\"Account No\":\"12121545412454\"},{\"Branch Code\":\"001\"},{\"Branch\":\"University Road\"}]', '<p>- Deposit fee in following Bank/wallet</p><p style=\"margin-left:30px;\"> <b> Bank Name: ABC </b>  <br><b> Branch Code: 0123 </b> <br/><b> Account: 0123456789</b> </p></p>\n          <p>- Go to My Payments .</p>\n          <p>- Click on Upload Receipt Button,and upload Receipt Image   </p>\n          <p>- Wait for Account Section to Verify   </p>\n          <p>- After Verification you Invoice status will become paid.</p>\n          <p>- Course will be open in myCourses Section.</p>', '[]'),
-(2, 'Online Deposit', 'online', 'KuickPay', 1, '[]', '         <p>- Open Bank / Mobile Wallet Application</p>\n          <p>- Find \'Bill Payments\' And click .</p>\n          <p>- Find \'Others \' Option And click</p>\n          <p>- Find \'KuickPay\' and Click   </p>\n          <p>- Enter Consumer Number(also Called QuickPay Id)  Which is Available in Invoice   </p>\n          <p>- Retrive Bills  </p>\n          <p>- Pay Now.</p>\n          \n          <p>Note: You can pay from All Banks and Wallet . <br/> For further Details click <a href=\"https://www.youtube.com/watch?v=OXgPj_E07J0\"> How To Pay </a></p>', '[]');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `payment_gateway_charges`
---
-
-CREATE TABLE `payment_gateway_charges` (
-  `pgc_id` int(11) NOT NULL,
-  `bill_amout` int(11) NOT NULL DEFAULT 0,
-  `charges` int(11) NOT NULL DEFAULT 0,
-  `payment_gateway` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `payment_gateway_charges`
---
-
-INSERT INTO `payment_gateway_charges` (`pgc_id`, `bill_amout`, `charges`, `payment_gateway`) VALUES
-(1, 10000, 40, 'KuickPay'),
-(2, 150000, 80, 'KuickPay'),
-(3, 500000, 150, 'KuickPay');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `payment_gateway_historys`
---
-
-CREATE TABLE `payment_gateway_historys` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `payment_method` varchar(30) NOT NULL,
-  `order_details` text DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -823,12 +737,12 @@ CREATE TABLE `payment_gateway_historys` (
 --
 
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) NOT NULL,
-  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `abilities` text DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -838,15 +752,30 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `reading_approve`
+--
+
+CREATE TABLE `reading_approve` (
+  `id` int NOT NULL,
+  `month_year` date NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `is_verified` tinyint NOT NULL DEFAULT '0',
+  `varify_by` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `reset_code_passwords`
 --
 
 CREATE TABLE `reset_code_passwords` (
-  `id` int(11) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `code` varchar(255) NOT NULL,
+  `id` int NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -856,9 +785,9 @@ CREATE TABLE `reset_code_passwords` (
 --
 
 CREATE TABLE `roles` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `id` int UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -879,9 +808,9 @@ INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VA
 --
 
 CREATE TABLE `role_user` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `role_id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL
+  `id` int UNSIGNED NOT NULL,
+  `role_id` int UNSIGNED NOT NULL,
+  `user_id` int UNSIGNED NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -889,9 +818,9 @@ CREATE TABLE `role_user` (
 --
 
 INSERT INTO `role_user` (`id`, `role_id`, `user_id`) VALUES
-(1, 3, 1),
-(4, 1, 2),
-(5, 2, 1);
+(9, 3, 1),
+(10, 1, 4),
+(8, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -900,13 +829,13 @@ INSERT INTO `role_user` (`id`, `role_id`, `user_id`) VALUES
 --
 
 CREATE TABLE `slabs` (
-  `id` int(11) NOT NULL,
-  `sub_cat_id` int(11) NOT NULL,
-  `slab_start_unit` int(11) NOT NULL,
-  `slab_end_unit` int(11) NOT NULL,
-  `total_units` int(11) NOT NULL DEFAULT 0,
+  `id` int NOT NULL,
+  `sub_cat_id` int NOT NULL,
+  `slab_start_unit` int NOT NULL,
+  `slab_end_unit` int NOT NULL,
+  `total_units` int NOT NULL DEFAULT '0',
   `charges` float NOT NULL,
-  `is_active` int(11) NOT NULL DEFAULT 1
+  `is_active` int NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -922,7 +851,10 @@ INSERT INTO `slabs` (`id`, `sub_cat_id`, `slab_start_unit`, `slab_end_unit`, `to
 (6, 3, 101, 200, 100, 22.95, 1),
 (7, 3, 201, 300, 100, 27.95, 1),
 (8, 4, 1, 7000, 7000, 37.95, 1),
-(9, 3, 301, 400, 100, 35.24, 1);
+(9, 3, 301, 400, 100, 32.03, 1),
+(10, 7, 1, 100000, 0, 50, 1),
+(11, 8, 301, 400, 0, 32.03, 1),
+(12, 8, 401, 500, 0, 35.24, 1);
 
 -- --------------------------------------------------------
 
@@ -931,19 +863,32 @@ INSERT INTO `slabs` (`id`, `sub_cat_id`, `slab_start_unit`, `slab_end_unit`, `to
 --
 
 CREATE TABLE `sub_category_charges` (
-  `scc_id` int(11) NOT NULL,
-  `sub_cat_id` int(11) NOT NULL,
-  `charges_id` int(11) NOT NULL,
-  `charges` float NOT NULL DEFAULT 0,
-  `is_active` int(11) NOT NULL DEFAULT 1
+  `id` int NOT NULL,
+  `sub_cat_id` int NOT NULL,
+  `charges_type_id` int NOT NULL,
+  `charges` float NOT NULL DEFAULT '0',
+  `is_active` int NOT NULL DEFAULT '1',
+  `applicable_on` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'units',
+  `code` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `sub_category_charges`
 --
 
-INSERT INTO `sub_category_charges` (`scc_id`, `sub_cat_id`, `charges_id`, `charges`, `is_active`) VALUES
-(1, 1, 2, 2.1, 1);
+INSERT INTO `sub_category_charges` (`id`, `sub_cat_id`, `charges_type_id`, `charges`, `is_active`, `applicable_on`, `code`) VALUES
+(1, 1, 2, 1.8, 1, 'units', 'FPA'),
+(2, 2, 2, 1.8, 1, 'units', 'FPA'),
+(4, 4, 2, 1.81, 1, 'units', 'FPA'),
+(5, 1, 3, 1.2489, 1, 'units', 'QTRTA'),
+(6, 2, 3, 1.2489, 1, 'units', 'QTRTA'),
+(7, 4, 3, 1.2489, 1, 'units', 'QTRTA'),
+(9, 1, 1, 0, 1, 'units', NULL),
+(10, 2, 1, 0.43, 1, 'units', NULL),
+(12, 3, 3, 1.2489, 1, 'units', 'QTRTA'),
+(13, 3, 1, 3.23, 1, 'units', NULL),
+(14, 3, 2, 1.81, 1, 'units', 'FPA'),
+(15, 4, 1, 3.23, 1, 'units', NULL);
 
 -- --------------------------------------------------------
 
@@ -952,12 +897,12 @@ INSERT INTO `sub_category_charges` (`scc_id`, `sub_cat_id`, `charges_id`, `charg
 --
 
 CREATE TABLE `sub_divisions` (
-  `id` int(11) NOT NULL,
-  `sub_division_code` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `description` text DEFAULT NULL,
-  `is_active` tinyint(4) NOT NULL DEFAULT 0,
-  `division_id` int(11) DEFAULT NULL
+  `id` int NOT NULL,
+  `sub_division_code` int NOT NULL,
+  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `is_active` tinyint NOT NULL DEFAULT '0',
+  `division_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -965,7 +910,29 @@ CREATE TABLE `sub_divisions` (
 --
 
 INSERT INTO `sub_divisions` (`id`, `sub_division_code`, `name`, `description`, `is_active`, `division_id`) VALUES
-(1, 261, 'Sardhari', NULL, 1, 1);
+(1, 261, 'Sardhari', NULL, 1, 1),
+(2, 7, 'Chitral', NULL, 1, 2),
+(3, 6822, 'Upper Chitral', NULL, 1, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tax_types`
+--
+
+CREATE TABLE `tax_types` (
+  `id` int NOT NULL,
+  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `is_active` tinyint NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tax_types`
+--
+
+INSERT INTO `tax_types` (`id`, `title`, `is_active`) VALUES
+(14, 'E.D', 1),
+(15, 'E.D on FPA', 1);
 
 -- --------------------------------------------------------
 
@@ -974,13 +941,13 @@ INSERT INTO `sub_divisions` (`id`, `sub_division_code`, `name`, `description`, `
 --
 
 CREATE TABLE `transactions` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `course_id` int(10) UNSIGNED NOT NULL,
+  `id` int UNSIGNED NOT NULL,
+  `user_id` int UNSIGNED NOT NULL,
+  `course_id` int UNSIGNED NOT NULL,
   `amount` decimal(10,2) DEFAULT NULL,
-  `status` varchar(20) NOT NULL,
-  `payment_method` varchar(30) NOT NULL,
-  `order_details` text DEFAULT NULL,
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payment_method` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `order_details` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -990,7 +957,7 @@ CREATE TABLE `transactions` (
 --
 
 INSERT INTO `transactions` (`id`, `user_id`, `course_id`, `amount`, `status`, `payment_method`, `order_details`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 0.00, 'completed', 'paypal_express_checkout', '{\"TOKEN\":\"success\",\"status\":\"succeeded\",\"Timestamp\":1561787415,\"ACK\":\"Success\"}', '2023-07-12 23:56:24', '2023-07-12 23:56:24');
+(1, 1, 1, '0.00', 'completed', 'paypal_express_checkout', '{\"TOKEN\":\"success\",\"status\":\"succeeded\",\"Timestamp\":1561787415,\"ACK\":\"Success\"}', '2023-07-12 23:56:24', '2023-07-12 23:56:24');
 
 -- --------------------------------------------------------
 
@@ -999,16 +966,16 @@ INSERT INTO `transactions` (`id`, `user_id`, `course_id`, `amount`, `status`, `p
 --
 
 CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `first_name` varchar(255) NOT NULL,
-  `email` varchar(120) DEFAULT NULL,
-  `password` varchar(60) DEFAULT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `remember_token` varchar(100) DEFAULT NULL,
+  `id` int UNSIGNED NOT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `reg_no` varchar(30) DEFAULT NULL,
-  `retrive_uniq_code` varchar(50) DEFAULT NULL,
+  `reg_no` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `retrive_uniq_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `card_expire_at` date DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1019,30 +986,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `first_name`, `email`, `password`, `is_active`, `remember_token`, `created_at`, `updated_at`, `reg_no`, `retrive_uniq_code`, `card_expire_at`) VALUES
 (1, 'admin', 'admin@gmail.com', '$2a$12$lcNe9KsxRGEoKvU6vGDhdu5ZZeEhmMyttzqyx9urNxvEvh./39V/m', 1, NULL, '2023-07-12 23:56:24', '2023-07-12 23:56:24', NULL, NULL, NULL),
 (2, 'reader', 'reader@gmail.com', '$2a$12$lcNe9KsxRGEoKvU6vGDhdu5ZZeEhmMyttzqyx9urNxvEvh./39V/m', 1, NULL, '2023-09-01 05:32:55', '2023-09-01 05:32:55', NULL, NULL, NULL),
-(3, 'incharge', 'incharge@gmail.com', '$2a$12$lcNe9KsxRGEoKvU6vGDhdu5ZZeEhmMyttzqyx9urNxvEvh./39V/m', 1, NULL, '2023-09-01 05:32:55', '2023-09-01 05:32:55', NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user_balance`
---
-
-CREATE TABLE `user_balance` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `is_expire` int(11) NOT NULL DEFAULT 0 COMMENT '0/1 1 means expire',
-  `remarks` text NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `user_balance`
---
-
-INSERT INTO `user_balance` (`id`, `user_id`, `amount`, `is_expire`, `remarks`, `created_at`) VALUES
-(1, 2, 450, 0, 'Test Fee inv#1', '2023-09-17 00:01:07'),
-(2, 2, 450, 0, 'Test Fee inv#2', '2023-09-17 00:41:22');
+(3, 'incharge', 'incharge@gmail.com', '$2a$12$lcNe9KsxRGEoKvU6vGDhdu5ZZeEhmMyttzqyx9urNxvEvh./39V/m', 1, NULL, '2023-09-01 05:32:55', '2023-09-01 05:32:55', NULL, NULL, NULL),
+(4, 'Ikram', 'ikramghalib@gmail.com', '$2y$10$5GK60r45E58AIOW/q/xuROlij/e9f.PvqJCr8Pb7gnPrhrDwBwAnO', 1, NULL, '2023-10-17 06:49:43', '2023-10-17 06:49:43', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1051,11 +996,11 @@ INSERT INTO `user_balance` (`id`, `user_id`, `amount`, `is_expire`, `remarks`, `
 --
 
 CREATE TABLE `withdraw_requests` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `instructor_id` int(11) NOT NULL,
-  `paypal_id` varchar(150) NOT NULL,
+  `id` int UNSIGNED NOT NULL,
+  `instructor_id` int NOT NULL,
+  `paypal_id` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `amount` decimal(10,2) DEFAULT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0-pending,1-processed',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '0-pending,1-processed',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1065,15 +1010,21 @@ CREATE TABLE `withdraw_requests` (
 --
 
 --
+-- Indexes for table `banks`
+--
+ALTER TABLE `banks`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `bill_generates`
 --
 ALTER TABLE `bill_generates`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `charges`
+-- Indexes for table `charges_types`
 --
-ALTER TABLE `charges`
+ALTER TABLE `charges_types`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1092,6 +1043,12 @@ ALTER TABLE `consumer_bills`
 -- Indexes for table `consumer_categories`
 --
 ALTER TABLE `consumer_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `consumer_ledgers`
+--
+ALTER TABLE `consumer_ledgers`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1220,21 +1177,9 @@ ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
 
 --
--- Indexes for table `payemnt_collection_methods`
+-- Indexes for table `payment_receives`
 --
-ALTER TABLE `payemnt_collection_methods`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `payment_gateway_charges`
---
-ALTER TABLE `payment_gateway_charges`
-  ADD PRIMARY KEY (`pgc_id`);
-
---
--- Indexes for table `payment_gateway_historys`
---
-ALTER TABLE `payment_gateway_historys`
+ALTER TABLE `payment_receives`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1244,6 +1189,12 @@ ALTER TABLE `personal_access_tokens`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+
+--
+-- Indexes for table `reading_approve`
+--
+ALTER TABLE `reading_approve`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `reset_code_passwords`
@@ -1274,12 +1225,18 @@ ALTER TABLE `slabs`
 -- Indexes for table `sub_category_charges`
 --
 ALTER TABLE `sub_category_charges`
-  ADD PRIMARY KEY (`scc_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `sub_divisions`
 --
 ALTER TABLE `sub_divisions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tax_types`
+--
+ALTER TABLE `tax_types`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1295,12 +1252,6 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user_balance`
---
-ALTER TABLE `user_balance`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `withdraw_requests`
 --
 ALTER TABLE `withdraw_requests`
@@ -1311,214 +1262,220 @@ ALTER TABLE `withdraw_requests`
 --
 
 --
+-- AUTO_INCREMENT for table `banks`
+--
+ALTER TABLE `banks`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `bill_generates`
 --
 ALTER TABLE `bill_generates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `charges`
+-- AUTO_INCREMENT for table `charges_types`
 --
-ALTER TABLE `charges`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+ALTER TABLE `charges_types`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `consumers`
 --
 ALTER TABLE `consumers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `consumer_bills`
 --
 ALTER TABLE `consumer_bills`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `consumer_categories`
 --
 ALTER TABLE `consumer_categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `consumer_ledgers`
+--
+ALTER TABLE `consumer_ledgers`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `consumer_meters`
 --
 ALTER TABLE `consumer_meters`
-  MODIFY `cm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `cm_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `consumer_sub_categories`
 --
 ALTER TABLE `consumer_sub_categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `divisions`
 --
 ALTER TABLE `divisions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `feeders`
 --
 ALTER TABLE `feeders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `general_taxs`
 --
 ALTER TABLE `general_taxs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `instruction_levels`
 --
 ALTER TABLE `instruction_levels`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `invoice_details`
 --
 ALTER TABLE `invoice_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `master_categories`
 --
 ALTER TABLE `master_categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `meters`
 --
 ALTER TABLE `meters`
-  MODIFY `meter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `meter_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `meter_readings`
 --
 ALTER TABLE `meter_readings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
 --
 ALTER TABLE `oauth_clients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `oauth_personal_access_clients`
 --
 ALTER TABLE `oauth_personal_access_clients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `options`
 --
 ALTER TABLE `options`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
--- AUTO_INCREMENT for table `payemnt_collection_methods`
+-- AUTO_INCREMENT for table `payment_receives`
 --
-ALTER TABLE `payemnt_collection_methods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `payment_gateway_charges`
---
-ALTER TABLE `payment_gateway_charges`
-  MODIFY `pgc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `payment_gateway_historys`
---
-ALTER TABLE `payment_gateway_historys`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `payment_receives`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `reading_approve`
+--
+ALTER TABLE `reading_approve`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reset_code_passwords`
 --
 ALTER TABLE `reset_code_passwords`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `role_user`
 --
 ALTER TABLE `role_user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `slabs`
 --
 ALTER TABLE `slabs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `sub_category_charges`
 --
 ALTER TABLE `sub_category_charges`
-  MODIFY `scc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `sub_divisions`
 --
 ALTER TABLE `sub_divisions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tax_types`
+--
+ALTER TABLE `tax_types`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `user_balance`
---
-ALTER TABLE `user_balance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `withdraw_requests`
 --
 ALTER TABLE `withdraw_requests`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
