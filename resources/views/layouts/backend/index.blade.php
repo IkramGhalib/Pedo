@@ -40,8 +40,8 @@
   <link rel="stylesheet" href="{{ asset('backend/vendor/datatables.net-bs4/dataTables.bootstrap4.min599c.css?v4.0.2') }}">
 
   <link rel="stylesheet" href="{{ asset('backend/vendor/croppie/croppie.css?v4.0.2') }}">
-  <link rel="stylesheet" type="text/css" media="all"
-      href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"    />
+  <link rel="stylesheet" type="text/css" media="all"  href="{{ asset('backend/assets/css/jquery-ui.css') }}"    />
+      <!-- http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css -->
   <style>
      .for-screen {display: block;}
         .for-print {display: none;}
