@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 07, 2023 at 12:55 PM
+-- Generation Time: Nov 13, 2023 at 04:29 PM
 -- Server version: 8.0.34-0ubuntu0.22.04.1
 -- PHP Version: 8.1.2-1ubuntu2.14
 
@@ -57,6 +57,13 @@ CREATE TABLE `bill_generates` (
   `due_date` date DEFAULT NULL,
   `is_verified` tinyint NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bill_generates`
+--
+
+INSERT INTO `bill_generates` (`id`, `month_year`, `status`, `generated_by`, `created_at`, `updated_at`, `due_date`, `is_verified`) VALUES
+(1, '2023-01-01', 'generated', 1, '2023-11-13 10:04:10', '2023-11-13 10:04:10', '2023-11-13', 0);
 
 -- --------------------------------------------------------
 
@@ -158,6 +165,17 @@ CREATE TABLE `consumer_bills` (
   `tarrif_code` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `consumer_bills`
+--
+
+INSERT INTO `consumer_bills` (`id`, `generate_bill_id`, `reading_id`, `consumer_id`, `ref_no`, `billing_month_year`, `peak_units`, `offpeak_units`, `PrevU`, `PresU`, `Units`, `FreeU`, `currentbill`, `total_taxes`, `total_charges`, `net_bill`, `arrears`, `gTotal`, `off_peak_bill_breakup`, `charges_breakup`, `taxes_breakup`, `WithinDuedate`, `AfterdueDate`, `Rec`, `IssueDate`, `DueDate`, `IsPayed`, `paid_amount`, `paid_on`, `paid_by`, `uploaded_datetime`, `Observation`, `l_p_surcharge`, `sub_cat_finded_id`, `tarrif_code`) VALUES
+(1, 1, 1, 1, '8261420391904', '2023-01-01', 0, 100, 0, 0, 0, 0, 1648, 27, 447.89, 2122.48, 0, 2122.48, '[{\"units\":100,\"charges\":16.48}]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":124.89,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":323,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":26.59},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 2122.48, 2287.28, 0, '2023-11-13 10:04:10', '2023-11-13 00:00:00', '0', 0, NULL, NULL, NULL, NULL, 164.8, 3, 'A1'),
+(2, 1, 6, 2, '42261812', '2023-01-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 0, 76.13, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76.13, 83.63, 0, '2023-11-13 10:04:10', '2023-11-13 00:00:00', '0', 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
+(3, 1, 7, 3, '16822600001000', '2023-01-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 0, 76.13, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76.13, 83.63, 0, '2023-11-13 10:04:10', '2023-11-13 00:00:00', '0', 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
+(4, 1, 8, 4, '16822600001010', '2023-01-01', 0, 0, 0, 0, 0, 0, 150, 5, 0, 154.5, 0, 154.5, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":3,\"calculated_tax\":4.5},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":3,\"calculated_tax\":0}]', 154.5, 169.5, 0, '2023-11-13 10:04:10', '2023-11-13 00:00:00', '0', 0, NULL, NULL, NULL, NULL, 15, 4, 'A2'),
+(5, 1, 9, 5, '1682261', '2023-01-01', 0, 0, 0, 0, 0, 0, 150, 5, 0, 154.5, 0, 154.5, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":3,\"calculated_tax\":4.5},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":3,\"calculated_tax\":0}]', 154.5, 169.5, 0, '2023-11-13 10:04:10', '2023-11-13 00:00:00', '0', 0, NULL, NULL, NULL, NULL, 15, 4, 'A2');
+
 -- --------------------------------------------------------
 
 --
@@ -193,11 +211,23 @@ CREATE TABLE `consumer_ledgers` (
   `id` int NOT NULL,
   `consumer_id` int NOT NULL,
   `amount` int NOT NULL,
+  `late_fee` bigint NOT NULL DEFAULT '0',
   `remarks` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `bill_id` int DEFAULT NULL,
   `payment_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `consumer_ledgers`
+--
+
+INSERT INTO `consumer_ledgers` (`id`, `consumer_id`, `amount`, `late_fee`, `remarks`, `created_at`, `bill_id`, `payment_id`) VALUES
+(1, 1, 2122, 0, '', NULL, 1, NULL),
+(2, 2, 76, 0, '', NULL, 2, NULL),
+(3, 3, 76, 0, '', NULL, 3, NULL),
+(4, 4, 155, 0, '', NULL, 4, NULL),
+(5, 5, 155, 0, '', NULL, 5, NULL);
 
 -- --------------------------------------------------------
 
@@ -487,6 +517,17 @@ CREATE TABLE `meter_readings` (
   `is_verified` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `meter_readings`
+--
+
+INSERT INTO `meter_readings` (`id`, `meter_no`, `consumer_id`, `ref_no`, `month_year`, `year`, `month`, `offpeak_prev`, `offpeak`, `offpeak_units`, `peak`, `peak_units`, `pkimage`, `offpkimage`, `datetime`, `longitude`, `latitude`, `Observation`, `retake`, `varifier`, `mrid`, `sync`, `status`, `is_verified`) VALUES
+(1, NULL, 1, '8261420391904', '2023-01-01', '23', '01', 0, 100, 100, NULL, 0, NULL, NULL, '2023-11-13 09:08:28', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(6, NULL, 2, '42261812', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-13 10:03:17', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(7, NULL, 3, '16822600001000', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-13 10:03:17', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(8, NULL, 4, '16822600001010', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-13 10:03:17', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(9, NULL, 5, '1682261', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-13 10:03:17', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -695,11 +736,9 @@ INSERT INTO `options` (`id`, `code`, `option_key`, `option_value`, `ref_id`) VAL
 (30, 'settingGeneral', 'old_header_logo', 'config/logo.png', NULL),
 (31, 'settingGeneral', 'old_footer_logo', 'config/logo_footer.png', NULL),
 (32, 'settingGeneral', 'old_fav_icon', 'config/favicon.ico', NULL),
-(33, 'testFee', 'online_fee', '500', NULL),
-(34, 'testFee', 'offline_fee', '300', NULL),
 (38, 'settingCharges', 'late_fee_surcharge', '10', NULL),
-(39, 'zaroBillPayment', 'if_unit_zero_for_domistic', '60', 2),
-(40, 'zaroBillPayment', 'if_unit_zero_for_commerical', '75', 1);
+(39, 'zaroBillPayment', 'if_unit_zero_for_domestic', '75', 1),
+(40, 'zaroBillPayment', 'if_unit_zero_for_commerical', '150', 2);
 
 -- --------------------------------------------------------
 
@@ -763,6 +802,13 @@ CREATE TABLE `reading_approve` (
   `is_verified` tinyint NOT NULL DEFAULT '0',
   `varify_by` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reading_approve`
+--
+
+INSERT INTO `reading_approve` (`id`, `month_year`, `created_at`, `updated_at`, `is_verified`, `varify_by`) VALUES
+(14, '2023-01-01', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1271,7 +1317,7 @@ ALTER TABLE `banks`
 -- AUTO_INCREMENT for table `bill_generates`
 --
 ALTER TABLE `bill_generates`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `charges_types`
@@ -1289,7 +1335,7 @@ ALTER TABLE `consumers`
 -- AUTO_INCREMENT for table `consumer_bills`
 --
 ALTER TABLE `consumer_bills`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `consumer_categories`
@@ -1301,7 +1347,7 @@ ALTER TABLE `consumer_categories`
 -- AUTO_INCREMENT for table `consumer_ledgers`
 --
 ALTER TABLE `consumer_ledgers`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `consumer_meters`
@@ -1373,7 +1419,7 @@ ALTER TABLE `meters`
 -- AUTO_INCREMENT for table `meter_readings`
 --
 ALTER TABLE `meter_readings`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -1415,7 +1461,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `reading_approve`
 --
 ALTER TABLE `reading_approve`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `reset_code_passwords`
