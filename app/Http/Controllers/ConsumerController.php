@@ -98,7 +98,8 @@ class ConsumerController extends Controller
         $subDivision=SubDivision::find($request->sub_division);
         $feeder=Feeder::find($request->feeder);
 
-        $new_ref_no=$division->division_code.$subDivision->sub_division_code.$feeder->feeder_code.$request->mannual_ref_no;
+        // $new_ref_no=$division->division_code.$subDivision->sub_division_code.$feeder->feeder_code.$request->mannual_ref_no;
+        $new_ref_no=$request->mannual_ref_no;
 
         $check_data=DB::table('consumer_meters')->where('ref_no',$new_ref_no)->first();
         if($check_data)
@@ -140,11 +141,11 @@ class ConsumerController extends Controller
             'mannual_ref_no'=>$request->mannual_ref_no,
             'ref_no'=>$new_ref_no,
             'consumer_id'=>$cousumer->id,
-        'meter_id'=>$request->meter_no,
-        'connection_date'=>db_date_format($request->connection_date),
-        'definition_date'=>db_date_format($request->definition_date),
-        'previous_reading'=>$request->previous_reading,
-        'arrear'=>$request->arrear
+            'meter_id'=>$request->meter_no,
+            'connection_date'=>db_date_format($request->connection_date),
+            'definition_date'=>db_date_format($request->definition_date),
+            'previous_reading'=>$request->previous_reading,
+            'arrear'=>$request->arrear
         ] );
         
                 // pr($cousumer->id);

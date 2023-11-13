@@ -462,7 +462,7 @@ class BillGenerateController extends Controller
                     $id=ConsumerBill::insertGetId($bill_array);
                                                                 
                     // add in ledger of consumer
-                    ConsumerLedger::insert(['consumer_id'=>$value->consumer_id,'amount'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),'bill_id'=>$id]);                            
+                    ConsumerLedger::insert(['consumer_id'=>$value->consumer_id,'late_fee'=>round($l_p_surcharge_value,2),'amount'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),'bill_id'=>$id]);                            
                 }
                 return redirect()->back()->with(['success'=>'Action Completed']); 
                 

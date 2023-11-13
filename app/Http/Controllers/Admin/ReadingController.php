@@ -11,6 +11,7 @@ use App\Models\Role;
 // use App\Models\ConsumerCategory;
 // use App\Models\Division;
 // use App\Models\SubDivision;
+use App\Models\Consumer;
 use App\Models\Reading;
 use App\Models\ReadingApprove;
 // use App\Models\Feeder;
@@ -309,8 +310,50 @@ class ReadingController extends Controller
                     
                     $approve_record->save();
                 }
-
-                $current_record=Reading::where('month_year',$approve_record->month_year)->get();
+                $reading_ids=Reading::select('consumer_id')->where('month_year',$approve_record->month_year)->get()->pluck('consumer_id');
+                if($reading_ids)
+                $consumer_ids=Consumer::select('id')->whereNotIn('id',$reading_ids)->where('status','active')->get()->pluck('id');
+                if($consumer_ids)
+                {
+                    foreach ($consumer_ids as $kk => $vv) 
+                    {
+                        
+                    
+                        $reading_ids=Reading::where('id',$vv)->where('month_year',date('y-m-d ',strtotime($approve_record.' -1 month')))->first();
+                        if($reading_ids)
+                        {
+                            // foreach ($pr_reading_ids as $key => $reading_ids) {
+                                
+                                Reading::insert(['consumer_id'=>$reading_ids->consumer_id,
+                                'ref_no'=>$reading_ids->ref_no,
+                                'month_year'=>$approve_record->month_year,
+                                'offpeak_prev'=>$reading_ids->offpeak,
+                                'offpeak'=>$reading_ids->offpeak,
+                                'offpeak_units'=>0,  
+                                'is_verified'=>1  
+                                ]);
+                            // }
+                        }
+                        else
+                        {
+                            $pr_reading_ids=consumer::with('meters')->where('consumers.id',$vv)->where('consumers.status','active')->first();
+                            // dd($pr_reading_ids);
+                            foreach ($pr_reading_ids->meters as $key => $reading_ids) {
+                                
+                                Reading::insert(['consumer_id'=>$pr_reading_ids->id,
+                                'ref_no'=>$reading_ids->ref_no,
+                                'month_year'=>$approve_record->month_year,
+                                'offpeak_prev'=>0,
+                                'offpeak'=>0,
+                                'offpeak_units'=>0,  
+                                'is_verified'=>1  
+                                ]);
+                            }
+                        }
+                    }
+                }
+                // dd($consumer_ids);
+                // $current_record=Reading::where('month_year',$approve_record->month_year)->get();
                 // foreach ($current_record as $key => $value) 
                 // {
                     // $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($current_record->month_year.' -1 month' ))))->first();
@@ -337,6 +380,7 @@ class ReadingController extends Controller
                 // echo json_encode(['success'=>'true','message'=>'Action Completed']);
                 return $this->return_output('flash', 'success', 'Record Add successfully', 'meter-reading-approve-lists', '200');
         } catch (\Exception $e) {  
+            dd($e->getMessage());
                 DB::rollback();
                 return back()->withError('Try Again Later');
 
