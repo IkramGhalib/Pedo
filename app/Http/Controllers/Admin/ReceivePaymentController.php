@@ -149,7 +149,34 @@ class ReceivePaymentController extends Controller
                 $record->payment_amount=$request->amount;
                 $record->conumer_id=$rec->consumer_id;
                 $record->bill_id=$bill_data->id;
+               
+
                 $record->save();
+
+                $bill_data->IsPayed=1;
+                $bill_data->paid_amount=$request->amount;
+                $bill_data->paid_on=date('y-m-d',strtotime($request->payment_date));
+                $bill_data->paid_by=auth()->user()->id;
+
+                // $cl=ConsumerLedger::where('bill_id',$bill_data->bill_id)->first();
+
+                if( $record->payment_date <= date('y-m-d',strtotime($bill_data->DueDate)))
+                {
+
+                    $bill_data->consider_amount=$bill_data->WithinDuedate;
+                    $check=ConsumerLedger::where('bill_id',$bill_data->id)->where('payment_id',null)->update(['late_fee'=>(-($bill_data->l_p_surcharge))]);
+                    // $check=ConsumerLedger::where('bill_id',$bill_data->id)->first();
+                //    pr($check);
+                //    die;
+
+                }
+                else
+                {
+
+                    $bill_data->consider_amount=$bill_data->AfterdueDate;
+                }
+                $bill_data->save();
+                
 
 
                 ConsumerLedger::insert(['consumer_id'=>$rec->consumer_id,'amount'=> -($request->amount),'payment_id'=>$record->id]);
@@ -173,13 +200,25 @@ class ReceivePaymentController extends Controller
     {
         
         $record=DB::table('consumer_bills')
+        ->select('consumer_bills.WithinDuedate','consumer_bills.AfterdueDate','consumer_bills.DueDate')
                 // ->join('consumer_meters','consumer_meters.consumer_id','=','consumer_ledgers.consumer_id')
                 ->where('consumer_bills.ref_no',$r->ref_no)
                 ->where('consumer_bills.billing_month_year',date('Y-m-d',strtotime($r->payment_month)))
                 ->first();
         // pr($record);
         if($record)
-        return success('',['amount'=>$record->gTotal]);
+        {
+            if($r->payment_date)
+            {
+               $payment_date= date('Y-d-m',strtotime($r->payment_date));
+               $due_date= date('Y-d-m',strtotime($record->DueDate));
+                if($payment_date <= $due_date)
+                return success('',['amount'=>$record->WithinDuedate]);
+                else
+                return success('',['amount'=>$record->AfterdueDate]);
+            }
+            
+        }
 
         return success('',['amount'=>0]);
         // return view('admin.receive_payment.edit',compact('record'));

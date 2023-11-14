@@ -42,7 +42,7 @@
             <div class="form-group col-md-4">
               <label class="form-control-label"> Due Date</label>
               <div class="input-group " data-provide="datepicker">
-              <input required type="text" class="form-control date" name="due_date" value="@if(old('due_date')){{date('Y-m-d',strtotime(old('due_date')))}}@else{{date('Y-m-d')}}@endif "
+              <input required type="text" class="form-control date" name="due_date" value="@if(old('due_date')){{date('d-m-Y',strtotime(old('due_date')))}}@else{{date('d-m-Y')}}@endif "
                 />
                 <div class="input-group-addon">
                 <span class="fa fa-calendar"></span>

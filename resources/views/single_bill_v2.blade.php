@@ -399,7 +399,7 @@
                                
                             </td>
                             <td class="border-r">
-                                {{$rpnb->WithinDuedate}}
+                                {{$rpnb->consider_amount}}
                             </td>
                             <td>
                                 {{$rpnb->pay_amount}}

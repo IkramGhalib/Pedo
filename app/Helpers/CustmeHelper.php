@@ -139,5 +139,5 @@ function db_date_format($date)
 
 function app_date_format($date)
 {
-    return date('y-m-d',strtotime($date));
+    return date('d-m-y',strtotime($date));
 }

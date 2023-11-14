@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ConsumerBill extends Model
 {
     protected $table = 'consumer_bills';
-    // public $timestamps=false;
+    public $timestamps=false;
     protected $guarded = array();
 
     public function hOSubCategory()

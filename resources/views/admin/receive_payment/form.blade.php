@@ -141,7 +141,7 @@ div.date {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.full.min.js" integrity="sha512-/gPqsEnTjI8VpAkWa61qLLmZn4ySeH86yURIM9rck0iyCMhjMGfkDw298eXFLM2CuRJ93LFhYT1M+SGxJ8asIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
   $(document).ready(function(){
-
+    let bill_record;
     // var date = $('.payment_date').datepicker();
     // $( ".payment_date" ).datepicker({ dateFormat: 'dd-mm-yy' });
     $('.date').datepicker({
@@ -225,12 +225,13 @@ $("#ref_no").select2({
     //   // e.preventDefault();
     //   change_in_ref_month();
     // });
-    $("#ref_no,.payment_month").change( function()
+    $("#ref_no,.payment_month,.payment_date").change( function()
     {
 
     
          var v1=$('#ref_no').val();
          var v2=$('.payment_month').val();
+         var v3=$('.payment_date').val();
 
          if(v1 && v2)
       {
@@ -240,12 +241,21 @@ $("#ref_no").select2({
 
               url:"{{route('get_user_bill')}}",
 
-              data:{'ref_no':v1,payment_month:v2},
+              data:{'ref_no':v1,payment_month:v2,payment_date:v3},
 
               success:function(data){
                 console.log(data.data.amount);
                 if(data.success==true)
                 {
+                  bill_record=data.data;
+                  // console.log($('.payment_date').val());
+                  // var date = $("#payment_date").datepicker("getDate");
+                  // console.log($.datepicker.formatDate("yy-mm-dd", date));
+
+                  // let pay_date=new Date($('.payment_date').val());
+                  // let due_date=new Date(data.data.DueDate);
+                  // console.log(pay_date);
+                  // console.log(due_date);
                   $('.amount').val(parseFloat(data.data.amount));
                 }
                 else

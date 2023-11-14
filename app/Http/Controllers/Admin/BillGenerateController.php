@@ -284,11 +284,11 @@ class BillGenerateController extends Controller
                      ->where('consumers.id',$record->consumer_id)->first();
                  if($check_minimum_bill)
                  {
-                     if($total_electricity_charges<=(int)$check_minimum_bill->option_value)
+                     if($total_electricity_charges<=(float)$check_minimum_bill->option_value)
                      {
-                        $bill_data['total_electricity_charges']=(int)$check_minimum_bill->option_value;
+                        $bill_data['total_electricity_charges']=(float)$check_minimum_bill->option_value;
                       
-                        $bill_data['minimum_charges_limit']=(int)$check_minimum_bill->option_value;
+                        $bill_data['minimum_charges_limit']=(float)$check_minimum_bill->option_value;
                         $bill_data['slab_wise_charges']=[];
                      }
 
@@ -431,9 +431,18 @@ class BillGenerateController extends Controller
                     $l_p_surcharge_value=$finded_cateogry_slab_chareges['total_electricity_charges']*($l_p_surcharge_percentage/100);
 
                     
-                    $arrear=round(ConsumerLedger::where('consumer_id',$value->consumer_id)->sum('amount'),2);
-                    
-                    // pr($arrear);
+                    // $arrear=round(ConsumerLedger::where('consumer_id',$value->consumer_id)->sum('amount'),2);
+                    // $arrear=round(ConsumerLedger::select(DB::raw('sum(amount+late_fee) AS total_amount'))->where('consumer_id',$value->consumer_id)->sum('total_amount'),2);
+                    $check_arrear=DB::table('consumer_ledgers')
+                  
+                    ->select(DB::raw('sum(amount+late_fee) AS total_amount'))
+                    ->where('consumer_id',$value->consumer_id)
+                   
+                    ->first();
+                    // pr($check_arrear);
+                    $arrear=0;
+                    if($check_arrear->total_amount)
+                    $arrear=$check_arrear->total_amount;
                     $bill_array=[
                         'generate_bill_id'=>$record->id,
                         'reading_id'=>$value->id,
@@ -455,14 +464,15 @@ class BillGenerateController extends Controller
                         'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,2),
                         'l_p_surcharge'=>round($l_p_surcharge_value,2),
                         'sub_cat_finded_id'=>$finded_cateogry_slab_chareges['sub_cat_finded_id'],
-                        'tarrif_code'=>$finded_cateogry_slab_chareges['tarrif_code']
+                        'tarrif_code'=>$finded_cateogry_slab_chareges['tarrif_code'],
+                        'consider_amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,2)
                     ];
 
                    
                     $id=ConsumerBill::insertGetId($bill_array);
                                                                 
                     // add in ledger of consumer
-                    ConsumerLedger::insert(['consumer_id'=>$value->consumer_id,'late_fee'=>round($l_p_surcharge_value,2),'amount'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']),'bill_id'=>$id]);                            
+                    ConsumerLedger::insert(['consumer_id'=>$value->consumer_id,'amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data'],2),'bill_id'=>$id]);                            
                 }
                 return redirect()->back()->with(['success'=>'Action Completed']); 
                 
