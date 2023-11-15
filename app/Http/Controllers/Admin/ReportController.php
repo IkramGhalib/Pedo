@@ -127,10 +127,56 @@ class ReportController extends Controller
         // dd($fields);
         if($request->condition=='bill-summary')
         {
-            $record=ConsumerCategory::with('hMConSubCategory')->where('is_active',1)->get();
+            // $record=ConsumerCategory::with('hMConSubCategory')->where('is_active',1)->get();
             
             // dd($cc);
             return view('admin.report.bill.summary',compact('record','fields'));
+        }
+
+        else if($request->condition=='design')
+        {
+            // $record=ConsumerBill::with('hOSubCategory')->where('billing_month_year',$request->month.'-01');
+            // // dd($record->get());
+            // if($request->start_refrence )
+            // $record=$record->where('ref_no','>=',$request->start_refrence);
+            // if($request->end_refrence )
+            // $record=$record->where('ref_no','<=',$request->end_refrence);
+            
+            // $record=$record->get();
+            // $fields=$request->all();
+
+            $record = DB::table('consumer_bills')
+            ->select('meter_readings.offpeak_prev as prev_offpeak_reading','meter_readings.offpeak as offpeak_current_reading','meter_readings.datetime as reading_date','consumer_bills.*', 'bill_generates.*',  'bill_generates.created_at as bill_generate_date','consumer_meters.connection_date as meter_connection_date','consumer_meters.*','consumer_bills.id as bill_id','consumers.*','feeders.name as feeder_name','sub_divisions.name as sub_division_name','divisions.name as division_name','meters.meter_no')
+            ->Join('meter_readings', 'meter_readings.id', '=', 'consumer_bills.reading_id')
+            ->Join('bill_generates', 'bill_generates.id', '=', 'consumer_bills.generate_bill_id')
+            ->Join('consumer_meters', 'consumer_meters.ref_no', '=', 'consumer_bills.ref_no')
+            ->join('consumers', 'consumers.id', '=', 'consumer_meters.consumer_id')
+            ->join('feeders', 'feeders.id', '=', 'consumers.feeder_id')
+            ->join('sub_divisions', 'sub_divisions.id', '=', 'feeders.sub_division_id')
+            ->join('divisions', 'divisions.id', '=', 'sub_divisions.division_id')
+            ->join('meters', 'meters.meter_id', '=', 'consumer_meters.meter_id')
+            
+            // ->where('consumer_bills.id',$bill_id)
+            ->where('consumer_bills.billing_month_year',$request->month.'-01')
+            ->orderBy('consumer_bills.id', 'desc')
+            ->get();
+
+            $payment_and_bill = DB::table('consumer_bills')
+            ->select('consumer_bills.*','payment_receives.payment_amount as pay_amount')
+            ->leftJoin('payment_receives', 'payment_receives.bill_id', '=', 'consumer_bills.id')
+            ->where('consumer_bills.consumer_id',$bill_data->consumer_id)
+            ->where('consumer_bills.id','!=',$bill_id)
+            ->orderBy('consumer_bills.id', 'desc')
+            ->limit(12)->get();
+
+            // dd($payment_and_bill);
+
+
+    // return view('single_bill_v2',compact('bill_data','payment_and_bill'));
+
+
+            // dd($record);
+            return view('admin.report.bill.bill_v2_list',compact('record','fields'));
         }
         else
         {
