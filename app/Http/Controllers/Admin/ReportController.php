@@ -169,7 +169,7 @@ class ReportController extends Controller
             // ->orderBy('consumer_bills.id', 'desc')
             // ->limit(12)->get();
 
-            // dd($payment_and_bill);
+            // dd($record);
 
 
     // return view('single_bill_v2',compact('bill_data','payment_and_bill'));

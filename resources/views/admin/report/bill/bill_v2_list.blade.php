@@ -1115,7 +1115,7 @@ span
                         ->select('consumer_bills.*','payment_receives.payment_amount as pay_amount')
                         ->leftJoin('payment_receives', 'payment_receives.bill_id', '=', 'consumer_bills.id')
                         ->where('consumer_bills.consumer_id',$bill_data->consumer_id)
-                        ->where('consumer_bills.id','!=',$bill_data->id)
+                        ->where('consumer_bills.id','!=',$bill_data->bill_id)
                         ->orderBy('consumer_bills.id', 'desc')
                         ->limit(12)->get();
                       ?>
@@ -1134,7 +1134,11 @@ span
                                
                             </td>
                             <td class="border-r">
-                                {{$rpnb->consider_amount}}
+                            @if ($loop->last)
+                                    {{$rpnb->WithinDuedate}}
+                            @else
+                                     {{$rpnb->consider_amount}}
+                            @endif
                             </td>
                             <td>
                                 {{$rpnb->pay_amount}}
