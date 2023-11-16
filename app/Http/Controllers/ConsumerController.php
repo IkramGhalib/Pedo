@@ -99,7 +99,8 @@ class ConsumerController extends Controller
         $feeder=Feeder::find($request->feeder);
 
         // $new_ref_no=$division->division_code.$subDivision->sub_division_code.$feeder->feeder_code.$request->mannual_ref_no;
-        $new_ref_no=$request->mannual_ref_no;
+        $new_ref_no=  sprintf('%08d', $request->mannual_ref_no);
+      
 
         $check_data=DB::table('consumer_meters')->where('ref_no',$new_ref_no)->first();
         if($check_data)
@@ -138,7 +139,8 @@ class ConsumerController extends Controller
        
         DB::table('consumer_meters')->insert(
         [
-            'mannual_ref_no'=>$request->mannual_ref_no,
+            'mannual_ref_no'=>$new_ref_no
+            ,
             'ref_no'=>$new_ref_no,
             'consumer_id'=>$cousumer->id,
             'meter_id'=>$request->meter_no,

@@ -127,9 +127,9 @@ class ReportController extends Controller
         // dd($fields);
         if($request->condition=='bill-summary')
         {
-            // $record=ConsumerCategory::with('hMConSubCategory')->where('is_active',1)->get();
-            
-            // dd($cc);
+            $record=ConsumerCategory::with(['hMConSubCategory','hMConSubCategory.hMbills'=>function($q) use ($request){
+                $q->where('billing_month_year',$request->month.'-01');
+            }])->where('is_active',1)->get();
             return view('admin.report.bill.summary',compact('record','fields'));
         }
 
