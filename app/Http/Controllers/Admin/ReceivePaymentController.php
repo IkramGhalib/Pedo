@@ -210,8 +210,8 @@ class ReceivePaymentController extends Controller
         {
             if($r->payment_date)
             {
-               $payment_date= date('Y-d-m',strtotime($r->payment_date));
-               $due_date= date('Y-d-m',strtotime($record->DueDate));
+               $payment_date= date('Y-m-d',strtotime($r->payment_date));
+               $due_date= date('Y-m-d',strtotime($record->DueDate));
                 if($payment_date <= $due_date)
                 return success('',['amount'=>$record->WithinDuedate]);
                 else

@@ -387,6 +387,7 @@ class BillGenerateController extends Controller
             'month_year' => 'required',
             'due_date' => 'required',
         ]);
+        // dd($request->all());
        $month_year=$request->month_year.'-01';
         $reading_record=BillGenerate::where('month_year',$month_year)->first();
         
@@ -411,7 +412,7 @@ class BillGenerateController extends Controller
                 
                 $record=new BillGenerate();
                 $record->month_year=$month_year.'-01';
-                $record->due_date=date('y-m-d',strtotime($request->due_date));
+                $record->due_date=date('Y-m-d',strtotime($request->due_date));
                 $record->generated_by=Auth::id();
                 $record->save();
                 // dd($record);
@@ -460,7 +461,7 @@ class BillGenerateController extends Controller
                         'WithinDuedate'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0),
                         'net_bill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data'],2),
                         'GTotal'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0),
-                        'DueDate'=>$request->due_date,
+                        'DueDate'=> $record->due_date,
                         'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0),
                         'l_p_surcharge'=>round($l_p_surcharge_value,2),
                         'sub_cat_finded_id'=>$finded_cateogry_slab_chareges['sub_cat_finded_id'],

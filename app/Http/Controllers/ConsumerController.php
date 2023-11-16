@@ -260,13 +260,13 @@ class ConsumerController extends Controller
     {
         
         $instructor=Consumer::find($id);
-        if($instructor->staus==='Disable')
+        if($instructor->status=='Disable')
         $instructor->status='active';
         else
         $instructor->status='Disable';
 
         $instructor->save();
-        return $this->return_output('flash', 'success', 'Disable successfully', 'consumer-lists', '200');
+        return $this->return_output('flash', 'success', 'Status Changed successfully', 'consumer-lists', '200');
 
     }   
 
