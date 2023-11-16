@@ -440,10 +440,12 @@ class BillGenerateController extends Controller
                     ->where('consumer_id',$value->consumer_id)
                    
                     ->first();
-                    // pr($check_arrear);
                     $arrear=0;
                     if($check_arrear->total_amount)
                     $arrear=$check_arrear->total_amount;
+                    // pr($arrear);
+
+
                     $bill_array=[
                         'generate_bill_id'=>$record->id,
                         'reading_id'=>$value->id,
