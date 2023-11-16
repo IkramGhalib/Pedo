@@ -161,13 +161,13 @@ class ReportController extends Controller
             ->orderBy('consumer_bills.id', 'desc')
             ->get();
 
-            $payment_and_bill = DB::table('consumer_bills')
-            ->select('consumer_bills.*','payment_receives.payment_amount as pay_amount')
-            ->leftJoin('payment_receives', 'payment_receives.bill_id', '=', 'consumer_bills.id')
-            ->where('consumer_bills.consumer_id',$bill_data->consumer_id)
-            ->where('consumer_bills.id','!=',$bill_id)
-            ->orderBy('consumer_bills.id', 'desc')
-            ->limit(12)->get();
+            // $payment_and_bill = DB::table('consumer_bills')
+            // ->select('consumer_bills.*','payment_receives.payment_amount as pay_amount')
+            // ->leftJoin('payment_receives', 'payment_receives.bill_id', '=', 'consumer_bills.id')
+            // ->where('consumer_bills.consumer_id',$bill_data->consumer_id)
+            // ->where('consumer_bills.id','!=',$bill_id)
+            // ->orderBy('consumer_bills.id', 'desc')
+            // ->limit(12)->get();
 
             // dd($payment_and_bill);
 
