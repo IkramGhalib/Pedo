@@ -164,6 +164,7 @@ class ReceivePaymentController extends Controller
                 {
 
                     $bill_data->consider_amount=$bill_data->WithinDuedate;
+                    $bill_data->is_payed_on_date=1;
                     $check=ConsumerLedger::where('bill_id',$bill_data->id)->where('payment_id',null)->update(['late_fee'=>(-($bill_data->l_p_surcharge))]);
                     // $check=ConsumerLedger::where('bill_id',$bill_data->id)->first();
                 //    pr($check);
@@ -172,7 +173,7 @@ class ReceivePaymentController extends Controller
                 }
                 else
                 {
-
+                    $bill_data->is_payed_on_date=0;
                     $bill_data->consider_amount=$bill_data->AfterdueDate;
                 }
                 $bill_data->save();

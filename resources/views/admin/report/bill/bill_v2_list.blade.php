@@ -1134,10 +1134,10 @@ span
                                
                             </td>
                             <td class="border-r">
-                            @if ($loop->last)
-                                    {{$rpnb->WithinDuedate}}
+                            @if ($rpnb->is_payed_on_date)
+                                    {{$rpnb->net_bill}}
                             @else
-                                     {{$rpnb->consider_amount}}
+                                    {{$rpnb->net_bill+$rpnb->l_p_surcharge}}
                             @endif
                             </td>
                             <td>

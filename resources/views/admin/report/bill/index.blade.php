@@ -154,42 +154,56 @@ a {
 
   <tr></tr>
 
+  
   <tr class="headingTr">
-  <td class="text-center strong" colspan="5"> Bills</td>
-  </tr>
-  <tr class="headingTr">
-    <td class="headingTd col1">#</td>
-    <td class="headingTd col2">Refrence No</td>
-    <td class="headingTd col2">Bill Gen Category</td>
-    <td class="headingTd col3">Month </td>
-    {{-- <td class="headingTd col1">PAID FROM</td> --}}
-    <td class="headingTd col4 text-right">Amount</td>
+    <td class="headingTd ">#</td>
+    <td class="headingTd ">Refrence No</td>
+    <td class="headingTd ">Bill Gen Category</td>
+    <td class="headingTd ">Month </td>
+    {{-- <td class="headingTd ">PAID FROM</td> --}}
+    <td class="headingTd">c.bill</td>
+   
+    <td class="headingTd">Arear</td>
+    <td class="headingTd">Amount </td>
+    <td class="headingTd">l.p.surchage</td>
+    <td class="headingTd">Amount after Due Date </td>
   </tr>
   <?php $c=1; 
-  $total=0;
+  $n_b_total=0;
+  $l_p_total=0;
+  $a_total=0;
+  $wd_total=0;
+  $ad_total=0;
 ?>
   @foreach ($record as $k => $row )
     
   
 
   <tr>
-    <td class="col1">{{$c}}</td>
-    <td class="col2">{{$row->ref_no}}</td>
-    <td class="col2">{{$row->hOSubCategory->name}}</td>
-    <td class="col3">{{app_month_format($row->billing_month_year)}}</td>
-    {{-- <td class="col1"> {{$row->offpeak_units}}</td> --}}
-    <td class="col4 text-right">{{$row->gTotal}}</td>
-  </tr>
-  <?php $c++; $total+=$row->gTotal ?>
-  @endforeach
-  
- 
+    <td class="">{{$c}}</td>
+    <td class="">{{$row->ref_no}}</td>
+    <td class="">{{$row->hOSubCategory->name}}</td>
+    <td class="">{{app_month_format($row->billing_month_year)}}</td>
+    {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
 
+    <td class="">{{$row->net_bill}}</td>
+   
+    <td class="">{{$row->arrears}}</td>
+    <td class="">{{$row->WithinDuedate}}</td>
+    <td class="">{{$row->l_p_surcharge}}</td>
+    <td class="">{{$row->AfterdueDate}}</td>
+  </tr>
+  <?php $c++;  $n_b_total+=$row->net_bill;$l_p_total=$row->l_p_surcharge;$a_total=$row->arrears; $wd_total=$row->WithinDuedate;  $ad_total=$row->AfterdueDate; ?>
+  @endforeach
   <tr class="headingTr">
-    <td class="headingTd col1" colspan="3"></td>
-    <td class="headingTd col3 text-right">TOTAL</td>
-    <td class="headingTd col4 text-right">
-      <?= $total ?></td>
+    <td class="headingTd " colspan="3"></td>
+    <td class="headingTd  ">TOTAL</td>
+    <td class="headingTd  "> <?= $n_b_total ?></td>
+   
+    <td class="headingTd  "> <?= $a_total ?></td>
+    <td class="headingTd  "> <?= $wd_total ?></td>
+    <td class="headingTd  "> <?= $l_p_total ?></td>
+    <td class="headingTd  "><?= $ad_total ?></td>
   </tr>
   
 </table>
