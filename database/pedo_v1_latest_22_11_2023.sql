@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1deb5ubuntu1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Nov 22, 2023 at 09:21 AM
--- Server version: 8.0.35-0ubuntu0.22.04.1
--- PHP Version: 8.1.2-1ubuntu2.14
+-- Host: 127.0.0.1
+-- Generation Time: Nov 22, 2023 at 11:39 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.1.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,10 +28,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `banks` (
-  `id` int NOT NULL,
-  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `bank_desc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
+  `id` int(11) NOT NULL,
+  `code` varchar(50) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `bank_desc` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -48,14 +48,14 @@ INSERT INTO `banks` (`id`, `code`, `title`, `bank_desc`) VALUES
 --
 
 CREATE TABLE `bill_generates` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `month_year` date NOT NULL,
-  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'generated',
-  `generated_by` int NOT NULL,
+  `status` varchar(50) DEFAULT 'generated',
+  `generated_by` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `due_date` date DEFAULT NULL,
-  `is_verified` tinyint NOT NULL DEFAULT '0'
+  `is_verified` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -73,9 +73,9 @@ INSERT INTO `bill_generates` (`id`, `month_year`, `status`, `generated_by`, `cre
 --
 
 CREATE TABLE `charges_types` (
-  `id` int NOT NULL,
-  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `is_active` tinyint NOT NULL DEFAULT '0'
+  `id` int(11) NOT NULL,
+  `title` text NOT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -94,21 +94,21 @@ INSERT INTO `charges_types` (`id`, `title`, `is_active`) VALUES
 --
 
 CREATE TABLE `consumers` (
-  `id` int UNSIGNED NOT NULL,
-  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `father_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cnic` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `consumer_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `father_name` varchar(100) DEFAULT NULL,
+  `cnic` varchar(20) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `consumer_code` varchar(50) DEFAULT NULL,
   `connection_date` date DEFAULT NULL,
-  `telephone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mobile` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `total_credits` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `consumer_category_id` int NOT NULL,
-  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'active',
+  `telephone` varchar(255) DEFAULT NULL,
+  `mobile` varchar(255) DEFAULT NULL,
+  `total_credits` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `consumer_category_id` int(11) NOT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'active',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `feeder_id` int NOT NULL
+  `feeder_id` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -116,15 +116,15 @@ CREATE TABLE `consumers` (
 --
 
 INSERT INTO `consumers` (`id`, `full_name`, `father_name`, `cnic`, `address`, `consumer_code`, `connection_date`, `telephone`, `mobile`, `total_credits`, `consumer_category_id`, `status`, `created_at`, `updated_at`, `feeder_id`) VALUES
-(1, 'IKRAM ULLAH', 'KHAN GHALIB', '0', 'new colony , sardheri charsadda', '1', NULL, NULL, '03335959967', '0.00', 1, 'active', '2023-09-27 05:43:11', '2023-11-16 07:50:30', 1),
-(2, 'Khan', 'Khan Ghalib', '0', 'Peshawar', '2', NULL, NULL, '034812334568', '0.00', 1, 'active', '2023-10-17 06:32:43', '2023-11-16 05:39:18', 1),
-(3, 'Sultan Murad', 'Khan', '0', 'Village Reshun Chitral', '3', NULL, NULL, '11111', '0.00', 1, 'active', '2023-10-19 05:09:39', '2023-11-16 05:39:48', 3),
-(4, 'ali', 'ahmad', '0', 'chitral', '4', NULL, NULL, '2', '0.00', 1, 'active', '2023-10-19 05:29:02', '2023-11-16 05:39:56', 3),
-(5, 'shop', 'shah', '0', 'chitral', '5', NULL, NULL, '1', '0.00', 1, 'active', '2023-10-20 06:27:38', '2023-11-16 05:40:03', 3),
-(10, 'Kamran', 'Ahmad', '7', 'Upper Chitral Booni', '6', NULL, NULL, '0', '0.00', 1, 'active', '2023-11-16 07:23:22', '2023-11-16 07:43:00', 5),
-(12, 'Shahid', 'Nazar khan', '1', 'Reshun Green Lasht', '11', NULL, NULL, '1', '0.00', 1, 'active', '2023-11-16 07:51:58', '2023-11-16 07:51:58', 4),
-(13, 'Muhammad Umer', 'khan jee', '6', 'Koghuzi', '13', NULL, NULL, '0', '0.00', 1, 'active', '2023-11-16 07:58:31', '2023-11-16 07:58:31', 4),
-(14, 'Shop C/o Tahir', 'khan', '99', 'Booni', '14', NULL, NULL, '1', '0.00', 2, 'active', '2023-11-16 08:02:00', '2023-11-16 08:02:00', 5);
+(1, 'IKRAM ULLAH', 'KHAN GHALIB', '0', 'new colony , sardheri charsadda', '1', NULL, NULL, '03335959967', 0.00, 1, 'active', '2023-09-27 05:43:11', '2023-11-16 07:50:30', 1),
+(2, 'Khan', 'Khan Ghalib', '0', 'Peshawar', '2', NULL, NULL, '034812334568', 0.00, 1, 'active', '2023-10-17 06:32:43', '2023-11-16 05:39:18', 1),
+(3, 'Sultan Murad', 'Khan', '0', 'Village Reshun Chitral', '3', NULL, NULL, '11111', 0.00, 1, 'active', '2023-10-19 05:09:39', '2023-11-16 05:39:48', 3),
+(4, 'ali', 'ahmad', '0', 'chitral', '4', NULL, NULL, '2', 0.00, 1, 'active', '2023-10-19 05:29:02', '2023-11-16 05:39:56', 3),
+(5, 'shop', 'shah', '0', 'chitral', '5', NULL, NULL, '1', 0.00, 1, 'active', '2023-10-20 06:27:38', '2023-11-16 05:40:03', 3),
+(10, 'Kamran', 'Ahmad', '7', 'Upper Chitral Booni', '6', NULL, NULL, '0', 0.00, 1, 'active', '2023-11-16 07:23:22', '2023-11-16 07:43:00', 5),
+(12, 'Shahid', 'Nazar khan', '1', 'Reshun Green Lasht', '11', NULL, NULL, '1', 0.00, 1, 'active', '2023-11-16 07:51:58', '2023-11-16 07:51:58', 4),
+(13, 'Muhammad Umer', 'khan jee', '6', 'Koghuzi', '13', NULL, NULL, '0', 0.00, 1, 'active', '2023-11-16 07:58:31', '2023-11-16 07:58:31', 4),
+(14, 'Shop C/o Tahir', 'khan', '99', 'Booni', '14', NULL, NULL, '1', 0.00, 2, 'active', '2023-11-16 08:02:00', '2023-11-16 08:02:00', 5);
 
 -- --------------------------------------------------------
 
@@ -133,68 +133,61 @@ INSERT INTO `consumers` (`id`, `full_name`, `father_name`, `cnic`, `address`, `c
 --
 
 CREATE TABLE `consumer_bills` (
-  `id` int NOT NULL,
-  `generate_bill_id` int NOT NULL,
-  `reading_id` int NOT NULL,
-  `consumer_id` int NOT NULL,
-  `ref_no` varchar(100) NOT NULL,
+  `id` int(11) NOT NULL,
+  `cm_id` int(11) NOT NULL,
+  `generate_bill_id` int(11) NOT NULL,
+  `reading_id` int(11) NOT NULL,
   `billing_month_year` date DEFAULT NULL,
-  `peak_units` int NOT NULL DEFAULT '0',
-  `offpeak_units` double NOT NULL DEFAULT '0',
-  `PrevU` int DEFAULT '0',
-  `PresU` int DEFAULT '0',
-  `Units` int DEFAULT '0',
-  `FreeU` int DEFAULT '0',
-  `currentbill` double NOT NULL DEFAULT '0',
-  `total_taxes` double NOT NULL DEFAULT '0',
-  `total_charges` double NOT NULL DEFAULT '0',
+  `peak_units` int(11) NOT NULL DEFAULT 0,
+  `offpeak_units` double NOT NULL DEFAULT 0,
+  `Units` int(11) DEFAULT 0,
+  `currentbill` double NOT NULL DEFAULT 0,
+  `total_taxes` double NOT NULL DEFAULT 0,
+  `total_charges` double NOT NULL DEFAULT 0,
   `net_bill` double NOT NULL,
-  `arrears` double DEFAULT '0',
-  `gTotal` double NOT NULL DEFAULT '0',
-  `off_peak_bill_breakup` text,
-  `charges_breakup` text,
-  `taxes_breakup` text,
-  `WithinDuedate` double NOT NULL DEFAULT '0',
-  `AfterdueDate` double NOT NULL DEFAULT '0',
-  `Rec` int DEFAULT '0',
-  `IssueDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `arrears` double DEFAULT 0,
+  `gTotal` double NOT NULL DEFAULT 0,
+  `off_peak_bill_breakup` text DEFAULT NULL,
+  `charges_breakup` text DEFAULT NULL,
+  `taxes_breakup` text DEFAULT NULL,
+  `WithinDuedate` double NOT NULL DEFAULT 0,
+  `AfterdueDate` double NOT NULL DEFAULT 0,
+  `IssueDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `DueDate` datetime DEFAULT NULL,
   `IsPayed` varchar(1) NOT NULL DEFAULT '0',
-  `is_payed_on_date` int NOT NULL DEFAULT '0',
-  `consider_amount` double NOT NULL DEFAULT '0',
-  `paid_amount` double NOT NULL DEFAULT '0',
+  `is_payed_on_date` int(11) NOT NULL DEFAULT 0,
+  `consider_amount` double NOT NULL DEFAULT 0,
+  `paid_amount` double NOT NULL DEFAULT 0,
   `paid_on` date DEFAULT NULL,
   `paid_by` varchar(10) DEFAULT NULL,
-  `uploaded_datetime` datetime DEFAULT NULL,
-  `Observation` varchar(20) DEFAULT NULL,
-  `l_p_surcharge` float NOT NULL DEFAULT '0',
-  `sub_cat_finded_id` int DEFAULT NULL,
+  `l_p_surcharge` float NOT NULL DEFAULT 0,
+  `sub_cat_finded_id` int(11) DEFAULT NULL,
   `tarrif_code` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `consumer_bills`
 --
 
-INSERT INTO `consumer_bills` (`id`, `generate_bill_id`, `reading_id`, `consumer_id`, `ref_no`, `billing_month_year`, `peak_units`, `offpeak_units`, `PrevU`, `PresU`, `Units`, `FreeU`, `currentbill`, `total_taxes`, `total_charges`, `net_bill`, `arrears`, `gTotal`, `off_peak_bill_breakup`, `charges_breakup`, `taxes_breakup`, `WithinDuedate`, `AfterdueDate`, `Rec`, `IssueDate`, `DueDate`, `IsPayed`, `is_payed_on_date`, `consider_amount`, `paid_amount`, `paid_on`, `paid_by`, `uploaded_datetime`, `Observation`, `l_p_surcharge`, `sub_cat_finded_id`, `tarrif_code`) VALUES
-(1, 1, 1, 10, '00000001', '2023-01-01', 0, 50, 0, 0, 0, 0, 824, 13, 223.95, 1061.25, 0, 1061, '[{\"units\":50,\"charges\":16.48}]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":62.45,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":161.5,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":13.3},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 1061, 1144, 0, '2023-11-20 07:10:10', '2023-11-22 00:00:00', '0', 0, 1144, 0, NULL, NULL, NULL, NULL, 82.4, 3, 'A1'),
-(2, 1, 2, 1, '8261420391904', '2023-01-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, 0, '2023-11-20 07:10:10', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(3, 1, 3, 2, '42261812', '2023-01-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, 0, '2023-11-20 07:10:10', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(4, 1, 4, 3, '16822600001000', '2023-01-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, 0, '2023-11-20 07:10:10', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(5, 1, 5, 4, '16822600001010', '2023-01-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, 0, '2023-11-20 07:10:11', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(6, 1, 6, 5, '1682261', '2023-01-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, 0, '2023-11-20 07:10:11', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(7, 1, 7, 12, '00000002', '2023-01-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, 0, '2023-11-20 07:10:11', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(8, 1, 8, 13, '00000003', '2023-01-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, 0, '2023-11-20 07:10:11', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(9, 1, 9, 14, '00000005', '2023-01-01', 0, 0, 0, 0, 0, 0, 150, 5, 0, 154.5, 0, 155, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":3,\"calculated_tax\":4.5},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":3,\"calculated_tax\":0}]', 155, 170, 0, '2023-11-20 07:10:11', '2023-11-22 00:00:00', '0', 0, 170, 0, NULL, NULL, NULL, NULL, 15, 4, 'A2'),
-(10, 2, 10, 10, '00000001', '2023-02-01', 0, 100, 0, 0, 0, 0, 1648, 27, 447.89, 2122.48, 1144, 3266, '[{\"units\":100,\"charges\":16.48}]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":124.89,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":323,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":26.59},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 3266, 3431, 0, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 3431, 0, NULL, NULL, NULL, NULL, 164.8, 3, 'A1'),
-(11, 2, 11, 1, '8261420391904', '2023-02-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, 0, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(12, 2, 12, 2, '42261812', '2023-02-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, 0, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(13, 2, 13, 3, '16822600001000', '2023-02-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, 0, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(14, 2, 14, 4, '16822600001010', '2023-02-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, 0, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(15, 2, 15, 5, '1682261', '2023-02-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, 0, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(16, 2, 16, 12, '00000002', '2023-02-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, 0, '2023-11-20 07:54:09', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(17, 2, 17, 13, '00000003', '2023-02-01', 0, 0, 0, 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, 0, '2023-11-20 07:54:09', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, NULL, NULL, 7.5, 3, 'A1'),
-(18, 2, 18, 14, '00000005', '2023-02-01', 0, 0, 0, 0, 0, 0, 150, 5, 0, 154.5, 170, 325, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":3,\"calculated_tax\":4.5},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":3,\"calculated_tax\":0}]', 325, 340, 0, '2023-11-20 07:54:09', '2023-11-25 00:00:00', '0', 0, 340, 0, NULL, NULL, NULL, NULL, 15, 4, 'A2');
+INSERT INTO `consumer_bills` (`id`, `cm_id`, `generate_bill_id`, `reading_id`, `billing_month_year`, `peak_units`, `offpeak_units`, `Units`, `currentbill`, `total_taxes`, `total_charges`, `net_bill`, `arrears`, `gTotal`, `off_peak_bill_breakup`, `charges_breakup`, `taxes_breakup`, `WithinDuedate`, `AfterdueDate`, `IssueDate`, `DueDate`, `IsPayed`, `is_payed_on_date`, `consider_amount`, `paid_amount`, `paid_on`, `paid_by`, `l_p_surcharge`, `sub_cat_finded_id`, `tarrif_code`) VALUES
+(1, 0, 1, 1, '2023-01-01', 0, 50, 0, 824, 13, 223.95, 1061.25, 0, 1061, '[{\"units\":50,\"charges\":16.48}]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":62.45,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":161.5,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":13.3},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 1061, 1144, '2023-11-20 07:10:10', '2023-11-22 00:00:00', '0', 0, 1144, 0, NULL, NULL, 82.4, 3, 'A1'),
+(2, 0, 1, 2, '2023-01-01', 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, '2023-11-20 07:10:10', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, 7.5, 3, 'A1'),
+(3, 0, 1, 3, '2023-01-01', 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, '2023-11-20 07:10:10', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, 7.5, 3, 'A1'),
+(4, 0, 1, 4, '2023-01-01', 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, '2023-11-20 07:10:10', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, 7.5, 3, 'A1'),
+(5, 0, 1, 5, '2023-01-01', 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, '2023-11-20 07:10:11', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, 7.5, 3, 'A1'),
+(6, 0, 1, 6, '2023-01-01', 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, '2023-11-20 07:10:11', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, 7.5, 3, 'A1'),
+(7, 0, 1, 7, '2023-01-01', 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, '2023-11-20 07:10:11', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, 7.5, 3, 'A1'),
+(8, 0, 1, 8, '2023-01-01', 0, 0, 0, 75, 1, 0, 76.13, 0, 76, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 76, 84, '2023-11-20 07:10:11', '2023-11-22 00:00:00', '0', 0, 84, 0, NULL, NULL, 7.5, 3, 'A1'),
+(9, 0, 1, 9, '2023-01-01', 0, 0, 0, 150, 5, 0, 154.5, 0, 155, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":3,\"calculated_tax\":4.5},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":3,\"calculated_tax\":0}]', 155, 170, '2023-11-20 07:10:11', '2023-11-22 00:00:00', '0', 0, 170, 0, NULL, NULL, 15, 4, 'A2'),
+(10, 0, 2, 10, '2023-02-01', 0, 100, 0, 1648, 27, 447.89, 2122.48, 1144, 3266, '[{\"units\":100,\"charges\":16.48}]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":124.89,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":323,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":26.59},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 3266, 3431, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 3431, 0, NULL, NULL, 164.8, 3, 'A1'),
+(11, 0, 2, 11, '2023-02-01', 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, 7.5, 3, 'A1'),
+(12, 0, 2, 12, '2023-02-01', 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, 7.5, 3, 'A1'),
+(13, 0, 2, 13, '2023-02-01', 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, 7.5, 3, 'A1'),
+(14, 0, 2, 14, '2023-02-01', 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, 7.5, 3, 'A1'),
+(15, 0, 2, 15, '2023-02-01', 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, '2023-11-20 07:54:08', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, 7.5, 3, 'A1'),
+(16, 0, 2, 16, '2023-02-01', 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, '2023-11-20 07:54:09', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, 7.5, 3, 'A1'),
+(17, 0, 2, 17, '2023-02-01', 0, 0, 0, 75, 1, 0, 76.13, 84, 160, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":1.5,\"calculated_tax\":1.13},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":1.5,\"calculated_tax\":0}]', 160, 168, '2023-11-20 07:54:09', '2023-11-25 00:00:00', '0', 0, 168, 0, NULL, NULL, 7.5, 3, 'A1'),
+(18, 0, 2, 18, '2023-02-01', 0, 0, 0, 150, 5, 0, 154.5, 170, 325, '[]', '[{\"code\":\"QTRTA\",\"charges\":1.2489,\"calculated_charges\":0,\"charges_type\":\"Q.T Adjustment\"},{\"code\":null,\"charges\":3.23,\"calculated_charges\":0,\"charges_type\":\"F.S Surcharge\"}]', '[{\"code\":\"ED\",\"tax_type\":\"E.D\",\"percentage\":3,\"calculated_tax\":4.5},{\"code\":\"EDFPA\",\"tax_type\":\"E.D on FPA\",\"percentage\":3,\"calculated_tax\":0}]', 325, 340, '2023-11-20 07:54:09', '2023-11-25 00:00:00', '0', 0, 340, 0, NULL, NULL, 15, 4, 'A2');
 
 -- --------------------------------------------------------
 
@@ -203,9 +196,9 @@ INSERT INTO `consumer_bills` (`id`, `generate_bill_id`, `reading_id`, `consumer_
 --
 
 CREATE TABLE `consumer_categories` (
-  `id` int UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tarrif_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `tarrif_code` varchar(50) DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -228,14 +221,14 @@ INSERT INTO `consumer_categories` (`id`, `name`, `tarrif_code`, `is_active`, `cr
 --
 
 CREATE TABLE `consumer_ledgers` (
-  `id` int NOT NULL,
-  `consumer_id` int NOT NULL,
-  `amount` double NOT NULL DEFAULT '0',
-  `late_fee` double NOT NULL DEFAULT '0',
-  `remarks` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL,
+  `consumer_id` int(11) NOT NULL,
+  `amount` double NOT NULL DEFAULT 0,
+  `late_fee` double NOT NULL DEFAULT 0,
+  `remarks` text NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `bill_id` int DEFAULT NULL,
-  `payment_id` int DEFAULT NULL
+  `bill_id` int(11) DEFAULT NULL,
+  `payment_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -269,32 +262,33 @@ INSERT INTO `consumer_ledgers` (`id`, `consumer_id`, `amount`, `late_fee`, `rema
 --
 
 CREATE TABLE `consumer_meters` (
-  `cm_id` int NOT NULL,
-  `consumer_id` int NOT NULL,
-  `meter_id` int NOT NULL,
-  `ref_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `mannual_ref_no` bigint NOT NULL DEFAULT '0',
+  `cm_id` int(11) NOT NULL,
+  `consumer_id` int(11) NOT NULL,
+  `meter_id` int(11) NOT NULL,
+  `ref_no` varchar(100) NOT NULL,
+  `system_unique_no` bigint(20) NOT NULL,
+  `mannual_ref_no` bigint(20) NOT NULL DEFAULT 0,
   `connection_date` date DEFAULT NULL,
   `definition_date` date DEFAULT NULL,
-  `previous_reading` int NOT NULL DEFAULT '0',
-  `arrear` float NOT NULL DEFAULT '0'
+  `previous_reading` int(11) NOT NULL DEFAULT 0,
+  `arrear` float NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `consumer_meters`
 --
 
-INSERT INTO `consumer_meters` (`cm_id`, `consumer_id`, `meter_id`, `ref_no`, `mannual_ref_no`, `connection_date`, `definition_date`, `previous_reading`, `arrear`) VALUES
-(1, 1, 3, '8261420391904', 10, '2023-08-27', '2023-09-01', 0, 0),
-(2, 2, 6, '42261812', 20, '2023-10-16', '2023-10-17', 0, 0),
-(3, 3, 7, '16822600001000', 30, '2023-10-01', '2023-10-01', 2, 1),
-(4, 4, 1, '16822600001010', 40, '2023-10-10', '2023-10-10', 2, 0),
-(5, 5, 2, '1682261', 50, '2023-10-21', '2023-10-19', 5, 0),
-(7, 10, 5, '00000001', 1, '2023-11-16', '2023-11-16', 8, 0),
-(8, 11, 8, '121212121', 121212121, '2023-11-16', '2023-11-16', 0, 0),
-(9, 12, 9, '00000002', 2, '2023-11-16', '2023-11-16', 5, 0),
-(10, 13, 10, '00000003', 3, '2016-11-23', '2016-11-23', 0, 0),
-(11, 14, 11, '00000005', 5, '2016-11-23', '2016-11-23', 0, 0);
+INSERT INTO `consumer_meters` (`cm_id`, `consumer_id`, `meter_id`, `ref_no`, `system_unique_no`, `mannual_ref_no`, `connection_date`, `definition_date`, `previous_reading`, `arrear`) VALUES
+(1, 1, 3, '8261420391904', 0, 10, '2023-08-27', '2023-09-01', 0, 0),
+(2, 2, 6, '42261812', 0, 20, '2023-10-16', '2023-10-17', 0, 0),
+(3, 3, 7, '16822600001000', 0, 30, '2023-10-01', '2023-10-01', 2, 1),
+(4, 4, 1, '16822600001010', 0, 40, '2023-10-10', '2023-10-10', 2, 0),
+(5, 5, 2, '1682261', 0, 50, '2023-10-21', '2023-10-19', 5, 0),
+(7, 10, 5, '00000001', 0, 1, '2023-11-16', '2023-11-16', 8, 0),
+(8, 11, 8, '121212121', 0, 121212121, '2023-11-16', '2023-11-16', 0, 0),
+(9, 12, 9, '00000002', 0, 2, '2023-11-16', '2023-11-16', 5, 0),
+(10, 13, 10, '00000003', 0, 3, '2016-11-23', '2016-11-23', 0, 0),
+(11, 14, 11, '00000005', 0, 5, '2016-11-23', '2016-11-23', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -303,17 +297,17 @@ INSERT INTO `consumer_meters` (`cm_id`, `consumer_id`, `meter_id`, `ref_no`, `ma
 --
 
 CREATE TABLE `consumer_sub_categories` (
-  `id` int UNSIGNED NOT NULL,
-  `consumer_category_id` int NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `category_conditon_start` int NOT NULL,
-  `category_conditon_end` int NOT NULL,
-  `priority` int NOT NULL DEFAULT '1',
+  `id` int(10) UNSIGNED NOT NULL,
+  `consumer_category_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `category_conditon_start` int(11) NOT NULL,
+  `category_conditon_end` int(11) NOT NULL,
+  `priority` int(11) NOT NULL DEFAULT 1,
   `is_active` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `check_months` int NOT NULL,
-  `last_slab_apply` int NOT NULL DEFAULT '0'
+  `check_months` int(11) NOT NULL,
+  `last_slab_apply` int(11) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -334,11 +328,11 @@ INSERT INTO `consumer_sub_categories` (`id`, `consumer_category_id`, `name`, `ca
 --
 
 CREATE TABLE `divisions` (
-  `id` int NOT NULL,
-  `division_code` int NOT NULL,
-  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `is_active` tinyint NOT NULL DEFAULT '0'
+  `id` int(11) NOT NULL,
+  `division_code` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `description` text DEFAULT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -357,13 +351,13 @@ INSERT INTO `divisions` (`id`, `division_code`, `name`, `description`, `is_activ
 --
 
 CREATE TABLE `failed_jobs` (
-  `id` bigint UNSIGNED NOT NULL,
-  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -373,11 +367,11 @@ CREATE TABLE `failed_jobs` (
 --
 
 CREATE TABLE `feeders` (
-  `id` int NOT NULL,
-  `feeder_code` int NOT NULL,
-  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `is_active` tinyint NOT NULL DEFAULT '0',
-  `sub_division_id` int DEFAULT NULL
+  `id` int(11) NOT NULL,
+  `feeder_code` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT 0,
+  `sub_division_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -398,13 +392,13 @@ INSERT INTO `feeders` (`id`, `feeder_code`, `name`, `is_active`, `sub_division_i
 --
 
 CREATE TABLE `general_taxs` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `tax_percentage` float NOT NULL,
-  `tax_type_id` int NOT NULL,
-  `is_active` tinyint NOT NULL DEFAULT '0',
-  `con_cat_id` int NOT NULL,
-  `applicable_on` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'units',
-  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+  `tax_type_id` int(11) NOT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT 0,
+  `con_cat_id` int(11) NOT NULL,
+  `applicable_on` varchar(20) NOT NULL DEFAULT 'units',
+  `code` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -424,12 +418,12 @@ INSERT INTO `general_taxs` (`id`, `tax_percentage`, `tax_type_id`, `is_active`, 
 --
 
 CREATE TABLE `import_data` (
-  `id` int NOT NULL,
-  `YEAR` int NOT NULL,
-  `MO` int NOT NULL,
-  `DY` int NOT NULL,
-  `HR` int NOT NULL,
-  `FR` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `YEAR` int(11) NOT NULL,
+  `MO` int(11) NOT NULL,
+  `DY` int(11) NOT NULL,
+  `HR` int(11) NOT NULL,
+  `FR` int(11) NOT NULL,
   `complete_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -440,8 +434,8 @@ CREATE TABLE `import_data` (
 --
 
 CREATE TABLE `instruction_levels` (
-  `id` int UNSIGNED NOT NULL,
-  `level` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+  `id` int(10) UNSIGNED NOT NULL,
+  `level` varchar(50) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -461,10 +455,10 @@ INSERT INTO `instruction_levels` (`id`, `level`) VALUES
 --
 
 CREATE TABLE `master_categories` (
-  `id` int UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `icon_class` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `icon_class` varchar(255) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -477,9 +471,9 @@ CREATE TABLE `master_categories` (
 --
 
 CREATE TABLE `meters` (
-  `meter_id` int NOT NULL,
-  `meter_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'free'
+  `meter_id` int(11) NOT NULL,
+  `meter_no` varchar(100) NOT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'free'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -506,55 +500,51 @@ INSERT INTO `meters` (`meter_id`, `meter_no`, `status`) VALUES
 --
 
 CREATE TABLE `meter_readings` (
-  `id` int NOT NULL,
-  `meter_no` varchar(50) DEFAULT NULL,
-  `consumer_id` int NOT NULL,
-  `ref_no` varchar(50) DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `cm_id` int(11) NOT NULL COMMENT 'consumer_meter id',
   `month_year` date DEFAULT NULL,
-  `year` varchar(20) DEFAULT NULL,
-  `month` varchar(20) DEFAULT NULL,
-  `offpeak_prev` int NOT NULL DEFAULT '0',
-  `offpeak` double DEFAULT '0',
-  `offpeak_units` int NOT NULL DEFAULT '0',
-  `peak` double DEFAULT '0',
-  `peak_units` int NOT NULL DEFAULT '0',
+  `offpeak_prev` int(11) NOT NULL DEFAULT 0,
+  `offpeak` double DEFAULT 0,
+  `offpeak_units` int(11) NOT NULL DEFAULT 0,
+  `peak` double DEFAULT 0,
+  `peak_units` int(11) NOT NULL DEFAULT 0,
   `pkimage` varchar(500) DEFAULT NULL,
   `offpkimage` varchar(500) DEFAULT NULL,
-  `datetime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `datetime` timestamp NULL DEFAULT current_timestamp(),
   `longitude` varchar(20) DEFAULT NULL,
   `latitude` varchar(20) DEFAULT NULL,
   `Observation` varchar(50) DEFAULT NULL,
   `retake` bit(1) DEFAULT b'0',
   `varifier` varchar(50) DEFAULT NULL,
   `mrid` varchar(50) DEFAULT NULL,
-  `sync` tinyint NOT NULL DEFAULT '0',
+  `sync` tinyint(4) NOT NULL DEFAULT 0,
   `status` varchar(50) DEFAULT NULL,
-  `is_verified` int NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `is_verified` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `meter_readings`
 --
 
-INSERT INTO `meter_readings` (`id`, `meter_no`, `consumer_id`, `ref_no`, `month_year`, `year`, `month`, `offpeak_prev`, `offpeak`, `offpeak_units`, `peak`, `peak_units`, `pkimage`, `offpkimage`, `datetime`, `longitude`, `latitude`, `Observation`, `retake`, `varifier`, `mrid`, `sync`, `status`, `is_verified`) VALUES
-(1, NULL, 10, '00000001', '2023-01-01', '23', '01', 0, 50, 50, NULL, 0, NULL, NULL, '2023-11-20 07:09:45', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(2, NULL, 1, '8261420391904', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(3, NULL, 2, '42261812', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(4, NULL, 3, '16822600001000', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(5, NULL, 4, '16822600001010', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(6, NULL, 5, '1682261', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(7, NULL, 12, '00000002', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(8, NULL, 13, '00000003', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(9, NULL, 14, '00000005', '2023-01-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(10, NULL, 10, '00000001', '2023-02-01', '23', '02', 50, 150, 100, NULL, 0, NULL, NULL, '2023-11-20 07:53:53', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(11, NULL, 1, '8261420391904', '2023-02-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(12, NULL, 2, '42261812', '2023-02-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(13, NULL, 3, '16822600001000', '2023-02-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(14, NULL, 4, '16822600001010', '2023-02-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(15, NULL, 5, '1682261', '2023-02-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(16, NULL, 12, '00000002', '2023-02-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(17, NULL, 13, '00000003', '2023-02-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
-(18, NULL, 14, '00000005', '2023-02-01', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1);
+INSERT INTO `meter_readings` (`id`, `cm_id`, `month_year`, `offpeak_prev`, `offpeak`, `offpeak_units`, `peak`, `peak_units`, `pkimage`, `offpkimage`, `datetime`, `longitude`, `latitude`, `Observation`, `retake`, `varifier`, `mrid`, `sync`, `status`, `is_verified`) VALUES
+(1, 0, '2023-01-01', 0, 50, 50, NULL, 0, NULL, NULL, '2023-11-20 07:09:45', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(2, 0, '2023-01-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(3, 0, '2023-01-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(4, 0, '2023-01-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(5, 0, '2023-01-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(6, 0, '2023-01-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(7, 0, '2023-01-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(8, 0, '2023-01-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(9, 0, '2023-01-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:09:51', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(10, 0, '2023-02-01', 50, 150, 100, NULL, 0, NULL, NULL, '2023-11-20 07:53:53', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(11, 0, '2023-02-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(12, 0, '2023-02-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(13, 0, '2023-02-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(14, 0, '2023-02-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(15, 0, '2023-02-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(16, 0, '2023-02-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(17, 0, '2023-02-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1),
+(18, 0, '2023-02-01', 0, 0, 0, 0, 0, NULL, NULL, '2023-11-20 07:53:58', NULL, NULL, NULL, b'0', NULL, NULL, 0, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -563,9 +553,9 @@ INSERT INTO `meter_readings` (`id`, `meter_no`, `consumer_id`, `ref_no`, `month_
 --
 
 CREATE TABLE `migrations` (
-  `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int NOT NULL
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -602,11 +592,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `oauth_access_tokens` (
-  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` bigint UNSIGNED DEFAULT NULL,
-  `client_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `id` varchar(100) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `client_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) DEFAULT NULL,
+  `scopes` text DEFAULT NULL,
   `revoked` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -641,10 +631,10 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 --
 
 CREATE TABLE `oauth_auth_codes` (
-  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` bigint UNSIGNED NOT NULL,
-  `client_id` bigint UNSIGNED NOT NULL,
-  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `id` varchar(100) NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `client_id` bigint(20) UNSIGNED NOT NULL,
+  `scopes` text DEFAULT NULL,
   `revoked` tinyint(1) NOT NULL,
   `expires_at` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -656,12 +646,12 @@ CREATE TABLE `oauth_auth_codes` (
 --
 
 CREATE TABLE `oauth_clients` (
-  `id` bigint UNSIGNED NOT NULL,
-  `user_id` bigint UNSIGNED DEFAULT NULL,
-  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `secret` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `provider` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `redirect` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `name` varchar(191) NOT NULL,
+  `secret` varchar(100) DEFAULT NULL,
+  `provider` varchar(191) DEFAULT NULL,
+  `redirect` text NOT NULL,
   `personal_access_client` tinyint(1) NOT NULL,
   `password_client` tinyint(1) NOT NULL,
   `revoked` tinyint(1) NOT NULL,
@@ -686,8 +676,8 @@ INSERT INTO `oauth_clients` (`id`, `user_id`, `name`, `secret`, `provider`, `red
 --
 
 CREATE TABLE `oauth_personal_access_clients` (
-  `id` bigint UNSIGNED NOT NULL,
-  `client_id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `client_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -707,8 +697,8 @@ INSERT INTO `oauth_personal_access_clients` (`id`, `client_id`, `created_at`, `u
 --
 
 CREATE TABLE `oauth_refresh_tokens` (
-  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `access_token_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(100) NOT NULL,
+  `access_token_id` varchar(100) NOT NULL,
   `revoked` tinyint(1) NOT NULL,
   `expires_at` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -720,11 +710,11 @@ CREATE TABLE `oauth_refresh_tokens` (
 --
 
 CREATE TABLE `options` (
-  `id` int UNSIGNED NOT NULL,
-  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `option_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `option_value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `ref_id` int DEFAULT NULL
+  `id` int(10) UNSIGNED NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `option_key` varchar(255) NOT NULL,
+  `option_value` text DEFAULT NULL,
+  `ref_id` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -775,8 +765,8 @@ INSERT INTO `options` (`id`, `code`, `option_key`, `option_value`, `ref_id`) VAL
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(120) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `created_at` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -787,14 +777,14 @@ CREATE TABLE `password_resets` (
 --
 
 CREATE TABLE `payment_receives` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `payment_month` date NOT NULL,
   `payment_date` date NOT NULL,
   `payment_amount` float NOT NULL,
-  `ref_no` bigint NOT NULL,
-  `bank_id` int NOT NULL,
-  `conumer_id` int NOT NULL,
-  `bill_id` int NOT NULL
+  `ref_no` bigint(20) NOT NULL,
+  `bank_id` int(11) NOT NULL,
+  `conumer_id` int(11) NOT NULL,
+  `bill_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -804,12 +794,12 @@ CREATE TABLE `payment_receives` (
 --
 
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tokenable_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -823,12 +813,12 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 CREATE TABLE `reading_approve` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `month_year` date NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `is_verified` tinyint NOT NULL DEFAULT '0',
-  `varify_by` int NOT NULL
+  `is_verified` tinyint(4) NOT NULL DEFAULT 0,
+  `varify_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -846,11 +836,11 @@ INSERT INTO `reading_approve` (`id`, `month_year`, `created_at`, `updated_at`, `
 --
 
 CREATE TABLE `reset_code_passwords` (
-  `id` int NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -860,9 +850,9 @@ CREATE TABLE `reset_code_passwords` (
 --
 
 CREATE TABLE `roles` (
-  `id` int UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -883,9 +873,9 @@ INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VA
 --
 
 CREATE TABLE `role_user` (
-  `id` int UNSIGNED NOT NULL,
-  `role_id` int UNSIGNED NOT NULL,
-  `user_id` int UNSIGNED NOT NULL
+  `id` int(10) UNSIGNED NOT NULL,
+  `role_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -904,13 +894,13 @@ INSERT INTO `role_user` (`id`, `role_id`, `user_id`) VALUES
 --
 
 CREATE TABLE `slabs` (
-  `id` int NOT NULL,
-  `sub_cat_id` int NOT NULL,
-  `slab_start_unit` int NOT NULL,
-  `slab_end_unit` int NOT NULL,
-  `total_units` int NOT NULL DEFAULT '0',
+  `id` int(11) NOT NULL,
+  `sub_cat_id` int(11) NOT NULL,
+  `slab_start_unit` int(11) NOT NULL,
+  `slab_end_unit` int(11) NOT NULL,
+  `total_units` int(11) NOT NULL DEFAULT 0,
   `charges` float NOT NULL,
-  `is_active` int NOT NULL DEFAULT '1'
+  `is_active` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -938,13 +928,13 @@ INSERT INTO `slabs` (`id`, `sub_cat_id`, `slab_start_unit`, `slab_end_unit`, `to
 --
 
 CREATE TABLE `sub_category_charges` (
-  `id` int NOT NULL,
-  `sub_cat_id` int NOT NULL,
-  `charges_type_id` int NOT NULL,
-  `charges` float NOT NULL DEFAULT '0',
-  `is_active` int NOT NULL DEFAULT '1',
-  `applicable_on` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'units',
-  `code` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+  `id` int(11) NOT NULL,
+  `sub_cat_id` int(11) NOT NULL,
+  `charges_type_id` int(11) NOT NULL,
+  `charges` float NOT NULL DEFAULT 0,
+  `is_active` int(11) NOT NULL DEFAULT 1,
+  `applicable_on` varchar(20) NOT NULL DEFAULT 'units',
+  `code` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -972,12 +962,12 @@ INSERT INTO `sub_category_charges` (`id`, `sub_cat_id`, `charges_type_id`, `char
 --
 
 CREATE TABLE `sub_divisions` (
-  `id` int NOT NULL,
-  `sub_division_code` int NOT NULL,
-  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `is_active` tinyint NOT NULL DEFAULT '0',
-  `division_id` int DEFAULT NULL
+  `id` int(11) NOT NULL,
+  `sub_division_code` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `description` text DEFAULT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT 0,
+  `division_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -997,9 +987,9 @@ INSERT INTO `sub_divisions` (`id`, `sub_division_code`, `name`, `description`, `
 --
 
 CREATE TABLE `tax_types` (
-  `id` int NOT NULL,
-  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `is_active` tinyint NOT NULL DEFAULT '0'
+  `id` int(11) NOT NULL,
+  `title` text NOT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -1013,45 +1003,20 @@ INSERT INTO `tax_types` (`id`, `title`, `is_active`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transactions`
---
-
-CREATE TABLE `transactions` (
-  `id` int UNSIGNED NOT NULL,
-  `user_id` int UNSIGNED NOT NULL,
-  `course_id` int UNSIGNED NOT NULL,
-  `amount` decimal(10,2) DEFAULT NULL,
-  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payment_method` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `order_details` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `transactions`
---
-
-INSERT INTO `transactions` (`id`, `user_id`, `course_id`, `amount`, `status`, `payment_method`, `order_details`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '0.00', 'completed', 'paypal_express_checkout', '{\"TOKEN\":\"success\",\"status\":\"succeeded\",\"Timestamp\":1561787415,\"ACK\":\"Success\"}', '2023-07-12 23:56:24', '2023-07-12 23:56:24');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
-  `id` int UNSIGNED NOT NULL,
-  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT '1',
-  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
+  `first_name` varchar(255) NOT NULL,
+  `email` varchar(120) DEFAULT NULL,
+  `password` varchar(60) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `reg_no` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `retrive_uniq_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reg_no` varchar(30) DEFAULT NULL,
+  `retrive_uniq_code` varchar(50) DEFAULT NULL,
   `card_expire_at` date DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1064,22 +1029,6 @@ INSERT INTO `users` (`id`, `first_name`, `email`, `password`, `is_active`, `reme
 (2, 'reader', 'reader@gmail.com', '$2a$12$lcNe9KsxRGEoKvU6vGDhdu5ZZeEhmMyttzqyx9urNxvEvh./39V/m', 1, NULL, '2023-09-01 05:32:55', '2023-09-01 05:32:55', NULL, NULL, NULL),
 (3, 'incharge', 'incharge@gmail.com', '$2a$12$lcNe9KsxRGEoKvU6vGDhdu5ZZeEhmMyttzqyx9urNxvEvh./39V/m', 1, NULL, '2023-09-01 05:32:55', '2023-09-01 05:32:55', NULL, NULL, NULL),
 (4, 'Ikram', 'ikramghalib@gmail.com', '$2y$10$5GK60r45E58AIOW/q/xuROlij/e9f.PvqJCr8Pb7gnPrhrDwBwAnO', 1, NULL, '2023-10-17 06:49:43', '2023-10-17 06:49:43', NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `withdraw_requests`
---
-
-CREATE TABLE `withdraw_requests` (
-  `id` int UNSIGNED NOT NULL,
-  `instructor_id` int NOT NULL,
-  `paypal_id` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `amount` decimal(10,2) DEFAULT NULL,
-  `status` tinyint NOT NULL DEFAULT '0' COMMENT '0-pending,1-processed',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Indexes for dumped tables
@@ -1310,21 +1259,9 @@ ALTER TABLE `tax_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `transactions`
---
-ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `withdraw_requests`
---
-ALTER TABLE `withdraw_requests`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1335,211 +1272,199 @@ ALTER TABLE `withdraw_requests`
 -- AUTO_INCREMENT for table `banks`
 --
 ALTER TABLE `banks`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `bill_generates`
 --
 ALTER TABLE `bill_generates`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `charges_types`
 --
 ALTER TABLE `charges_types`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `consumers`
 --
 ALTER TABLE `consumers`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `consumer_bills`
 --
 ALTER TABLE `consumer_bills`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `consumer_categories`
 --
 ALTER TABLE `consumer_categories`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `consumer_ledgers`
 --
 ALTER TABLE `consumer_ledgers`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `consumer_meters`
 --
 ALTER TABLE `consumer_meters`
-  MODIFY `cm_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `cm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `consumer_sub_categories`
 --
 ALTER TABLE `consumer_sub_categories`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `divisions`
 --
 ALTER TABLE `divisions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `feeders`
 --
 ALTER TABLE `feeders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `general_taxs`
 --
 ALTER TABLE `general_taxs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `import_data`
 --
 ALTER TABLE `import_data`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `instruction_levels`
 --
 ALTER TABLE `instruction_levels`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `master_categories`
 --
 ALTER TABLE `master_categories`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `meters`
 --
 ALTER TABLE `meters`
-  MODIFY `meter_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `meter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `meter_readings`
 --
 ALTER TABLE `meter_readings`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
 --
 ALTER TABLE `oauth_clients`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `oauth_personal_access_clients`
 --
 ALTER TABLE `oauth_personal_access_clients`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `options`
 --
 ALTER TABLE `options`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `payment_receives`
 --
 ALTER TABLE `payment_receives`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reading_approve`
 --
 ALTER TABLE `reading_approve`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `reset_code_passwords`
 --
 ALTER TABLE `reset_code_passwords`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `role_user`
 --
 ALTER TABLE `role_user`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `slabs`
 --
 ALTER TABLE `slabs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `sub_category_charges`
 --
 ALTER TABLE `sub_category_charges`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `sub_divisions`
 --
 ALTER TABLE `sub_divisions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tax_types`
 --
 ALTER TABLE `tax_types`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `transactions`
---
-ALTER TABLE `transactions`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `withdraw_requests`
---
-ALTER TABLE `withdraw_requests`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
