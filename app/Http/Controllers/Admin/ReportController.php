@@ -37,12 +37,12 @@ class ReportController extends Controller
 		$validatedData = $request->validate([
             'month' => 'required',
         ]);
-        $reading=Reading::where('month_year',$request->month.'-01');
+        $reading=Reading::with('bConsumerMeter')->where('month_year',$request->month.'-01');
         if($request->condition && $request->unit)
         $reading=$reading->where('offpeak_units',$request->condition,$request->unit);
     
-    $record=$reading->get();
-    $fields=$request->all();
+        $record=$reading->get();
+        $fields=$request->all();
     // dd($record);
         if($request->report_style=='v')
         {
@@ -77,7 +77,7 @@ class ReportController extends Controller
         $fields=$request->all();
         if($request->report_style=='v')
         {
-            $reading=PaymentReceive::where('payment_month',$request->month.'-01');
+            $reading=PaymentReceive::with('bConsumerMeter')->where('payment_month',$request->month.'-01');
             $record=$reading->get();
 
             return view('admin.report.payment.index',compact('record','fields'));
@@ -149,7 +149,7 @@ class ReportController extends Controller
             ->select('meter_readings.offpeak_prev as prev_offpeak_reading','meter_readings.offpeak as offpeak_current_reading','meter_readings.datetime as reading_date','consumer_bills.*', 'bill_generates.*',  'bill_generates.created_at as bill_generate_date','consumer_meters.connection_date as meter_connection_date','consumer_meters.*','consumer_bills.id as bill_id','consumers.*','feeders.name as feeder_name','sub_divisions.name as sub_division_name','divisions.name as division_name','meters.meter_no')
             ->Join('meter_readings', 'meter_readings.id', '=', 'consumer_bills.reading_id')
             ->Join('bill_generates', 'bill_generates.id', '=', 'consumer_bills.generate_bill_id')
-            ->Join('consumer_meters', 'consumer_meters.ref_no', '=', 'consumer_bills.ref_no')
+            ->Join('consumer_meters', 'consumer_meters.cm_id', '=', 'consumer_bills.cm_id')
             ->join('consumers', 'consumers.id', '=', 'consumer_meters.consumer_id')
             ->join('feeders', 'feeders.id', '=', 'consumers.feeder_id')
             ->join('sub_divisions', 'sub_divisions.id', '=', 'feeders.sub_division_id')
@@ -180,12 +180,14 @@ class ReportController extends Controller
         }
         else
         {
-            $record=ConsumerBill::with('hOSubCategory')->where('billing_month_year',$request->month.'-01');
+            $record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){
+                if($request->start_refrence )
+                    $record=$q->where('ref_no','>=',$request->start_refrence);
+                if($request->end_refrence )
+                    $record=$q->where('ref_no','<=',$request->end_refrence);
+            }])->where('billing_month_year',$request->month.'-01');
             // dd($record->get());
-            if($request->start_refrence )
-            $record=$record->where('ref_no','>=',$request->start_refrence);
-            if($request->end_refrence )
-            $record=$record->where('ref_no','<=',$request->end_refrence);
+           
             
             $record=$record->get();
             // $fields=$request->all();

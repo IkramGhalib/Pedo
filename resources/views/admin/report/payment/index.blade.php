@@ -169,7 +169,7 @@ a {
 
   <tr>
     <td class="col1">{{$c}}</td>
-    <td class="col2">{{$row->ref_no}}</td>
+    <td class="col2">{{$row->bConsumerMeter->ref_no}}</td>
     <td class="col3">{{app_month_format($row->payment_month)}}</td>
     <td class="col1"> {{$row->payment_date}}</td> 
     <td class="col1"> {{$row->bBank->code.' - '.$row->bBank->title}}</td> 

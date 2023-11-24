@@ -128,8 +128,12 @@ class ReceivePaymentController extends Controller
         // pr($request->all());
        $payment_month=date('Y-m-d',strtotime($request->payment_month));
     //    pr($payment_month);
-        $data=PaymentReceive::where('ref_no',$request->ref_no)->where('payment_month',$payment_month)->first();
-        $bill_data=ConsumerBill::where('ref_no',$request->ref_no)->where('billing_month_year',$payment_month)->first();
+        $data=PaymentReceive::with(['bConsumerMeter'=>function($q) use($request){
+            $q->where('ref_no',$request->ref_no);
+        }])->where('payment_month',$payment_month)->first();
+        $bill_data=ConsumerBill::with(['bConsumerMeter'=>function($q) use($request){
+            $q->where('ref_no',$request->ref_no);
+        }])->where('billing_month_year',$payment_month)->first();
         if(!$bill_data)
        {
         return response()->json(['success'=>'false','message'=>'Bill Not Found']);
@@ -140,15 +144,18 @@ class ReceivePaymentController extends Controller
         return response()->json(['success'=>'false','message'=>'Record Exits. Cant not Add Again']);
        }else
        {
-                $rec=DB::table('consumer_meters')->select('consumer_id')->where('ref_no',$request->ref_no)->first();
+        // pr('tsting');
+                $rec=DB::table('consumer_meters')->where('ref_no',$request->ref_no)->first();
+                // dd($rec);
                 $record=new PaymentReceive();
-                $record->ref_no=$request->ref_no;
+                // $record->ref_no=$request->ref_no;
                 $record->payment_month=$payment_month;
                 $record->payment_date=date('y-m-d',strtotime($request->payment_date));
                 $record->bank_id=$request->bank;
                 $record->payment_amount=$request->amount;
-                $record->conumer_id=$rec->consumer_id;
+                // $record->conumer_id=$rec->consumer_id;
                 $record->bill_id=$bill_data->id;
+                $record->cm_id=$rec->cm_id;
                
 
                 $record->save();
@@ -180,7 +187,7 @@ class ReceivePaymentController extends Controller
                 
 
 
-                ConsumerLedger::insert(['consumer_id'=>$rec->consumer_id,'amount'=> -($request->amount),'payment_id'=>$record->id]);
+                ConsumerLedger::insert(['cm_id'=>$rec->cm_id,'amount'=> -($request->amount),'payment_id'=>$record->id]);
                 // return redirect()->back()->with(['success'=>'Action Completed']); 
                 return response()->json(['success'=>'true','message'=>'Action Completed']); 
 
@@ -202,8 +209,8 @@ class ReceivePaymentController extends Controller
         
         $record=DB::table('consumer_bills')
         ->select('consumer_bills.WithinDuedate','consumer_bills.AfterdueDate','consumer_bills.DueDate')
-                // ->join('consumer_meters','consumer_meters.consumer_id','=','consumer_ledgers.consumer_id')
-                ->where('consumer_bills.ref_no',$r->ref_no)
+                ->join('consumer_meters','consumer_meters.cm_id','=','consumer_bills.cm_id')
+                ->where('consumer_meters.ref_no',$r->ref_no)
                 ->where('consumer_bills.billing_month_year',date('Y-m-d',strtotime($r->payment_month)))
                 ->first();
         // pr($record);

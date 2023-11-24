@@ -119,12 +119,13 @@ class BillGenerateController extends Controller
 
     function find_consumer_category_slab_charges($record)
     {
+       
             $units=$record->offpeak_units;
             
-            $c_bill_data=ConsumerBill::where('ref_no',$record->ref_no)->limit(12)->orderBy('id','desc')->get();
+            $c_bill_data=ConsumerBill::where('cm_id',$record->bConsumerMeter->cm_id)->limit(12)->orderBy('id','desc')->get();
             //  dd($c_bill_data);
          
-            $current_cons_type= ConsumerMeter::with('bConsumer.bConsumerCategory.hMConSubCategory.hMSlabs')->where('ref_no',$record->ref_no)
+            $current_cons_type= ConsumerMeter::with('bConsumer.bConsumerCategory.hMConSubCategory.hMSlabs')->where('ref_no',$record->bConsumerMeter->ref_no)
             ->first();
             // dd($current_cons_type);
             
@@ -244,7 +245,7 @@ class BillGenerateController extends Controller
                     {
                         // get 2 months prevous reading
                         $record->month_year;
-                        $previous_reading=DB::table('meter_readings')->where('consumer_id',$record->consumer_id)->where('month_year',(date('y-m-d ',strtotime($record->month_year.' -2 month' ))))->first();
+                        $previous_reading=DB::table('meter_readings')->where('cm_id',$record->bConsumerMeter->cm_id)->where('month_year',(date('y-m-d ',strtotime($record->month_year.' -2 month' ))))->first();
                         if($previous_reading)
                         {
                                 $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>round($previous_reading->offpeak_units*($chgrow->charges),2),'charges_type'=>$chgrow->bChargesType->title];
@@ -281,7 +282,7 @@ class BillGenerateController extends Controller
             //  {
                $check_minimum_bill= DB::table('consumers')
                      ->join('options','options.ref_id','=','consumers.consumer_category_id')
-                     ->where('consumers.id',$record->consumer_id)->first();
+                     ->where('consumers.id',$record->bConsumerMeter->consumer_id)->first();
                  if($check_minimum_bill)
                  {
                      if($total_electricity_charges<=(float)$check_minimum_bill->option_value)
@@ -301,10 +302,11 @@ class BillGenerateController extends Controller
     }
     public function find_taxes($row,$finded_cateogry_slab_chareges)
     {
-        // dd($row);
+       
         $g_tax=ConsumerMeter::with(['bConsumer.bConsumerCategory','bConsumer.bConsumerCategory.hMtax'=>function($q){
             return $q->where('is_active',1);
-        },'bConsumer.bConsumerCategory.hMtax.bTaxType'])->where('ref_no',$row->ref_no)->first();
+        },'bConsumer.bConsumerCategory.hMtax.bTaxType'])->where('cm_id',$row->cm_id)->first();
+        
         // dd($g_tax);
         // $g_tax=GeneralTax::where('is_active',1)->get();
         $g_total_taxes=[];
@@ -389,7 +391,7 @@ class BillGenerateController extends Controller
         ]);
         // dd($request->all());
        $month_year=$request->month_year.'-01';
-        $reading_record=BillGenerate::where('month_year',$month_year)->first();
+       $reading_record=BillGenerate::where('month_year',$month_year)->first();
         
         
        if($reading_record)
@@ -416,7 +418,7 @@ class BillGenerateController extends Controller
                 $record->generated_by=Auth::id();
                 $record->save();
                 // dd($record);
-                $reading=Reading::where('is_verified',1)->where('month_year',$month_year)->get();
+                $reading=Reading::with('bConsumerMeter')->where('is_verified',1)->where('month_year',$month_year)->get();
                 // dd($reading);
                 foreach ($reading as $key => $value) {
                     $finded_cateogry_slab_chareges=$this->find_consumer_category_slab_charges($value);
@@ -435,9 +437,8 @@ class BillGenerateController extends Controller
                     // $arrear=round(ConsumerLedger::where('consumer_id',$value->consumer_id)->sum('amount'),2);
                     // $arrear=round(ConsumerLedger::select(DB::raw('sum(amount+late_fee) AS total_amount'))->where('consumer_id',$value->consumer_id)->sum('total_amount'),2);
                     $check_arrear=DB::table('consumer_ledgers')
-                  
                     ->select(DB::raw('sum(amount+late_fee) AS total_amount'))
-                    ->where('consumer_id',$value->consumer_id)
+                    ->where('consumer_id',$value->bConsumerMeter->consumer_id)
                    
                     ->first();
                     $arrear=0;
@@ -449,8 +450,9 @@ class BillGenerateController extends Controller
                     $bill_array=[
                         'generate_bill_id'=>$record->id,
                         'reading_id'=>$value->id,
-                        'consumer_id'=>$value->consumer_id,
-                        'ref_no'=>$value->ref_no,
+                        // 'consumer_id'=>$value->bConsumerMeter->consumer_id,
+                        'ref_no_for_bill'=>$value->bConsumerMeter->ref_no,
+                        'cm_id'=>$value->bConsumerMeter->cm_id,
                         'billing_month_year'=>$month_year,
                         'offpeak_units'=>$value->offpeak_units,
                         'arrears'=>$arrear,
@@ -475,7 +477,7 @@ class BillGenerateController extends Controller
                     $id=ConsumerBill::insertGetId($bill_array);
                                                                 
                     // add in ledger of consumer
-                    ConsumerLedger::insert(['consumer_id'=>$value->consumer_id,'amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data'],0),'bill_id'=>$id]);                            
+                    ConsumerLedger::insert(['cm_id'=>$value->bConsumerMeter->cm_id,'amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data'],0),'bill_id'=>$id]);                            
                 }
                 return redirect()->back()->with(['success'=>'Action Completed']); 
                 

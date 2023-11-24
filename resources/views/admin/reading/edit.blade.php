@@ -23,26 +23,26 @@
           <div class="row">
             <div class="form-group col-md-8">
               <label class="form-control-label">Refrence No</label>
-              <input type="text" name="ref_no" value="{{$record->ref_no}}" id="ref_no"  class="form-control" readonly>
+              <input type="text" name="ref_no" value="{{$record->bConsumerMeter->ref_no}}" id="ref_no"  class="form-control" readonly>
                 
             </div>
       </div>
-          <div class="row">
+          {{-- <div class="row">
 
             <div class="form-group col-md-4">
               <label class="form-control-label"> Year-Month</label>
-              <input required type="month" class="form-control" value="{{$record->year.'-'.$record->month}}"  name="month_year" value="{{old('month_year')}}"
+              <input required type="month" class="form-control" value="{{date('Y-m',strtotime($record->month_year))}}"  name="month_year" value="{{old('month_year')}}"
                 />
                 @if ($errors->has('month_year'))
                     <label class="error" for="full_name">{{ $errors->first('month_year') }}</label>
                 @endif
             </div>
 
-          </div>
+          </div> --}}
           <div class="row">
 
             <div class="form-group col-md-4">
-                <label class="form-control-label">Off Peak Reading</label>
+                <label class="form-control-label"> Reading</label>
                 <input type="text" class="form-control" value="{{$record->offpeak}}" name="offpeak" value="{{old('offpeak')}}"
                   />
                   @if ($errors->has('offpeak'))
@@ -61,7 +61,7 @@
         </div>
 
 
-        <div class="row">
+        {{-- <div class="row">
 
             <div class="form-group col-md-4">
                 <label class="form-control-label">Peak Reading</label>
@@ -80,7 +80,7 @@
                       <label class="error" for="peak_image">{{ $errors->first('peak_image') }}</label>
                   @endif
               </div>
-        </div>
+        </div> --}}
 
 
 

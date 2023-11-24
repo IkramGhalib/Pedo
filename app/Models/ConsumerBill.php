@@ -14,4 +14,8 @@ class ConsumerBill extends Model
     {
         return $this->hasOne(ConsumerSubCategory::class,'id','sub_cat_finded_id');
     }
+    public function bConsumerMeter()
+    {
+        return $this->belongsTo(ConsumerMeter::class,'cm_id','cm_id');
+    }
 }

@@ -178,22 +178,24 @@ $(document).ready(function(){
 
   });
 
-  $(".month_year").change( function(e){
-    get_data_for_reading();
-  });
+  // $(".month_year").change( function(e){
+  //   get_data_for_reading();
+  // });
   function get_data_for_reading(){
       // e.preventDefault();
       let ref_no=$("#ref_no").val();
-      let month_year=$('.month_year').val();
+      // let month_year=$('.month_year').val();
       
-      if(ref_no && month_year)
+      // if(ref_no && month_year)
+      if(ref_no)
       {
         
      
       $.ajax({
           // type:'POST',
           url:"{{route('get_data_agaist_reading')}}",
-          data: {ref_no:ref_no,month_year:month_year},
+          // data: {ref_no:ref_no,month_year:month_year},
+          data: {ref_no:ref_no},
           success:function(response){
             console.log(response);
 
@@ -203,7 +205,7 @@ $(document).ready(function(){
             {
               // if(response.data.length>0)
               // {
-                $('.pre_reading').val(response.data.offpeak);
+                $('.pre_reading').val(response.data.previous_reading);
                 // $('.offpeak').val();
                 // $('.cal_units').val();
               // }

@@ -12,6 +12,7 @@ use App\Models\Role;
 // use App\Models\Division;
 // use App\Models\SubDivision;
 use App\Models\Consumer;
+use App\Models\ConsumerMeter;
 use App\Models\Reading;
 use App\Models\ReadingApprove;
 // use App\Models\Feeder;
@@ -51,7 +52,9 @@ class ReadingController extends Controller
     {
         $paginate_count = 50;
         
-        $list = DB::table('meter_readings')->orderBy('id')->where('is_verified',0)->paginate($paginate_count);
+        $list = DB::table('meter_readings')
+                ->join('consumer_meters','consumer_meters.cm_id','=','meter_readings.cm_id')        
+                ->orderBy('meter_readings.id')->where('meter_readings.is_verified',0)->paginate($paginate_count);
         return view('admin.reading.index', compact('list'));
     }
 
@@ -109,17 +112,15 @@ class ReadingController extends Controller
         ]);
         if ($validator->fails()) return error('Fill Required Filed.', $validator->errors(), 422);
 
-        // dd($request->all());
-    //    $mont_year=explode('-',$request->month_year.'-01');
        $mont_year=date('y-m-d ',strtotime($request->month_year));
-        $reading_record=Reading::where('ref_no',$request->ref_no)->where('month_year',$mont_year)->first();
+       $rec=DB::table('consumer_meters')->where('ref_no',$request->ref_no)->first();  
+        $reading_record=Reading::where('cm_id',$rec->cm_id)->where('month_year',$mont_year)->first();
         if($reading_record)
        {
-        //    return redirect()->back()->with(['error'=>'Record Already Exits']);
            return error('Record Already Exits', [], 422);
         }else
         {
-           $rec=DB::table('consumer_meters')->select('consumer_id')->where('ref_no',$request->ref_no)->first();
+        //    $rec=DB::table('consumer_meters')->select('consumer_id')->where('ref_no',$request->ref_no)->first();
         //  --------------------------------------------------------------
         // offpeak_prev
         // $current_record=Reading::where('month_year',(date('y-m-d ',strtotime($approve_record->month_year))))->first();
@@ -132,35 +133,36 @@ class ReadingController extends Controller
 
 
                 $record=new Reading();
-                $record->ref_no=$request->ref_no;
-                $record->year=(date('y',strtotime($mont_year)));
-                $record->month=(date('m',strtotime($mont_year)));
+                $record->cm_id=$rec->cm_id;
+                // $record->year=(date('y',strtotime($mont_year)));
+                // $record->month=(date('m',strtotime($mont_year)));
                 $record->month_year=$mont_year;
                 $record->offpeak=$request->offpeak;
                 $record->peak=$request->peak;
-                $record->consumer_id=$rec->consumer_id;
+                // $record->consumer_id=$rec->consumer_id;
 
-                $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($mont_year.' -1 month' ))))->where('ref_no',$request->ref_no)->first();
+                // $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($mont_year.' -1 month' ))))->where('ref_no',$request->ref_no)->first();
                 $off_peak_units=0;
                 $peak_units=0;
                 $offpeak_pre=0;
             
-                if($pre_record)
-                {
-                    $off_peak_units=$request->offpeak-$pre_record->offpeak;
+                // if($pre_record)
+                // {
+                    $off_peak_units=$request->offpeak-$rec->previous_reading_off_peak;
                     if($off_peak_units<0)
                     return error('Reading is Wrong', [], 422);
 
-                    $peak_units=abs($pre_record->peak-$request->peak );
+                    $peak_units=abs($rec->previous_reading_peak-$request->peak );
 
-                    $offpeak_pre=abs($pre_record->offpeak );
-                }
-                else
-                {
-                    $off_peak_units=abs($request->offpeak);
-                    $peak_units=abs($request->peak);
-                    $offpeak_pre=0;
-                }
+                    // $offpeak_pre=abs($pre_record->offpeak );
+                    $offpeak_pre=$rec->previous_reading_off_peak;
+                // }
+                // else
+                // {
+                //     $off_peak_units=abs($request->offpeak);
+                //     $peak_units=abs($request->peak);
+                //     $offpeak_pre=0;
+                // }
 
                 $record->peak_units=$peak_units;
                 $record->offpeak_units=$off_peak_units;
@@ -189,21 +191,25 @@ class ReadingController extends Controller
 
     public function get_data_agaist_reading(Request $request)
     {
-    //    $m= date('Y-m-d',strtotime($request->month_year));
-        $record=DB::table('meter_readings')
-        // ->join('consumers','consumers.id','=','consumer_meters.consumer_id')
+
+        $record=DB::table('consumer_meters')
         ->where('ref_no',$request->ref_no)
-        ->where('month_year',date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' )))
+        // ->where('month_year',date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' )))
         ->first();
-        // echo json_encode($record);
+
+        //FIRST ATTEMPT CODE 
+        // $record=DB::table('meter_readings')
+        // ->where('ref_no',$request->ref_no)
+        // ->where('month_year',date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' )))
+        // ->first();
         return success('right',$record );
            
-            // echo json_encode(ConsumerSubCategory::where('is_active',1)->where('consumer_category_id',$request->parent_id)->where('name','like',$request->search.'%')->get());
     }
     public function reading_edit($id)
     {
         
-        $record=Reading::find($id);
+        $record=Reading::with('bConsumerMeter')->find($id);
+        // dd($record);
         return view('admin.reading.edit',compact('record'));
     }
 
@@ -213,7 +219,7 @@ class ReadingController extends Controller
     {
         $request->validate([
             'ref_no' => 'required',
-            'month_year' => 'required',
+            // 'month_year' => 'required',
             'offpeak' => 'required_without:peak',
             // 'off_peak_image' =>Rule::when($request->offpeak != null, 'required'),
             // 'peak_image' =>Rule::when($request->peak != null, 'required')
@@ -227,39 +233,37 @@ class ReadingController extends Controller
         //    }else
         //    {
                 $record =Reading::find($id);
-                $record->ref_no=$request->ref_no;
-                $record->year=$mont_year_array[0];
-                $record->month=$mont_year_array[1];
-                $record->month_year=$request->month_year.'-01';
+                // $record->ref_no=$request->ref_no;
+                // $record->month_year=$request->month_year.'-01';
                 $record->offpeak=$request->offpeak;
-                $record->peak=$request->peak;
+                // $record->peak=$request->peak;
 
-                $rec=DB::table('consumer_meters')->select('consumer_id')->where('ref_no',$request->ref_no)->first();
+                // $rec=DB::table('consumer_meters')->select('consumer_id')->where('ref_no',$request->ref_no)->first();
 
-                $record->consumer_id=$rec->consumer_id;
+                // $record->consumer_id=$rec->consumer_id;
 
-                $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' ))))->where('ref_no',$request->ref_no)->first();
+                // $pre_record=Reading::where('month_year',(date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' ))))->where('ref_no',$request->ref_no)->first();
                 $off_peak_units=0;
                 $peak_units=0;
                 $offpeak_pre=0;
             
-                if($pre_record)
-                {
-                    $off_peak_units=abs($pre_record->offpeak-$request->offpeak );
-                    $peak_units=abs($pre_record->peak-$request->peak );
+                // if($pre_record)
+                // {
+                    $off_peak_units=abs($record->offpeak_prev-$request->offpeak );
+                    // $peak_units=abs($record->-$request->peak );
 
-                    $offpeak_pre=abs($pre_record->offpeak );
-                }
-                else
-                {
-                    $off_peak_units=abs($reading_record->offpeak);
-                    $peak_units=abs($reading_record->peak);
-                    $offpeak_pre=0;
-                }
+                    // $offpeak_pre=abs($pre_record->offpeak );
+                // }
+                // else
+                // {
+                //     $off_peak_units=abs($reading_record->offpeak);
+                //     $peak_units=abs($reading_record->peak);
+                //     $offpeak_pre=0;
+                // }
 
-                $record->peak_units=$peak_units;
+                // $record->peak_units=$peak_units;
                 $record->offpeak_units=$off_peak_units;
-                $record->offpeak_pre=$offpeak_pre;
+                // $record->offpeak_pre=$offpeak_pre;
 
 
                 if($request->hasFile('peak_image'))
@@ -291,8 +295,8 @@ class ReadingController extends Controller
     public function reading_approve(Request $request)
     {
         // $record=Reading::where('id',$request->id)->first();
-        DB::beginTransaction();
-        try {
+        // DB::beginTransaction();
+        // try {
                 $reading_record=Reading::where('month_year',(date('y-m-d ',strtotime($request->month_year.'-01'))))->count();
                 // dd($reading_record);
                 if($reading_record==0)
@@ -310,47 +314,67 @@ class ReadingController extends Controller
                     
                     $approve_record->save();
                 }
-                $reading_ids=Reading::select('consumer_id')->where('month_year',$approve_record->month_year)->get()->pluck('consumer_id');
+                $reading_ids=Reading::select('cm_id')->where('month_year',$approve_record->month_year)->get()->pluck('cm_id');
                 if($reading_ids)
-                $consumer_ids=Consumer::select('id')->whereNotIn('id',$reading_ids)->where('status','active')->get()->pluck('id');
+                {
+                    $consumer_ids = DB::table('consumers')
+                    ->select('consumer_meters.*')
+                    ->join('consumer_meters','consumer_meters.consumer_id','=','consumers.id')        
+                    ->whereNotIn('consumer_meters.cm_id',$reading_ids)->where('consumers.status','active')->get();
+                    // $consumer_ids=Consumer::select('id')->whereNotIn('id',$reading_ids)->where('status','active')->get()->pluck('id');
+                }
                 if($consumer_ids)
                 {
+                    $rec_for_insertion=[];
                     foreach ($consumer_ids as $kk => $vv) 
                     {
-                        
+
                     
-                        $reading_ids=Reading::where('id',$vv)->where('month_year',date('y-m-d ',strtotime($approve_record.' -1 month')))->first();
-                        if($reading_ids)
-                        {
-                            // foreach ($pr_reading_ids as $key => $reading_ids) {
+                        $reading_ids=Reading::where('cm_id',$vv->cm_id)->where('month_year',date('y-m-d ',strtotime($request->month_year.'-01')))->first();
+                        if(!$reading_ids)
+                        // {
+                        //     // foreach ($pr_reading_ids as $key => $reading_ids) {
                                 
-                                Reading::insert(['consumer_id'=>$reading_ids->consumer_id,
-                                'ref_no'=>$reading_ids->ref_no,
-                                'month_year'=>$approve_record->month_year,
-                                'offpeak_prev'=>$reading_ids->offpeak,
-                                'offpeak'=>$reading_ids->offpeak,
-                                'offpeak_units'=>0,  
-                                'is_verified'=>1  
-                                ]);
+                        //         Reading::insert(['consumer_id'=>$reading_ids->consumer_id,
+                        //         'ref_no'=>$reading_ids->ref_no,
+                        //         'month_year'=>$approve_record->month_year,
+                        //         'offpeak_prev'=>$reading_ids->offpeak,
+                        //         'offpeak'=>$reading_ids->offpeak,
+                        //         'offpeak_units'=>0,  
+                        //         'is_verified'=>1  
+                        //         ]);
+                        //     // }
+                        // }
+                        // else
+                        {
+                            // $pr_reading_ids=consumer::with('meters')->where('consumers.id',$vv)->where('consumers.status','active')->first();
+                            // dd($pr_reading_ids);
+                            // foreach ($pr_reading_ids->meters as $key => $reading_ids) {
+                                
+                                // Reading::insert([
+                                // // 'ref_no'=>$reading_ids->ref_no,
+                                // 'cm_id'=>$vv->cm_id,
+                                // 'month_year'=>$approve_record->month_year,
+                                // 'offpeak_prev'=>0,
+                                // 'offpeak'=>0,
+                                // 'offpeak_units'=>0,  
+                                // 'is_verified'=>1  
+                                // ]);
+
+                               $rec_for_insertion[]= [
+                                    // 'ref_no'=>$reading_ids->ref_no,
+                                    'cm_id'=>$vv->cm_id,
+                                    'month_year'=>$approve_record->month_year,
+                                    'offpeak_prev'=>0,
+                                    'offpeak'=>0,
+                                    'offpeak_units'=>0,  
+                                    'is_verified'=>1  
+                                    ];
                             // }
                         }
-                        else
-                        {
-                            $pr_reading_ids=consumer::with('meters')->where('consumers.id',$vv)->where('consumers.status','active')->first();
-                            // dd($pr_reading_ids);
-                            foreach ($pr_reading_ids->meters as $key => $reading_ids) {
-                                
-                                Reading::insert(['consumer_id'=>$pr_reading_ids->id,
-                                'ref_no'=>$reading_ids->ref_no,
-                                'month_year'=>$approve_record->month_year,
-                                'offpeak_prev'=>0,
-                                'offpeak'=>0,
-                                'offpeak_units'=>0,  
-                                'is_verified'=>1  
-                                ]);
-                            }
-                        }
                     }
+                    if(!empty($rec_for_insertion))
+                    Reading::insert($rec_for_insertion);
                 }
                 // dd($consumer_ids);
                 // $current_record=Reading::where('month_year',$approve_record->month_year)->get();
@@ -376,18 +400,23 @@ class ReadingController extends Controller
                 Reading::where('month_year',$approve_record->month_year)->update(['is_verified'=>1]);
 
                 // DB::table('reading_approve')->where('id',$request->id)->update(['is_verified'=>1]);
+                $all_reading_record=Reading::where('month_year',(date('y-m-d ',strtotime($request->month_year.'-01'))))->get();
+                foreach ($all_reading_record as $ark => $arr) 
+                {
+                    ConsumerMeter::where('cm_id',$arr->cm_id)->update(['previous_reading_off_peak'=>$arr->offpeak]);
+                }
                 DB::commit();
                 // echo json_encode(['success'=>'true','message'=>'Action Completed']);
                 return $this->return_output('flash', 'success', 'Record Add successfully', 'meter-reading-approve-lists', '200');
-        } catch (\Exception $e) {  
-            dd($e->getMessage());
-                DB::rollback();
-                return back()->withError('Try Again Later');
+        // } catch (\Exception $e) {  
+        //     dd($e->getMessage());
+        //         DB::rollback();
+        //         return back()->withError('Try Again Later');
 
-                // echo json_encode(['success'=>'false','message'=>$e->getMessage()]);
-                // echo json_encode(['success'=>'false','message'=>'Action Failed']);
-                // return $this->return_output('flash', 'error', 're', 'admin/group', '200');
-        }  
+        //         // echo json_encode(['success'=>'false','message'=>$e->getMessage()]);
+        //         // echo json_encode(['success'=>'false','message'=>'Action Failed']);
+        //         // return $this->return_output('flash', 'error', 're', 'admin/group', '200');
+        // }  
     }   
 
     // public function readingList()

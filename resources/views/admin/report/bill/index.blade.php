@@ -181,7 +181,7 @@ a {
 
   <tr>
     <td class="">{{$c}}</td>
-    <td class="">{{$row->ref_no}}</td>
+    <td class="">{{$row->bConsumerMeter->ref_no}}</td>
     <td class="">{{$row->hOSubCategory->name}}</td>
     <td class="">{{app_month_format($row->billing_month_year)}}</td>
     {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
