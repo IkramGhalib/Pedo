@@ -14,6 +14,7 @@
         <div class="panel-heading">
             <div class="panel-title">
               <a href="{{ route('consumer.form') }}" class="btn btn-success btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Add  </a>
+              <a href="{{ route('consumer.import.form') }}" class="btn btn-primary btn-sm"><i class="icon wb-plus" aria-hidden="true"></i> Import  </a>
             </div>
           
           <div class="panel-actions">
@@ -44,10 +45,7 @@
                 <th>Contact</th>
                 <th>Assign Meter/Ref No</th>
                 <th>Status</th>
-
                 <th>Actions</th>
-                
-
               </tr>
             </thead>
             <tbody>

@@ -16,7 +16,7 @@
                     </a>
                 </li>
                
-                <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
+                <li class="site-menu-item has-sub {{ (request()->is('consumer-*') || request()->is('admin/consumer-*') || request()->is('admin/cons-*')) ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
                         <i class="site-menu-icon wb-file" aria-hidden="true"></i>
                         <span class="site-menu-title">Consumer</span>
@@ -40,7 +40,7 @@
                             </a>
                         </li>
 
-                        <li class="site-menu-item {{ request()->is('admin/config/pagedd-contact') ? 'active' : '' }}">
+                        <li class="site-menu-item {{ request()->is('consumer/') ? 'active' : '' }}">
                             <a href="{{ route('consumer.lists') }}">
                                 <span class="site-menu-title">Consumer</span>
                             </a>
@@ -50,14 +50,14 @@
 
                 <!-- meter add -->
 
-                <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
+                <li class="site-menu-item has-sub {{ request()->is('admin/meter-*') ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
                         <i class="site-menu-icon wb-file" aria-hidden="true"></i>
                         <span class="site-menu-title">Meters</span>
                         <span class="site-menu-arrow"></span>
                     </a>
                     <ul class="site-menu-sub">
-                        <li class="site-menu-item {{ request()->is('admin/configc/page-home') ? 'active' : '' }}">
+                        <li class="site-menu-item {{ request()->is('admin/meter-*') ? 'active' : '' }}">
                             <a href="{{ route('admin.meter.list') }}">
                                 <span class="site-menu-title"> Meter Stock</span>
                             </a>
@@ -75,7 +75,7 @@
                 </li>
 
 
-                <li class="site-menu-item has-sub {{ request()->is('admin/configd/page-*') ? 'active open' : '' }}">
+                <li class="site-menu-item has-sub {{ (request()->is('admin/general-*') || request()->is('admin/charges-*') || request()->is('admin/tax-*')) ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
                         <i class="site-menu-icon wb-file" aria-hidden="true"></i>
                         <span class="site-menu-title">Charges</span>
@@ -118,7 +118,7 @@
 
                 
 
-                <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
+                <li class="site-menu-item has-sub {{ (request()->is('admin/*division-*') || request()->is('admin/feeder-*') ) ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
                         <i class="site-menu-icon wb-file" aria-hidden="true"></i>
                         <span class="site-menu-title">Area</span>
@@ -145,7 +145,7 @@
                 </li>
 
 
-                <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
+                <li class="site-menu-item has-sub {{ (request()->is('meter-*') ) ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
                         <i class="site-menu-icon wb-file" aria-hidden="true"></i>
                         <span class="site-menu-title">Reading</span>
@@ -171,7 +171,7 @@
                 </li>
 
 
-                <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
+                <li class="site-menu-item has-sub {{ (request()->is('receive-*') ) ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
                         <i class="site-menu-icon wb-file" aria-hidden="true"></i>
                         <span class="site-menu-title">Payments</span>
@@ -192,7 +192,7 @@
                     </ul>
                 </li>
 
-                <li class="site-menu-item has-sub {{ request()->is('admin/config/paged-*') ? 'active open' : '' }}">
+                <li class="site-menu-item has-sub {{ (request()->is('bill-*') ) ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
                         <i class="site-menu-icon wb-file" aria-hidden="true"></i>
                         <span class="site-menu-title">Bill</span>
@@ -275,7 +275,7 @@
                     </ul>
                 </li>
 
-                <li class="site-menu-item has-sub {{ request()->is('admin/report/*') ? 'active open' : '' }}">
+                <li class="site-menu-item has-sub {{ (request()->is('admin/report/*') ) ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
                         <i class="site-menu-icon fas fa-cogs" aria-hidden="true"></i>
                         <span class="site-menu-title">Reports</span>

@@ -50,6 +50,15 @@
             .for-screen {display: none;}
             .for-print {display: block;}
         }
+        .se-pre-con {
+          position: fixed;
+          left: 0px;
+          top: 0px;
+          width: 100%;
+          height: 100%;
+          z-index: 9999;
+          background: url("{{asset('frontend/img')}}/pre-loader.gif") center no-repeat #fff;
+      }
   </style>
   
   <!-- Scripts -->
@@ -60,6 +69,7 @@
   </script>
 </head>
 <body>
+  <div class="se-pre-con"></div>
   <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega navbar-expand-md"
     role="navigation">
 
@@ -209,6 +219,12 @@
 
   
    <script>
+    $(window).on("load", function (e){
+        
+        // Animate loader off screen
+        $(".se-pre-con").fadeOut("slow");
+        // laodcart();
+    });
       function message(type,message_text)
         {
             if(type=='error')

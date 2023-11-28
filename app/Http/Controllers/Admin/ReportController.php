@@ -178,6 +178,25 @@ class ReportController extends Controller
             // dd($record);
             return view('admin.report.bill.bill_v2_list',compact('record','fields'));
         }
+        else if($request->condition=='all-breakup')
+        {
+            // dd('testing');
+            $record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){
+                if($request->start_refrence )
+                    $record=$q->where('ref_no','>=',$request->start_refrence);
+                if($request->end_refrence )
+                    $record=$q->where('ref_no','<=',$request->end_refrence);
+            }])->where('billing_month_year',$request->month.'-01');
+            // dd($record->get());
+
+           $charges_types= DB::Table('charges_types')->get();
+           $tax_types= DB::Table('tax_types')->get();
+           
+            
+            $record=$record->get();
+            // $fields=$request->all();
+            return view('admin.report.bill.all_with_brakup',compact('record','fields','charges_types','tax_types'));
+        }
         else
         {
             $record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){

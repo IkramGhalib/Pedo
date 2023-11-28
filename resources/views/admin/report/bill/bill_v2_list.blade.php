@@ -1133,11 +1133,12 @@ span
                                         {{$rpnb->offpeak_units}}
                                     </td>
                                     <td class="border-r">
-                                        @if ($rpnb->is_payed_on_date)
+                                        {{-- @if ($rpnb->is_payed_on_date)
                                                 {{$rpnb->net_bill}}
                                         @else
                                                 {{$rpnb->net_bill+$rpnb->l_p_surcharge}}
-                                        @endif
+                                        @endif --}}
+                                        {{$rpnb->WithinDuedate-$rpnb->arrears}}
                                     </td>
                                     <td>
                                         {{$rpnb->pay_amount}}

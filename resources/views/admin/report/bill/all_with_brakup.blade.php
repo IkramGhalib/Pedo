@@ -135,8 +135,8 @@ a {
   </style>
   <div id="print_section"><a href="{{route('admin.report.bill.form')}}"  style="background-color:#3e8ef7;padding:5px;color:white"> &nbsp;&nbsp;Back&nbsp;&nbsp; </a> &nbsp; <a href="#" style="background-color:#3e8ef7;padding:5px;color:white" onclick="window.print();return false;" > &nbsp;&nbsp;Print&nbsp;&nbsp; </a> </div>
 <div class="header">
-<p><img src="{{asset(env('LOGO'))}}" width="100px;" height="100px;"></p>
-  <p>Bill Report</p>
+<p><img src="{{asset(env('LOGO'))}}" width="100px;" height="80px;"></p>
+  <p>Billing Total Assesment (With All Breakup)</p>
   <p style="font-size:18px !important;">{{app_month_format($fields['month'])}}</p>
 </div>
 
@@ -158,14 +158,21 @@ a {
   <tr class="headingTr">
     <td class="headingTd ">#</td>
     <td class="headingTd ">Refrence No</td>
-    <td class="headingTd ">Bill Gen Category</td>
-    {{-- <td class="headingTd ">Month </td> --}}
+    <td class="headingTd ">Tarrif</td>
+    <td class="headingTd ">Tarrif Category</td>
+    <td class="headingTd ">Units </td>
     {{-- <td class="headingTd ">PAID FROM</td> --}}
-    <td class="headingTd">c.bill</td>
-   
     <td class="headingTd">Arear</td>
-    <td class="headingTd">Amount </td>
-    <td class="headingTd">l.p.surchage</td>
+    {{-- <td class="headingTd">c.bill</td> --}}
+   @foreach ($charges_types as $ctkey => $ctrow )
+   <td class="headingTd">{{$ctrow->title}}</td>
+   @endforeach
+
+   @foreach ($tax_types as $ttkey => $ttrow )
+   <td class="headingTd">{{$ttrow->title}}</td>
+   @endforeach
+    {{-- <td class="headingTd">Amount </td> --}}
+    {{-- <td class="headingTd">l.p.surchage</td> --}}
     <td class="headingTd">Amount after Due Date </td>
   </tr>
   <?php $c=1; 
@@ -182,20 +189,27 @@ a {
   <tr>
     <td class="">{{$c}}</td>
     <td class="">{{$row->bConsumerMeter->ref_no}}</td>
+    <td class="">{{$row->tarrif_code}}</td>
     <td class="">{{$row->hOSubCategory->name}}</td>
+    <td class="">{{$row->offpeak_units}}</td>
     {{-- <td class="">{{app_month_format($row->billing_month_year)}}</td> --}}
     {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
-
-    <td class="">{{$row->net_bill}}</td>
-   
+    
     <td class="">{{$row->arrears}}</td>
-    <td class="">{{$row->WithinDuedate}}</td>
-    <td class="">{{$row->l_p_surcharge}}</td>
+    
+
+       
+
+      
+    {{-- <td class="">{{$row->net_bill}}</td> --}}
+   
+    {{-- <td class="">{{$row->WithinDuedate}}</td> --}}
+    {{-- <td class="">{{$row->l_p_surcharge}}</td> --}}
     <td class="">{{$row->AfterdueDate}}</td>
   </tr>
   <?php $c++;  $n_b_total+=$row->net_bill;$l_p_total=$row->l_p_surcharge;$a_total=$row->arrears; $wd_total=$row->WithinDuedate;  $ad_total=$row->AfterdueDate; ?>
   @endforeach
-  <tr class="headingTr">
+  {{-- <tr class="headingTr">
     <td class="headingTd " colspan="3"></td>
     <td class="headingTd  ">TOTAL</td>
     <td class="headingTd  "> <?= $n_b_total ?></td>
@@ -204,7 +218,7 @@ a {
     <td class="headingTd  "> <?= $wd_total ?></td>
     <td class="headingTd  "> <?= $l_p_total ?></td>
     <td class="headingTd  "><?= $ad_total ?></td>
-  </tr>
+  </tr> --}}
   
 </table>
 

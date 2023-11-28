@@ -66,6 +66,11 @@ class ConsumerController extends Controller
         // dd($divisions);
         return view('admin.consumer.form',compact('category','divisions','new_consumer_no','meters'));
     }
+    public function consumer_import_form()
+    {
+       
+        return view('admin.consumer.import_form');
+    }
 
     public function consumer_save(Request $request)
     {
