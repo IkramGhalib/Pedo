@@ -244,7 +244,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('consumer-lists', [ConsumerController::class, 'consumer_show'])->name('consumer.lists');
         Route::get('consumer-form', [ConsumerController::class, 'consumer_form'])->name('consumer.form');
         Route::get('consumer-import-form', [ConsumerController::class, 'consumer_import_form'])->name('consumer.import.form');
-        Route::get('consumer-import-form-process', [ConsumerController::class, 'consumer_import_form_process'])->name('consumer.import.form.process');
+        Route::post('consumer-import-form-process', [ConsumerController::class, 'consumer_import_form_process'])->name('consumer.import.form.process');
         Route::post('consumer-form', [ConsumerController::class, 'consumer_save'])->name('consumer.save');
         Route::get('consumer-form-edit/{id}', [ConsumerController::class, 'consumer_edit'])->name('consumer.edit');
         Route::post('consumer-form-update/{id}', [ConsumerController::class, 'consumer_update'])->name('consumer.update');

@@ -26,6 +26,7 @@ use URL;
 use Session;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+use Excel;
 
 
 use App\Mail\ContactInstructor;
@@ -71,9 +72,33 @@ class ConsumerController extends Controller
        
         return view('admin.consumer.import_form');
     }
-    public function consumer_import_form_process()
+    public function consumer_import_form_process(Request $request)
     {
-       pr($request->all());
+    //    pr($request->all());
+       $this->validate($request, [
+        'excel_file'  => 'required|mimes:xls,xlsx'
+       ]);
+       $theArray = Excel::toArray(new \stdClass(), $request->file('excel_file'));
+    //    dd($theArray);
+       foreach ($theArray[0] as $key => $value) {
+        if($key!=0)
+        {
+            $data=['consumers'=>$value[2],'father_name'=>$value[2],'address'=>$value[2],'consumer_code'=>$value[2],
+                    'connection_date'=>$value[2] ,
+                    'connection_date'=>$value[2] ,
+                    'connection_date'=>$value[2] ,
+                    'connection_date'=>$value[2] ,
+                ];
+           $check= DB::table('consumers')->where($data)->first();
+            if(!$check)
+            {
+
+                DB::table('consumers')->insert($data);
+            }
+        }
+        dd($value);
+       }
+    //    dd($theArray);
         // return view('admin.consumer.import_form');
     }
 

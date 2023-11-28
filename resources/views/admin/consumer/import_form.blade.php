@@ -19,7 +19,9 @@
               <div class="form-group col-md-4">
                 <label class="form-control-label">excel file</label>
                 <input required  type="file" id="excel_file" class="form-control excel_file" name="excel_file"                  />
-                <input type="hidden" id="hidden_json_object" >
+                @if ($errors->has('excel_file'))
+                <label class="error" for="excel_file">{{ $errors->first('excel_file') }}</label>
+                @endif
               </div>
         </div>
        
