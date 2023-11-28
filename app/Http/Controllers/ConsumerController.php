@@ -146,7 +146,7 @@ class ConsumerController extends Controller
             'meter_id'=>$request->meter_no,
             'connection_date'=>db_date_format($request->connection_date),
             'definition_date'=>db_date_format($request->definition_date),
-            'previous_reading'=>$request->previous_reading,
+            'previous_reading_off_peak'=>$request->previous_reading,
             'arrear'=>$request->arrear
         ] );
         
@@ -181,7 +181,7 @@ class ConsumerController extends Controller
         //     $new_consumer_no=1;
         
         $divisions=Division::where('is_active',1)->get();
-        // $meters=DB::table('meters')->where('status','free')->get();
+        $meters=DB::table('meters')->where('status','free')->get();
         
         
         $instructor=Consumer::find($id);
@@ -198,58 +198,79 @@ class ConsumerController extends Controller
         $feeders= DB::table('feeders')->where('sub_division_id',$area_data_all->sub_dev_id)->get();
 
 
-        return view('admin.consumer.edit',compact('instructor','category','divisions','sub_divisions','feeders','area_data_all'));
+        return view('admin.consumer.edit',compact('instructor','category','divisions','sub_divisions','feeders','area_data_all','meters'));
     }
 
     public function consumer_update(Request $request ,$id)
     {
+        // dd($request->all());
+        if($request->update_section && $request->update_section='meter')
+        {
+            foreach ($request->transection_id as $key => $row) {
+                $cm=ConsumerMeter::find($row);
+                // pr($cm);
+                $cm->ref_no=$request->ref_no[$key];
+                $cm->mannual_ref_no=$request->ref_no[$key];
+                $cm->meter_id=$request->meter_no[$key];
+                $cm->connection_date=$request->connection_date[$key];
+                $cm->definition_date=$request->definition_date[$key];
+                $cm->previous_reading_off_peak=$request->previous_reading[$key];
+                $cm->save();
 
-        $request->validate([
-            'consumer_type' => 'required|integer',
-            'division' => 'required|integer',
-            'sub_division' => 'required|integer',
-            'feeder' => 'required|integer',
-            'full_name' => 'required|string',
-            'father_name' => 'required|string',
-            'cnic' => 'required|string',
-            'mobile' => 'required|string',
-            'consumer_code' => 'required|string',
-            'address' => 'required|string',
-        ]);
-       
-        // pr($request->all());
-
-        DB::beginTransaction();
-        try {
-        // $division=Division::find($request->division);
-        // $subDivision=SubDivision::find($request->sub_division);
-        // $feeder=Feeder::find($request->feeder);
-
-        // $new_ref_no=$feeder->feeder_code.' '.$subDivision->sub_division_code.' '.$division->division_code.' '.$request->ref_no;
-
-        // $check_data=DB::table('consumer_meters')->where('ref_no',$new_ref_no)->first();
-        // if($check_data)
-        // return redirect()->back()->with(['error'=>'Ref No Already Exits']);
-
-        // pr($new_ref_no);
-
-        $cousumer=Consumer::find($id);
-        $cousumer->full_name=$request->full_name;
-        $cousumer->father_name=$request->father_name;
-        $cousumer->cnic=$request->cnic;
-        $cousumer->mobile=$request->mobile;
-        $cousumer->consumer_code=$request->consumer_code;
-        $cousumer->address=$request->address;
-        $cousumer->consumer_category_id=$request->consumer_type;
-        $cousumer->feeder_id=$request->feeder;
-        $cousumer->save();
-                
-                DB::commit();
                 return redirect(route('consumer.lists'))->with(['success'=>'Action Completed']); 
-        } catch (\Exception $e) {  
-            DB::rollback();
-            return redirect()->back()->with(['error'=>'Action Failed']); 
-        }  
+            }
+        }
+        else
+        {
+
+                    $request->validate([
+                        'consumer_type' => 'required|integer',
+                        'division' => 'required|integer',
+                        'sub_division' => 'required|integer',
+                        'feeder' => 'required|integer',
+                        'full_name' => 'required|string',
+                        'father_name' => 'required|string',
+                        'cnic' => 'required|string',
+                        'mobile' => 'required|string',
+                        'consumer_code' => 'required|string',
+                        'address' => 'required|string',
+                    ]);
+                
+                    // pr($request->all());
+
+                    DB::beginTransaction();
+                    try {
+                    // $division=Division::find($request->division);
+                    // $subDivision=SubDivision::find($request->sub_division);
+                    // $feeder=Feeder::find($request->feeder);
+
+                    // $new_ref_no=$feeder->feeder_code.' '.$subDivision->sub_division_code.' '.$division->division_code.' '.$request->ref_no;
+
+                    // $check_data=DB::table('consumer_meters')->where('ref_no',$new_ref_no)->first();
+                    // if($check_data)
+                    // return redirect()->back()->with(['error'=>'Ref No Already Exits']);
+
+                    // pr($new_ref_no);
+
+                    $cousumer=Consumer::find($id);
+                    $cousumer->full_name=$request->full_name;
+                    $cousumer->father_name=$request->father_name;
+                    $cousumer->cnic=$request->cnic;
+                    $cousumer->mobile=$request->mobile;
+                    $cousumer->consumer_code=$request->consumer_code;
+                    $cousumer->address=$request->address;
+                    $cousumer->consumer_category_id=$request->consumer_type;
+                    $cousumer->feeder_id=$request->feeder;
+                    $cousumer->save();
+                            
+                            DB::commit();
+                            return redirect(route('consumer.lists'))->with(['success'=>'Action Completed']); 
+                    } catch (\Exception $e) {  
+                        DB::rollback();
+                        return redirect()->back()->with(['error'=>'Action Failed']); 
+                    }  
+
+        }
 
        
     
@@ -279,172 +300,172 @@ class ConsumerController extends Controller
         
     }
 
-    public function consumerView($instructor_slug = '', Request $request)
-    {
-        $instructor = Instructor::where('instructor_slug', $instructor_slug)->first();
-        $metrics = Instructor::metrics($instructor->id);
-        return view('site.instructor_view', compact('instructor', 'metrics'));
-    }
+    // public function consumerView($instructor_slug = '', Request $request)
+    // {
+    //     $instructor = Instructor::where('instructor_slug', $instructor_slug)->first();
+    //     $metrics = Instructor::metrics($instructor->id);
+    //     return view('site.instructor_view', compact('instructor', 'metrics'));
+    // }
 
-    public function dashboard(Request $request)
-    {
-        $instructor_id = \Auth::user()->instructor->id;
-        $courses = DB::table('courses')
-                        ->select('courses.*', 'categories.name as category_name')
-                        ->leftJoin('categories', 'categories.id', '=', 'courses.category_id')
-                        ->where('courses.instructor_id', $instructor_id)
-                        ->paginate(5);
-        $metrics = Instructor::metrics($instructor_id);
-        return view('instructor.dashboard', compact('courses', 'metrics'));
-    }
+    // public function dashboard(Request $request)
+    // {
+    //     $instructor_id = \Auth::user()->instructor->id;
+    //     $courses = DB::table('courses')
+    //                     ->select('courses.*', 'categories.name as category_name')
+    //                     ->leftJoin('categories', 'categories.id', '=', 'courses.category_id')
+    //                     ->where('courses.instructor_id', $instructor_id)
+    //                     ->paginate(5);
+    //     $metrics = Instructor::metrics($instructor_id);
+    //     return view('instructor.dashboard', compact('courses', 'metrics'));
+    // }
 
-    public function contactInstructor(Request $request)
-    {
-        $instructor_email = $request->instructor_email;
-        Mail::to($instructor_email)->send(new ContactInstructor($request));
-        return $this->return_output('flash', 'success', 'Thanks for your message, will contact you shortly', 'back', '200');
-    }
-    public function becomeInstructor(Request $request)
-    {
-        if(!\Auth::check()){
-            return $this->return_output('flash', 'error', 'Please login to become an Instructor', 'back', '422');
-        }
+    // public function contactInstructor(Request $request)
+    // {
+    //     $instructor_email = $request->instructor_email;
+    //     Mail::to($instructor_email)->send(new ContactInstructor($request));
+    //     return $this->return_output('flash', 'success', 'Thanks for your message, will contact you shortly', 'back', '200');
+    // }
+    // public function becomeInstructor(Request $request)
+    // {
+    //     if(!\Auth::check()){
+    //         return $this->return_output('flash', 'error', 'Please login to become an Instructor', 'back', '422');
+    //     }
 
-        $instructor = new Instructor();
+    //     $instructor = new Instructor();
 
-        $instructor->user_id = \Auth::user()->id;
-        $instructor->first_name = $request->input('first_name');
-        $instructor->last_name = $request->input('last_name');
-        $instructor->contact_email = $request->input('contact_email');
+    //     $instructor->user_id = \Auth::user()->id;
+    //     $instructor->first_name = $request->input('first_name');
+    //     $instructor->last_name = $request->input('last_name');
+    //     $instructor->contact_email = $request->input('contact_email');
 
-        $first_name = $request->input('first_name');
-        $last_name = $request->input('last_name');
+    //     $first_name = $request->input('first_name');
+    //     $last_name = $request->input('last_name');
 
-        //create slug only while add
-        $slug = $first_name.'-'.$last_name;
-        $slug = str_slug($slug, '-');
+    //     //create slug only while add
+    //     $slug = $first_name.'-'.$last_name;
+    //     $slug = str_slug($slug, '-');
 
-        $results = DB::select(DB::raw("SELECT count(*) as total from instructors where instructor_slug REGEXP '^{$slug}(-[0-9]+)?$' "));
+    //     $results = DB::select(DB::raw("SELECT count(*) as total from instructors where instructor_slug REGEXP '^{$slug}(-[0-9]+)?$' "));
 
-        $finalSlug = ($results['0']->total > 0) ? "{$slug}-{$results['0']->total}" : $slug;
-        $instructor->instructor_slug = $finalSlug;
+    //     $finalSlug = ($results['0']->total > 0) ? "{$slug}-{$results['0']->total}" : $slug;
+    //     $instructor->instructor_slug = $finalSlug;
 
-        $instructor->telephone = $request->input('telephone');
-        $instructor->paypal_id = $request->input('paypal_id');
-        $instructor->biography = $request->input('biography');
-        $instructor->save();
+    //     $instructor->telephone = $request->input('telephone');
+    //     $instructor->paypal_id = $request->input('paypal_id');
+    //     $instructor->biography = $request->input('biography');
+    //     $instructor->save();
 
-        $user = User::find(\Auth::user()->id);
+    //     $user = User::find(\Auth::user()->id);
 
-        $role = Role::where('name', 'instructor')->first();
-        $user->roles()->attach($role);
+    //     $role = Role::where('name', 'instructor')->first();
+    //     $user->roles()->attach($role);
         
-        return redirect()->route('instructor.dashboard') ;
-    }
+    //     return redirect()->route('instructor.dashboard') ;
+    // }
 
-    public function getProfile(Request $request)
-    {
-        $instructor = Instructor::where('user_id', \Auth::user()->id)->first();
-        // echo '<pre>';print_r($instructor);exit;
-        return view('instructor.profile', compact('instructor'));
-    }
+    // public function getProfile(Request $request)
+    // {
+    //     $instructor = Instructor::where('user_id', \Auth::user()->id)->first();
+    //     // echo '<pre>';print_r($instructor);exit;
+    //     return view('instructor.profile', compact('instructor'));
+    // }
 
-    public function saveProfile(Request $request)
-    {
-        // echo '<pre>';print_r($_FILES);exit;
-        $validation_rules = [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'contact_email' => 'required|string|email|max:255',
-            'telephone' => 'required|string|max:255',
-            'paypal_id' => 'required|string|email|max:255',
-            'biography' => 'required',            
-        ];
+    // public function saveProfile(Request $request)
+    // {
+    //     // echo '<pre>';print_r($_FILES);exit;
+    //     $validation_rules = [
+    //         'first_name' => 'required|string|max:255',
+    //         'last_name' => 'required|string|max:255',
+    //         'contact_email' => 'required|string|email|max:255',
+    //         'telephone' => 'required|string|max:255',
+    //         'paypal_id' => 'required|string|email|max:255',
+    //         'biography' => 'required',            
+    //     ];
 
-        $validator = Validator::make($request->all(),$validation_rules);
+    //     $validator = Validator::make($request->all(),$validation_rules);
 
-        // Stop if validation fails
-        if ($validator->fails()) {
-            return $this->return_output('error', 'error', $validator, 'back', '422');
-        }
+    //     // Stop if validation fails
+    //     if ($validator->fails()) {
+    //         return $this->return_output('error', 'error', $validator, 'back', '422');
+    //     }
 
-        $instructor = Instructor::where('user_id', \Auth::user()->id)->first();
-        $instructor->first_name = $request->input('first_name');
-        $instructor->last_name = $request->input('last_name');
-        $instructor->contact_email = $request->input('contact_email');
+    //     $instructor = Instructor::where('user_id', \Auth::user()->id)->first();
+    //     $instructor->first_name = $request->input('first_name');
+    //     $instructor->last_name = $request->input('last_name');
+    //     $instructor->contact_email = $request->input('contact_email');
 
-        $instructor->telephone = $request->input('telephone');
-        $instructor->mobile = $request->input('mobile');
+    //     $instructor->telephone = $request->input('telephone');
+    //     $instructor->mobile = $request->input('mobile');
 
-        $instructor->link_facebook = $request->input('link_facebook');
-        $instructor->link_linkedin = $request->input('link_linkedin');
-        $instructor->link_twitter  = $request->input('link_twitter');
-        $instructor->link_googleplus = $request->input('link_googleplus');
+    //     $instructor->link_facebook = $request->input('link_facebook');
+    //     $instructor->link_linkedin = $request->input('link_linkedin');
+    //     $instructor->link_twitter  = $request->input('link_twitter');
+    //     $instructor->link_googleplus = $request->input('link_googleplus');
 
-        $instructor->paypal_id = $request->input('paypal_id');
-        $instructor->biography = $request->input('biography');
+    //     $instructor->paypal_id = $request->input('paypal_id');
+    //     $instructor->biography = $request->input('biography');
 
 
-        if (Input::hasFile('course_image') && Input::has('course_image_base64')) {
-            //delete old file
-            $old_image = $request->input('old_course_image');
-            if (Storage::exists($old_image)) {
-                Storage::delete($old_image);
-            }
+    //     if (Input::hasFile('course_image') && Input::has('course_image_base64')) {
+    //         //delete old file
+    //         $old_image = $request->input('old_course_image');
+    //         if (Storage::exists($old_image)) {
+    //             Storage::delete($old_image);
+    //         }
 
-            //get filename
-            $file_name   = $request->file('course_image')->getClientOriginalName();
+    //         //get filename
+    //         $file_name   = $request->file('course_image')->getClientOriginalName();
 
-            // returns Intervention\Image\Image
-            $image_make = Image::make($request->input('course_image_base64'))->encode('jpg');
+    //         // returns Intervention\Image\Image
+    //         $image_make = Image::make($request->input('course_image_base64'))->encode('jpg');
 
-            // create path
-            $path = "instructor/".$instructor->id;
+    //         // create path
+    //         $path = "instructor/".$instructor->id;
             
-            //check if the file name is already exists
-            $new_file_name = SiteHelpers::checkFileName($path, $file_name);
+    //         //check if the file name is already exists
+    //         $new_file_name = SiteHelpers::checkFileName($path, $file_name);
 
-            //save the image using storage
-            Storage::put($path."/".$new_file_name, $image_make->__toString(), 'public');
+    //         //save the image using storage
+    //         Storage::put($path."/".$new_file_name, $image_make->__toString(), 'public');
 
-            $instructor->instructor_image = $path."/".$new_file_name;
+    //         $instructor->instructor_image = $path."/".$new_file_name;
             
-        }
+    //     }
 
-        $instructor->save();
+    //     $instructor->save();
 
-        return $this->return_output('flash', 'success', 'Profile updated successfully', 'instructor-profile', '200');
+    //     return $this->return_output('flash', 'success', 'Profile updated successfully', 'instructor-profile', '200');
 
-    }
+    // }
 
-    public function credits(Request $request)
-    {
-        $credits = Credit::where('instructor_id', \Auth::user()->instructor->id)
-                        ->where('credits_for', 1)
-                        ->orderBy('created_at', 'desc')
-                        ->paginate(10);
+    // public function credits(Request $request)
+    // {
+    //     $credits = Credit::where('instructor_id', \Auth::user()->instructor->id)
+    //                     ->where('credits_for', 1)
+    //                     ->orderBy('created_at', 'desc')
+    //                     ->paginate(10);
 
-        return view('instructor.credits', compact('credits'));
-    }
+    //     return view('instructor.credits', compact('credits'));
+    // }
 
-    public function withdrawRequest(Request $request)
-    {
-        $withdraw_request = new WithdrawRequest();
+    // public function withdrawRequest(Request $request)
+    // {
+    //     $withdraw_request = new WithdrawRequest();
 
-        $withdraw_request->instructor_id = \Auth::user()->instructor->id;
-        $withdraw_request->paypal_id = $request->input('paypal_id');
-        $withdraw_request->amount = $request->input('amount');
-        $withdraw_request->save();
+    //     $withdraw_request->instructor_id = \Auth::user()->instructor->id;
+    //     $withdraw_request->paypal_id = $request->input('paypal_id');
+    //     $withdraw_request->amount = $request->input('amount');
+    //     $withdraw_request->save();
 
-        return $this->return_output('flash', 'success', 'Withdraw requested successfully', 'instructor-credits', '200');
-    }
+    //     return $this->return_output('flash', 'success', 'Withdraw requested successfully', 'instructor-credits', '200');
+    // }
 
-    public function listWithdrawRequests(Request $request)
-    {
-        $withdraw_requests = WithdrawRequest::where('instructor_id', \Auth::user()->instructor->id)
-                            ->paginate(10);
+    // public function listWithdrawRequests(Request $request)
+    // {
+    //     $withdraw_requests = WithdrawRequest::where('instructor_id', \Auth::user()->instructor->id)
+    //                         ->paginate(10);
 
-        return view('instructor.withdraw_requests', compact('withdraw_requests'));
-    }
+    //     return view('instructor.withdraw_requests', compact('withdraw_requests'));
+    // }
     
 }

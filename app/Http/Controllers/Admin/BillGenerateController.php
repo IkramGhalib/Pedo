@@ -438,7 +438,7 @@ class BillGenerateController extends Controller
                     // $arrear=round(ConsumerLedger::select(DB::raw('sum(amount+late_fee) AS total_amount'))->where('consumer_id',$value->consumer_id)->sum('total_amount'),2);
                     $check_arrear=DB::table('consumer_ledgers')
                     ->select(DB::raw('sum(amount+late_fee) AS total_amount'))
-                    ->where('consumer_id',$value->bConsumerMeter->consumer_id)
+                    ->where('cm_id',$value->bConsumerMeter->cm_id)
                    
                     ->first();
                     $arrear=0;

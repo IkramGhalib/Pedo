@@ -205,7 +205,7 @@ $(document).ready(function(){
             {
               // if(response.data.length>0)
               // {
-                $('.pre_reading').val(response.data.previous_reading);
+                $('.pre_reading').val(response.data.previous_reading_off_peak);
                 // $('.offpeak').val();
                 // $('.cal_units').val();
               // }

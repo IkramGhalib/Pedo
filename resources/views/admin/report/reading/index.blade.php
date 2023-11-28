@@ -154,13 +154,11 @@ a {
 
   <tr></tr>
 
-  <tr class="headingTr">
-  <td class="text-center strong" colspan="6"> Readings</td>
-  </tr>
+ 
   <tr class="headingTr">
     <td class="headingTd ">#</td>
     <td class="headingTd ">Refrence No</td>
-    <td class="headingTd ">Month </td>
+    {{-- <td class="headingTd ">Month </td> --}}
     <td class="headingTd ">Prev.Reading </td>
     <td class="headingTd ">Cur.Reading </td>
     {{-- <td class="headingTd ">PAID FROM</td> --}}
@@ -176,7 +174,7 @@ a {
   <tr>
     <td class="">{{$c}}</td>
     <td class="">{{$row->bConsumerMeter->ref_no}}</td>
-    <td class="">{{app_month_format($row->month_year)}}</td>
+    {{-- <td class="">{{app_month_format($row->month_year)}}</td> --}}
     {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
     <td >{{$row->offpeak_prev}}</td>
     <td >{{$row->offpeak}}</td>
@@ -188,7 +186,7 @@ a {
  
 
   <tr class="headingTr">
-    <td class="headingTd " colspan="4"></td>
+    <td class="headingTd " colspan="3"></td>
     <td class="headingTd  text-right">TOTAL</td>
     <td class="headingTd  text-right">
       <?= $total ?></td>

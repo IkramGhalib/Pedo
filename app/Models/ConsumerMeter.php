@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ConsumerMeter extends Model
 {
     protected $table = 'consumer_meters';
+    protected $primaryKey = 'cm_id';
     // public $timestamps=false;
     protected $guarded = array();
 

@@ -1116,36 +1116,35 @@ span
                         ->leftJoin('payment_receives', 'payment_receives.bill_id', '=', 'consumer_bills.id')
                         ->where('consumer_bills.cm_id',$bill_data->cm_id)
                         ->where('consumer_bills.id','!=',$bill_data->bill_id)
+                        ->where('consumer_bills.billing_month_year','<',$bill_data->billing_month_year)
                         ->orderBy('consumer_bills.id', 'desc')
                         ->limit(12)->get();
                       ?>
                       
                       @if($payment_and_bill)
                       
-                      @foreach ($payment_and_bill as $pabkey => $rpnb )
-                        <tr style="height: 17px" class="content">
-                                
-                            <td class="border-r">
-                                {{date('M,y',strtotime($rpnb->billing_month_year))}}
-                            </td>
-                           
-                            <td class="border-r">
-                                  {{$rpnb->offpeak_units}}
-                               
-                            </td>
-                            <td class="border-r">
-                            @if ($rpnb->is_payed_on_date)
-                                    {{$rpnb->net_bill}}
-                            @else
-                                    {{$rpnb->net_bill+$rpnb->l_p_surcharge}}
-                            @endif
-                            </td>
-                            <td>
-                                {{$rpnb->pay_amount}}
-                            </td>
-                        </tr>
-                        @endforeach
-                        @endif
+                            @foreach ($payment_and_bill as $pabkey => $rpnb )
+                                <tr style="height: 17px" class="content">
+                                        
+                                    <td class="border-r">
+                                        {{date('M,y',strtotime($rpnb->billing_month_year))}}
+                                    </td>
+                                    <td class="border-r">
+                                        {{$rpnb->offpeak_units}}
+                                    </td>
+                                    <td class="border-r">
+                                        @if ($rpnb->is_payed_on_date)
+                                                {{$rpnb->net_bill}}
+                                        @else
+                                                {{$rpnb->net_bill+$rpnb->l_p_surcharge}}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        {{$rpnb->pay_amount}}
+                                    </td>
+                                </tr>
+                            @endforeach
+                    @endif
 
                         
                        
