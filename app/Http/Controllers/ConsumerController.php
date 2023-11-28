@@ -71,6 +71,11 @@ class ConsumerController extends Controller
        
         return view('admin.consumer.import_form');
     }
+    public function consumer_import_form_process()
+    {
+       pr($request->all());
+        // return view('admin.consumer.import_form');
+    }
 
     public function consumer_save(Request $request)
     {
