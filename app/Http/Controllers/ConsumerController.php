@@ -83,20 +83,21 @@ class ConsumerController extends Controller
        try {
                 //    dd($theArray);
                 foreach ($theArray[0] as $key => $value) {
-                    if($value[2] &&  $value[3] && $value[4] && $value[11] && $value[7]) // if all row is empty
+                    // dd($value);
+                    if($value[2] && $value[4] && $value[11] && $value[7]) // if all row is empty
                     {
-                        if($key!=0 && $key!=1 )
+                        if($key!=0  )
                         {
                            $cc_date= \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value[6]);
                            $connection_date= $cc_date->format('Y-m-d');
 
 
-                           $df_date= \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value[5]);
+                           $df_date= \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value[4]);
                            $definition_date= $df_date->format('Y-m-d');
                           
                             $data=['full_name'=>$value[2],
                                     'father_name'=>$value[3],
-                                    'address'=>$value[4],
+                                    'address'=>$value[5],
                                 ];
                             $check= DB::table('consumers')->where($data)->first();
                             if(!$check)
@@ -136,14 +137,14 @@ class ConsumerController extends Controller
                                             'status'=>'assigned',
                                             ];
                                 $m_id=DB::table('meters')->insertGetId($meter);
-                                    $consumer_meter=['consumer_id'=>$value[7],
+                                    $consumer_meter=[
                                             'meter_id'=>$m_id,
                                             'ref_no'=>$value[1],
                                             'mannual_ref_no'=>$value[1],
                                             'definition_date'=>$definition_date,
                                             'connection_date'=>$connection_date,
-                                            'previous_reading_off_peak'=>$value[18],
-                                            'arrear'=>$value[17],
+                                            'previous_reading_off_peak'=>$value[19],
+                                            'arrear'=>$value[18],
                                             'consumer_id'=>$c_id
                                             ];        
                                 
