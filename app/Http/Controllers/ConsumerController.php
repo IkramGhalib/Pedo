@@ -79,25 +79,89 @@ class ConsumerController extends Controller
         'excel_file'  => 'required|mimes:xls,xlsx'
        ]);
        $theArray = Excel::toArray(new \stdClass(), $request->file('excel_file'));
-    //    dd($theArray);
-       foreach ($theArray[0] as $key => $value) {
-        if($key!=0)
-        {
-            $data=['consumers'=>$value[2],'father_name'=>$value[2],'address'=>$value[2],'consumer_code'=>$value[2],
-                    'connection_date'=>$value[2] ,
-                    'connection_date'=>$value[2] ,
-                    'connection_date'=>$value[2] ,
-                    'connection_date'=>$value[2] ,
-                ];
-           $check= DB::table('consumers')->where($data)->first();
-            if(!$check)
-            {
+       DB::beginTransaction();
+       try {
+                //    dd($theArray);
+                foreach ($theArray[0] as $key => $value) {
+                    if($value[2] &&  $value[3] && $value[4] && $value[11] && $value[7]) // if all row is empty
+                    {
+                        if($key!=0 && $key!=1 )
+                        {
+                           $cc_date= \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value[6]);
+                           $connection_date= $cc_date->format('Y-m-d');
 
-                DB::table('consumers')->insert($data);
-            }
-        }
-        dd($value);
-       }
+
+                           $df_date= \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value[5]);
+                           $definition_date= $df_date->format('Y-m-d');
+                          
+                            $data=['full_name'=>$value[2],
+                                    'father_name'=>$value[3],
+                                    'address'=>$value[4],
+                                ];
+                            $check= DB::table('consumers')->where($data)->first();
+                            if(!$check)
+                            {
+                                //get feeder id first here 
+                                $feeder=['name'=>$value[11],
+                                        'feeder_code'=>$value[10],
+                                        ];
+                                        // dd($feeder);
+                                $feeder_data=Feeder::where($feeder)->first();
+                                if(!$feeder_data)
+                                {
+                                    DB::rollback();
+                                    return redirect()->back()->with(['error'=>'Failed. Feeder Data not found']); 
+                                }
+
+                                //consumer category checking        
+                                $cc=['tarrif_code'=>$value[13]];
+                                $cc_data=ConsumerCategory::where($cc)->first();
+                                if(!$cc_data)
+                                {
+                                    DB::rollback();
+                                    return redirect()->back()->with(['error'=>'Failed. Consumer Category Data not found']); 
+                                }
+                                //consumer entry code 
+                                $consumer=['full_name'=>$value[2],
+                                            'father_name'=>$value[3],
+                                            'address'=>$value[4],
+                                            'consumer_code'=>$value[0],
+                                            'connection_date'=>$connection_date ,
+                                            'consumer_category_id'=>$cc_data->id,
+                                            'feeder_id'=>$feeder_data->id
+                                            ];
+                                $c_id=DB::table('consumers')->insertGetId($consumer);
+
+                                    $meter=['meter_no'=>$value[7],
+                                            'status'=>'assigned',
+                                            ];
+                                $m_id=DB::table('meters')->insertGetId($meter);
+                                    $consumer_meter=['consumer_id'=>$value[7],
+                                            'meter_id'=>$m_id,
+                                            'ref_no'=>$value[1],
+                                            'mannual_ref_no'=>$value[1],
+                                            'definition_date'=>$definition_date,
+                                            'connection_date'=>$connection_date,
+                                            'previous_reading_off_peak'=>$value[18],
+                                            'arrear'=>$value[17],
+                                            'consumer_id'=>$c_id
+                                            ];        
+                                
+                                    
+                                $cm_id=DB::table('consumer_meters')->insertGetId($consumer_meter);
+                            }
+                        }
+                    }    
+                    // dd($value);
+                }
+
+            DB::commit();
+            return redirect()->back()->with(['success'=>'Action Completed']); 
+        } catch (\Exception $e) {  
+        // dd($e->getMessage());
+        DB::rollback();
+        return redirect()->back()->with(['error'=>'Action Failed '.$e->getMessage()]); 
+        }  
     //    dd($theArray);
         // return view('admin.consumer.import_form');
     }
