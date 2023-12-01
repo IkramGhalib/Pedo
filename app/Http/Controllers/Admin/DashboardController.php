@@ -44,6 +44,10 @@ class DashboardController extends Controller
      */
     public function __invoke()
     {
+        $users=DB::table('users')->get()->count();
+        $consumer=DB::table('consumers')->get()->count();
+        $peding_bills=DB::table('consumer_bills')->where('IsPayed',0)->get()->count();
+        
         // $courses = DB::table('courses')
         //                 ->select('courses.*', 'categories.name as category_name', 'instructors.first_name as instructor_name')
         //                 ->leftJoin('categories', 'categories.id', '=', 'courses.category_id')

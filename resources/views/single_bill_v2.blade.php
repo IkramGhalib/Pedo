@@ -399,11 +399,7 @@
                                
                             </td>
                             <td class="border-r">
-                            @if ($loop->last)
-                                    {{$rpnb->WithinDuedate}}
-                            @else
-                                     {{$rpnb->consider_amount}}
-                            @endif
+                                {{$rpnb->WithinDuedate-$rpnb->arrears}}
                             </td>
                             <td>
                                 {{$rpnb->pay_amount}}

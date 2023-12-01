@@ -142,7 +142,7 @@
             </div>
             <div class="col-lg-2 col-md-4 col-sm-4 mt-3 d-none d-sm-block">
                 <ul>
-                    <li class="mb-1"><b>Top Categories</b></li>
+                    {{-- <li class="mb-1"><b>Top Categories</b></li> --}}
                     {{--
                     @foreach ($categories as $category)
                         @if($loop->iteration <= 4)

@@ -196,7 +196,7 @@ a {
   <?php $c++;  $n_b_total+=$row->net_bill;$l_p_total=$row->l_p_surcharge;$a_total=$row->arrears; $wd_total=$row->WithinDuedate;  $ad_total=$row->AfterdueDate; ?>
   @endforeach
   <tr class="headingTr">
-    <td class="headingTd " colspan="3"></td>
+    <td class="headingTd " colspan="2"></td>
     <td class="headingTd  ">TOTAL</td>
     <td class="headingTd  "> <?= $n_b_total ?></td>
    
