@@ -78,14 +78,14 @@
             </div>
             <div class="heading">
                 <h1 style="margin: 10px 10px 10px 35px" >
-                PAKHTUNKHWA ENERGY DEVELOPERMENT ORGANIZATION
+                PAKHTUNKHWA ENERGY DEVELOPMENT ORGANIZATION
                     <span style="color: #1a75ff; float: right;">
-                        PESCO GST No.<br>21-00-2716-001-46<br>
+                         GST No.<br>21-00-2716-001-46<br>
                     </span>
                 </h1>
                 <div>
                     <b style="color: #1a75ff;">YOUR BETTER SERVICE - OUR PRIDE</b>
-                    <b style="float: right; margin-right: 10px;"><a style="text-decoration: none; color: #1a75ff;" href="{{env('APP_URL')}}">{{env('APP_URL')}}</a></b>
+                    <b style="float: right; margin-right: 10px;"><a style="text-decoration: none; color: #1a75ff;" href="{{env('APP_URL')}}">pedokp.gov.pk</a></b>
                     <b style="color: #1a75ff; float: right; margin-right: 60px">
                         ELECTRICITY CONSUMER BILL</b>
                 </div>
@@ -847,14 +847,14 @@
                 <div style="height: 100%; width: 100px; float: left; display: inline-block; margin: 15px 0 0 15px">
                     <img style="margin: auto; max-width: 100%; max-height: 100%;" src="{{asset('frontend/img/learning.png')}}" alt="PEDO" id="Img1">
                                                     <span><b>
-                                    www.pedo.com.pk</b></span>
+                                                        pedokp.gov.pk</b></span>
                 </div>
                 <div style="width: 670px; display: inline-block">
                     <table style="width: 100%; text-align: right;">
                         <tbody><tr>
                             <td colspan="3">
                                 <h2 style="float: left; font-weight: 800; margin-left: 0px; margin-bottom: 0px;">
-                                PAKHTUNKHWA ENERGY DEVELOPERMENT ORGANIZATION
+                                PAKHTUNKHWA ENERGY DEVELOPMENT ORGANIZATION
                                 <BR/>
                                     
                                     ELECTRICITY CONSUMER BILL

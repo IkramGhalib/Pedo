@@ -159,6 +159,7 @@ class ReportController extends Controller
             // ->where('consumer_bills.id',$bill_id)
             ->where('consumer_bills.billing_month_year',$request->month.'-01')
             ->orderBy('consumer_bills.id', 'desc')
+            ->limit(1)
             ->get();
 
             // $payment_and_bill = DB::table('consumer_bills')

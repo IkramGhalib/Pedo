@@ -47,7 +47,7 @@ class DashboardController extends Controller
         $users=DB::table('users')->get()->count();
         $consumer=DB::table('consumers')->get()->count();
         $peding_bills=DB::table('consumer_bills')->where('IsPayed',0)->get()->count();
-        
+
         // $courses = DB::table('courses')
         //                 ->select('courses.*', 'categories.name as category_name', 'instructors.first_name as instructor_name')
         //                 ->leftJoin('categories', 'categories.id', '=', 'courses.category_id')
@@ -55,7 +55,7 @@ class DashboardController extends Controller
         //                 ->paginate(5);
         // $metrics = Instructor::admin_metrics();
         // return view('admin.dashboard.index', compact('courses', 'metrics'));
-        return view('admin.dashboard.index',);
+        return view('admin.dashboard.index',compact('users','consumer','peding_bills'));
     }
 
     public function withdrawRequests(Request $request, $user_id='')
