@@ -135,6 +135,7 @@ class ReportController extends Controller
 
         else if($request->condition=='design')
         {
+            
             // $record=ConsumerBill::with('hOSubCategory')->where('billing_month_year',$request->month.'-01');
             // // dd($record->get());
             // if($request->start_refrence )
@@ -159,8 +160,13 @@ class ReportController extends Controller
             // ->where('consumer_bills.id',$bill_id)
             ->where('consumer_bills.billing_month_year',$request->month.'-01')
             ->orderBy('consumer_bills.id', 'desc')
-            ->limit(1)
+            // ->limit(1)
             ->get();
+
+            // if($request->start_refrence )
+            //         $record=$q->where('ref_no','>=',$request->start_refrence);
+            //     if($request->end_refrence )
+            //         $record=$q->where('ref_no','<=',$request->end_refrence);
 
             // $payment_and_bill = DB::table('consumer_bills')
             // ->select('consumer_bills.*','payment_receives.payment_amount as pay_amount')

@@ -29,10 +29,10 @@
 
             <div class="form-group col-md-4">
               <label class="form-control-label">Mannual Refrence No</label>
-              <input required type="text" class="form-control" name="mannual_ref_no" value="{{old('mannual_ref_no')}}"
+              <input required type="text" class="form-control" name="ref_no" value="{{old('ref_no')}}"
                 />
-                @if ($errors->has('mannual_ref_no'))
-                    <label class="error" for="mannual_ref_no">{{ $errors->first('mannual_ref_no') }}</label>
+                @if ($errors->has('ref_no'))
+                    <label class="error" for="ref_no">{{ $errors->first('ref_no') }}</label>
                 @endif
             </div>
       </div>

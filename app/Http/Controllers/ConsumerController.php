@@ -180,7 +180,7 @@ class ConsumerController extends Controller
             // 'cnic' => 'required|string|unique:consumers',
             'mobile' => 'required|string',
             'consumer_code' => 'required|string',
-            'mannual_ref_no' => 'required|unique:consumer_meters',
+            'ref_no' => 'required|unique:consumer_meters',
             'address' => 'required|string',
             'connection_date' => 'required|string',
             'meter_no' => 'required',
@@ -199,7 +199,7 @@ class ConsumerController extends Controller
         $feeder=Feeder::find($request->feeder);
 
         // $new_ref_no=$division->division_code.$subDivision->sub_division_code.$feeder->feeder_code.$request->mannual_ref_no;
-        $new_ref_no=  sprintf('%08d', $request->mannual_ref_no);
+        $new_ref_no=  sprintf('%08d', $request->ref_no);
       
 
         $check_data=DB::table('consumer_meters')->where('mannual_ref_no',$new_ref_no)->first();
@@ -239,8 +239,8 @@ class ConsumerController extends Controller
        
         DB::table('consumer_meters')->insert(
         [
-            'mannual_ref_no'=>$new_ref_no,
-            'ref_no'=>(int)$new_ref_no,
+            'mannual_ref_no'=>(int)$new_ref_no,
+            'ref_no'=>$new_ref_no,
             // $cm->ref_no=(int)$request->mannual_ref_no[$key];
             // $cm->mannual_ref_no=$request->mannual_ref_no[$key];
             'consumer_id'=>$cousumer->id,
@@ -310,8 +310,9 @@ class ConsumerController extends Controller
             foreach ($request->transection_id as $key => $row) {
                 $cm=ConsumerMeter::find($row);
                
-                $cm->ref_no=(int)$request->mannual_ref_no[$key];
-                $cm->mannual_ref_no=$request->mannual_ref_no[$key];
+                // $cm->ref_no=$request->ref_no[$key];
+                $cm->ref_no=sprintf('%08d', $request->ref_no[$key]);
+                $cm->mannual_ref_no=(int)$request->ref_no[$key];
                 // $cm->mannual_ref_no= sprintf('%08d', $request->mannual_ref_no[$key]);
                 $cm->meter_id=$request->meter_no[$key];
                 $cm->connection_date=$request->connection_date[$key];
