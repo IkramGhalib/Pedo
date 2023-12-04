@@ -54,11 +54,15 @@ class ReceivePaymentController extends Controller
         $paginate_count = 5000;
         if($request->has('search')){
             $search = $request->input('search');
-            $list = PaymentReceive::where('ref_no', 'LIKE', '%' . $search . '%')
+            $list = PaymentReceive::with(['bConsumerMeter'=>function($q) use ($search){
+                    $record=$q->where('ref_no', 'LIKE', '%' . $search . '%');
+              
+            }])
                            ->paginate($paginate_count);
+                          
         }
         else {
-            $list = PaymentReceive::paginate($paginate_count);
+            $list = PaymentReceive::with('bConsumerMeter')->paginate($paginate_count);
         }
         // $list =PaymentReceive::orderBy('id')->paginate($paginate_count);
         return view('admin.receive_payment.index', compact('list'));
@@ -122,18 +126,20 @@ class ReceivePaymentController extends Controller
             // 'amount' =>Rule::when($request->peak != null, 'required')
         ]);
         
+      
         if ($validator->fails()) return error('Validation Error.', $validator->errors(), 422);
         
         //    $payment_month=explode('-',$request->month_year);
         // pr($request->all());
        $payment_month=date('Y-m-d',strtotime($request->payment_month));
     //    pr($payment_month);
-        $data=PaymentReceive::with(['bConsumerMeter'=>function($q) use($request){
+        $data=PaymentReceive::whereHas('bConsumerMeter',function($q) use($request){
             $q->where('ref_no',$request->ref_no);
-        }])->where('payment_month',$payment_month)->first();
-        $bill_data=ConsumerBill::with(['bConsumerMeter'=>function($q) use($request){
+        })->where('payment_month',$payment_month)->first();
+   
+        $bill_data=ConsumerBill::whereHas('bConsumerMeter',function($q) use($request){
             $q->where('ref_no',$request->ref_no);
-        }])->where('billing_month_year',$payment_month)->first();
+        })->where('billing_month_year',$payment_month)->first();
         if(!$bill_data)
        {
         return response()->json(['success'=>'false','message'=>'Bill Not Found']);

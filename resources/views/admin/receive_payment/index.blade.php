@@ -51,7 +51,7 @@
               @foreach($list as $key=>$i)
               <tr>
                 <td>{{ $key+1}}</td>
-                <td>{{ $i->ref_no}}</td>
+                <td>{{ $i->bConsumerMeter->ref_no}}</td>
                 <td>{{ app_month_format($i->payment_month) }} </td>
                 <td>{{ $i->payment_date}}</td>
                 <td>{{ $i->payment_amount}}</td>

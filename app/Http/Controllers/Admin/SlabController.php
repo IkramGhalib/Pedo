@@ -69,7 +69,7 @@ class SlabController extends Controller
     {
         $record=Slab::find($id);
         $parant_record_l2=ConsumerSubCategory::find($record->sub_cat_id);
-        $parant_record_l1=ConsumerCategory::find($record->sub_cat_id);
+        $parant_record_l1=ConsumerCategory::find($parant_record_l2->consumer_category_id);
 
         // $courses = Course::all();
         return view('admin.slab.edit',compact('record','parant_record_l1','parant_record_l2'));
