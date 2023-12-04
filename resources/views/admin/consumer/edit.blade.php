@@ -75,7 +75,7 @@
     
                       <div class="form-group col-md-4">
                         <label class="form-control-label">CNIC</label>
-                        <input required type="text" class="form-control" name="cnic" value="{{($instructor->cnic) ? $instructor->cnic : old('cnic')}}"
+                        <input  type="text" class="form-control" name="cnic" value="{{($instructor->cnic) ? $instructor->cnic : old('cnic')}}"
                         />
                           @if ($errors->has('cnic'))
                               <label class="error" for="cnic">{{ $errors->first('cnic') }}</label>
@@ -251,10 +251,10 @@
 
                     <div class="form-group col-md-2">
                       <label class="form-control-label"> Ref No (Meter {{$mkey+1}})</label>
-                      <input type="number"  class="form-control " name="ref_no[]"  value="{{ $mrow->ref_no}}" required>
+                      <input type="text"  class="form-control " name="mannual_ref_no[]"  value="{{ $mrow->mannual_ref_no}}" required>
                       
-                      @if ($errors->has('ref_no'))
-                      <label class="error" for="ref_no">{{ $errors->first('ref_no') }}</label>
+                      @if ($errors->has('mannual_ref_no'))
+                      <label class="error" for="mannual_ref_no">{{ $errors->first('mannual_ref_no') }}</label>
                       @endif
                       
                       

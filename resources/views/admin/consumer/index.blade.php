@@ -62,7 +62,7 @@
                    
                     @foreach($instructor->meters as $key => $row)
                     {{ 'Meter#'.$row->meter->meter_no}}
-                    {{ 'Ref:'.$row->ref_no}}
+                    {{ 'Ref:'.$row->mannual_ref_no}}
                     <br>
 
                     @endforeach   
@@ -70,7 +70,7 @@
                     {{--
                       @endif
                     @if($instructor->meters) {{$instructor->meters->meter->meter_no}} 
-                      @if($instructor->meters){{ $instructor->meters->ref_no}} @endif
+                      @if($instructor->meters){{ $instructor->meters->mannual_ref_no}} @endif
                       --}}
                 </td>
 

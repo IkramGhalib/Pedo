@@ -59,7 +59,7 @@
 
               <div class="form-group col-md-4">
                 <label class="form-control-label">CNIC</label>
-                <input required type="text" class="form-control" name="cnic" value="{{old('cnic')}}"
+                <input  type="text" class="form-control" name="cnic" value="{{old('cnic')}}"
                  />
                   @if ($errors->has('cnic'))
                       <label class="error" for="cnic">{{ $errors->first('cnic') }}</label>

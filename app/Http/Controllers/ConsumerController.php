@@ -177,10 +177,10 @@ class ConsumerController extends Controller
             'feeder' => 'required|integer',
             'full_name' => 'required|string',
             'father_name' => 'required|string',
-            'cnic' => 'required|string|unique:consumers',
+            // 'cnic' => 'required|string|unique:consumers',
             'mobile' => 'required|string',
             'consumer_code' => 'required|string',
-            'mannual_ref_no' => 'required|integer|unique:consumer_meters',
+            'mannual_ref_no' => 'required|unique:consumer_meters',
             'address' => 'required|string',
             'connection_date' => 'required|string',
             'meter_no' => 'required',
@@ -202,7 +202,7 @@ class ConsumerController extends Controller
         $new_ref_no=  sprintf('%08d', $request->mannual_ref_no);
       
 
-        $check_data=DB::table('consumer_meters')->where('ref_no',$new_ref_no)->first();
+        $check_data=DB::table('consumer_meters')->where('mannual_ref_no',$new_ref_no)->first();
         if($check_data)
         return redirect()->back()->with(['error'=>'Ref No Already Exits']);
 
@@ -239,9 +239,10 @@ class ConsumerController extends Controller
        
         DB::table('consumer_meters')->insert(
         [
-            'mannual_ref_no'=>$new_ref_no
-            ,
-            'ref_no'=>$new_ref_no,
+            'mannual_ref_no'=>$new_ref_no,
+            'ref_no'=>(int)$new_ref_no,
+            // $cm->ref_no=(int)$request->mannual_ref_no[$key];
+            // $cm->mannual_ref_no=$request->mannual_ref_no[$key];
             'consumer_id'=>$cousumer->id,
             'meter_id'=>$request->meter_no,
             'connection_date'=>db_date_format($request->connection_date),
@@ -308,14 +309,18 @@ class ConsumerController extends Controller
         {
             foreach ($request->transection_id as $key => $row) {
                 $cm=ConsumerMeter::find($row);
-                // pr($cm);
-                $cm->ref_no=$request->ref_no[$key];
-                $cm->mannual_ref_no=$request->ref_no[$key];
+               
+                $cm->ref_no=(int)$request->mannual_ref_no[$key];
+                $cm->mannual_ref_no=$request->mannual_ref_no[$key];
+                // $cm->mannual_ref_no= sprintf('%08d', $request->mannual_ref_no[$key]);
                 $cm->meter_id=$request->meter_no[$key];
                 $cm->connection_date=$request->connection_date[$key];
                 $cm->definition_date=$request->definition_date[$key];
                 $cm->previous_reading_off_peak=$request->previous_reading[$key];
                 $cm->save();
+                // pr($cm);
+
+
 
                 return redirect(route('consumer.lists'))->with(['success'=>'Action Completed']); 
             }
@@ -330,7 +335,7 @@ class ConsumerController extends Controller
                         'feeder' => 'required|integer',
                         'full_name' => 'required|string',
                         'father_name' => 'required|string',
-                        'cnic' => 'required|string',
+                        // 'cnic' => 'required|string',
                         'mobile' => 'required|string',
                         'consumer_code' => 'required|string',
                         'address' => 'required|string',
