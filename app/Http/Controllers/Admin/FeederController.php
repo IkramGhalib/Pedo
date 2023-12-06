@@ -58,6 +58,7 @@ class FeederController extends Controller
     public function edit($id)
     {
         $record=SubDivision::find($id);
+        dd($record);
         $parant_record=Division::find($record->division_id);
 
         // $courses = Course::all();

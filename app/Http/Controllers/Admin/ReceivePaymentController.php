@@ -52,17 +52,24 @@ class ReceivePaymentController extends Controller
     public function show(Request $request)
     {
         $paginate_count = 5000;
+        $bill_payment_month=DB::table('bill_generates')->orderBy('id','desc')->first();
         if($request->has('search')){
             $search = $request->input('search');
             $list = PaymentReceive::with(['bConsumerMeter'=>function($q) use ($search){
                     $record=$q->where('ref_no', 'LIKE', '%' . $search . '%');
               
-            }])
-                           ->paginate($paginate_count);
+            }]);
+            if($bill_payment_month)
+            $list=$list->where('payment_month',$bill_payment_month->month_year);
+            $list=$list->paginate($paginate_count);
+            
                           
         }
         else {
-            $list = PaymentReceive::with('bConsumerMeter')->paginate($paginate_count);
+            $list = PaymentReceive::with('bConsumerMeter');
+            if($bill_payment_month)
+            $list=$list->where('payment_month',$bill_payment_month->month_year);
+            $list=$list->paginate($paginate_count);
         }
         // $list =PaymentReceive::orderBy('id')->paginate($paginate_count);
         return view('admin.receive_payment.index', compact('list'));

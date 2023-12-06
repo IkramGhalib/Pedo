@@ -916,7 +916,7 @@ span
                 </tr>
                 <tr style="height: 27px;" class="fontsize content">
                     <td class="border-r" style="text-align: center;">
-                    {{$ref_no}}  R
+                    {{$ref_no}}  
                         
                     </td>
                     <td class="border-r ">
@@ -1138,7 +1138,7 @@ span
                                         @else
                                                 {{$rpnb->net_bill+$rpnb->l_p_surcharge}}
                                         @endif --}}
-                                        {{$rpnb->WithinDuedate-$rpnb->arrears}}
+                                        {{$rpnb->WithinDuedate}}
                                     </td>
                                     <td>
                                         {{$rpnb->pay_amount}}
@@ -1227,12 +1227,12 @@ span
                     <td class="border-r" colspan="2">
                         <h3>BILL CALCULATION</h3>
                     </td>
-                    <td class="border-rb" style="background-color: #FFB2B2;" rowspan="3">
+                    {{-- <td class="border-rb" style="background-color: #FFB2B2;" rowspan="3">
                         
                         
                         
-                    </td>
-                    <td class="border-rb content" rowspan="3">
+                    </td> --}}
+                    {{-- <td class="border-rb content" rowspan="3">
                         
                         
                         <br>
@@ -1250,17 +1250,18 @@ span
                         &ensp;&ensp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                         
-                    </td>
+                    </td> --}}
                 </tr>
                 <tr class="border-b fontsize" style="height: 24px;">
                     <td class="border-rb" colspan="2" rowspan="3">
                         <table style="width: 100%;">
                             
-                            <tbody><tr>
+                            <tbody>
+                                <tr>
                                 <td>GOP Tariff &nbsp; &nbsp; x  &nbsp;&nbsp; Units
                                 </td>
-                                <td></td>
-                                <td></td>
+                                {{-- <td></td> --}}
+                                {{-- <td></td> --}}
                             </tr>
                             <tr class="content">
                                 <td>
@@ -1269,22 +1270,26 @@ span
                                     @endforeach
                                 </td>
                             </tr>
-                            <tr style="font-size: 14pt" class="content display-none">
+                            {{-- <tr style="font-size: 14pt" class="content display-none">
                                 <td>
                                    
                                 </td>
-                            </tr>
-                        </tbody></table>
+                            </tr> --}}
+                        </tbody>
+                    </table>
 
                         
                     </td>
                 </tr>
+                {{--
                 <tr style="height: 24px;" class="fontsize">
                 </tr>
                 <tr style="height: 24px;" class="fontsize">
                     <td class="border-rb" style="background-color: #FFB2B2;"></td>
                     <td class="border-rb content"></td>
                 </tr>
+                
+                
                 <tr style="height: 32px;" class="fontsize">
                     <td class="border-rb" rowspan="2" colspan="1">
                         <table class="display-none" id="impExpt" style="width: 115pt;">
@@ -1341,7 +1346,7 @@ span
                     {{$gov_total}}
                     </td>
                 </tr>
-                <tr style="height: 32px;" class="fontsize">
+                 <tr style="height: 32px;" class="fontsize">
                     <td class="border-rb" style="background-color: yellow;">
                         <b>DEFFERRED AMOUNT</b>
 
@@ -1350,21 +1355,23 @@ span
                         
                             
                     </td>
-                </tr>
-                <tr style="height: 32px;" class="fontsize">
-                    <td class="border-rb content" colspan="2">
+                </tr> --}}
+                {{--<tr style="height: 32px;" class="fontsize">
+                     <td class="border-rb content" colspan="2">
                         Fuel Price Adjustment for Jul-23 @  1.4630/KWH
                         
 
                         
-                    </td>
+                    </td> 
                     <td class="border-rb" style="background-color: yellow;">
                         <b>OUTSTANDING INST. AMOUNT</b>
                     </td>
                     <td class="border-rb content" style="text-align: center">
                         
                     </td>
+                    
                 </tr>
+                
                 <tr style="height: 24px;" class="fontsize">
                     <td class="border-rb" style="background-color: #efeff5;">
                         <b>PROG. GST PAID F-Y</b>
@@ -1379,6 +1386,7 @@ span
                         
                     </td>
                 </tr>
+                --}}
             </tbody></table>
 
             <!-- total charges table section -->
@@ -1636,10 +1644,10 @@ span
             <div style="float: right; margin-right: 206px; height: 70px; margin-bottom: 15px;">
                 
                 
-                    <svg id="normal_bill_barcode" width="331px" height="60px" x="0px" y="0px" viewBox="0 0 331 60" xmlns="http://www.w3.org/2000/svg" version="1.1" style="transform: translate(0,0)"><rect x="0" y="0" width="331" height="60" style="fill:#ffffff;"></rect><g transform="translate(5, 5)" style="fill:#000000;"><rect x="0" y="0" width="2" height="50"></rect><rect x="3" y="0" width="1" height="50"></rect><rect x="6" y="0" width="1" height="50"></rect><rect x="11" y="0" width="1" height="50"></rect><rect x="15" y="0" width="2" height="50"></rect><rect x="18" y="0" width="1" height="50"></rect><rect x="22" y="0" width="1" height="50"></rect><rect x="25" y="0" width="3" height="50"></rect><rect x="29" y="0" width="2" height="50"></rect><rect x="33" y="0" width="1" height="50"></rect><rect x="35" y="0" width="3" height="50"></rect><rect x="39" y="0" width="4" height="50"></rect><rect x="44" y="0" width="1" height="50"></rect><rect x="47" y="0" width="1" height="50"></rect><rect x="50" y="0" width="4" height="50"></rect><rect x="55" y="0" width="2" height="50"></rect><rect x="59" y="0" width="1" height="50"></rect><rect x="64" y="0" width="1" height="50"></rect><rect x="66" y="0" width="1" height="50"></rect><rect x="68" y="0" width="2" height="50"></rect><rect x="71" y="0" width="3" height="50"></rect><rect x="77" y="0" width="1" height="50"></rect><rect x="80" y="0" width="1" height="50"></rect><rect x="83" y="0" width="2" height="50"></rect><rect x="88" y="0" width="4" height="50"></rect><rect x="93" y="0" width="2" height="50"></rect><rect x="96" y="0" width="2" height="50"></rect><rect x="99" y="0" width="2" height="50"></rect><rect x="102" y="0" width="4" height="50"></rect><rect x="107" y="0" width="2" height="50"></rect><rect x="110" y="0" width="2" height="50"></rect><rect x="115" y="0" width="1" height="50"></rect><rect x="117" y="0" width="1" height="50"></rect><rect x="121" y="0" width="1" height="50"></rect><rect x="123" y="0" width="1" height="50"></rect><rect x="125" y="0" width="4" height="50"></rect><rect x="132" y="0" width="2" height="50"></rect><rect x="137" y="0" width="2" height="50"></rect><rect x="140" y="0" width="2" height="50"></rect><rect x="143" y="0" width="1" height="50"></rect><rect x="145" y="0" width="2" height="50"></rect><rect x="151" y="0" width="1" height="50"></rect><rect x="154" y="0" width="1" height="50"></rect><rect x="156" y="0" width="1" height="50"></rect><rect x="158" y="0" width="4" height="50"></rect><rect x="165" y="0" width="2" height="50"></rect><rect x="168" y="0" width="2" height="50"></rect><rect x="171" y="0" width="2" height="50"></rect><rect x="176" y="0" width="2" height="50"></rect><rect x="179" y="0" width="2" height="50"></rect><rect x="183" y="0" width="2" height="50"></rect><rect x="187" y="0" width="2" height="50"></rect><rect x="190" y="0" width="2" height="50"></rect><rect x="194" y="0" width="2" height="50"></rect><rect x="198" y="0" width="4" height="50"></rect><rect x="203" y="0" width="2" height="50"></rect><rect x="206" y="0" width="2" height="50"></rect><rect x="209" y="0" width="2" height="50"></rect><rect x="214" y="0" width="2" height="50"></rect><rect x="217" y="0" width="2" height="50"></rect><rect x="220" y="0" width="2" height="50"></rect><rect x="223" y="0" width="2" height="50"></rect><rect x="227" y="0" width="2" height="50"></rect><rect x="231" y="0" width="2" height="50"></rect><rect x="234" y="0" width="2" height="50"></rect><rect x="238" y="0" width="2" height="50"></rect><rect x="242" y="0" width="2" height="50"></rect><rect x="246" y="0" width="1" height="50"></rect><rect x="249" y="0" width="1" height="50"></rect><rect x="253" y="0" width="1" height="50"></rect><rect x="256" y="0" width="4" height="50"></rect><rect x="262" y="0" width="1" height="50"></rect><rect x="264" y="0" width="3" height="50"></rect><rect x="269" y="0" width="1" height="50"></rect><rect x="272" y="0" width="2" height="50"></rect><rect x="275" y="0" width="3" height="50"></rect><rect x="279" y="0" width="1" height="50"></rect><rect x="281" y="0" width="4" height="50"></rect><rect x="286" y="0" width="1" height="50"></rect><rect x="290" y="0" width="2" height="50"></rect><rect x="293" y="0" width="1" height="50"></rect><rect x="297" y="0" width="1" height="50"></rect><rect x="300" y="0" width="2" height="50"></rect><rect x="304" y="0" width="1" height="50"></rect><rect x="308" y="0" width="2" height="50"></rect><rect x="313" y="0" width="3" height="50"></rect><rect x="317" y="0" width="1" height="50"></rect><rect x="319" y="0" width="2" height="50"></rect></g></svg>
+                    {{-- <svg id="normal_bill_barcode" width="331px" height="60px" x="0px" y="0px" viewBox="0 0 331 60" xmlns="http://www.w3.org/2000/svg" version="1.1" style="transform: translate(0,0)"><rect x="0" y="0" width="331" height="60" style="fill:#ffffff;"></rect><g transform="translate(5, 5)" style="fill:#000000;"><rect x="0" y="0" width="2" height="50"></rect><rect x="3" y="0" width="1" height="50"></rect><rect x="6" y="0" width="1" height="50"></rect><rect x="11" y="0" width="1" height="50"></rect><rect x="15" y="0" width="2" height="50"></rect><rect x="18" y="0" width="1" height="50"></rect><rect x="22" y="0" width="1" height="50"></rect><rect x="25" y="0" width="3" height="50"></rect><rect x="29" y="0" width="2" height="50"></rect><rect x="33" y="0" width="1" height="50"></rect><rect x="35" y="0" width="3" height="50"></rect><rect x="39" y="0" width="4" height="50"></rect><rect x="44" y="0" width="1" height="50"></rect><rect x="47" y="0" width="1" height="50"></rect><rect x="50" y="0" width="4" height="50"></rect><rect x="55" y="0" width="2" height="50"></rect><rect x="59" y="0" width="1" height="50"></rect><rect x="64" y="0" width="1" height="50"></rect><rect x="66" y="0" width="1" height="50"></rect><rect x="68" y="0" width="2" height="50"></rect><rect x="71" y="0" width="3" height="50"></rect><rect x="77" y="0" width="1" height="50"></rect><rect x="80" y="0" width="1" height="50"></rect><rect x="83" y="0" width="2" height="50"></rect><rect x="88" y="0" width="4" height="50"></rect><rect x="93" y="0" width="2" height="50"></rect><rect x="96" y="0" width="2" height="50"></rect><rect x="99" y="0" width="2" height="50"></rect><rect x="102" y="0" width="4" height="50"></rect><rect x="107" y="0" width="2" height="50"></rect><rect x="110" y="0" width="2" height="50"></rect><rect x="115" y="0" width="1" height="50"></rect><rect x="117" y="0" width="1" height="50"></rect><rect x="121" y="0" width="1" height="50"></rect><rect x="123" y="0" width="1" height="50"></rect><rect x="125" y="0" width="4" height="50"></rect><rect x="132" y="0" width="2" height="50"></rect><rect x="137" y="0" width="2" height="50"></rect><rect x="140" y="0" width="2" height="50"></rect><rect x="143" y="0" width="1" height="50"></rect><rect x="145" y="0" width="2" height="50"></rect><rect x="151" y="0" width="1" height="50"></rect><rect x="154" y="0" width="1" height="50"></rect><rect x="156" y="0" width="1" height="50"></rect><rect x="158" y="0" width="4" height="50"></rect><rect x="165" y="0" width="2" height="50"></rect><rect x="168" y="0" width="2" height="50"></rect><rect x="171" y="0" width="2" height="50"></rect><rect x="176" y="0" width="2" height="50"></rect><rect x="179" y="0" width="2" height="50"></rect><rect x="183" y="0" width="2" height="50"></rect><rect x="187" y="0" width="2" height="50"></rect><rect x="190" y="0" width="2" height="50"></rect><rect x="194" y="0" width="2" height="50"></rect><rect x="198" y="0" width="4" height="50"></rect><rect x="203" y="0" width="2" height="50"></rect><rect x="206" y="0" width="2" height="50"></rect><rect x="209" y="0" width="2" height="50"></rect><rect x="214" y="0" width="2" height="50"></rect><rect x="217" y="0" width="2" height="50"></rect><rect x="220" y="0" width="2" height="50"></rect><rect x="223" y="0" width="2" height="50"></rect><rect x="227" y="0" width="2" height="50"></rect><rect x="231" y="0" width="2" height="50"></rect><rect x="234" y="0" width="2" height="50"></rect><rect x="238" y="0" width="2" height="50"></rect><rect x="242" y="0" width="2" height="50"></rect><rect x="246" y="0" width="1" height="50"></rect><rect x="249" y="0" width="1" height="50"></rect><rect x="253" y="0" width="1" height="50"></rect><rect x="256" y="0" width="4" height="50"></rect><rect x="262" y="0" width="1" height="50"></rect><rect x="264" y="0" width="3" height="50"></rect><rect x="269" y="0" width="1" height="50"></rect><rect x="272" y="0" width="2" height="50"></rect><rect x="275" y="0" width="3" height="50"></rect><rect x="279" y="0" width="1" height="50"></rect><rect x="281" y="0" width="4" height="50"></rect><rect x="286" y="0" width="1" height="50"></rect><rect x="290" y="0" width="2" height="50"></rect><rect x="293" y="0" width="1" height="50"></rect><rect x="297" y="0" width="1" height="50"></rect><rect x="300" y="0" width="2" height="50"></rect><rect x="304" y="0" width="1" height="50"></rect><rect x="308" y="0" width="2" height="50"></rect><rect x="313" y="0" width="3" height="50"></rect><rect x="317" y="0" width="1" height="50"></rect><rect x="319" y="0" width="2" height="50"></rect></g></svg> --}}
                     
                 
-                <div>SEP 23 - 08 26142 0391904 - 000009132 - 27 SEP 23 - 6</div>
+                {{-- <div>SEP 23 - 08 26142 0391904 - 000009132 - 27 SEP 23 - 6</div>
 
                 <script>
                     
@@ -1651,10 +1659,12 @@ span
                         displayValue: false
                     });
                     
-                </script>
+                </script> --}}
 
                 
             </div>
+
+            
             <div style="width: 98%; margin: 0 auto 10px;">
                 <table style="text-align: center; width: 100%; border-collapse: collapse;">
                     <tbody><tr style="height: 10px;">
