@@ -45,9 +45,8 @@ use App\Http\Controllers\Api\ApiReadingController;
 
 Route::prefix('v1')->group(function () {
     Route::post('login', [LoginController::class, 'login']);
-    Route::post('register', [LoginController::class, 'register']);
-    Route::post('reading_save', [ApiReadingController::class, 'reading_save']);
-    Route::get('get_ref_no_list', [ApiReadingController::class, 'get_ref_no_list']);
+    // Route::post('register', [LoginController::class, 'register']);
+   
     
     // Route::post('forgot-password', [LoginController::class, 'forgot_password']);
     // Route::get('/dashboard', [ApiDashboardController::class, 'index']);
@@ -59,6 +58,10 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:api')->group(function () {
         Route::post('logout', [LoginController::class, 'logout']);
+
+        Route::get('get_month', [ApiReadingController::class, 'get_month']);
+        Route::get('get_list_for_reading', [ApiReadingController::class, 'get_list_for_reading']);
+        Route::post('reading_save', [ApiReadingController::class, 'reading_save']);
         // Student  side api
         Route::group(['prefix'=>'student'], function(){
 

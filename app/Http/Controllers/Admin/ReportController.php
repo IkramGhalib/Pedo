@@ -37,7 +37,9 @@ class ReportController extends Controller
 		$validatedData = $request->validate([
             'month' => 'required',
         ]);
-        $reading=Reading::with('bConsumerMeter')->where('month_year',$request->month.'-01');
+        $reading=Reading::with(['bConsumerMeter'=>function($q){
+            $q->orderBy('mannual_ref_no','ASC');
+        }])->where('month_year',$request->month.'-01');
         if($request->condition && $request->unit)
         $reading=$reading->where('offpeak_units',$request->condition,$request->unit);
     
@@ -77,7 +79,9 @@ class ReportController extends Controller
         $fields=$request->all();
         if($request->report_style=='v')
         {
-            $reading=PaymentReceive::with('bConsumerMeter')->where('payment_month',$request->month.'-01');
+            $reading=PaymentReceive::with(['bConsumerMeter'=>function($q){
+                $q->orderBy('mannual_ref_no','ASC');
+            }])->where('payment_month',$request->month.'-01');
             $record=$reading->get();
 
             return view('admin.report.payment.index',compact('record','fields'));
@@ -147,7 +151,7 @@ class ReportController extends Controller
             // $fields=$request->all();
 
             $record = DB::table('consumer_bills')
-            ->select('meter_readings.offpeak_prev as prev_offpeak_reading','meter_readings.offpeak as offpeak_current_reading','meter_readings.datetime as reading_date','consumer_bills.*', 'bill_generates.*',  'bill_generates.created_at as bill_generate_date','consumer_meters.connection_date as meter_connection_date','consumer_meters.*','consumer_bills.id as bill_id','consumers.*','feeders.name as feeder_name','sub_divisions.name as sub_division_name','divisions.name as division_name','meters.meter_no')
+            ->select('meter_readings.offpeak_prev as prev_offpeak_reading','meter_readings.offpeak as offpeak_current_reading','meter_readings.datetime as reading_date','consumer_bills.*', 'bill_generates.*',  'bill_generates.created_at as bill_generate_date','consumer_meters.connection_date as meter_connection_date','consumer_meters.*','consumer_bills.id as bill_id','consumers.*','feeders.name as feeder_name','sub_divisions.name as sub_division_name','divisions.name as division_name')
             ->Join('meter_readings', 'meter_readings.id', '=', 'consumer_bills.reading_id')
             ->Join('bill_generates', 'bill_generates.id', '=', 'consumer_bills.generate_bill_id')
             ->Join('consumer_meters', 'consumer_meters.cm_id', '=', 'consumer_bills.cm_id')
@@ -155,11 +159,11 @@ class ReportController extends Controller
             ->join('feeders', 'feeders.id', '=', 'consumers.feeder_id')
             ->join('sub_divisions', 'sub_divisions.id', '=', 'feeders.sub_division_id')
             ->join('divisions', 'divisions.id', '=', 'sub_divisions.division_id')
-            ->join('meters', 'meters.meter_id', '=', 'consumer_meters.meter_id')
+            // ->join('meters', 'meters.meter_id', '=', 'consumer_meters.meter_id')
             
             // ->where('consumer_bills.id',$bill_id)
             ->where('consumer_bills.billing_month_year',$request->month.'-01')
-            ->orderBy('consumer_bills.id', 'desc')
+            ->orderBy('consumer_meters.mannual_ref_no', 'ASC')
             // ->limit(1)
             ->get();
 
@@ -193,6 +197,7 @@ class ReportController extends Controller
                     $record=$q->where('ref_no','>=',$request->start_refrence);
                 if($request->end_refrence )
                     $record=$q->where('ref_no','<=',$request->end_refrence);
+                $q->orderBy('mannual_ref_no','ASC');
             }])->where('billing_month_year',$request->month.'-01');
             // dd($record->get());
 
@@ -206,11 +211,13 @@ class ReportController extends Controller
         }
         else
         {
+            // dd('testing');
             $record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){
                 if($request->start_refrence )
                     $record=$q->where('ref_no','>=',$request->start_refrence);
                 if($request->end_refrence )
                     $record=$q->where('ref_no','<=',$request->end_refrence);
+                $q->orderBy('mannual_ref_no','ASC');
             }])->where('billing_month_year',$request->month.'-01');
             // dd($record->get());
            

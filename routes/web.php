@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\GeneralTaxController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\ReadingController;
 use App\Http\Controllers\Admin\BillGenerateController;
+use App\Http\Controllers\Admin\ReaderGroupController;
 use App\Http\Controllers\Admin\ChargesController;
 use App\Http\Controllers\Admin\ChargesTypeController;
 use App\Http\Controllers\Admin\TaxTypeController;
@@ -257,6 +258,12 @@ Route::group(['middleware' => 'auth'], function () {
          Route::get('bill-generate-form-edit/{id}', [BillGenerateController::class, 'edit'])->name('bill.generate.edit');
          Route::post('bill-generate-form-update/{id}', [BillGenerateController::class, 'update'])->name('bill.generate.update');
          Route::get('bill-generate-disable/{id}', [BillGenerateController::class, 'reading_disable'])->name('bill.generate.disable');
+
+         Route::get('reader-group-lists', [ReaderGroupController::class, 'show'])->name('reader.group.lists');
+         Route::get('reader-group-form/{id?}', [ReaderGroupController::class, 'form'])->name('reader.group.form');
+         Route::post('reader-group-form', [ReaderGroupController::class, 'save'])->name('reader.group.save');
+
+
         
         // Reading Routes
         Route::get('meter-reading-lists', [ReadingController::class, 'reading_show'])->name('reading.lists');

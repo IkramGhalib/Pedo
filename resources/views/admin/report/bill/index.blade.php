@@ -193,7 +193,7 @@ a {
     <td class="">{{$row->l_p_surcharge}}</td>
     <td class="">{{$row->AfterdueDate}}</td>
   </tr>
-  <?php $c++;  $n_b_total+=$row->net_bill;$l_p_total=$row->l_p_surcharge;$a_total=$row->arrears; $wd_total=$row->WithinDuedate;  $ad_total=$row->AfterdueDate; ?>
+  <?php $c++;  $n_b_total+=$row->net_bill;$l_p_total+=$row->l_p_surcharge;$a_total+=$row->arrears; $wd_total+=$row->WithinDuedate;  $ad_total+=$row->AfterdueDate; ?>
   @endforeach
   <tr class="headingTr">
     <td class="headingTd " colspan="2"></td>

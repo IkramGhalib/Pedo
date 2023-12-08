@@ -47,7 +47,7 @@ class ConsumerController extends Controller
     {
         $paginate_count = 10;
         
-        $instructors = Consumer::with('meters','meters.meter')->orderBy('consumers.id')->paginate($paginate_count);
+        $instructors = Consumer::with('meters')->orderBy('consumers.id')->paginate($paginate_count);
         // dd($instructors);
         return view('admin.consumer.index', compact('instructors'));
     }
@@ -63,9 +63,9 @@ class ConsumerController extends Controller
             $new_consumer_no=1;
 
         $divisions=Division::where('is_active',1)->get();
-        $meters=DB::table('meters')->where('status','free')->get();
+        // $meters=DB::table('meters')->where('status','free')->get();
         // dd($divisions);
-        return view('admin.consumer.form',compact('category','divisions','new_consumer_no','meters'));
+        return view('admin.consumer.form',compact('category','divisions','new_consumer_no'));
     }
     public function consumer_import_form()
     {
@@ -233,7 +233,7 @@ class ConsumerController extends Controller
 
         $cousumer->save();
        
-        $meter_data= DB::table('meters')->where('meter_id',$request->meter_no)->update(['status'=>'assigned']);
+        // $meter_data= DB::table('meters')->where('meter_id',$request->meter_no)->update(['status'=>'assigned']);
 
         // pr($meter_data);
        
@@ -244,7 +244,7 @@ class ConsumerController extends Controller
             // $cm->ref_no=(int)$request->mannual_ref_no[$key];
             // $cm->mannual_ref_no=$request->mannual_ref_no[$key];
             'consumer_id'=>$cousumer->id,
-            'meter_id'=>$request->meter_no,
+            'meter_no'=>$request->meter_no,
             'connection_date'=>db_date_format($request->connection_date),
             'definition_date'=>db_date_format($request->definition_date),
             'previous_reading_off_peak'=>$request->previous_reading,
@@ -282,7 +282,7 @@ class ConsumerController extends Controller
         //     $new_consumer_no=1;
         
         $divisions=Division::where('is_active',1)->get();
-        $meters=DB::table('meters')->where('status','free')->get();
+        // $meters=DB::table('meters')->where('status','free')->get();
         
         
         $instructor=Consumer::find($id);
@@ -299,7 +299,7 @@ class ConsumerController extends Controller
         $feeders= DB::table('feeders')->where('sub_division_id',$area_data_all->sub_dev_id)->get();
 
 
-        return view('admin.consumer.edit',compact('instructor','category','divisions','sub_divisions','feeders','area_data_all','meters'));
+        return view('admin.consumer.edit',compact('instructor','category','divisions','sub_divisions','feeders','area_data_all'));
     }
 
     public function consumer_update(Request $request ,$id)
@@ -314,7 +314,7 @@ class ConsumerController extends Controller
                 $cm->ref_no=sprintf('%08d', $request->ref_no[$key]);
                 $cm->mannual_ref_no=(int)$request->ref_no[$key];
                 // $cm->mannual_ref_no= sprintf('%08d', $request->mannual_ref_no[$key]);
-                $cm->meter_id=$request->meter_no[$key];
+                $cm->meter_no=$request->meter_no[$key];
                 $cm->connection_date=$request->connection_date[$key];
                 $cm->definition_date=$request->definition_date[$key];
                 $cm->previous_reading_off_peak=$request->previous_reading[$key];

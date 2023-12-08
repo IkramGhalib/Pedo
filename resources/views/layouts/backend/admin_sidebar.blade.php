@@ -50,7 +50,7 @@
 
                 <!-- meter add -->
 
-                <li class="site-menu-item has-sub {{ request()->is('admin/meter-*') ? 'active open' : '' }}">
+                {{-- <li class="site-menu-item has-sub {{ request()->is('admin/meter-*') ? 'active open' : '' }}">
                     <a href="javascript:void(0)">
                         <i class="site-menu-icon wb-file" aria-hidden="true"></i>
                         <span class="site-menu-title">Meters</span>
@@ -62,17 +62,8 @@
                                 <span class="site-menu-title"> Meter Stock</span>
                             </a>
                         </li>
-                        <!-- <li class="site-menu-item {{ request()->is('admin/config/pagedd-about') ? 'active' : '' }}">
-                            <a href="{{ route('admin.cons-sub-category.list') }}">
-                            
-                                <span class="site-menu-title">Meter Assign</span>
-                            </a>
-                        </li> -->
-                        
-
-                        
                     </ul>
-                </li>
+                </li> --}}
 
 
                 <li class="site-menu-item has-sub {{ (request()->is('admin/general-*') || request()->is('admin/charges-*') || request()->is('admin/tax-*')) ? 'active open' : '' }}">
@@ -162,6 +153,12 @@
                         <li class="site-menu-item {{ request()->is('admin/config/page-aboutb') ? 'active' : '' }}">
                             <a href="{{ route('reading.approve.lists') }}">
                                 <span class="site-menu-title">Verify Reading </span>
+                            </a>
+                        </li>
+
+                        <li class="site-menu-item {{ request()->is('admin/config/page-aboutb') ? 'active' : '' }}">
+                            <a href="{{ route('reader.group.lists') }}">
+                                <span class="site-menu-title">Meter Reader Group </span>
                             </a>
                         </li>
                        

@@ -267,26 +267,12 @@
 
                     <div class="form-group col-md-3">
                       <label class="form-control-label"> Meter No</label>
-                      <select  class="form-control meter_no" name="meter_no[]" required>
-                     
-                      <option value='{{$mrow->meter->meter_id}}'>  {{$mrow->meter->meter_no}} </option>
-
-                      @foreach ($meters as $m)
-                              <option value="{{ $m->meter_id }}">{{ $m->meter_no }}</option>
-                          @endforeach
-                      </select>
+                      <input type="number"  class="form-control meter_no" name="meter_no[]" required value='{{$mrow->meter_no}}'>
                       @if ($errors->has('meter_no'))
                       <label class="error" for="meter_no">{{ $errors->first('meter_no') }}</label>
                       @endif
                       
                     </div>
-
-
-
-
-    
-                    
-    
     
                     <div class="form-group col-md-2">
                       <label class="form-control-label"> connection date</label>
@@ -296,11 +282,7 @@
                       <label class="error" for="connection_date">{{ $errors->first('connection_date') }}</label>
                       @endif
                       
-                      
                     </div>
-    
-                    
-    
     
                     <div class="form-group col-md-2">
                       <label class="form-control-label"> Definiation date</label>

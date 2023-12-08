@@ -33,33 +33,43 @@ class LoginController extends Controller
             Artisan::call('cache:clear');
 
         $validator = Validator::make($request->all(), [
-            'email'    => 'required|email',
-            'password' => 'required'
+            // 'email'    => 'required|email',
+            // 'password' => 'required'
+            'code'    => 'required',
         ]);
 
         if ($validator->fails()) return error('Validation Error.', $validator->errors(), 422);
 
-        $credentials = $request->only('email', 'password');
+        // $credentials = $request->only('email', 'password');
+        // $credentials = $request->only('code');
+        $user = User::where('code', '=', $request->code)->first();
+        //Now log in the user if exists
+        if ($user != null)
+        {
+            Auth::loginUsingId($user->id);
+        // }
 
-        if (Auth::attempt($credentials)) {
+        // if (Auth::attempt($credentials)) {
            
-            $user=User::with('roles')->where('id',Auth::user()->id)->first();
-            if($user->device_imei=='not-set')
-                User::where('id',$user->id)->update(['device_imei'=>$request->device_imei]);
+            $user2=User::with(['roles'=>function($q){
+                $q->where('role_id',1);
+            }])->where('id',Auth::user()->id)->first();
+            // pr($user2);
+            if($user2)
+            {
+
+                
+                $success['name']  = $user->first_name ;
+                $success['email']  = $user->email;
+                // $success['roles']= $user->roles;
+                $success['token'] = $user2->createToken('accessToken')->accessToken;
+                
+                return success( 'You are successfully logged in.',$success);
+            }
             else
             {
-                if($request->device_imei!=$user->device_imei)
-                {
-                        return error('Unauthorised Device', ['error' => 'Unauthorised'], 401);
-                }
+                return error('Unauthorised', ['error' => 'Unauthorised'], 401);
             }
-            // pr($user);
-            $success['name']  = $user->first_name ;
-            $success['email']  = $user->email;
-            $success['roles']= $user->roles;
-            $success['token'] = $user->createToken('accessToken')->accessToken;
-
-            return success($success, 'You are successfully logged in.');
         } else {
             return error('Unauthorised', ['error' => 'Unauthorised'], 401);
         }

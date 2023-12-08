@@ -24,13 +24,34 @@ use Illuminate\Validation\Rule;
 
 class ApiReadingController extends Controller
 {
-    public function get_ref_no_list(Request $request)
+    public function get_list_for_reading(Request $request)
     {
-        $list=DB::table('consumer_meters')->select('ref_no')->groupBy('ref_no')->get();
+        $list=DB::table('consumer_meters')->select('ref_no','previous_reading_off_peak as pre_reading','cm_id','meter_id as meter_no')->groupBy('ref_no')->get();
         if($list)
         return  success('Record Found',  $list, 200);
         else
         return  error('Record Not Found',  $list, 404);
+
+    }    
+
+    public function get_month(Request $request)
+    {
+        $last_date=DB::table('reading_approve')->orderBy('id','desc')->first();
+        $data=[];
+        if($last_date)
+        {
+            $data['month']=date('Y-m',strtotime($last_date->month_year.'+1 month'));
+        }
+        else
+        {
+            $data['month']='not-set';
+        }
+
+        // $list=DB::table('consumer_meters')->select('ref_no')->groupBy('ref_no')->get();
+        if($data)
+        return  success('Record Found',  $data, 200);
+        else
+        return  error('Record Not Found',  $data, 404);
 
     }    
     public function reading_save(Request $request)
@@ -38,48 +59,57 @@ class ApiReadingController extends Controller
         
 
         $validator = Validator::make($request->all(), [
-            'ref_no' => 'required',
+            'cm_id' => 'required',
             'month_year' => 'required',
-            'offpeak' => 'required_without:peak',
-            'off_peak_image' =>Rule::when($request->offpeak != null, 'required'),
-            'peak_image' =>Rule::when($request->peak != null, 'required')
+            'offpeak' => 'required_without|integer',
+            // 'offpeak' => 'required_without:peak',
+            // 'off_peak_image' =>Rule::when($request->offpeak != null, 'required'),
+            // 'peak_image' =>Rule::when($request->peak != null, 'required')
         ]);
         
         if ($validator->fails()) return error('Validation Error.', $validator->errors(), 422);
-        
-        // pr( $validator->errors());
 
-
-
-       $mont_year_array=explode('-',$request->month_year);
-        $reading_record=Reading::where('ref_no',$request->ref_no)->where('year',$mont_year_array[0])->where('month',$mont_year_array[1])->first();
+    //    $mont_year_array=explode('-',$request->month_year);
+        $reading_record=Reading::where('cm_id',$request->cm_id)->where('month_year',$request->month_year.'-01')->first();
        if($reading_record)
        {
         return  error('Record Already Exits', [], 422);
        }else
        {
-                $record=new Reading();
-                $record->ref_no=$request->ref_no;
-                $record->year=$mont_year_array[0];
-                $record->month=$mont_year_array[1];
-                $record->offpeak=$request->offpeak;
-                $record->peak=$request->peak;
-                if($request->hasFile('peak_image'))
-                    {
-                        $food_image = time().'p'. '.' . $request->peak_image->getClientOriginalExtension();
-                        $request->peak_image->move(public_path('reading/'), $food_image);
-                        $record->pkimage=$food_image;
-                    }
+                $rec=DB::table('consumer_meters')->where('cm_id',$request->cm_id)->first(); 
+                // pr($rec);
+                if($rec->previous_reading_off_peak>$request->offpeak)
+                {
+                    return  error('Current Reading can not less from previous reading', [], 422);
+                }
+                else
+                {
 
-                if($request->hasFile('off_peak_image'))
-                    {
-                        $food_image = time().'op'. '.' . $request->off_peak_image->getClientOriginalExtension();
-                        $request->off_peak_image->move(public_path('reading/'), $food_image);
-                        $record->offpkimage=$food_image;
-                    }
-                $record->save();
-                return  success('Action Completed Successfully',  $record, 200);
                 
+                        $record=new Reading();
+                        $record->month_year=$request->month_year.'-01';
+                        $record->offpeak=$request->offpeak;
+                        $record->cm_id=$request->cm_id;
+                        $record->offpeak_units=$request->offpeak-$rec->previous_reading_off_peak;
+                        $record->peak=$request->peak;
+                        // $record->added_date=date('Y-m-d');
+                        $record->add_by=auth()->user()->id;
+                        if($request->hasFile('peak_image'))
+                            {
+                                $food_image = time().'p'. '.' . $request->peak_image->getClientOriginalExtension();
+                                $request->peak_image->move(public_path('reading/'), $food_image);
+                                $record->pkimage=$food_image;
+                            }
+
+                        if($request->hasFile('off_peak_image'))
+                            {
+                                $food_image = time().'op'. '.' . $request->off_peak_image->getClientOriginalExtension();
+                                $request->off_peak_image->move(public_path('reading/'), $food_image);
+                                $record->offpkimage=$food_image;
+                            }
+                        $record->save();
+                        return  success('Action Completed Successfully',  $record, 200);
+                }
        }
     }
 

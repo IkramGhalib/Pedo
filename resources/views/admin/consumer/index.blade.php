@@ -61,7 +61,7 @@
                 <td>
                    
                     @foreach($instructor->meters as $key => $row)
-                    {{ 'Meter#'.$row->meter->meter_no}}
+                    {{ 'Meter#'.$row->meter_no}}
                     {{ 'Ref:'.$row->ref_no}}
                     <br>
 
