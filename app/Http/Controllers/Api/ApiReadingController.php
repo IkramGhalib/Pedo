@@ -62,6 +62,7 @@ class ApiReadingController extends Controller
             'cm_id' => 'required',
             'month_year' => 'required',
             'offpeak' => 'required_without|integer',
+            // 'status' => 
             // 'offpeak' => 'required_without:peak',
             // 'off_peak_image' =>Rule::when($request->offpeak != null, 'required'),
             // 'peak_image' =>Rule::when($request->peak != null, 'required')
@@ -92,6 +93,7 @@ class ApiReadingController extends Controller
                         $record->cm_id=$request->cm_id;
                         $record->offpeak_units=$request->offpeak-$rec->previous_reading_off_peak;
                         $record->peak=$request->peak;
+                        $record->status=$request->status;
                         // $record->added_date=date('Y-m-d');
                         $record->add_by=auth()->user()->id;
                         if($request->hasFile('peak_image'))

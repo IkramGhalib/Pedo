@@ -117,7 +117,7 @@ class BillGenerateController extends Controller
     //         return $bill_data;
     // }
 
-    function find_consumer_category_slab_charges($record)
+    function find_consumer_category_slab_charges_backup_before_month_dynamic($record)
     {
        
             $units=$record->offpeak_units;
@@ -173,6 +173,194 @@ class BillGenerateController extends Controller
             }
             //find catgory
             // $data_with_slab=$data->where('category_conditon_start','<=',$record->offpeak_units) ->where('category_conditon_end','>=',$record->offpeak_units)->first();
+            // if($record->ref_no=='1682261')
+            // dd($data_with_slab);
+            // dd($data_with_slab);
+            // if($record->ref_no=='42261812')
+            // dd($data_with_slab);
+            $charges=SubCategoryCharges::with('bChargesType')->where('sub_cat_id',$data_with_slab->id)->get();
+           
+            // dd($charges);
+            $new_data = array();
+            $total_electricity_charges=0;
+            // if last slab is not applicable category
+            if($data_with_slab->last_slab_apply==0)
+            {
+                // $new_data = array();
+                // $units=$record->offpeak_units;
+                $slab_total_units=0;
+                // $total_electricity_charges=0;
+                $previou_end_unit=0;
+                foreach ($data_with_slab->hMSlabs as $key => $value) {
+                    if($key==0)
+                    {
+                        $slab_total_units=$value->slab_end_unit;
+                        $previou_end_unit=$value->slab_end_unit;
+                    }
+                    else
+                    {
+                        $slab_total_units=$value->slab_end_unit-$previou_end_unit;
+                        $previou_end_unit=$value->slab_end_unit;
+                    }
+                        if( $units >= $slab_total_units)
+                        {
+                            $units=$units-$slab_total_units;
+                            $total_electricity_charges+=($slab_total_units*$value->charges);
+                            $new_data[]=['units'=>$slab_total_units,'charges'=>$value->charges];
+                        }
+                        else
+                        {
+                            $new_data[]=['units'=>$units,'charges'=>$value->charges];
+                            $total_electricity_charges+=($units*$value->charges);
+                            break;
+                        }
+                }
+            }
+            else // if last slab is applicable category
+            {
+
+            
+                // $slab_total_units=0;
+                // $previou_end_unit=0;
+                foreach ($data_with_slab->hMSlabs as $key => $value) {
+                        if( $units >= $value->slab_start_unit && $units <= $value->slab_end_unit )
+                        {
+                            // $units=$units-$slab_total_units;
+                            $total_electricity_charges+=($units*$value->charges);
+                            $new_data[]=['units'=>$units,'charges'=>$value->charges];
+                        }
+                        
+                }
+            }
+            $bill_data['total_electricity_charges']=round($total_electricity_charges,2);
+            $bill_data['sub_cat_finded_id']=$data_with_slab->id;
+            $bill_data['slab_wise_charges']=$new_data;
+
+            $charges_data=[];
+            $total_charges_data=0;
+            if($charges) // find charges
+            {
+                foreach ($charges as $ky => $chgrow) {
+                    if($chgrow->code==='FPA')
+                    {
+                        // get 2 months prevous reading
+                        $record->month_year;
+                        $previous_reading=DB::table('meter_readings')->where('cm_id',$record->bConsumerMeter->cm_id)->where('month_year',(date('y-m-d ',strtotime($record->month_year.' -2 month' ))))->first();
+                        if($previous_reading)
+                        {
+                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>round($previous_reading->offpeak_units*($chgrow->charges),2),'charges_type'=>$chgrow->bChargesType->title];
+                                $total_charges_data+=$previous_reading->offpeak_units*($chgrow->charges);
+                            
+                        }
+                    }
+                    else
+                    {
+                        if($chgrow->applicable_on==='units')
+                            {
+                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>round($record->offpeak_units*($chgrow->charges),2),'charges_type'=>$chgrow->bChargesType->title];
+                                $total_charges_data+=$record->offpeak_units*($chgrow->charges);
+                            }  
+                            else
+                            {
+                                $charges_data[]=['code'=>$chgrow->code,'charges'=>$chgrow->charges,'calculated_charges'=>round($total_electricity_charges*($chgrow->charges/100),2),'charges_type'=>$chgrow->bChargesType->title];
+                                $total_charges_data+=$total_electricity_charges*($chgrow->charges/100);
+                            }
+                    }
+                }
+            }
+
+            // dd($charges_data);
+
+
+            $bill_data['charges']=$charges_data;
+            $bill_data['total_charges_data']=round($total_charges_data,2);
+            $bill_data['minimum_charges_limit']=round($total_charges_data,2);
+
+
+             // if bill is less then current consumer type minimum bill limit  then apply minimum limit 
+            //  if($finded_cateogry_slab_chareges['total_electricity_charges']<= 75 )
+            //  {
+               $check_minimum_bill= DB::table('consumers')
+                     ->join('options','options.ref_id','=','consumers.consumer_category_id')
+                     ->where('consumers.id',$record->bConsumerMeter->consumer_id)->first();
+                 if($check_minimum_bill)
+                 {
+                     if($total_electricity_charges<=(float)$check_minimum_bill->option_value)
+                     {
+                        $bill_data['total_electricity_charges']=(float)$check_minimum_bill->option_value;
+                      
+                        $bill_data['minimum_charges_limit']=(float)$check_minimum_bill->option_value;
+                        $bill_data['slab_wise_charges']=[];
+                     }
+
+                 }
+            //  }
+
+            $bill_data['tarrif_code']=$current_cons_type->bConsumer->bConsumerCategory->tarrif_code;
+            
+            return $bill_data;
+    }
+    function find_consumer_category_slab_charges($record)
+    {
+       
+            $units=$record->offpeak_units;
+            
+            $c_bill_data=ConsumerBill::where('cm_id',$record->bConsumerMeter->cm_id)->limit(12)->orderBy('id','desc')->get();
+            //  dd($c_bill_data);
+         
+            $current_cons_type= ConsumerMeter::with('bConsumer.bConsumerCategory.hMConSubCategory.hMSlabs')->where('ref_no',$record->bConsumerMeter->ref_no)
+            ->first();
+            // dd($current_cons_type);
+            
+            // dd($current_cons_type);
+            
+            $data=$current_cons_type->bConsumer->bConsumerCategory->hMConSubCategory;
+         
+            // for getting consumer type logic start here  -----------------------------------------------------
+            $count_record=$c_bill_data->count(); // get number of bills generated
+            // dd($count_record);
+
+            // ------------------This code is commented for removel of month checking in slab . need to uncomment after 6months------------------------
+            // if($count_record < 7) // if new user and under 6 months
+            // {
+            //     $data_with_slab=$data->where('priority',1)->first();
+               
+               
+            // }
+            // else
+            // { 
+            //     if($data->count()==1)// for those category who have only one category like commercial 
+            //     {
+            //         $data_with_slab=$data->where('priority',1)->first();
+            //     }
+            //     else // if not commercial
+            //     {
+            //             // if consumer have more then 6 months bills
+            //             $c_bill_all_record= collect($c_bill_data);
+            //             // $c_bill_6month_record=$c_bill_all_record->limit(6)->get();
+            //             $c_bill_6month_record=array_slice($c_bill_all_record->toArray(), 0, 5);
+
+            //             $check_6month_max_units=collect($c_bill_6month_record)->max('offpeak_units');
+            //             if($check_6month_max_units >200) // un-protected consumer
+            //             $data_with_slab=$data->where('priority',1)->first();
+            //             elseif($c_bill_all_record->max('offpeak_units') <=100 &&   $count_record==12) // lifeline consumer
+            //             $data_with_slab=$data->where('priority',3)->first();
+            //             else  // protected
+            //             $data_with_slab=$data->where('priority',2)->first();
+
+            //             // if($c_bill_all_record->max('offpeak_units')<=100 && $count_record >= 12) // life line consumer
+            //             //     $data_with_slab=$data->where('priority',3)->first();
+            //             // elseif($check_6month_max_units >=101 && $check_6month_max_units<=200 ) // protected consumer
+            //             //     $data_with_slab=$data->where('priority',2)->first();
+            //             // else  // un-protected
+            //             //     $data_with_slab=$data->where('priority',1)->first();
+            //     }    
+            // }
+
+            // --------------------------------------------------------------------------------------------------------------------------------------
+            //find catgory
+            $data_with_slab=$data->where('category_conditon_start','<=',$record->offpeak_units) ->where('category_conditon_end','>=',$record->offpeak_units)->first();
+            // --------------------------------------------------------------------------------------------------------------------------------------
             // if($record->ref_no=='1682261')
             // dd($data_with_slab);
             // dd($data_with_slab);
@@ -416,13 +604,13 @@ class BillGenerateController extends Controller
                 $record->month_year=$month_year.'-01';
                 $record->due_date=date('Y-m-d',strtotime($request->due_date));
                 $record->generated_by=Auth::id();
-                $record->save();
+                // $record->save();
                 // dd($record);
                 $reading=Reading::with('bConsumerMeter')->where('is_verified',1)->where('month_year',$month_year)->get();
                 // dd($reading);
                 foreach ($reading as $key => $value) {
                     $finded_cateogry_slab_chareges=$this->find_consumer_category_slab_charges($value);
-                    // dd($finded_cateogry_slab_chareges);
+                    dd($finded_cateogry_slab_chareges);
 
                     $finded_taxes=$this->find_taxes($value,$finded_cateogry_slab_chareges);
                     

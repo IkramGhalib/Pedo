@@ -18,7 +18,8 @@
         /* size:A4; */
         /* text-align: center; */
         /* margin-right:100px; */
-        size: A4;
+        /* size: A4; */
+        size: letter;
     margin: 80px 10px 0px 0px;
 
     /* padding: 12px; */
@@ -1054,10 +1055,10 @@ span
                                 <h4>METER NO</h4>
                             </td>
                             <td style="width: 140px" class="border-r">
-                                <h4>PREVIOUS READING</h4>
+                                <h4>PREV.READING</h4>
                             </td>
                             <td style="width: 130px" class="border-r">
-                                <h4>CURRENT READING</h4>
+                                <h4>CUR.READING</h4>
                             </td>
                             <!-- <td style="width: 60px" class="border-r">
                                 <h4>MF</h4>
@@ -1065,9 +1066,9 @@ span
                             <td style="width: 90px" class="border-r">
                                 <h4>UNITS</h4>
                             </td>
-                            <!-- <td>
+                             <td>
                                 <h4>STATUS</h4>
-                            </td> -->
+                            </td> 
                         </tr>
                         <tr style="height: 30px" class="content">
                             <td class="border-r">
@@ -1082,12 +1083,10 @@ span
                             <td class="border-r">
                             {{$offpeak_units}} <br>
                             </td>
-                            <!-- <td class="border-r">
-                                 <br>
+                             <td class="">
+                                 @if($bill_data->reading_status) {{$bill_data->reading_status}} @endif
                             </td>
-                            <td>
-                                
-                            </td> -->
+                           
                         </tr>
                         
                     </tbody></table>
@@ -1696,7 +1695,7 @@ span
                         {{$due_date}}
                         </td>
                         <td class="font-size border-rb content" style="width: 25%; text-align: Center;">
-                        {{$ref_no}} R
+                        {{$ref_no}} 
                             
                         </td>
                         <td class="border-rb" style="width: 25%; color: red;">

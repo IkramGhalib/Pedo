@@ -55,10 +55,10 @@
             </div>
           </div>
           <div class="form-group col-md-4">
-            <label class="form-control-label"></label>
+            <label class="form-control-label"> &nbsp;</label>
             <div>
-              <div class="radio-custom radio-default radio-inline">
-                <input type="radio" id="inputBasicActive" name="last_slab_apply" value="1"   />
+              <div class="checkbox-inline">
+                <input type="checkbox" id="inputBasicActive" name="last_slab_apply" value="1"   />
                 <label for="inputBasicActive">Last slab apply</label>
               </div>
               

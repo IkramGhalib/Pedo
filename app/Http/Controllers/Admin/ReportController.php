@@ -151,7 +151,7 @@ class ReportController extends Controller
             // $fields=$request->all();
 
             $record = DB::table('consumer_bills')
-            ->select('meter_readings.offpeak_prev as prev_offpeak_reading','meter_readings.offpeak as offpeak_current_reading','meter_readings.datetime as reading_date','consumer_bills.*', 'bill_generates.*',  'bill_generates.created_at as bill_generate_date','consumer_meters.connection_date as meter_connection_date','consumer_meters.*','consumer_bills.id as bill_id','consumers.*','feeders.name as feeder_name','sub_divisions.name as sub_division_name','divisions.name as division_name')
+            ->select('meter_readings.offpeak_prev as prev_offpeak_reading','meter_readings.offpeak as offpeak_current_reading','meter_readings.status as reading_status','meter_readings.datetime as reading_date','consumer_bills.*', 'bill_generates.*',  'bill_generates.created_at as bill_generate_date','consumer_meters.connection_date as meter_connection_date','consumer_meters.*','consumer_bills.id as bill_id','consumers.*','feeders.name as feeder_name','sub_divisions.name as sub_division_name','divisions.name as division_name')
             ->Join('meter_readings', 'meter_readings.id', '=', 'consumer_bills.reading_id')
             ->Join('bill_generates', 'bill_generates.id', '=', 'consumer_bills.generate_bill_id')
             ->Join('consumer_meters', 'consumer_meters.cm_id', '=', 'consumer_bills.cm_id')
