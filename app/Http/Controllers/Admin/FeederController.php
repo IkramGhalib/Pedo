@@ -57,9 +57,11 @@ class FeederController extends Controller
 
     public function edit($id)
     {
-        $record=SubDivision::find($id);
-        dd($record);
-        $parant_record=Division::find($record->division_id);
+        $record=Feeder::find($id);
+        // $record=SubDivision::find($id);
+        // dd($record);
+        // $parant_record=Division::find($record->division_id);
+        $parant_record=SubDivision::find($record->sub_division_id);
 
         // $courses = Course::all();
         return view('admin.feeder.edit',compact('record','parant_record'));
@@ -67,14 +69,16 @@ class FeederController extends Controller
 
     public function update($id,Request $request)
     {
-        $record=SubDivision::find($id);
+        // dd($request->all());
+        $record=Feeder::find($id);
         $record->name=$request->name;
-        $record->sub_division_code=$request->sub_division_code;
+        $record->feeder_code=$request->feeder_code;
        
         $record->is_active=$request->status;
+        $record->sub_division_id=$request->sub_division;
         // dd($test);
         $record->save();
-        return $this->return_output('flash', 'success', 'successfully updated', 'admin/sub-division-list', '200');
+        return $this->return_output('flash', 'success', 'successfully updated', 'admin/feeder-list', '200');
     }
 
     // public function destroy($id)

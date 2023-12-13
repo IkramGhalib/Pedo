@@ -5,7 +5,7 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="{{ route('admin.users') }}">Area</a></li>
-    <li class="breadcrumb-item active">Division</li>
+    <li class="breadcrumb-item active">Feeder</li>
   </ol>
   <h1 class="page-title">Edit</h1>
 </div>
@@ -15,18 +15,18 @@
 
     <div class="panel">
       <div class="panel-body">
-        <form method="POST" action="{{ route('admin.sub_division.update',$record->id) }}" id="userForm">
+        <form method="POST" action="{{ route('admin.feeder.update',$record->id) }}" id="userForm">
           {{ csrf_field() }}
          
           <div class="row">
        
             <div class="form-group col-md-4">
-              <label class="form-control-label">Divison</label>
-              <select name="division" id="division" class="form-control">
-                    <option value="{{$parant_record->id}}" selected>{{$parant_record->division_code.' - '.$parant_record->name}}</option>
+              <label class="form-control-label">Sub Divison</label>
+              <select name="sub_division" id="sub_division" class="form-control">
+                    <option value="{{$parant_record->id}}" selected>{{$parant_record->sub_division_code.' - '.$parant_record->name}}</option>
                   </select>
-                @if ($errors->has('division_code'))
-                    <label class="error" for="division_code">{{ $errors->first('division_code') }}</label>
+                @if ($errors->has('sub_division'))
+                    <label class="error" for="sub_division">{{ $errors->first('sub_division') }}</label>
                 @endif
             </div>
         </div>
@@ -34,10 +34,10 @@
 
             <div class="form-group col-md-4">
               <label class="form-control-label">Code</label>
-              <input required type="text" value="{{ $record->sub_division_code }}" class="form-control" name="sub_division_code"
+              <input required type="text" value="{{ $record->feeder_code }}" class="form-control" name="feeder_code"
                 placeholder=""/>
-                @if ($errors->has('sub_division_code'))
-                    <label class="error" for="division_code">{{ $errors->first('sub_division_code') }}</label>
+                @if ($errors->has('feeder_code'))
+                    <label class="error" for="feeder_code">{{ $errors->first('feeder_code') }}</label>
                 @endif
             </div>
 
@@ -99,7 +99,7 @@
 <script>
 $("#division").select2({
         ajax: {
-            url: "{{route('get_all_division_where')}}",
+            url: "{{route('get_all_sub_division_where')}}",
             dataType: 'json',
             data: function (params) {
                 var query = {
@@ -112,7 +112,7 @@ $("#division").select2({
                     results: $.map(data, function (item) {
                       console.log(item);
                         return {
-                            text: item.division_code+'-'+item.name,
+                            text: item.sub_division_code+'-'+item.name,
                             id: item.id
                         }
                     })

@@ -26,7 +26,7 @@ class ApiReadingController extends Controller
 {
     public function get_list_for_reading(Request $request)
     {
-        $list=DB::table('consumer_meters')->select('ref_no','previous_reading_off_peak as pre_reading','cm_id','meter_id as meter_no')->groupBy('ref_no')->get();
+        $list=DB::table('consumer_meters')->select('ref_no','previous_reading_off_peak as pre_reading','cm_id','meter_no')->groupBy('ref_no')->get();
         if($list)
         return  success('Record Found',  $list, 200);
         else
