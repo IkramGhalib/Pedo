@@ -401,7 +401,7 @@
                                
                             </td>
                             <td class="border-r">
-                                {{$rpnb->WithinDuedate-$rpnb->arrears}}
+                                {{$rpnb->WithinDuedate}}
                             </td>
                             <td>
                                 {{$rpnb->pay_amount}}

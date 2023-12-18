@@ -604,13 +604,13 @@ class BillGenerateController extends Controller
                 $record->month_year=$month_year.'-01';
                 $record->due_date=date('Y-m-d',strtotime($request->due_date));
                 $record->generated_by=Auth::id();
-                // $record->save();
+                $record->save();
                 // dd($record);
                 $reading=Reading::with('bConsumerMeter')->where('is_verified',1)->where('month_year',$month_year)->get();
                 // dd($reading);
                 foreach ($reading as $key => $value) {
                     $finded_cateogry_slab_chareges=$this->find_consumer_category_slab_charges($value);
-                    dd($finded_cateogry_slab_chareges);
+                    // dd($finded_cateogry_slab_chareges);
 
                     $finded_taxes=$this->find_taxes($value,$finded_cateogry_slab_chareges);
                     
