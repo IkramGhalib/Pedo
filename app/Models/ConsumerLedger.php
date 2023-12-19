@@ -10,8 +10,8 @@ class ConsumerLedger extends Model
     public $timestamps=false;
     protected $guarded = array();
 
-    // public function bBank()
-    // {
-    //     return $this->belongsTo(Bank::class,'bank_id','id');
-    // }
+    public function bConsumerMeter()
+    {
+        return $this->belongsTo(ConsumerMeter::class,'cm_id','cm_id');
+    }
 }

@@ -263,7 +263,10 @@ Route::group(['middleware' => 'auth'], function () {
          Route::get('reader-group-form/{id?}', [ReaderGroupController::class, 'form'])->name('reader.group.form');
          Route::post('reader-group-form', [ReaderGroupController::class, 'save'])->name('reader.group.save');
 
-
+        // Bill Adjustment
+        Route::get('bill-adjustment-lists', [BillGenerateController::class, 'adjustment_show'])->name('bill.adjustment.lists');
+        Route::get('bill-adjustment-form', [BillGenerateController::class, 'adjustment_form'])->name('bill.adjustment.form');
+        Route::post('bill-adjustment-save', [BillGenerateController::class, 'adjustment_save'])->name('bill.adjustment.save');
         
         // Reading Routes
         Route::get('meter-reading-lists', [ReadingController::class, 'reading_show'])->name('reading.lists');

@@ -207,7 +207,11 @@
                             </a>
                         </li> -->
                        
-                        
+                        <li class="site-menu-item {{ request()->is('admin/config/page-homec') ? 'active' : '' }}">
+                            <a href="{{ route('bill.adjustment.lists') }}">
+                                <span class="site-menu-title">Bill Adjustment </span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

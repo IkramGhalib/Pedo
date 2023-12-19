@@ -60,10 +60,24 @@ class BillGenerateController extends Controller
         // dd($list);
         return view('admin.bill_generate.index', compact('list'));
     }
+
+    public function adjustment_show()
+    {
+        $paginate_count = 8;
+        $list = ConsumerLedger::with('bConsumerMeter')->where('fee_type','adjustment')->paginate($paginate_count);
+        // dd($list);
+        return view('admin.bill_generate.adjustment_index', compact('list'));
+    }
     public function form()
     {
         $last_date=DB::table('bill_generates')->orderBy('id','desc')->first();
         return view('admin.bill_generate.form',compact('last_date'));
+    }
+
+    public function adjustment_form()
+    {
+        $last_date=DB::table('bill_generates')->orderBy('id','desc')->first();
+        return view('admin.bill_generate.adjustment_form',compact('last_date'));
     }
     // function find_consumer_category_slab_charges($record)
     // {
@@ -672,7 +686,25 @@ class BillGenerateController extends Controller
        }
     }
 
-    
+    public function adjustment_save(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ref_no' => 'required',
+            'amount' => 'required',
+        ]);
+        if ($validator->fails()) return error('Fill Required Filed.', $validator->errors(), 422);
+
+       $rec=DB::table('consumer_meters')->where('ref_no',$request->ref_no)->first();  
+        //  --------------------------------------------------------------
+        $c_l= new ConsumerLedger();
+        $c_l->fee_type= 'adjustment';
+        $c_l->cm_id=$rec->cm_id;
+        // $c_l->created_at=$rec->cm_id;
+        $c_l->amount=$request->amount;
+        $c_l->remarks=$request->remarks;
+        $c_l->save();
+        return success('Action Completed',[] );
+    }
     public function edit($id)
     {
         
