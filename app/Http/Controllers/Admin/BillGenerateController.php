@@ -17,6 +17,7 @@ use App\Models\GeneralTax;
 use App\Models\BillGenerate;
 use App\Models\ConsumerBill;
 use App\Models\ConsumerLedger;
+use App\Models\Adjustment;
 use App\Models\Reading;
 use App\Models\ConsumerMeter;
 // use App\Models\Feeder;
@@ -63,8 +64,8 @@ class BillGenerateController extends Controller
 
     public function adjustment_show()
     {
-        $paginate_count = 8;
-        $list = ConsumerLedger::with('bConsumerMeter')->where('fee_type','adjustment')->paginate($paginate_count);
+        $paginate_count = 12;
+        $list = Adjustment::with('bConsumerMeter')->paginate($paginate_count);
         // dd($list);
         return view('admin.bill_generate.adjustment_index', compact('list'));
     }
@@ -696,12 +697,17 @@ class BillGenerateController extends Controller
 
        $rec=DB::table('consumer_meters')->where('ref_no',$request->ref_no)->first();  
         //  --------------------------------------------------------------
-        $c_l= new ConsumerLedger();
-        $c_l->fee_type= 'adjustment';
+        $check=Adjustment::where('cm_id',$rec->cm_id)->where('is_used',0)->first();
+        if($check)
+        return error('Pending Record already Exits',[] );
+
+        $c_l= new Adjustment();
+        // $c_l->fee_type= 'adjustment';
         $c_l->cm_id=$rec->cm_id;
         // $c_l->created_at=$rec->cm_id;
         $c_l->amount=$request->amount;
         $c_l->remarks=$request->remarks;
+        $c_l->created_by=auth()->user()->id;
         $c_l->save();
         return success('Action Completed',[] );
     }
