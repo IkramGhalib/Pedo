@@ -614,7 +614,8 @@ class BillGenerateController extends Controller
                  $config=Config::get_option('settingCharges','late_fee_surcharge');
                  if($config)
                  $l_p_surcharge_percentage=$config;
-                
+                 try {
+                 
                 $record=new BillGenerate();
                 $record->month_year=$month_year.'-01';
                 $record->due_date=date('Y-m-d',strtotime($request->due_date));
@@ -624,6 +625,8 @@ class BillGenerateController extends Controller
                 $reading=Reading::with('bConsumerMeter')->where('is_verified',1)->where('month_year',$month_year)->get();
                 // dd($reading);
                 foreach ($reading as $key => $value) {
+                    $cm_id=$value->bConsumerMeter->cm_id;
+                    $ref_no=$value->bConsumerMeter->ref_no;
                     $finded_cateogry_slab_chareges=$this->find_consumer_category_slab_charges($value);
                     // dd($finded_cateogry_slab_chareges);
 
@@ -636,12 +639,16 @@ class BillGenerateController extends Controller
                     $currnt_offpeak_unit=$value->offpeak_units;
                     $l_p_surcharge_value=$finded_cateogry_slab_chareges['total_electricity_charges']*($l_p_surcharge_percentage/100);
 
-                    
+                    $adj=DB::table('adjustments')->where('cm_id',$cm_id)->where('is_used',0)->orderBy('id','DESC')->first();
+                    $adj_amount=0;
+                    if($adj)
+                    $adj_amount=$adj->amount;
+                    // dd($adj);
                     // $arrear=round(ConsumerLedger::where('consumer_id',$value->consumer_id)->sum('amount'),2);
                     // $arrear=round(ConsumerLedger::select(DB::raw('sum(amount+late_fee) AS total_amount'))->where('consumer_id',$value->consumer_id)->sum('total_amount'),2);
                     $check_arrear=DB::table('consumer_ledgers')
                     ->select(DB::raw('sum(amount+late_fee) AS total_amount'))
-                    ->where('cm_id',$value->bConsumerMeter->cm_id)
+                    ->where('cm_id',$cm_id)
                    
                     ->first();
                     $arrear=0;
@@ -654,8 +661,8 @@ class BillGenerateController extends Controller
                         'generate_bill_id'=>$record->id,
                         'reading_id'=>$value->id,
                         // 'consumer_id'=>$value->bConsumerMeter->consumer_id,
-                        'ref_no_for_bill'=>$value->bConsumerMeter->ref_no,
-                        'cm_id'=>$value->bConsumerMeter->cm_id,
+                        'ref_no_for_bill'=>$ref_no,
+                        'cm_id'=>$cm_id,
                         'billing_month_year'=>$month_year,
                         'offpeak_units'=>$value->offpeak_units,
                         'arrears'=>$arrear,
@@ -665,24 +672,34 @@ class BillGenerateController extends Controller
                         'off_peak_bill_breakup'=>json_encode($finded_cateogry_slab_chareges['slab_wise_charges']),
                         'charges_breakup'=>json_encode($finded_cateogry_slab_chareges['charges']),
                         'taxes_breakup'=>json_encode($finded_taxes),
-                        'WithinDuedate'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0),
+                        'adjustment'=>$adj_amount,
+                        'WithinDuedate'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear+$adj_amount,0),
                         'net_bill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data'],2),
-                        'GTotal'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0),
+                        'GTotal'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear+$adj_amount,0),
                         'DueDate'=> $record->due_date,
-                        'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0),
+                        'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear+$adj_amount,0),
                         'l_p_surcharge'=>round($l_p_surcharge_value,2),
                         'sub_cat_finded_id'=>$finded_cateogry_slab_chareges['sub_cat_finded_id'],
                         'tarrif_code'=>$finded_cateogry_slab_chareges['tarrif_code'],
-                        'consider_amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0)
+                        'consider_amount'=>round($l_p_surcharge_value+$adj_amount+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0)
                     ];
 
                    
                     $id=ConsumerBill::insertGetId($bill_array);
+                    if($adj)
+                    DB::table('adjustments')->where('id',$adj->id)->update(['is_used'=>1,'bill_id'=>$id]);
                                                                 
                     // add in ledger of consumer
-                    ConsumerLedger::insert(['cm_id'=>$value->bConsumerMeter->cm_id,'amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data'],0),'bill_id'=>$id]);                            
+                    ConsumerLedger::insert(['cm_id'=>$cm_id,'amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data'],0),'bill_id'=>$id]);                            
                 }
+                DB::commit();
                 return redirect()->back()->with(['success'=>'Action Completed']); 
+                //  return $this->return_output('flash', 'success', 'Record Add successfully', 'admin/group', '200');
+                 } catch (\Exception $e) {
+                     DB::rollback();
+                     return redirect()->back()->with(['error'=>$e->getMessage()]); 
+                    //  return $this->return_output('error', 'error', [$e->getMessage()], 'back', '422');
+                 }
                 
        }
     }
@@ -702,9 +719,7 @@ class BillGenerateController extends Controller
         return error('Pending Record already Exits',[] );
 
         $c_l= new Adjustment();
-        // $c_l->fee_type= 'adjustment';
         $c_l->cm_id=$rec->cm_id;
-        // $c_l->created_at=$rec->cm_id;
         $c_l->amount=$request->amount;
         $c_l->remarks=$request->remarks;
         $c_l->created_by=auth()->user()->id;
@@ -713,7 +728,6 @@ class BillGenerateController extends Controller
     }
     public function edit($id)
     {
-        
         $record=Reading::find($id);
         return view('admin.bill_generate.edit',compact('record'));
     }

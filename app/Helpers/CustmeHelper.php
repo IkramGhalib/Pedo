@@ -20,12 +20,12 @@
 
    function get_reg_no($number)
    {
-       return  'QCA/Reg/'.$number;
+    //    return  'QCA/Reg/'.$number;
    }
    function get_group_no($number)
    {
     //    return $number;
-       return  'QCA-'.$number;
+    //    return  'QCA-'.$number;
    }
    
 

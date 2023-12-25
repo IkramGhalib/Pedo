@@ -553,7 +553,7 @@
                             </b>
                     </td>
                     <td colspan="3" class="border-b  nestedtd2width content">
-                        <br>
+                        {{$bill_data->adjustment}} 
                     </td>
                 </tr>
                 <tr class="fontsize" style="height: 24px;">
