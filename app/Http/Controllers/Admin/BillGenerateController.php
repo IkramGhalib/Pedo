@@ -71,7 +71,7 @@ class BillGenerateController extends Controller
     }
     public function form()
     {
-        $last_date=DB::table('bill_generates')->orderBy('id','desc')->first();
+        $last_date=DB::table('bill_generates')->where('status','generated')->orderBy('id','desc')->first();
         return view('admin.bill_generate.form',compact('last_date'));
     }
 
@@ -586,28 +586,76 @@ class BillGenerateController extends Controller
     //     return $g_total_taxes;
 
     // }
-    public function save(Request $request)
-    {
+    public function load_statistics_view(Request $request){
         $request->validate([
             'month_year' => 'required',
             'due_date' => 'required',
         ]);
+        $all_inputs=$request->all();
+        $month_year=$request->month_year.'-01';
         // dd($request->all());
-       $month_year=$request->month_year.'-01';
-       $reading_record=BillGenerate::where('month_year',$month_year)->first();
-        
+        $all_reading=Reading::where('is_verified',1)->where('month_year',$month_year)->count();
+        if($all_reading==0)
+        return back()->withError('Error ! Reading Not Available');
+
+        $reading_record=BillGenerate::where('month_year',$month_year)->first();
+        if($reading_record)
+        {
+            // if($reading_record->status=='generated')
+            // {
+            //     return back()->withError('Record Already Exits');
+            // }
+            // else
+            // {
+                // return view('admin.bill_generate.statistics_view',compact('all_inputs'));
+            // }
+        }
+        else
+        {
+                $reading_record=new BillGenerate();
+                $reading_record->month_year=$month_year;
+                $reading_record->due_date=date('Y-m-d',strtotime($request->due_date));
+                $reading_record->generated_by=Auth::id();
+                $reading_record->status='generating';
+                $reading_record->save();
+        }
+        // $all_reading=Reading::where('is_verified',1)->where('month_year',$month_year)->count();
+        // $reading=Reading::where('is_verified',1)->where('month_year',$month_year)->where('is_bill_generated',0)->count();
+        $generated_bills_reading=Reading::where('is_verified',1)->where('month_year',$month_year)->where('is_bill_generated',1)->count();
+        // dd($reading);
+        return view('admin.bill_generate.statistics_view',compact('reading_record','all_inputs','all_reading','generated_bills_reading'));
+    }
+    public function save(Request $request)
+    {
+       $request->validate([
+            'id' => 'required',
+        ]);
+        // $request->validate([
+        //     'month_year' => 'required',
+        //     'due_date' => 'required',
+        // ]);
+        // dd($request->all());
+    //    $month_year=$request->month_year.'-01';
+    //    $reading_record=BillGenerate::where('month_year',$month_year)->first();
+       $reading_record=BillGenerate::where('id',$request->id)->first();
+       $month_year=$reading_record->month_year;
         
        if($reading_record)
        {
-        return redirect()->back()->with(['error'=>'Record Already Exits']);
-       }else
-       {
+        if($reading_record->status=='generated')
+        // return redirect()->back()->with(['error'=>'Record Already Exits']);
+        return  error('record Already exits',  [], 200);
+       }
+    //    else
+    //    {
+
                
 
                 // if approve reading is not present
                 $check_reading=Reading::where('is_verified',1)->where('month_year',$month_year)->count();
                 if($check_reading==0)
-                return back()->withError('Error ! Reading Not Available');
+                return  error('Reading Not Available',  [], 200);
+                // return back()->withError('Error ! Reading Not Available');
 
                  // geting late charges 
                  $l_p_surcharge_percentage=0;
@@ -616,15 +664,17 @@ class BillGenerateController extends Controller
                  $l_p_surcharge_percentage=$config;
                  try {
                  
-                $record=new BillGenerate();
-                $record->month_year=$month_year.'-01';
-                $record->due_date=date('Y-m-d',strtotime($request->due_date));
-                $record->generated_by=Auth::id();
-                $record->save();
+                $record=BillGenerate::find($request->id);
+                // $record=new BillGenerate();
+                // $record->month_year=$month_year.'-01';
+                // $record->due_date=date('Y-m-d',strtotime($request->due_date));
+                // $record->generated_by=Auth::id();
+                // $record->save();
                 // dd($record);
-                $reading=Reading::with('bConsumerMeter')->where('is_verified',1)->where('month_year',$month_year)->get();
+                $reading=Reading::with('bConsumerMeter')->where('is_verified',1)->where('month_year',$month_year)->where('is_bill_generated',0)->limit(100)->get();
                 // dd($reading);
                 foreach ($reading as $key => $value) {
+                    
                     $cm_id=$value->bConsumerMeter->cm_id;
                     $ref_no=$value->bConsumerMeter->ref_no;
                     $finded_cateogry_slab_chareges=$this->find_consumer_category_slab_charges($value);
@@ -688,20 +738,34 @@ class BillGenerateController extends Controller
                     $id=ConsumerBill::insertGetId($bill_array);
                     if($adj)
                     DB::table('adjustments')->where('id',$adj->id)->update(['is_used'=>1,'bill_id'=>$id]);
+                    DB::table('meter_readings')->where('id',$value->id)->update(['is_bill_generated'=>1]);
                                                                 
                     // add in ledger of consumer
                     ConsumerLedger::insert(['cm_id'=>$cm_id,'amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data'],0),'bill_id'=>$id]);                            
                 }
-                DB::commit();
-                return redirect()->back()->with(['success'=>'Action Completed']); 
+                
+                // return redirect()->back()->with(['success'=>'Action Completed']); 
+                $generated_bills=Reading::where('month_year',$month_year)->where('is_bill_generated',1)->count();
+                $remaining_bills_generation=Reading::where('month_year',$month_year)->where('is_bill_generated',0)->count();
+                // if all bill generate then status will be change
+                if($remaining_bills_generation==0)
+                {
+                    $record->status='generated';
+                    // BillGenerate::where('id',$request->id)->update(['status'=>'generated']);
+                    $record->save();
+                }   
+                DB::commit(); 
+                return  success('generation running',  ['generated_record'=>$generated_bills,'remaining_record'=>$remaining_bills_generation,'status'=>$record->status], 200);
                 //  return $this->return_output('flash', 'success', 'Record Add successfully', 'admin/group', '200');
                  } catch (\Exception $e) {
                      DB::rollback();
-                     return redirect()->back()->with(['error'=>$e->getMessage()]); 
+                    //  return redirect()->back()->with(['error'=>$e->getMessage()]); 
+                     return  success($e->getMessage(),  [], 200);
+                    //  return redirect()->back()->with(['error'=>$e->getMessage()]); 
                     //  return $this->return_output('error', 'error', [$e->getMessage()], 'back', '422');
                  }
                 
-       }
+    //    }
     }
 
     public function adjustment_save(Request $request)

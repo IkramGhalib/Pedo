@@ -255,6 +255,9 @@ Route::group(['middleware' => 'auth'], function () {
          Route::get('bill-generate-lists', [BillGenerateController::class, 'show'])->name('bill.generate.lists');
          Route::get('bill-generate-form', [BillGenerateController::class, 'form'])->name('bill.generate.form');
          Route::post('bill-generate-form', [BillGenerateController::class, 'save'])->name('bill.generate.save');
+
+         Route::post('bill-generate-load_statistics_view', [BillGenerateController::class, 'load_statistics_view'])->name('bill.generate.load_statistics_view');
+         
          Route::get('bill-generate-form-edit/{id}', [BillGenerateController::class, 'edit'])->name('bill.generate.edit');
          Route::post('bill-generate-form-update/{id}', [BillGenerateController::class, 'update'])->name('bill.generate.update');
          Route::get('bill-generate-disable/{id}', [BillGenerateController::class, 'reading_disable'])->name('bill.generate.disable');

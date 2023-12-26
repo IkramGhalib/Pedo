@@ -164,6 +164,7 @@ a {
     <td class="headingTd">c.bill</td>
    
     <td class="headingTd">Arear</td>
+    <td class="headingTd">Adjustment</td>
     <td class="headingTd">Amount </td>
     <td class="headingTd">l.p.surchage</td>
     <td class="headingTd">Amount after Due Date </td>
@@ -174,6 +175,7 @@ a {
   $a_total=0;
   $wd_total=0;
   $ad_total=0;
+  $t_adjustment=0;
 ?>
   @foreach ($record as $k => $row )
     
@@ -189,11 +191,12 @@ a {
     <td class="">{{$row->net_bill}}</td>
    
     <td class="">{{$row->arrears}}</td>
+    <td class="">{{$row->adjustment}}</td>
     <td class="">{{$row->WithinDuedate}}</td>
     <td class="">{{$row->l_p_surcharge}}</td>
     <td class="">{{$row->AfterdueDate}}</td>
   </tr>
-  <?php $c++;  $n_b_total+=$row->net_bill;$l_p_total+=$row->l_p_surcharge;$a_total+=$row->arrears; $wd_total+=$row->WithinDuedate;  $ad_total+=$row->AfterdueDate; ?>
+  <?php $c++;  $n_b_total+=$row->net_bill;$l_p_total+=$row->l_p_surcharge;$a_total+=$row->arrears; $wd_total+=$row->WithinDuedate;  $ad_total+=$row->AfterdueDate; $t_adjustment+=$row->adjustment;?>
   @endforeach
   <tr class="headingTr">
     <td class="headingTd " colspan="2"></td>
@@ -201,6 +204,7 @@ a {
     <td class="headingTd  "> <?= $n_b_total ?></td>
    
     <td class="headingTd  "> <?= $a_total ?></td>
+    <td class="headingTd  "> <?= $t_adjustment ?></td>
     <td class="headingTd  "> <?= $wd_total ?></td>
     <td class="headingTd  "> <?= $l_p_total ?></td>
     <td class="headingTd  "><?= $ad_total ?></td>

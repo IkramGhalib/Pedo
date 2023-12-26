@@ -14,7 +14,7 @@
 
     <div class="panel">
       <div class="panel-body">
-        <form method="POST" class="from_submission" action="{{ route('bill.generate.save') }}" id="form" enctype="multipart/form-data">
+        <form method="POST" class="from_submission" action="{{ route('bill.generate.load_statistics_view') }}" id="form" enctype="multipart/form-data">
           {{ csrf_field() }}
           {{-- <input type="hidden" name="user_id" value="{{ $user->id }}"> --}}
      
