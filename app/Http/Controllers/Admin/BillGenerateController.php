@@ -662,6 +662,14 @@ class BillGenerateController extends Controller
                  $config=Config::get_option('settingCharges','late_fee_surcharge');
                  if($config)
                  $l_p_surcharge_percentage=$config;
+
+                 // get service charges
+                 $service_charges=0;
+                 $s_c=Config::get_option('settingCharges','late_fee_surcharge');
+                 if($s_c)
+                 $service_charges=$s_c;
+
+
                  try {
                  
                 $record=BillGenerate::find($request->id);
@@ -694,7 +702,7 @@ class BillGenerateController extends Controller
                     if($adj)
                     {
                         $adj_amount=$adj->amount;
-                        DB::table('consumer_ledgers')->insert(['cm_id'=>$cm_id,'amount'=>$adj_amount,'remarks'=>'Adjustment Amount. id= '.$adj->id]);
+                        // DB::table('consumer_ledgers')->insert(['cm_id'=>$cm_id,'amount'=>$adj_amount,'remarks'=>'Adjustment Amount. id= '.$adj->id]);
                     }
                     // dd($adj);
                     // $arrear=round(ConsumerLedger::where('consumer_id',$value->consumer_id)->sum('amount'),2);
@@ -726,15 +734,16 @@ class BillGenerateController extends Controller
                         'charges_breakup'=>json_encode($finded_cateogry_slab_chareges['charges']),
                         'taxes_breakup'=>json_encode($finded_taxes),
                         'adjustment'=>$adj_amount,
-                        'WithinDuedate'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0),
+                        'service_charges'=>$service_charges,
+                        'WithinDuedate'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear+$adj_amount+$service_charges,0),
                         'net_bill'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data'],2),
                         'GTotal'=>round($finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0),
                         'DueDate'=> $record->due_date,
-                        'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0),
+                        'AfterdueDate'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear+$adj_amount+$service_charges,0),
                         'l_p_surcharge'=>round($l_p_surcharge_value,2),
                         'sub_cat_finded_id'=>$finded_cateogry_slab_chareges['sub_cat_finded_id'],
                         'tarrif_code'=>$finded_cateogry_slab_chareges['tarrif_code'],
-                        'consider_amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$arrear,0)
+                        'consider_amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$adj_amount+$finded_cateogry_slab_chareges['total_charges_data']+$arrear+$service_charges,0)
                     ];
 
                    

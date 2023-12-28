@@ -18,8 +18,13 @@
         <div class="row">
             <div class="form-group col-md-6">
               <label class="form-control-label">L.P Surcharge %</label>
-              <input type="text" class="form-control" name="late_fee_surcharge" 
-                placeholder="" value="{{ isset($config['late_fee_surcharge']) ? $config['late_fee_surcharge'] : '' }}" />
+              <input type="number" class="form-control" name="late_fee_surcharge" 
+                placeholder="" value="{{ isset($config['late_fee_surcharge']) ? $config['late_fee_surcharge'] : 0 }}" />
+            </div>
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Sevice Charges</label>
+              <input type="number" class="form-control" name="service_charges" 
+                placeholder="" value="{{ isset($config['service_charges']) ? $config['service_charges'] : 0 }}" />
             </div>
         
         </div>

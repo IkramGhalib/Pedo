@@ -577,12 +577,11 @@
                 </tr>
                 <tr class="fontsize" style="height: 25px;">
                     <td class="border-rb nestedtd2width" style="background-color: #7ADEFF;">
-                        <div id="subsidiesId"><b>SUBSIDIES </b></div>
-                        <div id="releifMsgTitleId"><b> </b></div>
+                        <div id="subsidiesId"><b>SERVICE CHARGES </b></div>
+                        <div id="releifMsgTitleId"><b>   </b></div>
                     </td>
                     <td colspan="3" class="border-b nestedtd2width content">
-                        <div id="releifMsgContentId">
-                            </div>
+                        {{$bill_data->service_charges}}
                     </td>
                 </tr>
                 <tr class="fontsize" style="height: 24px;">
