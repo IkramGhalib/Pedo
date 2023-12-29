@@ -123,7 +123,7 @@
 
                             <tr>
                                 <td> Bill Amount</td> 
-                                <td> Rs. {{$bill->gTotal}}</td> 
+                                <td> Rs. {{$bill->WithinDuedate}}</td> 
                             </tr>
 
                             <tr>
@@ -137,7 +137,7 @@
                             </tr>
                             <tr>
                                 <td> Amount After Due Date</td> 
-                                <td> Rs. {{$bill->gTotal+$bill->l_p_surcharge}}</td> 
+                                <td> Rs. {{$bill->AfterdueDate}}</td> 
                             </tr>
 
                         </table>
