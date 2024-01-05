@@ -26,12 +26,32 @@ class ApiReadingController extends Controller
 {
     public function get_list_for_reading(Request $request)
     {
-        $list=DB::table('consumer_meters')->select('ref_no','previous_reading_off_peak as pre_reading','cm_id','meter_no')->groupBy('ref_no')->get();
-        if($list)
-        return  success('Record Found',  $list, 200);
-        else
-        return  error('Record Not Found',  $list, 404);
 
+        $groups=DB::table('meter_reader_groups')->select('ref_start','ref_end')->where('user_id',auth()->user()->id)->get();
+        if($groups)
+        {
+            foreach($groups as $key => $grow)
+            {
+
+                    $list=DB::table('consumer_meters')->select('ref_no','previous_reading_off_peak as pre_reading','cm_id','meter_no');
+                    $list= $list->where('ref_no','>=',$grow->ref_start)->where('ref_no','<=',$grow->ref_end);
+                    $list= $list->groupBy('ref_no')->get();
+                    if($list){
+                        $grow->list=$list;
+                    }
+                    else
+                    {
+                        $grow->list=[];
+                    }
+
+            }
+            
+        }
+        if($groups)
+                return  success('Record Found',  $groups, 200);
+            else
+                return  error('Record Not Found',  $groups, 404);
+    
     }    
 
     public function get_month(Request $request)
@@ -92,6 +112,7 @@ class ApiReadingController extends Controller
                         $record->offpeak=$request->offpeak;
                         $record->cm_id=$request->cm_id;
                         $record->offpeak_units=$request->offpeak-$rec->previous_reading_off_peak;
+                        $record->offpeak_prev=$rec->previous_reading_off_peak;
                         $record->peak=$request->peak;
                         $record->status=$request->status;
                         // $record->added_date=date('Y-m-d');

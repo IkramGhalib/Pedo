@@ -3,7 +3,8 @@
 <div class="page-header">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Bill Generate</li>
+    <li class="breadcrumb-item ">Reading</li>
+    <li class="breadcrumb-item active">Meter Reading Group</li>
   </ol>
   <!-- <h1 class="page-title">Categories</h1> -->
 </div>
@@ -13,7 +14,7 @@
 <div class="panel">
         <div class="panel-heading">
             <div class="panel-title">
-              <a href="{{ route('reader.group.form') }}" class="btn btn-success btn-sm "><i class="icon wb-plus" aria-hidden="true"></i> Generate  </a>
+              <a href="{{ route('reader.group.form') }}" class="btn btn-success btn-sm "><i class="icon wb-plus" aria-hidden="true"></i> Add  </a>
             </div>
           
           <div class="panel-actions">
@@ -36,6 +37,7 @@
               <tr>
                 <th>#</th>
                
+                <th>Code</th>
                 <th>User</th>
                 <th>Ref Start</th>
                 <th>Ref End</th>
@@ -48,6 +50,7 @@
               @foreach($list as $key=>$i)
               <tr>
                 <td>{{ $key+1}}</td>
+                <td>{{ $i->bUser->code}} </td>
                 <td>{{ $i->bUser->first_name }} </td>
                 <td>{{ $i->ref_start }} </td>
                 <td>{{ $i->ref_end}}</td>
