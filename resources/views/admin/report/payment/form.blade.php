@@ -17,7 +17,7 @@
       {{ csrf_field() }}
       {{-- <input type="hidden" name="category_id" value="{{ $category->id }}"> --}}
       <div class="row">
-      <div class="form-group col-md-2 ">
+      {{-- <div class="form-group col-md-2 ">
           <label class="form-control-label"> Report Style</label>
           <select name="report_style" class="form-control"> 
               <option value="v"> Values </option>
@@ -28,7 +28,19 @@
               <label class="error" for="condition">{{ $errors->first('condition') }}</label>
           @endif       
           
-      </div>
+      </div> --}}
+      <div class="form-group col-md-2 ">
+        <label class="form-control-label"> Report Type</label>
+        <select name="report_style" class="form-control"> 
+            <option value="list"> Payment List </option>
+            <option value="bank_wise_list"> Payment List Bank Wise </option>
+
+        </select>   
+        @if ($errors->has('condition'))
+            <label class="error" for="condition">{{ $errors->first('condition') }}</label>
+        @endif       
+        
+    </div>
         <div class="form-group col-md-3 ">
           <label class="form-control-label">Month/Year <span class="text-danger"> *</span></label>
           <input type="month" class="form-control" name="month">

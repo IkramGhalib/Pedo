@@ -37,28 +37,45 @@ class ReportController extends Controller
 		$validatedData = $request->validate([
             'month' => 'required',
         ]);
-        $reading=Reading::with(['bConsumerMeter'=>function($q){
-            $q->orderBy('mannual_ref_no','ASC');
-        }])->where('month_year',$request->month.'-01');
-        if($request->condition && $request->unit)
-        $reading=$reading->where('offpeak_units',$request->condition,$request->unit);
-    
-        $record=$reading->get();
-        $fields=$request->all();
+       
     // dd($record);
-        if($request->report_style=='v')
+        if($request->report_style=='reading_list')
         {
-
+            $reading=Reading::with(['bConsumerMeter'=>function($q){
+                $q->orderBy('mannual_ref_no','ASC');
+            }])->where('month_year',$request->month.'-01');
+            if($request->condition && $request->unit)
+            $reading=$reading->where('offpeak_units',$request->condition,$request->unit);
+        
+            $record=$reading->get();
+            $fields=$request->all();
             return view('admin.report.reading.index',compact('record','fields'));
         }
         else
         {
+
+            $reading=Reading::with(['bConsumerMeter'=>function($q){
+                $q->orderBy('mannual_ref_no','ASC');
+            }])->where('month_year',$request->month.'-01');
+            // if($request->condition && $request->unit)
+            // $reading=$reading->where('offpeak_units',$request->condition,$request->unit);
+        
+            $record=$reading->get();
+
+            $reader_ids=Reading::with(['bConsumerMeter'=>function($q){
+                $q->orderBy('mannual_ref_no','ASC');
+            }])->where('month_year',$request->month.'-01')->groupBy('add_by')->get()->pluck('add_by');
+
+            $readers=DB::table('users')->select('id','first_name')->whereIn('id',$reader_ids)->get();
+            // dd($readers);
+            $fields=$request->all();
+            return view('admin.report.reading.reading_lis_meter_reader_wise',compact('record','fields','readers'));
             
-            $record=$reading=Reading::where('month_year',$request->month.'-01')->count();
-            $total_consumer=Consumer::where('status','active')->count();
-            // pr($total_consumer);
-            // dd($total_consumer);
-            return view('admin.report.reading.index_chart',compact('record','fields','total_consumer'));
+            // $record=$reading=Reading::where('month_year',$request->month.'-01')->count();
+            // $total_consumer=Consumer::where('status','active')->count();
+            // // pr($total_consumer);
+            // // dd($total_consumer);
+            // return view('admin.report.reading.index_chart',compact('record','fields','total_consumer'));
         }
     }
     // ------------------------------- Report -------------------------------------------------------
@@ -77,7 +94,7 @@ class ReportController extends Controller
         ]);
         
         $fields=$request->all();
-        if($request->report_style=='v')
+        if($request->report_style=='list')
         {
             $reading=PaymentReceive::with(['bConsumerMeter'=>function($q){
                 $q->orderBy('mannual_ref_no','ASC');
@@ -88,22 +105,31 @@ class ReportController extends Controller
         }
         else
         {
-            $req_month=$request->month.'-01';
-            $months[date('M-Y',strtotime($req_month))]=PaymentReceive::where('payment_month',$req_month)->sum('payment_amount');
-            $pre_1_m=date('Y-m-d', strtotime(date($req_month)." -1 month"));
-            // pr($pre_1_m);
-            $months[date('M-Y',strtotime($pre_1_m))]=PaymentReceive::where('payment_month',$pre_1_m)->sum('payment_amount');
-            $months[date('M-Y', strtotime(date($req_month)." -2 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -2 month")))->sum('payment_amount');
-            $months[date('M-Y', strtotime(date($req_month)." -3 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -3 month")))->sum('payment_amount');
-            $months[date('M-Y', strtotime(date($req_month)." -4 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -4 month")))->sum('payment_amount');
-            $months[date('M-Y', strtotime(date($req_month)." -5 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -5 month")))->sum('payment_amount');
-            $months[date('M-Y', strtotime(date($req_month)." -6 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -6 month")))->sum('payment_amount');
-            // $total_consumer=Consumer::where('status','active')->count();
-            // pr($total_consumer);
+            $banks=DB::table('banks')->get()->toArray();
+            $reading=PaymentReceive::with(['bConsumerMeter'=>function($q){
+                $q->orderBy('mannual_ref_no','ASC');
+            }])->where('payment_month',$request->month.'-01');
+            $record=$reading->get();
+            // $rr=Collect($record->groupBy('bank_id')->pluck('bank_id'));
+            // dd($rr);
+
+            return view('admin.report.payment.payment_list_bank_wise',compact('record','fields','banks'));
+            // $req_month=$request->month.'-01';
+            // $months[date('M-Y',strtotime($req_month))]=PaymentReceive::where('payment_month',$req_month)->sum('payment_amount');
+            // $pre_1_m=date('Y-m-d', strtotime(date($req_month)." -1 month"));
+            // // pr($pre_1_m);
+            // $months[date('M-Y',strtotime($pre_1_m))]=PaymentReceive::where('payment_month',$pre_1_m)->sum('payment_amount');
+            // $months[date('M-Y', strtotime(date($req_month)." -2 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -2 month")))->sum('payment_amount');
+            // $months[date('M-Y', strtotime(date($req_month)." -3 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -3 month")))->sum('payment_amount');
+            // $months[date('M-Y', strtotime(date($req_month)." -4 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -4 month")))->sum('payment_amount');
+            // $months[date('M-Y', strtotime(date($req_month)." -5 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -5 month")))->sum('payment_amount');
+            // $months[date('M-Y', strtotime(date($req_month)." -6 month"))]=PaymentReceive::where('payment_month',date('Y-m-d', strtotime(date($req_month)." -6 month")))->sum('payment_amount');
+            // // $total_consumer=Consumer::where('status','active')->count();
+            // // pr($total_consumer);
 
             
-            // dd($months);
-            return view('admin.report.payment.index_chart',compact('fields','months'));
+            // // dd($months);
+            // return view('admin.report.payment.index_chart',compact('fields','months'));
         }
     }
     // ------------------------------- Report -------------------------------------------------------
@@ -135,6 +161,23 @@ class ReportController extends Controller
                 $q->where('billing_month_year',$request->month.'-01');
             }])->where('is_active',1)->get();
             return view('admin.report.bill.summary',compact('record','fields'));
+        }
+
+        else if($request->condition=='bill-summary-list')
+        {
+            $record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){
+                if($request->start_refrence )
+                    $record=$q->where('ref_no','>=',$request->start_refrence);
+                if($request->end_refrence )
+                    $record=$q->where('ref_no','<=',$request->end_refrence);
+                $q->orderBy('mannual_ref_no','ASC');
+            }])->where('billing_month_year',$request->month.'-01');
+            // dd($record->get());
+           
+            
+            $record=$record->get();
+            // $fields=$request->all();
+            return view('admin.report.bill.bill_summery_list_report',compact('record','fields'));
         }
 
         else if($request->condition=='design')

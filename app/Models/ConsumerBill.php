@@ -18,4 +18,8 @@ class ConsumerBill extends Model
     {
         return $this->belongsTo(ConsumerMeter::class,'cm_id','cm_id');
     }
+    public function bBillGenerate()
+    {
+        return $this->belongsTo(BillGenerate::class,'generate_bill_id','id');
+    }
 }

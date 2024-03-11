@@ -19,4 +19,9 @@ class PaymentReceive extends Model
     {
         return $this->belongsTo(ConsumerMeter::class,'cm_id','cm_id');
     }
+
+    public function bConsumerBill()
+    {
+        return $this->belongsTo(ConsumerBill::class,'bill_id','id');
+    }
 }

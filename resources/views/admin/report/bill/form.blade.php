@@ -31,7 +31,8 @@
               <option value="all"> List of Bills </option>
               <option value="design"> Print Bill With Design </option>
               <option value="without-design"> Print Bill With out Design </option>
-              <option value="bill-summary"> Bill Summary </option>
+              <option value="bill-summary"> Bill Summary (Count)</option>
+              <option value="bill-summary-list"> Bill Summary List </option>
               <option value="all-breakup"> Bills (with All Breakup) </option>
               <!-- <option value="="> Equal </option> -->
 
