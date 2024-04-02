@@ -165,24 +165,34 @@ a {
     <td class="headingTd  text-right">Units</td>
   </tr>
   <?php $c=1; 
-  $total=0;
+  $gtotal=0;
+  
 ?>
   @foreach ($record as $k => $row )
-    
-            @foreach ($readers as $rk => $rrow )
-                @if ($rrow->id== $row->add_by)
-                    <tr>
-                      <td class="">{{$c}}</td>
-                      <td class="">{{$row->bConsumerMeter->ref_no}}</td>
-                      {{-- <td class="">{{app_month_format($row->month_year)}}</td> --}}
-                      {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
-                      <td >{{$row->offpeak_prev}}</td>
-                      <td >{{$row->offpeak}}</td>
-                      <td class=" text-right">{{$row->offpeak_units}}</td>
-                    </tr>
-                    <?php $c++; $total+=$row->offpeak_units ?>
-                @endif
-            @endforeach
+       @php $total=0; @endphp
+      @if(!$row->hManyReading->isEmpty())
+              <tr>
+                <td colspan="5"><b>Reader Name: {{$row->first_name}}</b></td>
+              </tr>
+                @foreach ($row->hManyReading as $rk => $rrow )
+                    {{-- @if ($rrow->id== $row->add_by) --}}
+                        <tr>
+                          <td class="">{{$c}}</td>
+                          <td class="">{{$rrow->bConsumerMeter->ref_no}}</td>
+                          {{-- <td class="">{{app_month_format($row->month_year)}}</td> --}}
+                          {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
+                          <td >{{$rrow->offpeak_prev}}</td>
+                          <td >{{$rrow->offpeak}}</td>
+                          <td class=" text-right">{{$rrow->offpeak_units}}</td>
+                        </tr>
+                        
+                        <?php $c++; $total+=$rrow->offpeak_units ?>
+                    {{-- @endif --}}
+                @endforeach
+                <tr>
+                  <td colspan="5" class="text-right"><b>Total : {{$total+=$rrow->offpeak_units}}</b></td>
+                </tr>
+      @endif          
   @endforeach
   
  
@@ -191,7 +201,7 @@ a {
     <td class="headingTd " colspan="3"></td>
     <td class="headingTd  text-right">TOTAL</td>
     <td class="headingTd  text-right">
-      <?= $total ?></td>
+      <?= $gtotal ?></td>
   </tr>
   
 </table>

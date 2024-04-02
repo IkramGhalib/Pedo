@@ -72,6 +72,11 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\RoleUser', 'user_id', 'id');
     }
+
+    public function hManyReading()
+    {
+        return $this->hasMany('App\Models\Reading',  'add_by','id');
+    }
     
 
 }

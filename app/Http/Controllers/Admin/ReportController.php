@@ -24,6 +24,7 @@ use App\Models\PaymentReceive;
 use App\Models\ConsumerBill;
 use App\Models\Consumer;
 use App\Models\ConsumerCategory;
+use Illuminate\Database\Eloquent\Builder;
 class ReportController extends Controller
 {
     // -------------------------------Reading Report -------------------------------------------------------
@@ -54,23 +55,42 @@ class ReportController extends Controller
         else
         {
 
-            $reading=Reading::with(['bConsumerMeter'=>function($q){
-                $q->orderBy('mannual_ref_no','ASC');
-            }])->where('month_year',$request->month.'-01');
-            // if($request->condition && $request->unit)
-            // $reading=$reading->where('offpeak_units',$request->condition,$request->unit);
+            // $reading=Reading::with(['bConsumerMeter'=>function($q){
+            //     $q->orderBy('mannual_ref_no','ASC');
+            // }])->where('month_year',$request->month.'-01');
+            // // if($request->condition && $request->unit)
+            // // $reading=$reading->where('offpeak_units',$request->condition,$request->unit);
         
-            $record=$reading->get();
+            // $record=$reading->get();
 
-            $reader_ids=Reading::with(['bConsumerMeter'=>function($q){
-                $q->orderBy('mannual_ref_no','ASC');
-            }])->where('month_year',$request->month.'-01')->groupBy('add_by')->get()->pluck('add_by');
+            // $reader_ids=Reading::with(['bConsumerMeter'=>function($q){
+            //     $q->orderBy('mannual_ref_no','ASC');
+            // }])->where('month_year',$request->month.'-01')->groupBy('add_by')->get()->pluck('add_by');
 
-            $readers=DB::table('users')->select('id','first_name')->whereIn('id',$reader_ids)->get();
+            // $readers=DB::table('users')->select('id','first_name')->whereIn('id',$reader_ids)->get();
             // dd($readers);
             $fields=$request->all();
-            return view('admin.report.reading.reading_lis_meter_reader_wise',compact('record','fields','readers'));
-            
+            // return view('admin.report.reading.reading_lis_meter_reader_wise',compact('record','fields','readers'));
+            // --------------------------------------------
+            $record= User::with(['RoleUser','hManyReading'=>function($query) use ($request){
+                return $query->where('month_year',$request->month.'-01');
+                // ->orderBy('mannual_ref_no','ASC');
+            },'hManyReading.bConsumerMeter'])->whereHas('RoleUser',function(Builder $q) {
+                $q->where('role_id',1);
+            })->get();
+            // dd($record);
+            return view('admin.report.reading.reading_lis_meter_reader_wise',compact('record','fields'));
+
+                // $ruser= User::whereHas('RoleUser',function(Builder $q) {
+                //     $q->where('role_id',1);
+                // },['hManyReading'=>function($query) use ($request){
+                //    return $query->where('month_year',$request->month.'-01');
+                // }])->get();
+                // dd($ruser);
+                // ['hManyReading'=>function() use ($request){
+
+                // }
+            // --------------------------------------------
             // $record=$reading=Reading::where('month_year',$request->month.'-01')->count();
             // $total_consumer=Consumer::where('status','active')->count();
             // // pr($total_consumer);
