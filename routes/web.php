@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\ReaderGroupController;
 use App\Http\Controllers\Admin\ChargesController;
 use App\Http\Controllers\Admin\ChargesTypeController;
 use App\Http\Controllers\Admin\TaxTypeController;
+use App\Http\Controllers\Admin\BankController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReceivePaymentController;
 // use App\Http\Controllers\QuestionController;
@@ -222,6 +223,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('admin/meter-store', [MeterController::class, 'store'])->name('admin.meter.store');
         Route::get('admin/meter-edit/{id}', [MeterController::class, 'edit'])->name('admin.meter.edit');
         Route::post('admin/meter-update/{id}', [MeterController::class, 'update'])->name('admin.meter.update');
+        
+        // Bank routes
+        Route::get('admin/bank-list', [BankController::class, 'index'])->name('admin.bank.list');
+        Route::get('admin/bank-form', [BankController::class, 'create'])->name('admin.bank.form');
+        Route::post('admin/bank-store', [BankController::class, 'store'])->name('admin.bank.store');
+        Route::get('admin/bank-edit/{id}', [BankController::class, 'edit'])->name('admin.bank.edit');
+        Route::post('admin/bank-update/{id}', [BankController::class, 'update'])->name('admin.bank.update');
 
 
 

@@ -268,6 +268,11 @@
                                 <span class="site-menu-title">Charges</span>
                             </a>
                         </li>
+                        <li class="site-menu-item {{ request()->is('admin/bank-*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.bank.list') }}">
+                                <span class="site-menu-title">Banks</span>
+                            </a>
+                        </li>
                         <!-- <li class="site-menu-item {{ request()->is('admin/config/setting-email') ? 'active' : '' }}">
                   <a href="{{ route('admin.settingEmail') }}">
                     <span class="site-menu-title">Email</span>
