@@ -197,6 +197,12 @@ a {
     
     <td class="">{{$row->arrears}}</td>
     
+    @foreach (json_decode($row->charges_breakup) as $ck => $crow )
+    <td class="">{{$crow->charges_type.' / '.$crow->charges}}</td>
+    @endforeach
+    @foreach (json_decode($row->taxes_breakup) as $tk => $trow )
+    <td class="">{{$trow->tax_type.' / '.$trow->calculated_tax}}</td>
+    @endforeach
 
        
 

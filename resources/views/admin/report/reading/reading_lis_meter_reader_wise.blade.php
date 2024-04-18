@@ -159,6 +159,8 @@ a {
     <td class="headingTd ">#</td>
     <td class="headingTd ">Refrence No</td>
     {{-- <td class="headingTd ">Month </td> --}}
+    <td class="headingTd ">Consumer Name </td>
+    <td class="headingTd ">Feeder</td>
     <td class="headingTd ">Prev.Reading </td>
     <td class="headingTd ">Cur.Reading </td>
     {{-- <td class="headingTd ">PAID FROM</td> --}}
@@ -172,13 +174,15 @@ a {
        @php $total=0; @endphp
       @if(!$row->hManyReading->isEmpty())
               <tr>
-                <td colspan="5"><b>Reader Name: {{$row->first_name}}</b></td>
+                <td colspan="7"><b>Reader Name: {{$row->first_name}}</b></td>
               </tr>
                 @foreach ($row->hManyReading as $rk => $rrow )
                     {{-- @if ($rrow->id== $row->add_by) --}}
                         <tr>
                           <td class="">{{$c}}</td>
                           <td class="">{{$rrow->bConsumerMeter->ref_no}}</td>
+                          <td class="">{{$rrow->bConsumerMeter->bConsumer->full_name}}</td>
+                          <td class="">{{$rrow->bConsumerMeter->bConsumer->bFeeder->name}}</td>
                           {{-- <td class="">{{app_month_format($row->month_year)}}</td> --}}
                           {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
                           <td >{{$rrow->offpeak_prev}}</td>
@@ -190,7 +194,7 @@ a {
                     {{-- @endif --}}
                 @endforeach
                 <tr>
-                  <td colspan="5" class="text-right"><b>Total : {{$total+=$rrow->offpeak_units}}</b></td>
+                  <td colspan="7" class="text-right"><b>Total : {{$total+=$rrow->offpeak_units}}</b></td>
                 </tr>
       @endif          
   @endforeach
@@ -198,7 +202,7 @@ a {
  
 
   <tr class="headingTr">
-    <td class="headingTd " colspan="3"></td>
+    <td class="headingTd " colspan="5"></td>
     <td class="headingTd  text-right">TOTAL</td>
     <td class="headingTd  text-right">
       <?= $gtotal ?></td>

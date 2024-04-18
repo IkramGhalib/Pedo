@@ -18,5 +18,10 @@ class Consumer extends Model
         return $this->hasOne(ConsumerCategory::class,'id','consumer_category_id');
     }
 
+    public function bFeeder()
+    {
+        return $this->hasOne(Feeder::class,'id','feeder_id');
+    }
+
     
 }

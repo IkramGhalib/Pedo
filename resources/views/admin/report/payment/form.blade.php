@@ -34,6 +34,7 @@
         <select name="report_style" class="form-control"> 
             <option value="list"> Payment List </option>
             <option value="bank_wise_list"> Payment List Bank Wise </option>
+            <option value="arrear_list"> Arrear List </option>
 
         </select>   
         @if ($errors->has('condition'))

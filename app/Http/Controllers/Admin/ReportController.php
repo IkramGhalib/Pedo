@@ -50,6 +50,7 @@ class ReportController extends Controller
         
             $record=$reading->get();
             $fields=$request->all();
+            // dd($record);
             return view('admin.report.reading.index',compact('record','fields'));
         }
         else
@@ -75,7 +76,7 @@ class ReportController extends Controller
             $record= User::with(['RoleUser','hManyReading'=>function($query) use ($request){
                 return $query->where('month_year',$request->month.'-01');
                 // ->orderBy('mannual_ref_no','ASC');
-            },'hManyReading.bConsumerMeter'])->whereHas('RoleUser',function(Builder $q) {
+            },'hManyReading.bConsumerMeter','hManyReading.bConsumerMeter.bConsumer','hManyReading.bConsumerMeter.bConsumer.bFeeder'])->whereHas('RoleUser',function(Builder $q) {
                 $q->where('role_id',1);
             })->get();
             // dd($record);
@@ -123,6 +124,22 @@ class ReportController extends Controller
 
             return view('admin.report.payment.index',compact('record','fields'));
         }
+        else if($request->report_style=='arrear_list')
+        {
+            // dd($fields);
+            $record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){
+                // if($request->start_refrence )
+                    // $record=$q->where('ref_no','>=',$request->start_refrence);
+                // if($request->end_refrence )
+                    // $record=$q->where('ref_no','<=',$request->end_refrence);
+                $q->orderBy('mannual_ref_no','ASC');
+            }])->where('billing_month_year',$request->month.'-01')->where('arrears','>',0);
+            // dd($record->get());
+            $record=$record->get();
+            // dd($record);
+            return view('admin.report.payment.arrear_list',compact('record','fields'));
+        }
+        
         else
         {
             $banks=DB::table('banks')->get()->toArray();
@@ -269,6 +286,7 @@ class ReportController extends Controller
            
             
             $record=$record->get();
+            // dd()
             // $fields=$request->all();
             return view('admin.report.bill.all_with_brakup',compact('record','fields','charges_types','tax_types'));
         }

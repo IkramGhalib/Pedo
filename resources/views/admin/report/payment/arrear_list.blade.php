@@ -133,39 +133,40 @@ a {
 
 .right-align {display: -webkit-box; display: -webkit-flex; display: flex; justify-content: flex-end; -webkit-justify-content: flex-end; text-align:right;}
   </style>
-  <div id="print_section"><a href="{{route('admin.report.reading.form')}}"  style="background-color:#3e8ef7;padding:5px;color:white"> &nbsp;&nbsp;Back&nbsp;&nbsp; </a> &nbsp; <a href="#" style="background-color:#3e8ef7;padding:5px;color:white" onclick="window.print();return false;" > &nbsp;&nbsp;Print&nbsp;&nbsp; </a> </div>
+  <div id="print_section"><a href="{{route('admin.report.bill.form')}}"  style="background-color:#3e8ef7;padding:5px;color:white"> &nbsp;&nbsp;Back&nbsp;&nbsp; </a> &nbsp; <a href="#" style="background-color:#3e8ef7;padding:5px;color:white" onclick="window.print();return false;" > &nbsp;&nbsp;Print&nbsp;&nbsp; </a> </div>
 <div class="header">
 <p><img src="{{asset(env('LOGO'))}}" width="100px;" height="100px;"></p>
-  <p>Reading Report</p>
+  <p>Arear list</p>
   <p style="font-size:18px !important;">{{app_month_format($fields['month'])}}</p>
 </div>
 
 <table class="printTable">
-  <tr class="titleTr">
-    <td class="titleTd" colspan='3'> @if($fields['unit'])  Condition:  {{'Units '.$fields['condition'].' '.$fields['unit']}} @endif <br/>
+  {{-- <tr class="titleTr">
+    <td class="titleTd" colspan='3'>  <br/>
     </td>
     <!-- <td class="titleTd col4 text-right" colspan=2>Reporting Period</td> -->
     <td class="titleTd col4 text-right" colspan='1'></td>
   </tr>
   <tr class="subtitleTr">
-    <td class="titleTd " colspan=2></td>
-    <td class="titleTd  text-right" colspan=2> &nbsp;  &nbsp; </td>
+    <td class="titleTd col1" colspan=2></td>
+    <td class="titleTd col4 text-right" colspan=2> &nbsp;  &nbsp; </td>
   </tr>
 
-  <tr></tr>
+  <tr></tr> --}}
 
- 
+  
   <tr class="headingTr">
     <td class="headingTd ">#</td>
     <td class="headingTd ">Refrence No</td>
-
-    <td class="headingTd ">Prev.Reading </td>
-    <td class="headingTd ">Cur.Reading </td>
-    {{-- <td class="headingTd ">PAID FROM</td> --}}
-    <td class="headingTd  text-right">Units</td>
+    <td class="headingTd ">Consumer Name</td>
+   
+    <td class="headingTd">Arrear Amount </td>
+    {{-- <td class="headingTd">Due Date</td> --}}
+    {{-- <td class="headingTd">Amount after Due Date </td> --}}
   </tr>
   <?php $c=1; 
   $total=0;
+  
 ?>
   @foreach ($record as $k => $row )
     
@@ -174,23 +175,27 @@ a {
   <tr>
     <td class="">{{$c}}</td>
     <td class="">{{$row->bConsumerMeter->ref_no}}</td>
-    {{-- <td class="">{{$row->bConsumerMeter->bConsumer->full_name}}</td> --}}
-    {{-- <td class="">{{app_month_format($row->month_year)}}</td> --}}
+    <td class="">{{$row->bConsumerMeter->bConsumer->full_name}}</td>
+    {{-- <td class="">{{$row->hOSubCategory->name}}</td> --}}
+    {{-- <td class="">{{app_month_format($row->billing_month_year)}}</td> --}}
     {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
-    <td >{{$row->offpeak_prev}}</td>
-    <td >{{$row->offpeak}}</td>
-    <td class=" text-right">{{$row->offpeak_units}}</td>
-  </tr>
-  <?php $c++; $total+=$row->offpeak_units ?>
-  @endforeach
-  
- 
 
+    {{-- <td class="">{{$row->net_bill}}</td> --}}
+   
+    <td class="">{{$row->arrears}}</td>
+    {{-- <td class="">{{$row->bBillGenerate->due_date}}</td> --}}
+
+    {{-- <td class="">{{$row->AfterdueDate}}</td> --}}
+  </tr>
+  <?php $c++;  $total+=$row->arrears;  ?>
+  @endforeach
   <tr class="headingTr">
-    <td class="headingTd " colspan="3"></td>
-    <td class="headingTd  text-right">TOTAL</td>
-    <td class="headingTd  text-right">
-      <?= $total ?></td>
+    <td class="headingTd " colspan="2"></td>
+    <td class="headingTd  ">TOTAL</td>
+    <td class="headingTd  "> <?= $total ?></td>
+   
+   
+    
   </tr>
   
 </table>
