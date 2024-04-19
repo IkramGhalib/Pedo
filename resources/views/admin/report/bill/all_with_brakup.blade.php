@@ -153,7 +153,11 @@ a {
   </tr>
 
   <tr></tr>
-
+  <?php 
+    // $emtpy_array=array();
+    // $emtpy_array=array_merge($charges_types,$tax_types);
+    // dd($emtpy_array);
+  ?>
   
   <tr class="headingTr">
     <td class="headingTd ">#</td>
@@ -161,6 +165,7 @@ a {
     <td class="headingTd ">Tarrif</td>
     <td class="headingTd ">Tarrif Category</td>
     <td class="headingTd ">Units </td>
+    <td class="headingTd ">E.cost </td>
     {{-- <td class="headingTd ">PAID FROM</td> --}}
     <td class="headingTd">Arear</td>
     {{-- <td class="headingTd">c.bill</td> --}}
@@ -181,6 +186,7 @@ a {
   $a_total=0;
   $wd_total=0;
   $ad_total=0;
+  
 ?>
   @foreach ($record as $k => $row )
     
@@ -192,14 +198,20 @@ a {
     <td class="">{{$row->tarrif_code}}</td>
     <td class="">{{$row->hOSubCategory->name}}</td>
     <td class="">{{$row->offpeak_units}}</td>
+    <td class="">{{$row->currentbill}}</td>
     {{-- <td class="">{{app_month_format($row->billing_month_year)}}</td> --}}
     {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
     
     <td class="">{{$row->arrears}}</td>
     
     @foreach (json_decode($row->charges_breakup) as $ck => $crow )
-    <td class="">{{$crow->charges_type.' / '.$crow->charges}}</td>
+          @foreach ($charges_types as $ctkey => $ctrow )
+            @if($ctrow->title==$crow->charges_type)
+              <td class="">{{$crow->charges_type.' / '.$crow->charges}}</td>
+            @endif
+          @endforeach
     @endforeach
+
     @foreach (json_decode($row->taxes_breakup) as $tk => $trow )
     <td class="">{{$trow->tax_type.' / '.$trow->calculated_tax}}</td>
     @endforeach

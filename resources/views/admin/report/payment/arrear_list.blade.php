@@ -159,12 +159,18 @@ a {
     <td class="headingTd ">#</td>
     <td class="headingTd ">Refrence No</td>
     <td class="headingTd ">Consumer Name</td>
+    <td class="headingTd ">Tarrif</td>
+    <td class="headingTd ">Tarrif Category</td>
    
-    <td class="headingTd">Arrear Amount </td>
+    <td class="headingTd">C.Month Arrear </td>
+    <td class="headingTd">C.Month L.P Surcharge </td>
+    <td class="headingTd">Total Arrear </td>
     {{-- <td class="headingTd">Due Date</td> --}}
     {{-- <td class="headingTd">Amount after Due Date </td> --}}
   </tr>
   <?php $c=1; 
+  $total_a=0;
+  $total_lp=0;
   $total=0;
   
 ?>
@@ -176,6 +182,8 @@ a {
     <td class="">{{$c}}</td>
     <td class="">{{$row->bConsumerMeter->ref_no}}</td>
     <td class="">{{$row->bConsumerMeter->bConsumer->full_name}}</td>
+    <td class="">{{$row->tarrif_code}}</td>
+    <td class="">{{$row->hOSubCategory->name}}</td>
     {{-- <td class="">{{$row->hOSubCategory->name}}</td> --}}
     {{-- <td class="">{{app_month_format($row->billing_month_year)}}</td> --}}
     {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
@@ -183,16 +191,21 @@ a {
     {{-- <td class="">{{$row->net_bill}}</td> --}}
    
     <td class="">{{$row->arrears}}</td>
+    <td class="">{{$row->l_p_surcharge}}</td>
+    <td class="">{{$row->l_p_surcharge+$row->arrears}}</td>
     {{-- <td class="">{{$row->bBillGenerate->due_date}}</td> --}}
 
     {{-- <td class="">{{$row->AfterdueDate}}</td> --}}
+
   </tr>
-  <?php $c++;  $total+=$row->arrears;  ?>
+  <?php $c++;  $total_a+=$row->arrears; $total_lp+=$row->l_p_surcharge; $total+=$row->l_p_surcharge+$row->arrears; ?>
   @endforeach
   <tr class="headingTr">
-    <td class="headingTd " colspan="2"></td>
-    <td class="headingTd  ">TOTAL</td>
-    <td class="headingTd  "> <?= $total ?></td>
+    <td class="headingTd " colspan="4"></td>
+    <td class="headingTd  "><b>TOTAL</b></td>
+    <td class="headingTd  "><b> <?= $total_a ?></b></td>
+      <td class="headingTd  "><b> <?= $total_lp ?></b></td>
+        <td class="headingTd  "> <b><?= $total ?></b></td>
    
    
     

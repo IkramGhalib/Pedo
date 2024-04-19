@@ -133,7 +133,7 @@ class ReportController extends Controller
                 // if($request->end_refrence )
                     // $record=$q->where('ref_no','<=',$request->end_refrence);
                 $q->orderBy('mannual_ref_no','ASC');
-            }])->where('billing_month_year',$request->month.'-01')->where('arrears','>',0);
+            }])->where('billing_month_year',$request->month.'-01')->where('arrears','<=',0);
             // dd($record->get());
             $record=$record->get();
             // dd($record);
@@ -281,10 +281,10 @@ class ReportController extends Controller
             }])->where('billing_month_year',$request->month.'-01');
             // dd($record->get());
 
-           $charges_types= DB::Table('charges_types')->get();
-           $tax_types= DB::Table('tax_types')->get();
+           $charges_types= DB::Table('charges_types')->get()->toArray();
+           $tax_types= DB::Table('tax_types')->get()->toArray();
            
-            
+            // dd($charges_types);
             $record=$record->get();
             // dd()
             // $fields=$request->all();
