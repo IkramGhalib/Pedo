@@ -173,6 +173,7 @@ a {
     <td class="col3">{{app_month_format($row->payment_month)}}</td>
     <td class="col1"> {{$row->payment_date}}</td> 
     <td class="col1"> {{$row->bBank->code.' - '.$row->bBank->title}}</td> 
+    
     <td class="col1 text-right">{{$row->payment_amount}}</td>
   </tr>
   <?php $c++; $total+=$row->payment_amount ?>

@@ -128,6 +128,7 @@ class ReceivePaymentController extends Controller
             'payment_date' => 'required',
             'bank' => 'required',
             'amount' => 'required',
+            'page_no' => 'required',
             // 'payment_date' => 'required_without:peak',
             // 'bank' =>Rule::when($request->offpeak != null, 'required'),
             // 'amount' =>Rule::when($request->peak != null, 'required')
@@ -166,6 +167,7 @@ class ReceivePaymentController extends Controller
                 $record->payment_date=date('y-m-d',strtotime($request->payment_date));
                 $record->bank_id=$request->bank;
                 $record->payment_amount=$request->amount;
+                $record->page_no=$request->page_no;
                 // $record->conumer_id=$rec->consumer_id;
                 $record->bill_id=$bill_data->id;
                 $record->cm_id=$rec->cm_id;

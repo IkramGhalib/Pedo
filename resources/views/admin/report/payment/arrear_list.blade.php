@@ -162,6 +162,7 @@ a {
     <td class="headingTd ">Tarrif</td>
     <td class="headingTd ">Tarrif Category</td>
    
+    <td class="headingTd">P.Month Arrear </td>
     <td class="headingTd">C.Month Arrear </td>
     <td class="headingTd">C.Month L.P Surcharge </td>
     <td class="headingTd">Total Arrear </td>
@@ -169,9 +170,10 @@ a {
     {{-- <td class="headingTd">Amount after Due Date </td> --}}
   </tr>
   <?php $c=1; 
-  $total_a=0;
   $total_lp=0;
   $total=0;
+  $total_old_a=0; 
+  $total_curr_a=0; 
   
 ?>
   @foreach ($record as $k => $row )
@@ -191,19 +193,25 @@ a {
     {{-- <td class="">{{$row->net_bill}}</td> --}}
    
     <td class="">{{$row->arrears}}</td>
+    <td class="">{{$row->net_bill+$row->adjustment+$row->sevice_charges}}</td>
     <td class="">{{$row->l_p_surcharge}}</td>
-    <td class="">{{$row->l_p_surcharge+$row->arrears}}</td>
+    <td class="">{{$row->l_p_surcharge+$row->arrears+$row->net_bill+$row->adjustment+$row->sevice_charges}}</td>
+    
     {{-- <td class="">{{$row->bBillGenerate->due_date}}</td> --}}
 
     {{-- <td class="">{{$row->AfterdueDate}}</td> --}}
 
   </tr>
-  <?php $c++;  $total_a+=$row->arrears; $total_lp+=$row->l_p_surcharge; $total+=$row->l_p_surcharge+$row->arrears; ?>
+  <?php $c++;   $total_old_a+=$row->arrears; 
+                $total_curr_a+=$row->net_bill+$row->adjustment+$row->sevice_charges; 
+                $total_lp+=$row->l_p_surcharge; 
+                $total+=$row->l_p_surcharge+$row->arrears+$row->net_bill+$row->adjustment+$row->sevice_charges; ?>
   @endforeach
   <tr class="headingTr">
     <td class="headingTd " colspan="4"></td>
     <td class="headingTd  "><b>TOTAL</b></td>
-    <td class="headingTd  "><b> <?= $total_a ?></b></td>
+    <td class="headingTd  "><b> <?= $total_old_a ?></b></td>
+    <td class="headingTd  "><b> <?= $total_curr_a ?></b></td>
       <td class="headingTd  "><b> <?= $total_lp ?></b></td>
         <td class="headingTd  "> <b><?= $total ?></b></td>
    

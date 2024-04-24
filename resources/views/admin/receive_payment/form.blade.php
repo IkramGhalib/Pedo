@@ -63,6 +63,8 @@ div.date {
                     @endif
               </div>
             </div>
+
+           
             
 
             <!-- <div class="form-group col-md-3 mt-2 pt-1">
@@ -104,6 +106,20 @@ div.date {
                 @if ($errors->has('bank'))
                     <label class="error" for="bank">{{ $errors->first('bank') }}</label>
                 @endif
+            </div>
+
+            <div class="form-group col-md-2 mt-2 pt-1">
+
+              <label class=""> Page No</label>
+                <div class="input-group " >
+                    <input type="number" class="form-control page_no "  required>
+                    {{-- <div class="input-group-addon"> --}}
+                    {{-- <span class="glyphicon glyphicon-th"></span> --}}
+                    {{-- </div> --}}
+                    @if ($errors->has('page_no'))
+                        <label class="error" for="page_no">{{ $errors->first('page_no') }}</label>
+                    @endif
+              </div>
             </div>
 
           </div>
@@ -185,7 +201,8 @@ $("#ref_no").select2({
       var v3=$('.payment_date').val();
       var v4=$('#bank').val();
       var v5=$('.amount').val();
-      if(v1 && v2 && v3 && v4 && v5)
+      var v6=$('.page_no').val();
+      if(v1 && v2 && v3 && v4 && v5 && v6)
       {
         $.ajax({
 
@@ -193,7 +210,7 @@ $("#ref_no").select2({
 
                 url:"{{route('receive.payment.save')}}",
 
-                data:{'ref_no':v1,'payment_month':v2,'payment_date':v3,'bank':v4,'amount':v5},
+                data:{'ref_no':v1,'payment_month':v2,'payment_date':v3,'bank':v4,'amount':v5,'page_no':v6},
 
                 success:function(data){
                   if(data.success=='true')

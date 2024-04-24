@@ -150,7 +150,7 @@ a {
   <tr></tr>
 
   <tr class="headingTr">
-  <td class="text-center strong" colspan="6"> Records</td>
+  <td class="text-center strong" colspan="7"> Records</td>
   </tr>
   <tr class="headingTr">
     <td class="headingTd col1">#</td>
@@ -159,6 +159,7 @@ a {
     {{-- <td class="headingTd col3">Month </td> --}}
      <td class="headingTd col1">Payment Date </td> 
      <td class="headingTd col1">Bank</td> 
+     <td class="headingTd col1">Page No</td> 
     <td class="headingTd col4 text-right">Paid Amount</td>
   </tr>
   <?php $c=1; 
@@ -168,7 +169,7 @@ a {
     
     @foreach ($banks as $bk => $brow )
       <tr>
-        <td class="col1" colspan="6"> <b> {{$brow->code.' - '.$brow->title}}</b></td>
+        <td class="col1" colspan="7"> <b> {{$brow->code.' - '.$brow->title}}</b></td>
       </tr>
         @if($row->bank_id==$brow->id) 
         <tr>
@@ -178,6 +179,7 @@ a {
           {{-- <td class="col3">{{app_month_format($row->payment_month)}}</td> --}}
           <td class="col1"> {{$row->payment_date}}</td> 
           <td class="col1"> {{$row->bBank->code.' - '.$row->bBank->title}}</td> 
+          <td class="col1"> {{$row->page_no}}</td> 
           <td class="col1 text-right">{{$row->payment_amount}}</td>
         </tr>
         @endif
@@ -189,7 +191,7 @@ a {
  
 
   <tr class="headingTr">
-    <td class="headingTd col1" colspan="4"></td>
+    <td class="headingTd col1" colspan="5"></td>
     <td class="headingTd col3 text-right">TOTAL</td>
     <td class="headingTd col4 text-right">
       <?= $total ?></td>
