@@ -177,7 +177,9 @@ a {
   
 ?>
   @foreach ($record as $k => $row )
-    
+    @if($row->bConsumerMeter->ref_no==4000)
+      {{-- {{dd($row)}} --}}
+    @endif
   
 
   <tr>
@@ -186,16 +188,21 @@ a {
     <td class="">{{$row->bConsumerMeter->bConsumer->full_name}}</td>
     <td class="">{{$row->tarrif_code}}</td>
     <td class="">{{$row->hOSubCategory->name}}</td>
-    {{-- <td class="">{{$row->hOSubCategory->name}}</td> --}}
-    {{-- <td class="">{{app_month_format($row->billing_month_year)}}</td> --}}
-    {{-- <td class=""> {{$row->offpeak_units}}</td> --}}
-
-    {{-- <td class="">{{$row->net_bill}}</td> --}}
-   
     <td class="">{{$row->arrears}}</td>
-    <td class="">{{$row->net_bill+$row->adjustment+$row->sevice_charges}}</td>
+    @if($row->IsPayed==1)
+      <td class=""> {{$row->consider_amount-$row->paid_amount}}</td>
+    @else
+      <td class="">{{$row->net_bill+$row->adjustment+$row->sevice_charges}}</td>
+    @endif
     <td class="">{{$row->l_p_surcharge}}</td>
-    <td class="">{{$row->l_p_surcharge+$row->arrears+$row->net_bill+$row->adjustment+$row->sevice_charges}}</td>
+    
+    <td class="">
+      @if($row->IsPayed==1)
+      {{$row->consider_amount-$row->paid_amount+$row->l_p_surcharge}}
+      @else
+      {{$row->l_p_surcharge+$row->arrears+$row->net_bill+$row->adjustment+$row->sevice_charges}}
+      @endif
+    </td>
     
     {{-- <td class="">{{$row->bBillGenerate->due_date}}</td> --}}
 

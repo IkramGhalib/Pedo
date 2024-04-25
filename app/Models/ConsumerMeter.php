@@ -20,4 +20,9 @@ class ConsumerMeter extends Model
     {
         return $this->hasOne(Consumer::class,'id','consumer_id');
     }
+
+    // public function hMconsumerLedger()
+    // {
+    //     return $this->hasOne(ConsumerLedger::class,'cm_id','cm_id');
+    // }
 }
