@@ -133,7 +133,7 @@ class ReportController extends Controller
                 // if($request->end_refrence )
                     // $record=$q->where('ref_no','<=',$request->end_refrence);
                 $q->orderBy('mannual_ref_no','ASC');
-            }])->where('billing_month_year',$request->month.'-01')->where('arrears','!=',0);
+            }])->where('billing_month_year',$request->month.'-01');
             // dd($record->get());
             $record=$record->get();
             // dd($record);
