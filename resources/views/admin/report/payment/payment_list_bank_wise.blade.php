@@ -182,9 +182,10 @@ a {
           <td class="col1"> {{$row->page_no}}</td> 
           <td class="col1 text-right">{{$row->payment_amount}}</td>
         </tr>
+        <?php  $total+=$row->payment_amount ?>
         @endif
     
-    <?php $c++; $total+=$row->payment_amount ?>
+    <?php $c++;  ?>
     @endforeach
   @endforeach
   
