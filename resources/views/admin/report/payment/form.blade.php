@@ -35,6 +35,7 @@
             <option value="list"> Payment List </option>
             <option value="bank_wise_list"> Payment List Bank Wise </option>
             <option value="arrear_list"> Arrear List </option>
+            <option value="arrear_list_summary"> Arrear List Summary </option>
 
         </select>   
         @if ($errors->has('condition'))

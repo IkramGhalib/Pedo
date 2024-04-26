@@ -139,6 +139,21 @@ class ReportController extends Controller
             // dd($record);
             return view('admin.report.payment.arrear_list',compact('record','fields'));
         }
+        else if($request->report_style=='arrear_list_summary')
+        {
+            // dd($fields);
+            $record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){
+                // if($request->start_refrence )
+                    // $record=$q->where('ref_no','>=',$request->start_refrence);
+                // if($request->end_refrence )
+                    // $record=$q->where('ref_no','<=',$request->end_refrence);
+                $q->orderBy('mannual_ref_no','ASC');
+            }])->where('billing_month_year',$request->month.'-01');
+            // dd($record->get());
+            $record=$record->get();
+            // dd($record);
+            return view('admin.report.payment.arrear_list_summary',compact('record','fields'));
+        }
         
         else
         {

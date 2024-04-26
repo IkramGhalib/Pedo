@@ -136,7 +136,7 @@ a {
   <div id="print_section"><a href="{{route('admin.report.payment.form')}}"  style="background-color:#3e8ef7;padding:5px;color:white"> &nbsp;&nbsp;Back&nbsp;&nbsp; </a> &nbsp; <a href="#" style="background-color:#3e8ef7;padding:5px;color:white" onclick="window.print();return false;" > &nbsp;&nbsp;Print&nbsp;&nbsp; </a> </div>
 <div class="header">
 <p><img src="{{asset(env('LOGO'))}}" width="100px;" height="100px;"></p>
-  <p>Arear list</p>
+  <p>Arear list Summary</p>
   <p style="font-size:18px !important;">{{app_month_format($fields['month'])}}</p>
 </div>
 
@@ -161,13 +161,7 @@ a {
     <td class="headingTd ">Consumer Name</td>
     <td class="headingTd ">Tarrif</td>
     <td class="headingTd ">Tarrif Category</td>
-   
-    <td class="headingTd">P.Month Arrear </td>
-    <td class="headingTd">C.Month Arrear </td>
-    <td class="headingTd">C.Month L.P Surcharge </td>
     <td class="headingTd">Total Arrear </td>
-    {{-- <td class="headingTd">Due Date</td> --}}
-    {{-- <td class="headingTd">Amount after Due Date </td> --}}
   </tr>
   <?php $c=1; 
   $total_lp=0;
@@ -177,21 +171,12 @@ a {
   
 ?>
   @foreach ($record as $k => $row )
-  
-
   <tr>
     <td class="">{{$c}}</td>
     <td class="">{{$row->bConsumerMeter->ref_no}}</td>
     <td class="">{{$row->bConsumerMeter->bConsumer->full_name}}</td>
     <td class="">{{$row->tarrif_code}}</td>
     <td class="">{{$row->hOSubCategory->name}}</td>
-    <td class="">{{$row->arrears}}</td>
-    @if($row->IsPayed==1)
-      <td class=""> {{$row->consider_amount-$row->paid_amount}}</td>
-    @else
-      <td class="">{{$row->net_bill+$row->adjustment+$row->sevice_charges}}</td>
-    @endif
-    <td class="">{{$row->l_p_surcharge}}</td>
     
     <td class="">
       @if($row->IsPayed==1)
@@ -200,33 +185,17 @@ a {
       {{$row->l_p_surcharge+$row->arrears+$row->net_bill+$row->adjustment+$row->sevice_charges}}
       @endif
     </td>
-    
-    {{-- <td class="">{{$row->bBillGenerate->due_date}}</td> --}}
-
-    {{-- <td class="">{{$row->AfterdueDate}}</td> --}}
-
   </tr>
-  <?php $c++;   $total_old_a+=$row->arrears; 
-                $total_curr_a+=$row->net_bill+$row->adjustment+$row->sevice_charges; 
-                $total_lp+=$row->l_p_surcharge; 
+  <?php $c++;   
                 $total+=$row->l_p_surcharge+$row->arrears+$row->net_bill+$row->adjustment+$row->sevice_charges; ?>
   @endforeach
   <tr class="headingTr">
     <td class="headingTd " colspan="4"></td>
     <td class="headingTd  "><b>TOTAL</b></td>
-    <td class="headingTd  "><b> <?= $total_old_a ?></b></td>
-    <td class="headingTd  "><b> <?= $total_curr_a ?></b></td>
-      <td class="headingTd  "><b> <?= $total_lp ?></b></td>
         <td class="headingTd  "> <b><?= $total ?></b></td>
-   
-   
-    
   </tr>
   
 </table>
-
-  
-
        
   
 
