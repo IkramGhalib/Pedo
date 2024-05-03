@@ -179,15 +179,29 @@ a {
     <td class="">{{$row->hOSubCategory->name}}</td>
     
     <td class="">
-      @if($row->IsPayed==1)
-      {{$row->consider_amount-$row->paid_amount+$row->l_p_surcharge}}
-      @else
-      {{$row->l_p_surcharge+$row->arrears+$row->net_bill+$row->adjustment+$row->sevice_charges}}
-      @endif
+      {{-- @if($row->IsPayed==1)
+          @if($row->is_payed_on_date==1)
+            @php 
+             $l1= $row->consider_amount-$row->paid_amount;
+              echo $l1;
+              $total+=$l1;
+            @endphp 
+          @else
+              @php 
+                $v=$row->consider_amount-$row->paid_amount+$row->l_p_surcharge;
+                echo $v;
+                $total+=$v;
+              @endphp  
+          @endif
+      @else --}}
+      @php $total+=$row->arrears;
+        echo $row->arrears;
+      @endphp  
+      {{-- @endif --}}
     </td>
   </tr>
   <?php $c++;   
-                $total+=$row->l_p_surcharge+$row->arrears+$row->net_bill+$row->adjustment+$row->sevice_charges; ?>
+                ?>
   @endforeach
   <tr class="headingTr">
     <td class="headingTd " colspan="4"></td>
