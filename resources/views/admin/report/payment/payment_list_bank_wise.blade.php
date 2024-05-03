@@ -142,12 +142,12 @@ a {
 
 <table class="printTable">
  
-  <tr class="subtitleTr">
+  {{-- <tr class="subtitleTr">
     <td class="titleTd col1" colspan=2></td>
     <td class="titleTd col4 text-right" colspan=2> &nbsp;  &nbsp; </td>
   </tr>
 
-  <tr></tr>
+  <tr></tr> --}}
 
   <tr class="headingTr">
   <td class="text-center strong" colspan="7"> Records</td>
@@ -164,38 +164,84 @@ a {
   </tr>
   <?php $c=1; 
   $total=0;
+  $page=0;
+  $pageTotal=0;
 ?>
   @foreach ($record as $k => $row )
-    
-    @foreach ($banks as $bk => $brow )
-      <tr>
-        <td class="col1" colspan="7"> <b> {{$brow->code.' - '.$brow->title}}</b></td>
-      </tr>
-        @if($row->bank_id==$brow->id) 
+         @php $banks=0; @endphp
+        
+        @if(!$row->hMPaymentReceive->isEmpty())
+       
+           
         <tr>
-          <td class="col1">{{$c}}</td>
-          <td class="col2">{{$row->bConsumerMeter->ref_no}}</td>
-          <td class="col2">{{$row->bConsumerBill->hOSubCategory->name}}</td>
-          {{-- <td class="col3">{{app_month_format($row->payment_month)}}</td> --}}
-          <td class="col1"> {{$row->payment_date}}</td> 
-          <td class="col1"> {{$row->bBank->code.' - '.$row->bBank->title}}</td> 
-          <td class="col1"> {{$row->page_no}}</td> 
-          <td class="col1 text-right">{{$row->payment_amount}}</td>
+          <td></td>
+          <td class="col1" colspan="6"> <b> {{$row->code.' - '.$row->title}}</b></td>
         </tr>
-        <?php  $total+=$row->payment_amount ?>
+            @foreach ($row->hMPaymentReceive as $k2 => $row2 )
+            @php
+             $pageTotal+=$row2->payment_amount;
+            if($page==0) // if first iteration of loop
+            {
+              if($page!=$row2->page_no) // on first iteration of loop just change page no
+                      $page=$row2->page_no;
+            }
+            else {
+
+              if($page!=$row2->page_no) // if its not first iteration and page no it not same with iteration page no. means page changed and show page total
+                  {
+                      $pageTotal+=(-$row2->payment_amount);
+                      echo "<tr style='font-weight:bold'><td></td><td class='col1 ' colspan='5'> Page ".$page." Total </td> <td class='text-right'> ".$pageTotal." </td></tr>";
+                      $page=$row2->page_no;
+                      $pageTotal=0;
+                      $pageTotal+=$row2->payment_amount;
+                  }
+             
+            
+            }
+                 
+          @endphp
+            <tr>
+                  <td class="col1">{{$c}}</td>
+                  <td class="col2">{{$row2->bConsumerMeter->ref_no}}</td>
+                  <td class="col2">{{$row2->bConsumerBill->hOSubCategory->name}}</td>
+                 
+                  {{-- <td class="col3">{{app_month_format($row->payment_month)}}</td> --}}
+                  <td class="col1"> {{$row2->payment_date}}</td> 
+                  <td class="col1"> {{$row->title}} </td> 
+                  <td class="col1"> {{$row2->page_no}}</td> 
+                  <td class="col1 text-right">{{$row2->payment_amount}}</td>
+                </tr>
+                <?php  $banks+=$row2->payment_amount ?>
+                <?php  $total+=$row2->payment_amount ?>
+                <?php $c++;  ?>
+
+
+            @php
+               if($loop->last) // if loop last then also show page total beacuse there is no futher entry for page no  change 
+              {
+                      echo "<tr style='font-weight:bold'><td></td><td class='col1 ' colspan='5'> Page ".$page." Total </td> <td class='text-right'> ".$pageTotal." </td></tr>";
+                      $pageTotal=0;
+              }
+            @endphp    
+            @endforeach
+            <tr class="headingTr">
+              <td class="headingTd col1" colspan="5"></td>
+              <td class="headingTd col3 text-right">Bank Total </td>
+              <td class="headingTd col4 text-right">
+                <?= $banks ?></td>
+            </tr>
         @endif
     
-    <?php $c++;  ?>
+   
     @endforeach
-  @endforeach
   
  
 
   <tr class="headingTr">
     <td class="headingTd col1" colspan="5"></td>
-    <td class="headingTd col3 text-right">TOTAL</td>
+    <td class="headingTd col3 text-right"><b>TOTAL</b></td>
     <td class="headingTd col4 text-right">
-      <?= $total ?></td>
+    <b>  <?= $total ?></b></td>
   </tr>
   
 </table>

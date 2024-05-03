@@ -21,6 +21,7 @@ use DB;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use App\Models\Reading;
 use App\Models\PaymentReceive;
+use App\Models\Bank;
 use App\Models\ConsumerBill;
 use App\Models\Consumer;
 use App\Models\ConsumerCategory;
@@ -157,15 +158,20 @@ class ReportController extends Controller
         
         else
         {
-            $banks=DB::table('banks')->get()->toArray();
-            $reading=PaymentReceive::with(['bConsumerMeter'=>function($q){
-                $q->orderBy('mannual_ref_no','ASC');
-            }])->where('payment_month',$request->month.'-01');
-            $record=$reading->get();
-            // $rr=Collect($record->groupBy('bank_id')->pluck('bank_id'));
-            // dd($rr);
+            // $banks=DB::table('banks')->get()->toArray();
+            // $reading=PaymentReceive::with(['bConsumerMeter'=>function($q){
+            //     $q->orderBy('mannual_ref_no','ASC');
+            // }])->where('payment_month',$request->month.'-01');
+            // $record=$reading->get();
 
-            return view('admin.report.payment.payment_list_bank_wise',compact('record','fields','banks'));
+            // $banks=DB::table('banks')->get()->toArray();
+            $reading=Bank::with(['hMPaymentReceive'=>function($q) use ($request){
+                $q->where('payment_month',$request->month.'-01')->orderBy('page_no','asc');
+            },'hMPaymentReceive.bConsumerMeter']);
+            $record=$reading->get();
+            // dd($record);
+
+            return view('admin.report.payment.payment_list_bank_wise',compact('record','fields'));
             // $req_month=$request->month.'-01';
             // $months[date('M-Y',strtotime($req_month))]=PaymentReceive::where('payment_month',$req_month)->sum('payment_amount');
             // $pre_1_m=date('Y-m-d', strtotime(date($req_month)." -1 month"));
