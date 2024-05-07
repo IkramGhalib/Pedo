@@ -185,16 +185,28 @@ a {
     {{-- <td class="headingTd">Amount </td> --}}
     {{-- <td class="headingTd">l.p.surchage</td> --}}
     <td class="headingTd"> S.Charg</td>
-    <td class="headingTd"> L.P.Charg</td>
     <td class="headingTd"> Adjustment</td>
+    <td class="headingTd"> Amount</td>
+
+    <td class="headingTd"> L.P.Charg</td>
     <td class="headingTd">Amount after Due Date </td>
   </tr>
   <?php $c=1; 
   $n_b_total=0;
   $l_p_total=0;
   $a_total=0;
+  $sur_total=0;
+  $adj_total=0;
   $wd_total=0;
-  $ad_total=0;
+  $af_total=0;
+  $u_total=0;
+
+  $ed_total=0;
+  $fpa_total=0;
+  $ed_fpa_total=0;
+
+  $f_s_sur_total=0;
+  $q_t_total=0;
   
 ?>
   @foreach ($record as $k => $row )
@@ -221,11 +233,16 @@ a {
     @endphp
     @foreach ($charges_breakup as $ck => $crow )
             @if($crow->code=='QTRTA')
-            @php $qtrta=$crow->calculated_charges; @endphp
+            @php $qtrta=$crow->calculated_charges; 
+              $q_t_total+=$qtrta;
+            @endphp
             @endif
 
             @if($crow->charges_type=='F.S Surcharge')
-            @php $fssurcharge=$crow->calculated_charges; @endphp
+            @php $fssurcharge=$crow->calculated_charges; 
+            
+            $f_s_sur_total+=$fssurcharge;
+            @endphp
             @endif
     @endforeach
           
@@ -243,15 +260,21 @@ a {
     
     @foreach ( $tax_breakup as $tk => $trow )
            @if($trow->code=='FPA')
-               @php $fpa= $trow->calculated_tax @endphp
+               @php $fpa= $trow->calculated_tax;
+                    $fpa_total+=$fpa;
+               @endphp
             @endif
 
             @if($trow->code=='ED')
-              @php $ed= $trow->calculated_tax; @endphp
+              @php $ed= $trow->calculated_tax; 
+              $ed_total+=$ed;
+              @endphp
             @endif
 
             @if($trow->code=='EDFPA')
-                 @php $edfpa=$trow->calculated_tax; @endphp
+                 @php $edfpa=$trow->calculated_tax;
+                      $fpa_total+=$edfpa;
+                  @endphp
             @endif
    
     @endforeach
@@ -264,22 +287,40 @@ a {
     {{-- <td class="">{{$row->net_bill}}</td> --}}
    
     <td class="">{{$row->service_charges}}</td>
-    <td class="">{{$row->l_p_surcharge}}</td>
     <td class="">{{$row->adjustment}}</td>
+    <td class="">{{$row->WithinDuedate}}</td>
+
+    <td class="">{{$row->l_p_surcharge}}</td>
     <td class="">{{$row->AfterdueDate}}</td>
   </tr>
-  <?php $c++;  $n_b_total+=$row->net_bill;$l_p_total=$row->l_p_surcharge;$a_total=$row->arrears; $wd_total=$row->WithinDuedate;  $ad_total=$row->AfterdueDate; ?>
+  <?php $c++;  
+                $u_total+=$row->offpeak_units;
+                $n_b_total+=$row->currentbill;
+                $a_total+=$row->arrears; 
+                $sur_total+=$row->service_charges; 
+                $adj_total+=$row->adjustment; 
+                $wd_total+=$row->WithinDuedate; 
+                $l_p_total+=$row->l_p_surcharge;
+                $af_total+=$row->AfterdueDate; ?>
   @endforeach
-  {{-- <tr class="headingTr">
+  <tr class="headingTr" style="font-weight:bold">
     <td class="headingTd " colspan="3"></td>
     <td class="headingTd  ">TOTAL</td>
-    <td class="headingTd  "> <?= $n_b_total ?></td>
+    <td class="headingTd  ">  <?= $u_total ?></td>
+    <td class="headingTd  "><?= $n_b_total ?></td>
    
-    <td class="headingTd  "> <?= $a_total ?></td>
+    <td class="headingTd  "><?= $a_total ?></td>
+    <td class="headingTd  "><?= $q_t_total ?></td>
+    <td class="headingTd  "><?= $f_s_sur_total ?></td>
+    <td class="headingTd  "> <?= $fpa_total ?></td>
+    <td class="headingTd  "> <?= $ed_total ?></td>
+    <td class="headingTd  "><?= $ed_fpa_total ?></td>
+    <td class="headingTd  "> <?= $sur_total ?></td>
+    <td class="headingTd  "><?= $adj_total ?></td>
     <td class="headingTd  "> <?= $wd_total ?></td>
     <td class="headingTd  "> <?= $l_p_total ?></td>
-    <td class="headingTd  "><?= $ad_total ?></td>
-  </tr> --}}
+    <td class="headingTd  "> <?= $af_total ?></td>
+  </tr>
   
 </table>
 

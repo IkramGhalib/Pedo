@@ -238,7 +238,7 @@ class ReportController extends Controller
             return view('admin.report.bill.bill_summery_list_report',compact('record','fields'));
         }
 
-        else if($request->condition=='design')
+        else if($request->condition=='design' || $request->condition=='without-design')
         {
             
             // $record=ConsumerBill::with('hOSubCategory')->where('billing_month_year',$request->month.'-01');
@@ -288,7 +288,12 @@ class ReportController extends Controller
 
 
             // dd($record);
+            if($request->condition=='design')
             return view('admin.report.bill.bill_v2_list',compact('record','fields'));
+            else
+            return view('admin.report.bill.bill_v2_list_clear',compact('record','fields'));
+
+
         }
         else if($request->condition=='all-breakup')
         {
