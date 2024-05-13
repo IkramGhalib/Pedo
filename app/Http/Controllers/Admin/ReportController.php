@@ -54,6 +54,19 @@ class ReportController extends Controller
             // dd($record);
             return view('admin.report.reading.index',compact('record','fields'));
         }
+        else if($request->report_style=='reading_list_with_image')
+        {
+            $reading=Reading::with(['bConsumerMeter'=>function($q){
+                $q->orderBy('mannual_ref_no','ASC');
+            }])->where('month_year',$request->month.'-01');
+            if($request->condition && $request->unit)
+            $reading=$reading->where('offpeak_units',$request->condition,$request->unit);
+        
+            $record=$reading->get();
+            $fields=$request->all();
+            // dd($record);
+            return view('admin.report.reading.reading_list_with_image',compact('record','fields'));
+        }
         else
         {
 
@@ -127,6 +140,8 @@ class ReportController extends Controller
         }
         else if($request->report_style=='arrear_list')
         {
+            $cur_month=$request->month.'-01';
+            $prev_month = date('Y-m-d', strtotime('-1 month', strtotime($cur_month)));
             // dd($fields);
             $record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){
                 // if($request->start_refrence )
@@ -134,24 +149,32 @@ class ReportController extends Controller
                 // if($request->end_refrence )
                     // $record=$q->where('ref_no','<=',$request->end_refrence);
                 $q->orderBy('mannual_ref_no','ASC');
-            }])->where('billing_month_year',$request->month.'-01');
+            }])->where('billing_month_year',$cur_month)->get();
             // dd($record->get());
-            $record=$record->get();
+            $pre_record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){
+                // if($request->start_refrence )
+                    // $record=$q->where('ref_no','>=',$request->start_refrence);
+                // if($request->end_refrence )
+                    // $record=$q->where('ref_no','<=',$request->end_refrence);
+                $q->orderBy('mannual_ref_no','ASC');
+            }])->where('billing_month_year',$prev_month)->get()->toArray();
+            // dd($pre_record);
             // dd($record);
-            return view('admin.report.payment.arrear_list',compact('record','fields'));
+            return view('admin.report.payment.arrear_list',compact('record','fields','pre_record'));
         }
         else if($request->report_style=='arrear_list_summary')
         {
             // dd($fields);
+            $cur_month=$request->month.'-01';
             $record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){
                 // if($request->start_refrence )
                     // $record=$q->where('ref_no','>=',$request->start_refrence);
                 // if($request->end_refrence )
                     // $record=$q->where('ref_no','<=',$request->end_refrence);
                 $q->orderBy('mannual_ref_no','ASC');
-            }])->where('billing_month_year',$request->month.'-01');
-            // dd($record->get());
-            $record=$record->get();
+            }])->where('billing_month_year',$cur_month)->get();
+
+            
             // dd($record);
             return view('admin.report.payment.arrear_list_summary',compact('record','fields'));
         }

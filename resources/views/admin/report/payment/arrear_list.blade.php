@@ -174,30 +174,65 @@ a {
   $total=0;
   $total_old_a=0; 
   $total_curr_a=0; 
+
+  $pre_record_collect_list=collect($pre_record);
+
+  $arrears=0;
+  $consider_amount=0;
+  $paid_amount=0;
+  $net_bill=0;
+  $adjustment=0;
+  $service_charges=0;
+  $l_p_surcharge=0;
   
 ?>
   @foreach ($record as $k => $row )
-  
+      @php
+        
+        $pre_record_collect_row=$pre_record_collect_list->where('cm_id',$row->cm_id)->first();
+        // dd($pre_record_collect_row);
+        if($pre_record_collect_row)
+        {
+          $arrears=$pre_record_collect_row['arrears'];
+          $consider_amount=$pre_record_collect_row['consider_amount'];
+          $paid_amount=$pre_record_collect_row['paid_amount'];
+          $net_bill=$pre_record_collect_row['net_bill'];
+          $adjustment=$pre_record_collect_row['adjustment'];
 
+          $service_charges=$pre_record_collect_row['service_charges'];
+          $l_p_surcharge=$pre_record_collect_row['l_p_surcharge'];
+        }
+        else {
+          $arrears=0;
+          $consider_amount=0;
+          $paid_amount=0;
+          $net_bill=0;
+          $adjustment=0;
+          $service_charges=0;
+          $l_p_surcharge=0;
+        }
+      @endphp
   <tr>
     <td class="">{{$c}}</td>
     <td class="">{{$row->bConsumerMeter->ref_no}}</td>
     <td class="">{{$row->bConsumerMeter->bConsumer->full_name}}</td>
     <td class="">{{$row->tarrif_code}}</td>
     <td class="">{{$row->hOSubCategory->name}}</td>
-    <td class="">{{$row->arrears}}</td>
-    @if($row->IsPayed==1)
-      <td class=""> {{$row->consider_amount-$row->paid_amount}}</td>
+    <td class="">{{$arrears}}</td>
+    @if($pre_record_collect_row['IsPayed']==1)
+      <td class=""> {{$consider_amount-$paid_amount}}</td>
     @else
-      <td class="">{{$row->net_bill+$row->adjustment+$row->sevice_charges}}</td>
+      <td class=""> {{($net_bill+$adjustment+$service_charges)}}</td>
+
     @endif
-    <td class="">{{$row->l_p_surcharge}}</td>
+    <td class="">{{$l_p_surcharge}}</td>
     
     <td class="">
       @if($row->IsPayed==1)
       {{$row->consider_amount-$row->paid_amount+$row->l_p_surcharge}}
       @else
-      {{$row->l_p_surcharge+$row->arrears+$row->net_bill+$row->adjustment+$row->sevice_charges}}
+      {{-- {{$l_p_surcharge+$arrears+$net_bill+$adjustment+$service_charges}} --}}
+      {{$l_p_surcharge+$arrears+$net_bill+$adjustment+$service_charges}}
       @endif
     </td>
     
@@ -206,10 +241,12 @@ a {
     {{-- <td class="">{{$row->AfterdueDate}}</td> --}}
 
   </tr>
-  <?php $c++;   $total_old_a+=$row->arrears; 
-                $total_curr_a+=$row->net_bill+$row->adjustment+$row->sevice_charges; 
-                $total_lp+=$row->l_p_surcharge; 
-                $total+=$row->l_p_surcharge+$row->arrears+$row->net_bill+$row->adjustment+$row->sevice_charges; ?>
+  <?php $c++;   $total_old_a+=$arrears; 
+                $total_curr_a+=$net_bill+$adjustment+$service_charges; 
+                $total_lp+=$l_p_surcharge; 
+                $total+=$l_p_surcharge+$arrears+$net_bill+$adjustment+$service_charges; 
+                // $total+=$row->arrears; 
+                ?>
   @endforeach
   <tr class="headingTr">
     <td class="headingTd " colspan="4"></td>

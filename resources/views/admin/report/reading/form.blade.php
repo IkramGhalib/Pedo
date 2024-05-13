@@ -29,10 +29,11 @@
           @endif       
           
       </div> --}}
-      <div class="form-group col-md-2 ">
+      <div class="form-group col-md-3 ">
         <label class="form-control-label"> Report Type</label>
         <select name="report_style" class="form-control"> 
             <option value="reading_list"> Reading List </option>
+            <option value="reading_list_with_image"> Reading List (With Image)</option>
             <option value="reading_list_read_wise"> Reading list (Reader Wise) </option>
 
         </select>   
