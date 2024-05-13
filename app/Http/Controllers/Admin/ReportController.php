@@ -166,6 +166,7 @@ class ReportController extends Controller
         {
             // dd($fields);
             $cur_month=$request->month.'-01';
+            $prev_month = date('Y-m-d', strtotime('-1 month', strtotime($cur_month)));
             $record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){
                 // if($request->start_refrence )
                     // $record=$q->where('ref_no','>=',$request->start_refrence);
@@ -173,10 +174,17 @@ class ReportController extends Controller
                     // $record=$q->where('ref_no','<=',$request->end_refrence);
                 $q->orderBy('mannual_ref_no','ASC');
             }])->where('billing_month_year',$cur_month)->get();
+            $pre_record=ConsumerBill::with(['hOSubCategory','bConsumerMeter'=>function($q) use ($request){
+                // if($request->start_refrence )
+                    // $record=$q->where('ref_no','>=',$request->start_refrence);
+                // if($request->end_refrence )
+                    // $record=$q->where('ref_no','<=',$request->end_refrence);
+                $q->orderBy('mannual_ref_no','ASC');
+            }])->where('billing_month_year',$prev_month)->get()->toArray();
 
             
             // dd($record);
-            return view('admin.report.payment.arrear_list_summary',compact('record','fields'));
+            return view('admin.report.payment.arrear_list_summary',compact('record','fields','pre_record'));
         }
         
         else

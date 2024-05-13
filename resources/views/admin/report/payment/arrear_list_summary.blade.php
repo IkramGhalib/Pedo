@@ -136,7 +136,7 @@ a {
   <div id="print_section"><a href="{{route('admin.report.payment.form')}}"  style="background-color:#3e8ef7;padding:5px;color:white"> &nbsp;&nbsp;Back&nbsp;&nbsp; </a> &nbsp; <a href="#" style="background-color:#3e8ef7;padding:5px;color:white" onclick="window.print();return false;" > &nbsp;&nbsp;Print&nbsp;&nbsp; </a> </div>
 <div class="header">
 <p><img src="{{asset(env('LOGO'))}}" width="100px;" height="100px;"></p>
-  <p>Arear list Summary</p>
+  <p>Arear list Summary Report</p>
   <p style="font-size:18px !important;">{{app_month_format($fields['month'])}}</p>
 </div>
 
@@ -161,16 +161,58 @@ a {
     <td class="headingTd ">Consumer Name</td>
     <td class="headingTd ">Tarrif</td>
     <td class="headingTd ">Tarrif Category</td>
+   
     <td class="headingTd">Total Arrear </td>
+    {{-- <td class="headingTd">Due Date</td> --}}
+    {{-- <td class="headingTd">Amount after Due Date </td> --}}
   </tr>
   <?php $c=1; 
   $total_lp=0;
   $total=0;
   $total_old_a=0; 
   $total_curr_a=0; 
+
+  $pre_record_collect_list=collect($pre_record);
+
+  $arrears=0;
+  $consider_amount=0;
+  $paid_amount=0;
+  $net_bill=0;
+  $adjustment=0;
+  $service_charges=0;
+  $l_p_surcharge=0;
+  $IsPayed=0;
   
 ?>
   @foreach ($record as $k => $row )
+      @php
+        
+        $pre_record_collect_row=$pre_record_collect_list->where('cm_id',$row->cm_id)->first();
+        // dd($pre_record_collect_row);
+        if($pre_record_collect_row)
+        {
+          $arrears=$pre_record_collect_row['arrears'];
+          $consider_amount=$pre_record_collect_row['consider_amount'];
+          $paid_amount=$pre_record_collect_row['paid_amount'];
+          $net_bill=$pre_record_collect_row['net_bill'];
+          $adjustment=$pre_record_collect_row['adjustment'];
+
+          $service_charges=$pre_record_collect_row['service_charges'];
+          $l_p_surcharge=$pre_record_collect_row['l_p_surcharge'];
+          $IsPayed=$pre_record_collect_row['IsPayed'];
+        }
+        else {
+          $arrears=0;
+          $consider_amount=0;
+          $paid_amount=0;
+          $net_bill=0;
+          $adjustment=0;
+          $service_charges=0;
+          $l_p_surcharge=0;
+
+          $IsPayed=0;
+        }
+      @endphp
   <tr>
     <td class="">{{$c}}</td>
     <td class="">{{$row->bConsumerMeter->ref_no}}</td>
@@ -179,37 +221,30 @@ a {
     <td class="">{{$row->hOSubCategory->name}}</td>
     
     <td class="">
-      {{-- @if($row->IsPayed==1)
-          @if($row->is_payed_on_date==1)
-            @php 
-             $l1= $row->consider_amount-$row->paid_amount;
-              echo $l1;
-              $total+=$l1;
-            @endphp 
-          @else
-              @php 
-                $v=$row->consider_amount-$row->paid_amount+$row->l_p_surcharge;
-                echo $v;
-                $total+=$v;
-              @endphp  
-          @endif
-      @else --}}
-      @php $total+=$row->arrears;
-        echo $row->arrears;
-      @endphp  
-      {{-- @endif --}}
+      @if($IsPayed==1)
+      {{$row->consider_amount-$paid_amount+$l_p_surcharge}}
+      @else
+      {{$l_p_surcharge+$arrears+$net_bill+$adjustment+$service_charges}}
+      @endif
     </td>
   </tr>
   <?php $c++;   
+                $total+=$l_p_surcharge+$arrears+$net_bill+$adjustment+$service_charges; 
                 ?>
   @endforeach
   <tr class="headingTr">
     <td class="headingTd " colspan="4"></td>
     <td class="headingTd  "><b>TOTAL</b></td>
         <td class="headingTd  "> <b><?= $total ?></b></td>
+   
+   
+    
   </tr>
   
 </table>
+
+  
+
        
   
 
