@@ -184,6 +184,7 @@ a {
   $adjustment=0;
   $service_charges=0;
   $l_p_surcharge=0;
+  $IsPayed=0;
   
 ?>
   @foreach ($record as $k => $row )
@@ -201,6 +202,7 @@ a {
 
           $service_charges=$pre_record_collect_row['service_charges'];
           $l_p_surcharge=$pre_record_collect_row['l_p_surcharge'];
+          $IsPayed=$pre_record_collect_row['IsPayed'];
         }
         else {
           $arrears=0;
@@ -210,6 +212,8 @@ a {
           $adjustment=0;
           $service_charges=0;
           $l_p_surcharge=0;
+
+          $IsPayed=0;
         }
       @endphp
   <tr>
@@ -219,7 +223,7 @@ a {
     <td class="">{{$row->tarrif_code}}</td>
     <td class="">{{$row->hOSubCategory->name}}</td>
     <td class="">{{$arrears}}</td>
-    @if($pre_record_collect_row['IsPayed']==1)
+    @if($IsPayed==1)
       <td class=""> {{$consider_amount-$paid_amount}}</td>
     @else
       <td class=""> {{($net_bill+$adjustment+$service_charges)}}</td>
