@@ -232,7 +232,7 @@ a {
     <td class="">{{$l_p_surcharge}}</td>
     
     <td class="">
-      @if($row->IsPayed==1)
+      @if($IsPayed==1)
       {{$row->consider_amount-$row->paid_amount+$row->l_p_surcharge}}
       @else
       {{-- {{$l_p_surcharge+$arrears+$net_bill+$adjustment+$service_charges}} --}}
