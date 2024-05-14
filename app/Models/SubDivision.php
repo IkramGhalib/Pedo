@@ -14,8 +14,8 @@ class SubDivision extends Model
 
     use HasFactory;
 
-    // public function question()
-    // {
-    //     return $this->belongsTo(Question::class,'q_id','id');
-    // }
+    public function bDivision()
+    {
+        return $this->belongsTo(Division::class,'division_id','id');
+    }
 }

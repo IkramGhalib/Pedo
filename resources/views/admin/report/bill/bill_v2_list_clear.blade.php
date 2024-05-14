@@ -981,14 +981,15 @@ span
                     <table class="nested4">
                         <tbody><tr>
                             <td colspan="3">
-                                <p style="margin: 0; text-align: left; padding-left: 20px">
+                                <p style="margin: 0; text-align: left; padding-left: 20px;">
                                     <span>NAME &amp; ADDRESS</span>
                                     <br>
-                                    <span>{{$bill_data->full_name}} </span>
                                     <br>
-                                    <span>{{$bill_data->father_name}} </span>
+                                    <span style="color:black !important;">{{$bill_data->full_name}} </span>
                                     <br>
-                                    <span>{{$bill_data->address}} </span>
+                                    <span style="color:black !important;">{{$bill_data->father_name}} </span>
+                                    <br>
+                                    <span style="color:black !important;">{{$bill_data->address}} </span>
                                     <br>
                                     <!-- <span>CHD</span> -->
                                     <!-- <br> -->
@@ -1231,8 +1232,8 @@ span
                 </tr>
                 
                 <tr class="fontsize" style="height: 24px;">
-                    <td class="border-r" colspan="2">
-                        <h3>BILL CALCULATION</h3>
+                    <td class="border-r" colspan="2" >
+                        <h3 style="color:black !important;">BILL CALCULATION</h3>
                     </td>
                     {{-- <td class="border-rb" style="background-color: #FFB2B2;" rowspan="3">
                         
@@ -1261,7 +1262,7 @@ span
                 </tr>
                 <tr class="border-b fontsize" style="height: 24px;">
                     <td class="border-rb" colspan="2" rowspan="3">
-                        <table style="width: 100%;">
+                        <table style="width: 100%;color:black !important;" >
                             
                             <tbody>
                                 <tr>
@@ -1270,7 +1271,7 @@ span
                                 {{-- <td></td> --}}
                                 {{-- <td></td> --}}
                             </tr>
-                            <tr class="content">
+                            <tr class="content" >
                                 <td>
                                     @foreach (json_decode($bill_data->off_peak_bill_breakup) as $ofpkkey => $off_peak_bil_breakup_row )
                                         <?php echo $off_peak_bil_breakup_row->units ?> X <?php  echo $off_peak_bil_breakup_row->charges;  echo "="; echo $off_peak_bil_breakup_row->charges*$off_peak_bil_breakup_row->units;   echo "<br/>" ?> 

@@ -14,8 +14,8 @@ class Feeder extends Model
 
     use HasFactory;
 
-    // public function question()
-    // {
-    //     return $this->belongsTo(Question::class,'q_id','id');
-    // }
+    public function bSubDivision()
+    {
+        return $this->belongsTo(SubDivision::class,'sub_division_id','id');
+    }
 }

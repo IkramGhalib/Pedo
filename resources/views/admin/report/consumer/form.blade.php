@@ -18,18 +18,27 @@
       {{-- <input type="hidden" name="category_id" value="{{ $category->id }}"> --}}
       <div class="row">
         
-      <div class="form-group col-md-3 ">
+      <div class="form-group col-md-4 ">
           <label class="form-control-label"> Report Type</label>
-          <select name="report_type" class="form-control"> 
+          <select name="report_type" class="form-control report_type"> 
               <option value="all"> All </option>
               <option value="active"> Active </option>
               <option value="de-active"> De-Active</option>
+              <option value="consumer-info"> Consumer(Full Info)</option>
           </select>   
           @if ($errors->has('report_type'))
               <label class="error" for="report_type">{{ $errors->first('report_type') }}</label>
           @endif       
           
       </div>
+      <div class="form-group col-md-3 refrence_section" style="display:none">
+        <label class="form-control-label"> Refrence no</label>
+        <input type="number" class="form-control" name="refrence_no">
+        
+        @if ($errors->has('refrence_no'))
+            <label class="error" for="refrence_no">{{ $errors->first('refrence_no') }}</label>
+        @endif
+    </div>
 
      
       
@@ -58,7 +67,22 @@
     
       
      
+$(document).ready(function(){
+  
+  $('.report_type').change(function(){
+    if($(this).val()=='consumer-info')
+    {
+      console.log('1');
+      $('.refrence_section').show();
+    }
+    else
+    {
+      $('.refrence_section').hide();
+      console.log('2');
 
+    }
+  });
+});
 
         // $("#categoryForm").validate({
         //     rules: {

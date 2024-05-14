@@ -378,8 +378,30 @@ class ReportController extends Controller
          $validatedData = $request->validate([
              'report_type' => 'required',
          ]);
-         if($request->report_type !='all' )
+         if($request->report_type =='consumer-info' )
+         {
+            // if($request->refrence_no)
+            // {
+                $record=Consumer::whereHas('meters',function($q) use ($request){
+                    // if($request->start_refrence )
+                        $q->where('ref_no','=',$request->refrence_no);
+                    
+                    // $q->orderBy('mannual_ref_no','ASC');
+                })->with('meters.hManyBills','meters.hManyBills.bBillGenerate','meters.hManyPayments','bConsumerCategory','meters','bFeeder','bFeeder.bSubDivision','bFeeder.bSubDivision.bDivision')->first();
+
+            // }
+            // else
+            // {
+
+            //     $record=Consumer::with('meters')->get();
+            // }
+            // dd($record);
+            $fields=$request->report_type;
+            return view('admin.report.consumer.consumer_info',compact('record','fields'));
+         }
+         else if($request->report_type !='all' )
          $record=Consumer::where('status',$request->report_type)->get();
+         
          else
          $record=Consumer::get();
         $fields=$request->report_type;
