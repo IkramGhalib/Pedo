@@ -753,7 +753,7 @@ class BillGenerateController extends Controller
                     DB::table('meter_readings')->where('id',$value->id)->update(['is_bill_generated'=>1]);
                                                                 
                     // add in ledger of consumer
-                    ConsumerLedger::insert(['cm_id'=>$cm_id,'amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$adj_amount,0),'bill_id'=>$id]);                            
+                    ConsumerLedger::insert(['cm_id'=>$cm_id,'amount'=>round($l_p_surcharge_value+$finded_cateogry_slab_chareges['total_electricity_charges']+$total_taxes+$finded_cateogry_slab_chareges['total_charges_data']+$adj_amount+$service_charges,0),'bill_id'=>$id]);                            
                 }
                 
                 // return redirect()->back()->with(['success'=>'Action Completed']); 
