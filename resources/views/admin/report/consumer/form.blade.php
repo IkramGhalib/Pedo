@@ -33,7 +33,7 @@
       </div>
       <div class="form-group col-md-3 refrence_section" style="display:none">
         <label class="form-control-label"> Refrence no</label>
-        <input type="number" class="form-control" name="refrence_no">
+        <input type="number" class="form-control refrence_no" name="refrence_no">
         
         @if ($errors->has('refrence_no'))
             <label class="error" for="refrence_no">{{ $errors->first('refrence_no') }}</label>
@@ -64,24 +64,27 @@
 
 @section('javascript')
 <script type="text/javascript">
-    
-      
-     
 $(document).ready(function(){
-  
+  check_refrence();
   $('.report_type').change(function(){
-    if($(this).val()=='consumer-info')
+    check_refrence();
+  });
+
+  function check_refrence()
+  {
+    if($('.report_type').val()=='consumer-info')
     {
-      console.log('1');
       $('.refrence_section').show();
+      $('.refrence_no').attr('required','required');
+      
     }
     else
     {
       $('.refrence_section').hide();
-      console.log('2');
+      $('.refrence_no').removeAttr('required');
 
     }
-  });
+  }
 });
 
         // $("#categoryForm").validate({

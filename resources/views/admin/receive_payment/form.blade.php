@@ -24,17 +24,7 @@ div.date {
         <form method="POST" action="{{ route('reading.save') }}" id="userForm" enctype="multipart/form-data">
           {{ csrf_field() }}
           {{-- <input type="hidden" name="user_id" value="{{ $user->id }}"> --}}
-      <div class="row">
-            <div class="form-group col-md-6">
-              <label class="form-control-label">Refrence No</label>
-              <select name="ref_no" id="ref_no" class="form-control">
-                    <option value="">-- Select --</option>
-                  </select>
-                @if ($errors->has('ref_no'))
-                    <label class="error" for="ref_no">{{ $errors->first('ref_no') }}</label>
-                @endif
-            </div>
-      </div>
+      
           <div class="row">
 
         
@@ -124,7 +114,15 @@ div.date {
 
           </div>
           <div class="row">
-
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Refrence No</label>
+              <select name="ref_no" id="ref_no" class="form-control">
+                    <option value="">-- Select --</option>
+                  </select>
+                @if ($errors->has('ref_no'))
+                    <label class="error" for="ref_no">{{ $errors->first('ref_no') }}</label>
+                @endif
+            </div>
            
 
               <div class="form-group col-md-4">
@@ -138,12 +136,12 @@ div.date {
         </div>
 
           <!-- <hr> -->
-          <div class="form-group row">
+          {{-- <div class="form-group row">
             <div class="col-md-4">
               <button type="submit" class="btn btn-primary save-btn">Submit</button>
               <button type="reset" class="btn btn-default btn-outline">Reset</button>
             </div>
-          </div>
+          </div> --}}
           
         </form>
       </div>
@@ -180,7 +178,6 @@ $("#ref_no").select2({
             processResults: function (data) {
                 return {
                     results: $.map(data, function (item) {
-                      console.log(item);
                         return {
                             text: 'Ref:'+item.ref_no+'  Consumer Code: '+item.consumer_code+'  Consumer:'+item.full_name+' CNIC:'+item.cnic ,
                             id: item.ref_no
@@ -193,9 +190,26 @@ $("#ref_no").select2({
         placeholder: 'Search ',
         minimumInputLength: 3
     });
+    
+    // $(document).on('keypress', '.select2-search__field', function(e) {
+    //   console.log(e.which);
+    //   if (e.keyCode  === 0) {
+    //     e.preventDefault();
+    //     console.log('enter key press');
+    //     // $('#example').select2("close");
+    //     // var inputs = $(this).closest('form').find(':input:visible');
+    //     // inputs.eq(inputs.index(this) + 1).focus();
+    //     $(".amount").focus();
+    //   }
+    // });
 
-    $(".save-btn").click( function(e){
+    $(".amount").keyup( function(e){
       e.preventDefault();
+      if(e.which == 13) {
+        save_record();
+    }
+    });
+    function save_record(){
       var v1=$('#ref_no').val();
       var v2=$('.payment_month').val();
       var v3=$('.payment_date').val();
@@ -234,6 +248,47 @@ $("#ref_no").select2({
       {
         message('error','Please Fill Required Field');
       }
+    }
+      $(".save-btn").click( function(e){
+      e.preventDefault();
+      // var v1=$('#ref_no').val();
+      // var v2=$('.payment_month').val();
+      // var v3=$('.payment_date').val();
+      // var v4=$('#bank').val();
+      // var v5=$('.amount').val();
+      // var v6=$('.page_no').val();
+      // if(v1 && v2 && v3 && v4 && v5 && v6)
+      // {
+      //   $.ajax({
+
+      //           type:'POST',
+
+      //           url:"{{route('receive.payment.save')}}",
+
+      //           data:{'ref_no':v1,'payment_month':v2,'payment_date':v3,'bank':v4,'amount':v5,'page_no':v6},
+
+      //           success:function(data){
+      //             if(data.success=='true')
+      //             {
+
+      //               message('success',data.message);
+      //               // $('#ref_no').focus();
+      //               $('#ref_no').select2('open');
+      //               // $('#ref_no').select2('focus');
+      //             }
+      //             else
+      //             message('error',data.message);
+
+      //           //  console.log(data);
+
+      //           }
+
+      //           });
+      // }
+      // else
+      // {
+      //   message('error','Please Fill Required Field');
+      // }
       
     
        
