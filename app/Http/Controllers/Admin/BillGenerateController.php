@@ -694,8 +694,25 @@ class BillGenerateController extends Controller
                     foreach ($finded_taxes as $tk => $tv) {
                         $total_taxes+=$tv['calculated_tax'];
                     }
+
+                    $qtadjustment=0;
+                    $fcsurchage=0;
+                    foreach ($finded_cateogry_slab_chareges['charges'] as $ck => $crow) { // find qtadjustment and f.c.surchange for lpsurcharge
+                        if($crow['code']=='FCS')
+                        {
+                            $fcsurchage=$crow['calculated_charges'];
+                        }
+                        if($crow['code']=='QTRTA')
+                        {
+                            $qtadjustment=$crow['calculated_charges'];
+                        }
+
+                        // $total_taxes+=$tv['calculated_tax'];
+                    }
+
+
                     $currnt_offpeak_unit=$value->offpeak_units;
-                    $l_p_surcharge_value=$finded_cateogry_slab_chareges['total_electricity_charges']*($l_p_surcharge_percentage/100);
+                    $l_p_surcharge_value=($finded_cateogry_slab_chareges['total_electricity_charges']+$qtadjustment+$fcsurchage)*($l_p_surcharge_percentage/100);
 
                     $adj=DB::table('adjustments')->where('cm_id',$cm_id)->where('is_used',0)->orderBy('id','DESC')->first();
                     $adj_amount=0;

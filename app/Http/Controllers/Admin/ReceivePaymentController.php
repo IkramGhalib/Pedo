@@ -222,28 +222,35 @@ class ReceivePaymentController extends Controller
     public function get_user_bill(Request $r)
     {
         
-        $record=DB::table('consumer_bills')
-        ->select('consumer_bills.WithinDuedate','consumer_bills.AfterdueDate','consumer_bills.DueDate')
+        $record['consumer']=DB::table('consumer_bills')
+                ->select('consumer_bills.WithinDuedate','consumer_bills.AfterdueDate','consumer_bills.DueDate','consumers.*')
+                ->join('consumer_meters','consumer_meters.cm_id','=','consumer_bills.cm_id')
+                ->join('consumers','consumers.id','=','consumer_meters.consumer_id')
+                ->where('consumer_meters.ref_no',$r->ref_no)
+                ->first();
+
+        $record['bill']=DB::table('consumer_bills')
+                ->select('consumer_bills.WithinDuedate','consumer_bills.AfterdueDate','consumer_bills.DueDate')
                 ->join('consumer_meters','consumer_meters.cm_id','=','consumer_bills.cm_id')
                 ->where('consumer_meters.ref_no',$r->ref_no)
                 ->where('consumer_bills.billing_month_year',date('Y-m-d',strtotime($r->payment_month)))
-                ->first();
+                ->first();        
         // pr($record);
-        if($record)
+        if($record['bill'])
         {
             if($r->payment_date)
             {
                $payment_date= date('Y-m-d',strtotime($r->payment_date));
-               $due_date= date('Y-m-d',strtotime($record->DueDate));
+               $due_date= date('Y-m-d',strtotime($record['bill']->DueDate));
                 if($payment_date <= $due_date)
-                return success('',['amount'=>$record->WithinDuedate]);
+                return success('',['amount'=>$record['bill']->WithinDuedate,'consumer'=>$record['consumer']]);
                 else
-                return success('',['amount'=>$record->AfterdueDate]);
+                return success('',['amount'=>$record['bill']->AfterdueDate,'consumer'=>$record['consumer']]);
             }
             
         }
 
-        return success('',['amount'=>0]);
+        return success('',['amount'=>0,'consumer'=>$record['consumer']]);
         // return view('admin.receive_payment.edit',compact('record'));
     }
 

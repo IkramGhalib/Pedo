@@ -114,18 +114,19 @@ div.date {
 
           </div>
           <div class="row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-5">
               <label class="form-control-label">Refrence No</label>
-              <select name="ref_no" id="ref_no" class="form-control">
+              {{-- <select name="ref_no" id="ref_no" class="form-control">
                     <option value="">-- Select --</option>
                   </select>
                 @if ($errors->has('ref_no'))
                     <label class="error" for="ref_no">{{ $errors->first('ref_no') }}</label>
-                @endif
+                @endif --}}
+                <input type="text" id="ref_no" name="ref_no" class="form-control ref_no">
             </div>
            
 
-              <div class="form-group col-md-4">
+              <div class="form-group col-md-2">
                 <label class="form-control-label">Amount</label>
                 <input type="number" step="any" class="form-control amount" name="amount" value="{{old('amount')}}"
                   />
@@ -133,6 +134,9 @@ div.date {
                       <label class="error" for="amount">{{ $errors->first('amount') }}</label>
                   @endif
               </div>
+        </div>
+        <div class="row ">
+          <div class="col-md-12 consumer_data_section"> </div>
         </div>
 
           <!-- <hr> -->
@@ -165,31 +169,31 @@ div.date {
 });
     // var dateTypeVar = $('payment_date').datepicker('getDate');
   });
-$("#ref_no").select2({
-        ajax: {
-            url: "{{route('get_meter_info_against_ref_no')}}",
-            dataType: 'json',
-            data: function (params) {
-                var query = {
-                    search: params.term,
-                }
-                return query;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (item) {
-                        return {
-                            text: 'Ref:'+item.ref_no+'  Consumer Code: '+item.consumer_code+'  Consumer:'+item.full_name+' CNIC:'+item.cnic ,
-                            id: item.ref_no
-                        }
-                    })
-                };
-            }
-        },
-        cache: true,
-        placeholder: 'Search ',
-        minimumInputLength: 3
-    });
+// $("#ref_no").select2({
+//         ajax: {
+//             url: "{{route('get_meter_info_against_ref_no')}}",
+//             dataType: 'json',
+//             data: function (params) {
+//                 var query = {
+//                     search: params.term,
+//                 }
+//                 return query;
+//             },
+//             processResults: function (data) {
+//                 return {
+//                     results: $.map(data, function (item) {
+//                         return {
+//                             text: 'Ref:'+item.ref_no+'  Consumer Code: '+item.consumer_code+'  Consumer:'+item.full_name+' CNIC:'+item.cnic ,
+//                             id: item.ref_no
+//                         }
+//                     })
+//                 };
+//             }
+//         },
+//         cache: true,
+//         placeholder: 'Search ',
+//         minimumInputLength: 3
+//     });
     
     // $(document).on('keypress', '.select2-search__field', function(e) {
     //   console.log(e.which);
@@ -203,12 +207,21 @@ $("#ref_no").select2({
     //   }
     // });
 
+    $(".ref_no").keyup( function(e){
+      e.preventDefault();
+      if(e.which == 13) {
+        get_user_bill();
+      }
+    });
+
     $(".amount").keyup( function(e){
       e.preventDefault();
       if(e.which == 13) {
         save_record();
-    }
+      }
     });
+
+    // save record 
     function save_record(){
       var v1=$('#ref_no').val();
       var v2=$('.payment_month').val();
@@ -221,27 +234,20 @@ $("#ref_no").select2({
         $.ajax({
 
                 type:'POST',
-
                 url:"{{route('receive.payment.save')}}",
-
                 data:{'ref_no':v1,'payment_month':v2,'payment_date':v3,'bank':v4,'amount':v5,'page_no':v6},
-
                 success:function(data){
                   if(data.success=='true')
                   {
-
                     message('success',data.message);
-                    // $('#ref_no').focus();
-                    $('#ref_no').select2('open');
-                    // $('#ref_no').select2('focus');
+                    $('#ref_no').val('');
+                    $('#ref_no').focus();
+                    $('.amount').val(0);
+                    $('.consumer_data_section').text('');
                   }
                   else
                   message('error',data.message);
-
-                //  console.log(data);
-
                 }
-
                 });
       }
       else
@@ -249,103 +255,58 @@ $("#ref_no").select2({
         message('error','Please Fill Required Field');
       }
     }
-      $(".save-btn").click( function(e){
-      e.preventDefault();
-      // var v1=$('#ref_no').val();
-      // var v2=$('.payment_month').val();
-      // var v3=$('.payment_date').val();
-      // var v4=$('#bank').val();
-      // var v5=$('.amount').val();
-      // var v6=$('.page_no').val();
-      // if(v1 && v2 && v3 && v4 && v5 && v6)
-      // {
-      //   $.ajax({
-
-      //           type:'POST',
-
-      //           url:"{{route('receive.payment.save')}}",
-
-      //           data:{'ref_no':v1,'payment_month':v2,'payment_date':v3,'bank':v4,'amount':v5,'page_no':v6},
-
-      //           success:function(data){
-      //             if(data.success=='true')
-      //             {
-
-      //               message('success',data.message);
-      //               // $('#ref_no').focus();
-      //               $('#ref_no').select2('open');
-      //               // $('#ref_no').select2('focus');
-      //             }
-      //             else
-      //             message('error',data.message);
-
-      //           //  console.log(data);
-
-      //           }
-
-      //           });
-      // }
-      // else
-      // {
-      //   message('error','Please Fill Required Field');
-      // }
-      
-    
-       
-    });
+    //   $(".save-btn").click( function(e){
+    //   e.preventDefault();
+    // });
     // $("#ref_no,.payment_month").change( function(){
     //   // e.preventDefault();
     //   change_in_ref_month();
     // });
-    $("#ref_no,.payment_month,.payment_date").change( function()
+    function get_user_bill() // get user bill with consumer data
     {
-
-    
          var v1=$('#ref_no').val();
          var v2=$('.payment_month').val();
          var v3=$('.payment_date').val();
 
          if(v1 && v2)
-      {
-          $.ajax({
+            {
+                $.ajax({
 
-              type:'get',
+                    type:'get',
+                    url:"{{route('get_user_bill')}}",
+                    data:{'ref_no':v1,payment_month:v2,payment_date:v3},
+                    success:function(data){
+                      console.log(data);
+                      if(data.success==true)
+                      {
+                        bill_record=data.data;
+                        $('.amount').val(parseFloat(data.data.amount));
+                        if(data.data.consumer)
+                        {
+                          $('.consumer_data_section').text(data.data.consumer.full_name+' / '+data.data.consumer.father_name+' / '+data.data.consumer.cnic);
+                          $('.amount').focus();
+                        }
+                        else
+                        {
+                          $('.consumer_data_section').text('');
+                          message('error','Consumer Not Found');
+                        }
 
-              url:"{{route('get_user_bill')}}",
-
-              data:{'ref_no':v1,payment_month:v2,payment_date:v3},
-
-              success:function(data){
-                console.log(data.data.amount);
-                if(data.success==true)
-                {
-                  bill_record=data.data;
-                  // console.log($('.payment_date').val());
-                  // var date = $("#payment_date").datepicker("getDate");
-                  // console.log($.datepicker.formatDate("yy-mm-dd", date));
-
-                  // let pay_date=new Date($('.payment_date').val());
-                  // let due_date=new Date(data.data.DueDate);
-                  // console.log(pay_date);
-                  // console.log(due_date);
-                  $('.amount').val(parseFloat(data.data.amount));
-                }
-                else
-                {
-                  $('.amount').val(0);
-                }
-                // message('success',data.message);
-                // else
-                // message('error',data.message);
-
-              //  console.log(data);
-
-              }
-
-              });
-      }        
-    
-       
+                      }
+                      else
+                      {
+                        $('.amount').val(0);
+                      }
+                      // message('success',data.message);
+                      // else
+                      // message('error',data.message);
+                    }
+                    });
+            }      
+    }
+    $(".payment_month,.payment_date").change( function()
+    {
+      get_user_bill();
     });
 
 

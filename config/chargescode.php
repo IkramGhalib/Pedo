@@ -2,7 +2,7 @@
    
 return [
   
-    'code_type' => ['FPA'=>'','QTRTA'=>'']
+    'code_type' => ['FPA'=>'','QTRTA'=>'','FCS'=>'']
 ]
   
 ?>

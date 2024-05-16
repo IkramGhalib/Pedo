@@ -11,8 +11,8 @@
 
   <title>{{env('APP_NAME')}}</title>
 
-  <link rel="apple-touch-icon" href="{{ asset('backend/assets/images/favicon.png') }}">
-  <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.png') }}">
+  <link rel="apple-touch-icon" href="{{asset(env('LOGO'))}}">
+  <link rel="shortcut icon" href="{{asset(env('LOGO'))}}">
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="{{ asset('backend/css/bootstrap.min599c.css?v4.0.2') }}">
@@ -43,13 +43,13 @@
   <link rel="stylesheet" type="text/css" media="all"  href="{{ asset('backend/assets/css/jquery-ui.css') }}"    />
       <!-- http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css -->
   <style>
-     .for-screen {display: block;}
+     /* .for-screen {display: block;}
         .for-print {display: none;}
 
         @media print {
             .for-screen {display: none;}
             .for-print {display: block;}
-        }
+        } */
         .se-pre-con {
           position: fixed;
           left: 0px;

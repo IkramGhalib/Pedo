@@ -30,6 +30,10 @@
         page-break-before: always;
         
     }
+    /* @media screen{ */
+        #print_section{display: none;}
+  /*  */
+  /* } */
 }
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 
@@ -769,6 +773,13 @@ span
 </head>
 
 <body >
+    <div id="print_section">
+        <a href="{{url()->previous()}}"  style="background-color:#3e8ef7;padding:5px;color:white;text-decoration:none;"> &nbsp;&nbsp;Back&nbsp;&nbsp; </a>
+         &nbsp; 
+         <a href="#" style="background-color:#3e8ef7;padding:5px;color:white ;text-decoration:none;" onclick="window.print();return false;" > &nbsp;&nbsp;Print&nbsp;&nbsp; </a> 
+        &nbsp;
+      
+    </div>
 @foreach($record  as $kk => $bill_data)
 <?php 
         $offpeak_units= $bill_data->offpeak_units;

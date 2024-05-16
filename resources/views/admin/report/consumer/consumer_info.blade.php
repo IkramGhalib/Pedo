@@ -45,7 +45,7 @@
         </tr>
 
         <tr>
-          <td> Status </td>
+          <td> C-Status </td>
           <td>:  {{$record->status}}</td>
         </tr>
         
@@ -90,18 +90,52 @@
 
       </table>
     </td>
+    <td class="titleTd" colspan=2 >
+      <table class="inner-table"  >
+        <tr><td colspan="2"><b> METER INFO </b></td></tr>
+        <tr>
+          <td> Ref No </td>
+          <td>:  {{$record->meters[0]->ref_no}}</td>
+        </tr>
+        <tr>
+          <td> Meter No </td>
+          <td>:  {{$record->meters[0]->meter_no}}</td>
+        </tr>
+
+        <tr>
+          <td> Consumer No </td>
+          <td>:  {{$record->meters[0]->consumer_id}}</td>
+        </tr>
+
+        <tr>
+          <td> Connection Date </td>
+          <td>:  {{$record->meters[0]->connection_date}}</td>
+        </tr>
+
+        <tr>
+          <td> Defination Date </td>
+          <td>: 
+            {{$record->meters[0]->definition_date}}
+          </td>
+        </tr>
+
+        {{-- <tr style="border:1px solid white;">
+          <td style="border:1px solid white;"> &nbsp; </td>
+          <td style="border:1px solid white;">  &nbsp;</td>
+        </tr> --}}
+
+      </table>
+    </td>
     {{-- <td class="titleTd col1" colspan=2>:  ss</td> --}}
     {{-- <td class="titleTd col4" colspan=2> &nbsp;  &nbsp; ff </td> --}}
   </tr>
 </table>
-  <table class="printTable">
+  <table class="printTable" style="margin-top:15px !important;">
 
     {{-- <tr></tr> --}}
-    <tr class="">
-      <td class="" colspan="4"> &nbsp;</td>
-      </tr>
-    <tr class="headingTr">
-    <td class="text-center strong" colspan="10"> CONSUMER BILLS</td>
+    
+    <tr class="headingTr" >
+    <td class="text-center strong"  colspan="10"> CONSUMER BILLS</td>
     </tr>
     <tr class="headingTr">
       <td class="headingTd ">#</td>
@@ -160,11 +194,9 @@
   
  
   </table>
-<table class="printTable">
+<table class="printTable" style="margin-top:15px;">
 
-      <tr class="">
-        <td class="" colspan="4"> &nbsp;</td>
-        </tr>
+      
       <tr class="headingTr">
       <td class="text-center strong" colspan="6"> CONSUMER PAYMENTS</td>
       </tr>

@@ -90,7 +90,7 @@
     
     <td class="">
       @if($IsPayed==1)
-      {{$row->consider_amount-$paid_amount+$l_p_surcharge}}
+      {{$consider_amount-$paid_amount+$l_p_surcharge}}
       @else
       {{$l_p_surcharge+$arrears+$net_bill+$adjustment+$service_charges}}
       @endif
