@@ -400,10 +400,19 @@ class ReportController extends Controller
             return view('admin.report.consumer.consumer_info',compact('record','fields'));
          }
          else if($request->report_type !='all' )
-         $record=Consumer::where('status',$request->report_type)->get();
+         {
+
+            //  $record=Consumer::where('status',$request->report_type)->get();
+            $record=Consumer::with('meters.hManyBills','meters.hManyBills.bBillGenerate','meters.hManyPayments','bConsumerCategory','meters','bFeeder','bFeeder.bSubDivision','bFeeder.bSubDivision.bDivision')->where('status',$request->report_type)->get();
+         }
          
          else
-         $record=Consumer::get();
+         {
+
+            //  $record=Consumer::get();
+            $record=Consumer::with('meters.hManyBills','meters.hManyBills.bBillGenerate','meters.hManyPayments','bConsumerCategory','meters','bFeeder','bFeeder.bSubDivision','bFeeder.bSubDivision.bDivision')->get();
+        }
+        // dd($record);
         $fields=$request->report_type;
          return view('admin.report.consumer.index',compact('record','fields'));
      }
