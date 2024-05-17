@@ -22,7 +22,7 @@
     <td class="headingTd ">Name</td>
     <td class="headingTd ">FName   </td>
     <td class="headingTd ">CNIC   </td>
-    <td class="headingTd "> MOBILE  </td>
+    <td class="headingTd "> Mobile  </td>
     {{-- <td class="headingTd col1">PAID FROM</td> --}}
     <td class="headingTd ">C-status</td>
     <td class="headingTd ">Category</td>
