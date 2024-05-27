@@ -98,6 +98,20 @@ class GeneralController extends Controller
             // echo json_encode(ConsumerSubCategory::where('is_active',1)->where('consumer_category_id',$request->parent_id)->where('name','like',$request->search.'%')->get());
     }
 
+     public function get_single_record_against_ref_no(Request $request)
+    {
+         $record=DB::table('consumer_meters')
+        ->where('ref_no',$request->ref_no)
+        // ->where('month_year',date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' )))
+        ->first();
+
+       
+        return success('right',$record );
+        // echo json_encode($record);
+           
+            // echo json_encode(ConsumerSubCategory::where('is_active',1)->where('consumer_category_id',$request->parent_id)->where('name','like',$request->search.'%')->get());
+    }
+
 
 
     public function saveGroup(Request $r)

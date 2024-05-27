@@ -196,12 +196,7 @@ class ReadingController extends Controller
         ->where('ref_no',$request->ref_no)
         // ->where('month_year',date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' )))
         ->first();
-
-        //FIRST ATTEMPT CODE 
-        // $record=DB::table('meter_readings')
-        // ->where('ref_no',$request->ref_no)
-        // ->where('month_year',date('y-m-d ',strtotime($request->month_year.'-01'.' -1 month' )))
-        // ->first();
+        
         return success('right',$record );
            
     }

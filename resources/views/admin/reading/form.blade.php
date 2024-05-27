@@ -1,6 +1,6 @@
 @extends('layouts.backend.index')
 @section('content')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" integrity="sha512-YHJ091iDoDM1PZZA9QLuBvpo0VXBBiGHsvdezDoc3p56S3SOMPRjX+zlCbfkOV5k3BmH5O9FqrkKxBRhkdtOkQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" integrity="sha512-YHJ091iDoDM1PZZA9QLuBvpo0VXBBiGHsvdezDoc3p56S3SOMPRjX+zlCbfkOV5k3BmH5O9FqrkKxBRhkdtOkQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 <div class="page-header">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
@@ -18,17 +18,20 @@
         <form method="POST" action="{{ route('reading.save') }}" id="dataForm" enctype="multipart/form-data">
           {{ csrf_field() }}
           {{-- <input type="hidden" name="user_id" value="{{ $user->id }}"> --}}
-      <div class="row">
+       {{-- <div class="row">
             <div class="form-group col-md-8">
               <label class="form-control-label">Refrence No</label>
-              <select name="ref_no" id="ref_no" class="form-control" required>
+             <select name="ref_no" id="ref_no" class="form-control" required>
                     <option value="">-- Select --</option>
                   </select>
                 @if ($errors->has('ref_no'))
                     <label class="error" for="ref_no">{{ $errors->first('ref_no') }}</label>
                 @endif
+                
+                <input type="text" id="ref_no" name="ref_no" class="form-control ref_no">
             </div>
       </div>
+      --}}
           <div class="row">
 
             <div class="form-group col-md-4">
@@ -57,9 +60,19 @@
 
           </div>
           <div class="row">
-          
+          <div class="form-group col-md-2">
+              <label class="form-control-label">Refrence No</label>
+              {{--<select name="ref_no" id="ref_no" class="form-control" required>
+                    <option value="">-- Select --</option>
+                  </select>
+                @if ($errors->has('ref_no'))
+                    <label class="error" for="ref_no">{{ $errors->first('ref_no') }}</label>
+                @endif
+                --}}
+                <input type="text" id="ref_no" name="ref_no" class="form-control ref_no">
+            </div>
 
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label class="form-control-label">Current Reading</label>
                 <input required type="text" class="form-control offpeak" name="offpeak" value="{{old('offpeak')}}"
                   />
@@ -117,12 +130,14 @@
 
 
           <!-- <hr> -->
+          {{--
           <div class="form-group row">
             <div class="col-md-4">
               <button type="submit" class="btn btn-primary save-btn">Submit</button>
               <!-- <button type="reset" class="btn btn-default btn-outline">Reset</button> -->
             </div>
           </div>
+          --}}
           
         </form>
       </div>
@@ -133,41 +148,44 @@
     </div>
 @endsection
 @section('javascript')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.full.min.js" integrity="sha512-/gPqsEnTjI8VpAkWa61qLLmZn4ySeH86yURIM9rck0iyCMhjMGfkDw298eXFLM2CuRJ93LFhYT1M+SGxJ8asIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.full.min.js" integrity="sha512-/gPqsEnTjI8VpAkWa61qLLmZn4ySeH86yURIM9rck0iyCMhjMGfkDw298eXFLM2CuRJ93LFhYT1M+SGxJ8asIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 <script>
-$("#ref_no").select2({
-        ajax: {
-            url: "{{route('get_meter_info_against_ref_no')}}",
-            dataType: 'json',
-            data: function (params) {
-                var query = {
-                    search: params.term,
-                }
-                return query;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (item) {
-                      console.log(item);
-                        return {
-                            text: 'Ref:'+item.ref_no+'  Consumer Code: '+item.consumer_code+'  Consumer:'+item.full_name+' CNIC:'+item.cnic ,
-                            id: item.ref_no
-                        }
-                    })
-                };
-            }
-        },
-        cache: true,
-        placeholder: 'Search ',
-        minimumInputLength: 3
-    });
+// $("#ref_no").select2({
+//         ajax: {
+//             url: "{{route('get_meter_info_against_ref_no')}}",
+//             dataType: 'json',
+//             data: function (params) {
+//                 var query = {
+//                     search: params.term,
+//                 }
+//                 return query;
+//             },
+//             processResults: function (data) {
+//                 return {
+//                     results: $.map(data, function (item) {
+//                       console.log(item);
+//                         return {
+//                             text: 'Ref:'+item.ref_no+'  Consumer Code: '+item.consumer_code+'  Consumer:'+item.full_name+' CNIC:'+item.cnic ,
+//                             id: item.ref_no
+//                         }
+//                     })
+//                 };
+//             }
+//         },
+//         cache: true,
+//         placeholder: 'Search ',
+//         minimumInputLength: 3
+//     });
 
 
 
 
 $(document).ready(function(){
-  $("#ref_no").change( function(e){
-    get_data_for_reading();
+  $("#ref_no").keyup( function(e){
+     e.preventDefault();
+      if(e.which == 13) {
+      get_data_for_reading();
+    }
   });
 
   $(".offpeak").keyup( function(e){
@@ -175,6 +193,13 @@ $(document).ready(function(){
     // $(this).val();
     // $('.pre_reading').val();
     $('.cal_units').val($(this).val() - $('.pre_reading').val());
+    if(e.which == 13) {
+        save_date();
+       
+        
+
+       }
+
 
   });
 
@@ -193,22 +218,30 @@ $(document).ready(function(){
      
       $.ajax({
           // type:'POST',
-          url:"{{route('get_data_agaist_reading')}}",
+          url:"{{route('get_single_record_against_ref_no')}}",
           // data: {ref_no:ref_no,month_year:month_year},
           data: {ref_no:ref_no},
           success:function(response){
             console.log(response);
 
+
             // cal_units
             //   pre_reading
-            if(response.success==true)
+            if(response.data != null)
             {
+
               // if(response.data.length>0)
               // {
                 $('.pre_reading').val(response.data.previous_reading_off_peak);
+                 $('.offpeak').focus();
                 // $('.offpeak').val();
                 // $('.cal_units').val();
               // }
+            }
+            else
+            {
+              $('.pre_reading').val('');
+              message('error','Record Not Found');
             }
             // message('success',response.message);
             // else if(response.success==false)
@@ -229,8 +262,11 @@ $(document).ready(function(){
        
     }
 
-  $(".save-btn").click( function(e){
-      e.preventDefault();
+  // $(".save-btn").click( function(e){
+      // e.preventDefault();
+    function save_date(){
+
+
       let myform = document.getElementById("dataForm");
       let dataForm = new FormData(myform );
       
@@ -244,10 +280,14 @@ $(document).ready(function(){
           success:function(response){
             if(response.success==true)
             {
-              $("#off_peak_image").val(null);
-              $(".cal_units").val(0);
-              $(".offpeak").val(0);
-              $(".pre_reading").val(0);
+              // $("#off_peak_image").val(null);
+              // $(".cal_units").val(0);
+              // $(".offpeak").val(0);
+              // $(".pre_reading").val(0);
+               var ref_no_old=$("#ref_no").val();
+              $('#dataForm').trigger("reset");
+               $("#ref_no").val(ref_no_old+1);
+               $("#ref_no").focus();
               
         
               message('success',response.message);
@@ -266,7 +306,8 @@ $(document).ready(function(){
           });
     
        
-    });
+    // });
+    }
 });
 </script>
 @endsection

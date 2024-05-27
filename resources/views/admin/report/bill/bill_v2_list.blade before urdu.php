@@ -838,10 +838,10 @@ span
         <table class="maintable" cellpadding="0" cellspacing="0">
             <tbody><tr class="font-size" style="height: 15px; width: 100%;">
                 <td class="border-rb" style="width: 206px">
-                    <b>CONNECTION DATE</b> <span class="text-right"> کنکشن کی تاریخ</span>
+                    <h4>CONNECTION DATE</h4>
                 </td>
                 <td class="border-rb">
-                    <b>CONNECTED LOAD</b> <span class="text-right"> منسلک لوڈ</span>
+                    <h4>CONNECTED LOAD</h4>
                 </td>
                 <td class="border-rb" style="width: 53px">
                     
@@ -849,16 +849,16 @@ span
                     
                 </td>
                 <td class="border-rb" style="width: 129px">
-                    <b>BILL MONTH </b> <span> بل کا مہینہ</span>
+                    <h4>BILL MONTH</h4>
                 </td>
                 <td class="border-rb" style="width: 157px">
-                    <b>READING DATE</b> <span class="text-left"> پڑھنے کی تاریخ</span> 
+                    <h4>READING DATE</h4>
                 </td>
                 <td class="border-rb" style="width: 104px">
-                    <h4>ISSUE DATE</h4> <span class="text-right"> تاریخ اجراء</span> 
+                    <h4>ISSUE DATE</h4>
                 </td>
                 <td class="border-b" style="color: Red;">
-                    <b>DUE DATE</b> <span class="text-right"> اخری تاریخ</span> 
+                    <h4>DUE DATE</h4>
                 </td>
             </tr>
             <tr style="height: 26px; width: 100%; font-size: .8em;" class="content">
@@ -1073,22 +1073,22 @@ span
                         </tr>
                         <tr style="height: 7%;" class="border-tb">
                             <td style="width: 130px" class="border-r">
-                                <b>METER NO</b> <span > میٹر نمبر</span>
+                                <h4>METER NO</h4>
                             </td>
                             <td style="width: 140px" class="border-r">
-                                <b>PREV.READING</b><span > پچھلا پڑھنا</span>
+                                <h4>PREV.READING</h4>
                             </td>
                             <td style="width: 130px" class="border-r">
-                                <b>CUR.READING</b><span > موجودہ پڑھنا</span>
+                                <h4>CUR.READING</h4>
                             </td>
                             <!-- <td style="width: 60px" class="border-r">
                                 <h4>MF</h4>
                             </td> -->
                             <td style="width: 90px" class="border-r">
-                                <b>UNITS</b><span >یونٹس </span>
+                                <h4>UNITS</h4>
                             </td>
                              <td>
-                                <b>STATUS</b><span >حالت </span>
+                                <h4>STATUS</h4>
                             </td> 
                         </tr>
                         <tr style="height: 30px" class="content text-center">
@@ -1185,10 +1185,9 @@ span
                             PEDO
                             CHARGES
                         </b>
-                        <span > پیڈو چارجز</span>
                     </td>
                     <td colspan="2" class="border-rb" style="text-align: center; font-size: 16px; background-color: #FFB2B2;">
-                        <b>GOVT CHARGES</b> <span> حکومتی چارجز</span>
+                        <b>GOVT CHARGES</b>
                     </td>
                 </tr>
                 <tr style="border-bottom:1px solid black;" class="text-center">
@@ -1415,7 +1414,7 @@ span
             <table class="nested7 text-center" style="width: 300pt; height: 319pt;">
                 <tbody><tr class="fontsize" style="height: 27px; background-color: #7ADEFF; text-align: center;border:1px solid black ">
                     <td colspan="5" class="border-b" style="font-size: 16px; ">
-                        <b>TOTAL CHARGES</b> <span> کل چارجز</span>
+                        <b>TOTAL CHARGES</b>
                     </td>
                 </tr>
                 <tr class="fontsize" style="height: 24px;">
