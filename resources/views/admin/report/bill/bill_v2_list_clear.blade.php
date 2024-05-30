@@ -22,7 +22,7 @@
 
 
         size: letter;
-        margin: 80px 20px 0px 20px;
+        margin: 50px 20px 0px 20px;
 
         
 
