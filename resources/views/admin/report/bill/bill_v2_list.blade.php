@@ -783,7 +783,7 @@ span
 </head>
 
 <body >
-    <div id="print_section " class="text-center">
+    <div id="print_section " class="text-center noprint">
         <a href="{{url()->previous()}}"  style="background-color:#3e8ef7;padding:5px;color:white;text-decoration:none;"> &nbsp;&nbsp;Back&nbsp;&nbsp; </a>
          &nbsp; 
          <a href="#" style="background-color:#3e8ef7;padding:5px;color:white ;text-decoration:none;" onclick="window.print();return false;" > &nbsp;&nbsp;Print&nbsp;&nbsp; </a> 
@@ -852,7 +852,7 @@ span
                     <b>BILL MONTH </b> <span> بل کا مہینہ</span>
                 </td>
                 <td class="border-rb" style="width: 157px">
-                    <b>READING DATE</b> <span class="text-left"> پڑھنے کی تاریخ</span> 
+                    <b>READING DATE</b> <span class="text-left"> ریڈنگ کی تاریخ</span> 
                 </td>
                 <td class="border-rb" style="width: 104px">
                     <h4>ISSUE DATE</h4> <span class="text-right"> تاریخ اجراء</span> 
@@ -1076,10 +1076,10 @@ span
                                 <b>METER NO</b> <span > میٹر نمبر</span>
                             </td>
                             <td style="width: 140px" class="border-r">
-                                <b>PREV.READING</b><span > پچھلا پڑھنا</span>
+                                <b>PREV.READING</b><span > سابقہ یونٹ</span>
                             </td>
                             <td style="width: 130px" class="border-r">
-                                <b>CUR.READING</b><span > موجودہ پڑھنا</span>
+                                <b>CUR.READING</b><span > موجودہ یونٹ</span>
                             </td>
                             <!-- <td style="width: 60px" class="border-r">
                                 <h4>MF</h4>

@@ -297,8 +297,8 @@ class ReportController extends Controller
             ->where('consumer_bills.billing_month_year',$request->month.'-01')
             ->orderBy('consumer_meters.mannual_ref_no', 'ASC')
             // ->limit(1)
-            // ->get();
-            ->get()->take(1);
+            ->get();
+            // ->get()->take(1);
 
             // if($request->start_refrence )
             //         $record=$q->where('ref_no','>=',$request->start_refrence);
