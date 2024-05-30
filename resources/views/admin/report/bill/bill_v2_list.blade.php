@@ -20,7 +20,7 @@
         /* margin-right:100px; */
         /* size: A4; */
         size: letter;
-    margin: 80px 10px 0px 0px;
+        margin: 80px 20px 0px 20px;
 
     /* padding: 12px; */
 
@@ -838,10 +838,10 @@ span
         <table class="maintable" cellpadding="0" cellspacing="0">
             <tbody><tr class="font-size" style="height: 15px; width: 100%;">
                 <td class="border-rb" style="width: 206px">
-                    <b>CONNECTION DATE</b> <span class="text-right"> کنکشن کی تاریخ</span>
+                    <b>CONNECTION DATE</b> <br/> <span class="text-right"> کنکشن کی تاریخ</span>
                 </td>
                 <td class="border-rb">
-                    <b>CONNECTED LOAD</b> <span class="text-right"> منسلک لوڈ</span>
+                    <b>CONNECTED LOAD</b> <br/><span class="text-right"> منسلک لوڈ</span>
                 </td>
                 <td class="border-rb" style="width: 53px">
                     
@@ -849,16 +849,16 @@ span
                     
                 </td>
                 <td class="border-rb" style="width: 129px">
-                    <b>BILL MONTH </b> <span> بل کا مہینہ</span>
+                    <b>BILL MONTH </b> <br/><span> بل کا مہینہ</span>
                 </td>
                 <td class="border-rb" style="width: 157px">
-                    <b>READING DATE</b> <span class="text-left"> ریڈنگ کی تاریخ</span> 
+                    <b>READING DATE</b> <br/> <span class="text-left"> ریڈنگ کی تاریخ</span> 
                 </td>
                 <td class="border-rb" style="width: 104px">
                     <h4>ISSUE DATE</h4> <span class="text-right"> تاریخ اجراء</span> 
                 </td>
                 <td class="border-b" style="color: Red;">
-                    <b>DUE DATE</b> <span class="text-right"> اخری تاریخ</span> 
+                    <b>DUE DATE</b> <br/> <span class="text-right"> اخری تاریخ</span> 
                 </td>
             </tr>
             <tr style="height: 26px; width: 100%; font-size: .8em;" class="content">
@@ -1073,22 +1073,22 @@ span
                         </tr>
                         <tr style="height: 7%;" class="border-tb">
                             <td style="width: 130px" class="border-r">
-                                <b>METER NO</b> <span > میٹر نمبر</span>
+                                <b>METER NO</b> <br/><span > میٹر نمبر</span>
                             </td>
                             <td style="width: 140px" class="border-r">
-                                <b>PREV.READING</b><span > سابقہ یونٹ</span>
+                                <b>PREV.READING</b>  <br/><span > سابقہ یونٹ</span>
                             </td>
                             <td style="width: 130px" class="border-r">
-                                <b>CUR.READING</b><span > موجودہ یونٹ</span>
+                                <b>CUR.READING</b>  <br/><span > موجودہ یونٹ</span>
                             </td>
                             <!-- <td style="width: 60px" class="border-r">
                                 <h4>MF</h4>
                             </td> -->
                             <td style="width: 90px" class="border-r">
-                                <b>UNITS</b><span >یونٹس </span>
+                                <b>UNITS</b>  <br/><span >یونٹس </span>
                             </td>
                              <td>
-                                <b>STATUS</b><span >حالت </span>
+                                <b>STATUS</b>  <br/><span >حالت </span>
                             </td> 
                         </tr>
                         <tr style="height: 30px" class="content text-center">
@@ -1689,16 +1689,16 @@ span
                 <table  style=" width: 100%; border-collapse: collapse;">
                     <tbody><tr style="height: 10px;">
                         <td class="border-rb border-t" style="width: 15%; color: black; border-left: 1px solid black;">
-                            <h4>BILL MONTH</h4>
+                        <b>BILL MONTH </b> <br/><span> بل کا مہینہ</span>
                         </td>
                         <td class="border-rb border-t" style="width: 15%; color: black;">
-                            <h4>DUE DATE</h4>
+                        <b>DUE DATE</b> <br/> <span class="text-right"> اخری تاریخ</span> 
                         </td>
                         <td class="border-rb border-t" style="width: 25%; color: black;">
-                            <h4>REFERENCE NO</h4> 
+                            <b>REFERENCE NO</b> <br/> <span class="text-right"> حوالہ نمبر</span> 
                         </td>
                         <td class="border-rb border-t" style="width: 25%; color: red">
-                            <h4>PAYABLE WITHIN DUE DATE</h4>
+                            <b>PAYABLE WITHIN DUE DATE</b> <br/> <span class="text-right"> مقرّر تاریخ تک رقم</span> 
                         </td>
                         <td class="border-b border-t border-r content text-center" style="width: 20%;">
                         {{$payable}}
@@ -1720,7 +1720,7 @@ span
                             
                         </td>
                         <td class="border-rb" style="width: 25%; color: red;">
-                            <h4>PAYABLE AFTER DUE DATE</h4>
+                            <b>PAYABLE AFTER DUE DATE</b> <br/> <span class="text-right"> مقرّر تاریخ کی بعد رقم</span> 
                         </td>
                         <td class="font-size border-rb border-r content text-center" style="width: 15%;">
                         {{$payable_after_due_date}}

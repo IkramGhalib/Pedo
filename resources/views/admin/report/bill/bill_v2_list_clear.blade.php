@@ -22,7 +22,7 @@
 
 
         size: letter;
-        margin: 80px 10px 0px 0px;
+        margin: 80px 20px 0px 20px;
 
         
 
@@ -834,10 +834,10 @@ span
         <table class="maintable" cellpadding="0" cellspacing="0">
             <tbody><tr class="font-size" style="height: 15px; width: 100%;">
                 <td class="border-rb" style="width: 206px">
-                    <h4>CONNECTION DATE</h4>
+                <b>CONNECTION DATE</b> <br/> <span class="text-right"> کنکشن کی تاریخ</span>
                 </td>
                 <td class="border-rb">
-                    <h4>CONNECTED LOAD</h4>
+                <b>CONNECTED LOAD</b> <br/><span class="text-right"> منسلک لوڈ</span>
                 </td>
                 <td class="border-rb" style="width: 53px">
                     
@@ -845,16 +845,16 @@ span
                     
                 </td>
                 <td class="border-rb" style="width: 129px">
-                    <h4>BILL MONTH</h4>
+                <b>BILL MONTH </b> <br/><span> بل کا مہینہ</span>
                 </td>
                 <td class="border-rb" style="width: 157px">
-                    <h4>READING DATE</h4>
+                <b>READING DATE</b> <br/> <span class="text-left"> ریڈنگ کی تاریخ</span> 
                 </td>
                 <td class="border-rb" style="width: 104px">
-                    <h4>ISSUE DATE</h4>
+                <h4>ISSUE DATE</h4> <span class="text-right"> تاریخ اجراء</span> 
                 </td>
                 <td class="border-b" style="">
-                    <h4>DUE DATE</h4>
+                <b>DUE DATE</b> <br/> <span class="text-right"> اخری تاریخ</span> 
                 </td>
             </tr>
             <tr style="height: 26px; width: 100%; font-size: .8em;" class="content">
@@ -1070,22 +1070,22 @@ span
                         </tr>
                         <tr style="height: 7%;" class="border-tb">
                             <td style="width: 130px" class="border-r">
-                                <h4>METER NO</h4>
+                            <b>METER NO</b> <br/><span > میٹر نمبر</span>
                             </td>
                             <td style="width: 140px" class="border-r">
-                                <h4>PREV.READING</h4>
+                            <b>PREV.READING</b>  <br/><span > سابقہ یونٹ</span>
                             </td>
                             <td style="width: 130px" class="border-r">
-                                <h4>CUR.READING</h4>
+                            <b>CUR.READING</b>  <br/><span > موجودہ یونٹ</span>
                             </td>
                             <!-- <td style="width: 60px" class="border-r">
                                 <h4>MF</h4>
                             </td> -->
                             <td style="width: 90px" class="border-r">
-                                <h4>UNITS</h4>
+                            <b>UNITS</b>  <br/><span >یونٹس </span>
                             </td>
                              <td>
-                                <h4>STATUS</h4>
+                             <b>STATUS</b>  <br/><span >حالت </span>
                             </td> 
                         </tr>
                         <tr style="height: 30px" class="content">
@@ -1174,17 +1174,18 @@ span
                 </td>
             </tr>
         </tbody></table>
-        <div class="border-t" style="width: 755pt; height: 430pt">
+        <div class="border-t" style="width: 755pt; height: 430pt ; color:black;">
             <table class="nested7" style="width: 454pt; height: 100pt; float: left">
                 <tbody><tr class="fontsize" style="height: 28px; width: 100%">
                     <td colspan="2" class="border-rb" style="text-align: center; font-size: 16px; background-color: #B2E6FF">
-                        <b>
+                    <b>
                             PEDO
                             CHARGES
                         </b>
+                        <span > پیڈو چارجز</span>
                     </td>
                     <td colspan="2" class="border-rb" style="text-align: center; font-size: 16px; background-color: #FFB2B2;">
-                        <b>GOVT CHARGES</b>
+                    <b>GOVT CHARGES</b> <span> حکومتی چارجز</span>
                     </td>
                 </tr>
                 <tr style="border-bottom:1px solid black;">
@@ -1411,12 +1412,12 @@ span
             <table class="nested7" style="width: 300pt; height: 319pt;">
                 <tbody><tr class="fontsize" style="height: 27px;  text-align: center;">
                     <td colspan="5" class="border-b" style="font-size: 16px; ">
-                        <b>TOTAL CHARGES</b>
+                        
                     </td>
                 </tr>
                 <tr class="fontsize" style="height: 24px;">
                     <td class="border-rb nestedtd2width" style="">
-                        <b>ARREAR/AGE</b>
+                        
                     </td>
                     <td colspan="3" class="border-b  nestedtd2width content">
                     {{$arrear}}
@@ -1424,7 +1425,7 @@ span
                 </tr>
                 <tr class="fontsize" style="height: 24px;">
                     <td class="border-rb nestedtd2width" style="">
-                        <b>CURRENT BILL</b>
+                        
                     </td>
                     <td colspan="3" class="border-b  nestedtd2width content">
                     <?php  $current_bill=($pesco_total+$gov_total);
@@ -1436,8 +1437,7 @@ span
                 </tr>
                 <tr class="fontsize" style="height: 24px;">
                     <td class="border-rb nestedtd2width" style="">
-                        <b>BILL ADJUSTMENT
-                            </b>
+                        
                     </td>
                     <td colspan="3" class="border-b  nestedtd2width content">
                         {{$bill_data->adjustment}} 
@@ -1446,7 +1446,7 @@ span
                 <tr class="fontsize" style="height: 24px;">
                     <td class="border-rb nestedtd2width" style="">
                         <b>
-                            INSTALLEMENT
+                            
                             
                         </b>
                         <br>
@@ -1464,7 +1464,7 @@ span
                 </tr>
                 <tr class="fontsize" style="height: 25px;">
                     <td class="border-rb nestedtd2width" style="">
-                        <div id="subsidiesId"><b>SERVICES CHARGES </b></div>
+                        <div id="subsidiesId"><b> </b></div>
                         <div id="releifMsgTitleId"><b>  </b></div>
                     </td>
                     <td colspan="3" class="border-b nestedtd2width content">
@@ -1474,10 +1474,10 @@ span
                 <tr class="fontsize" style="height: 24px;">
                     <td class="border-rb nestedtd2width" style=" ">
                         <div>
-                            <b>TOTAL FPA</b>
+                            <b></b>
                         </div>
                         <div hidden="">
-                            <b>NET FPA</b>
+                            <b>/b>
                         </div>
                         <div class="display-none">
                             <b></b> 
@@ -1504,7 +1504,7 @@ span
                 </tr>
                 <tr class="fontsize" style="height: 24px;">
                     <td class="border-rb nestedtd2width" style="color: white; background-color: white">
-                        <b>PAYABLE WITHIN DUE DATE</b>
+                        <b></b>
                     </td>
                     <td colspan="3" class="border-b nestedtd2width content">
                     {{$payable}}
@@ -1515,7 +1515,7 @@ span
                 </tr>
                 <tr class="fontsize" style="height: 24px;">
                     <td class="border-rb nestedtd2width" style="background-color: white;">
-                        <b>L.P.SURCHARGE</b>
+                        <b></b>
                     </td>
                     <td colspan="3" class="border-b  nestedtd2width content">
                     {{$lp_surcharge}}
@@ -1523,7 +1523,7 @@ span
                 </tr>
                 <tr class="fontsize" style="height: 24px;">
                     <td class="border-rb nestedtd2width" style="color: white; background-color: white">
-                        <b>PAYABLE AFTER DUE DATE</b>
+                        <b></b>
                     </td>
                     <td colspan="3" class="border-b  nestedtd2width content">
                     {{$payable_after_due_date}}
@@ -1560,16 +1560,16 @@ span
                     <td class="" colspan="1" style="text-align: left;">
 
                         <div>
-                            <b>SDO : </b>6644479 / 03309970142
+                            <!-- <b>SDO : </b>6644479 / 03309970142 -->
                         </div>
 
                         <div class="">
                             <div>
-                            <b>XEN : </b>9220051 / 03309970140
+                            <!-- <b>XEN : </b>9220051 / 03309970140 -->
                         </div>
 
                         <div>
-                            <b>SE # : </b>2113100 / 03309970101
+                            <!-- <b>SE # : </b>2113100 / 03309970101 -->
                         </div>
                         </div>
                         
@@ -1578,14 +1578,14 @@ span
                     
                     <td class=" display-none" colspan="2" style="text-align: left">
                         <div>
-                            <b>Center Name : </b>
+                            <!-- <b>Center Name : </b> -->
                         </div>
                         <div>
                             <b>  </b>
                         </div>
                     </td>
                     <td id="idCallCenterNoMsg" colspan="1" style="text-align: center" >
-                        <b>FOR COMPLAINTS DIAL: 118 /SMS: 8118</b>
+                        <!-- <b>FOR COMPLAINTS DIAL: 118 /SMS: 8118</b> -->
                     </td>
 
                     
@@ -1645,8 +1645,8 @@ span
                     </tbody></table>
                 </div>
 
-                <div style="width: 15%; margin-top: 20px; float: right; display: inline-block">
-                    <span>BILL NO <br> {{$bill_no}} </span>
+                <div style="width: 15%; margin-top: 20px; float: right; display: inline-block ;color:black !important" >
+                    <span><br> {{$bill_no}} </span>
                     
                 </div>
 
@@ -1685,16 +1685,16 @@ span
                 <table style="text-align: center; width: 100%; border-collapse: collapse;">
                     <tbody><tr style="height: 10px;">
                         <td class="border-rb border-t" style="width: 15%; color: white; border-left: 1px solid white;">
-                            <h4>BILL MONTH</h4>
+                        <b>BILL MONTH </b> <br/><span> بل کا مہینہ</span>
                         </td>
                         <td class="border-rb border-t" style="width: 15%; color: white;">
-                            <h4>DUE DATE</h4>
+                        <b>DUE DATE</b> <br/> <span class="text-right"> اخری تاریخ</span> 
                         </td>
                         <td class="border-rb border-t" style="width: 25%; color: white;">
-                            <h4>REFERENCE NO</h4> 
+                        <b>REFERENCE NO</b> <br/> <span class="text-right"> حوالہ نمبر</span> 
                         </td>
                         <td class="border-rb border-t" style="width: 25%; color: white">
-                            <h4>PAYABLE WITHIN DUE DATE</h4>
+                        <b>PAYABLE WITHIN DUE DATE</b> <br/> <span class="text-right"> مقرّر تاریخ تک رقم</span> 
                         </td>
                         <td class="border-b border-t border-r content" style="width: 20%;">
                         {{$payable}}
@@ -1716,7 +1716,7 @@ span
                             
                         </td>
                         <td class="border-rb" style="width: 25%; color: white;">
-                            <h4>PAYABLE AFTER DUE DATE</h4>
+                        <b>PAYABLE AFTER DUE DATE</b> <br/> <span class="text-right"> مقرّر تاریخ کی بعد رقم</span> 
                         </td>
                         <td class="font-size border-rb border-r content" style="width: 15%;">
                         {{$payable_after_due_date}}
