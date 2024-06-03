@@ -43,7 +43,7 @@
  */
 
  html {
-  font-family: sans-serif; /* 1 */
+  font-family: Arial; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
 }
@@ -460,7 +460,7 @@ textarea {
 body
 {
     /* text-align: center; */
-    font-family: sans-serif,arial;
+    font-family: arial;
     color:black;
 }
 .text-center{
@@ -565,7 +565,7 @@ span
     table-layout: fixed;
     height: auto;
     border-top: 1px solid black;
-    font-family: sans-serif;
+    font-family: arial;
     border-collapse: collapse;
     font-size: .8;
     -moz-box-sizing: border-box;
@@ -623,7 +623,7 @@ span
 
 .fontsize
 {
-    font-family: sans-serif;
+    font-family: arial;
     font-size: .8em;
 }
 .nested5
@@ -981,7 +981,7 @@ span
                 </tr>
                 <tr style="height: 27px; width: 100%;" class="fontsize">
                     <td colspan="1">
-                        <h3>Web Generated Bill</h3>
+                        <h3>&nbsp;</h3>
                     </td>
                 </tr>
             </tbody></table>
@@ -1195,7 +1195,7 @@ span
                 
                
                     <td colspan="2" style="vertical-align: top;">
-                        <table width="101%">
+                        <table width="101%" cellpadding="5px">
                             <tr class="fontsize" style="height: 24px;">
                                 <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF; "  >UNITS CONSUMED</td>
                                 <td class="border-rb nestedtdwidth content">{{$offpeak_units}} </td>
@@ -1225,7 +1225,7 @@ span
                         </table>
                     </td>
                     <td colspan="2" style="vertical-align: top;">
-                        <table width="100%">
+                        <table width="100%" cellpadding="5px">
                             <?php $gov_total=0; ?>
                         @foreach (json_decode($bill_data->taxes_breakup) as $tbkey => $tb_row )
                             <tr class="fontsize" style="height: 24px;">
@@ -1564,16 +1564,16 @@ span
                     <td class="" colspan="1" style="text-align: left;">
 
                         <div>
-                            <b>SDO : </b>6644479 / 03309970142
+                            <!-- <b>SDO : </b>6644479 / 03309970142 -->
                         </div>
 
                         <div class="">
                             <div>
-                            <b>XEN : </b>9220051 / 03309970140
+                            <!-- <b>XEN : </b>9220051 / 03309970140 -->
                         </div>
 
                         <div>
-                            <b>SE # : </b>2113100 / 03309970101
+                            <!-- <b>SE # : </b>2113100 / 03309970101 -->
                         </div>
                         </div>
                         
@@ -1582,14 +1582,14 @@ span
                     
                     <td class=" display-none" colspan="2" style="text-align: left">
                         <div>
-                            <b>Center Name : </b>
+                            <!-- <b>Center Name : </b> -->
                         </div>
                         <div>
                             <b>  </b>
                         </div>
                     </td>
                     <td id="idCallCenterNoMsg" colspan="1" style="text-align: center" >
-                        <b>FOR COMPLAINTS DIAL: 118 /SMS: 8118</b>
+                        <!-- <b>FOR COMPLAINTS DIAL: 118 /SMS: 8118</b> -->
                     </td>
 
                     

@@ -44,7 +44,7 @@
  */
 
  html {
-  font-family: sans-serif; /* 1 */
+  font-family: arial; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
 }
@@ -461,7 +461,7 @@ textarea {
 body
 {
     text-align: center;
-    font-family: sans-serif,arial;
+    font-family: arial,arial;
     color:black;
 }
 .hide{
@@ -560,7 +560,7 @@ span
     table-layout: fixed;
     height: auto;
     border-top: 1px solid white;
-    font-family: sans-serif;
+    font-family: arial;
     border-collapse: collapse;
     font-size: .8;
     -moz-box-sizing: border-box;
@@ -584,6 +584,29 @@ span
 .border-b
 {
     border-bottom: 1px solid white;
+}
+.ball
+{
+    border: 1px solid black;
+}
+
+.br
+{
+    border-right: 1px solid black;
+}
+
+.bl
+{
+    border-left: 1px solid black;
+}
+
+.bb
+{
+    border-bottom: 1px solid black;
+}
+.bt
+{
+    border-top: 1px solid black;
 }
 .border-t
 {
@@ -618,8 +641,8 @@ span
 
 .fontsize
 {
-    font-family: sans-serif;
-    font-size: .8em;
+    font-family: arial;
+    font-size: .9em;
 }
 .nested5
 {
@@ -764,7 +787,7 @@ span
 	position: absolute; /* required for description folows image bottom (descpos: true) */
 	width: 325px; /* should be width of zoomable image container (.targetarea) */
 	text-align: center;
-	font: bold 95% sans-serif;
+	font: bold 95% arial;
 	margin-top: 3px; /* when following image bottom, this sets a fixed distance for that */
 	color: #222;
 	background-color: #fff;
@@ -1175,73 +1198,73 @@ span
             </tr>
         </tbody></table>
         <div class="border-t" style="width: 755pt; height: 430pt ; color:black;">
-            <table class="nested7" style="width: 454pt; height: 100pt; float: left">
+            <table class="nested7" style="width: 454pt; height: 100pt; float: left" >
                 <tbody><tr class="fontsize" style="height: 28px; width: 100%">
-                    <td colspan="2" class="border-rb" style="text-align: center; font-size: 16px; background-color: #B2E6FF">
+                    <td colspan="2" class="border-rb" style="text-align: center; font-size: 16px; color:white;">
                     <b>
                             PEDO
                             CHARGES
                         </b>
                         <span > پیڈو چارجز</span>
                     </td>
-                    <td colspan="2" class="border-rb" style="text-align: center; font-size: 16px; background-color: #FFB2B2;">
+                    <td colspan="2" class="border-rb" style="text-align: center; font-size: 16px; color:white;">
                     <b>GOVT CHARGES</b> <span> حکومتی چارجز</span>
                     </td>
                 </tr>
-                <tr style="border-bottom:1px solid black;">
+                <tr >
                 
                
-                    <td colspan="2" style="vertical-align: top;">
-                        <table width="101%">
-                            <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF; "  >UNITS CONSUMED</td>
-                                <td class="border-rb nestedtdwidth content">{{$offpeak_units}} </td>
+                    <td colspan="2" style="vertical-align: top;"  >
+                        <table width="101%" style="border-collapse:collapse" cellpadding="5px">
+                            <tr class="fontsize " style="height: 24px;">
+                                <td class="ball nestedtdwidth" style="; "  >UNITS CONSUMED</td>
+                                <td class="ball nestedtdwidth content">{{$offpeak_units}} </td>
                             </tr>
 
                             <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">COST OF ELECTRICITY</td>
-                                <td class="border-rb nestedtdwidth content">{{$cost_of_electricity}}  </td>
+                                <td class="ball nestedtdwidth" style="">COST OF ELECTRICITY</td>
+                                <td class="ball nestedtdwidth content">{{$cost_of_electricity}}  </td>
                           
                             </tr>
                             <?php $pesco_total=0;?>
                             <?php $pesco_total+=$cost_of_electricity ?>
                             @foreach (json_decode($bill_data->charges_breakup) as $chbkey => $charges_b_row )
                             <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">{{$charges_b_row->charges_type}} </td>
-                                <td class="border-rb nestedtdwidth content">{{$charges_b_row->calculated_charges}}  </td>
+                                <td class="ball nestedtdwidth" style="">{{$charges_b_row->charges_type}} </td>
+                                <td class="ball nestedtdwidth content">{{$charges_b_row->calculated_charges}}  </td>
                             </tr>
                             <?php $pesco_total+=$charges_b_row->calculated_charges; ?>
                             @endforeach
                            
 
                             <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #B2E6FF">TOTAL</td>
-                                <td class="border-rb nestedtdwidth content">{{$pesco_total}}  </td>
+                                <td class="ball nestedtdwidth" style="">TOTAL</td>
+                                <td class="ball nestedtdwidth content">{{$pesco_total}}  </td>
                             </tr>
 
                         </table>
                     </td>
                     <td colspan="2" style="vertical-align: top;">
-                        <table width="100%">
+                        <table width="100%" style="border-collapse:collapse" cellpadding="5px">
                             <?php $gov_total=0; ?>
                         @foreach (json_decode($bill_data->taxes_breakup) as $tbkey => $tb_row )
                             <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;"> {{$tb_row->tax_type}}</td>
-                                <td class="border-rb nestedtdwidth content">{{$tb_row->calculated_tax}}</td>
+                                <td class="border-rb  ball nestedtdwidth" style=""> {{$tb_row->tax_type}}</td>
+                                <td class="border-rb ball nestedtdwidth content">{{$tb_row->calculated_tax}}</td>
                             </tr> 
                             <?php $gov_total+=$tb_row->calculated_tax; ?>
                         @endforeach    
                            
                             <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb nestedtdwidth" style="background-color: #FFB2B2;">TOTAL</td>
-                                <td class="border-rb nestedtdwidth content">{{$gov_total}} </td>
+                                <td class="border-rb ball nestedtdwidth" style="">TOTAL</td>
+                                <td class="border-rb ball nestedtdwidth content">{{$gov_total}} </td>
                             </tr>
                             
                         </table>
                     </td>
                 </tr>
                 
-                <tr class="fontsize" style="height: 24px;">
+                <tr class="fontsize" style="height: 24px;" > 
                     <td class="border-r" colspan="2" >
                         <h3 style="color:black !important;">BILL CALCULATION</h3>
                     </td>

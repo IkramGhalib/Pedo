@@ -396,14 +396,14 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-    Route::group(['middleware' => 'subscribed'], function () {
-        //Route for react js
-        Route::get('course-enroll/{course_slug}/{lecture_slug}', function () {
-            // dd('testings');
-            return view('site/course/course_enroll');
-        });
-        Route::get('course-learn/{course_slug}', [CourseController::class, 'courseLearn'])->name('course.learn');
-    });
+    // Route::group(['middleware' => 'subscribed'], function () {
+    //     //Route for react js
+    //     Route::get('course-enroll/{course_slug}/{lecture_slug}', function () {
+    //         // dd('testings');
+    //         return view('site/course/course_enroll');
+    //     });
+    //     // Route::get('course-learn/{course_slug}', [CourseController::class, 'courseLearn'])->name('course.learn');
+    // });
 
    
 });
