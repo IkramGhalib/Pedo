@@ -188,7 +188,7 @@ dfn {
  */
 
 h1 {
-  font-size: 2em;
+  font-size: 1.8em;
   margin: 0.67em 0;
 }
 
@@ -624,7 +624,7 @@ span
 .fontsize
 {
     font-family: arial;
-    font-size: .8em;
+    font-size: .9em;
 }
 .nested5
 {
@@ -823,15 +823,18 @@ span
             <div class="heading">
                 <h1 style="margin: 10px 10px 10px 35px" >
                 PAKHTUNKHWA ENERGY DEVELOPMENT ORGANIZATION
-                    <span style="color: #1a75ff; float: right;">
-                        GST No.<br>21-00-2716-001-46<br>
-                    </span>
+                    <!-- <span style="color: #1a75ff; float: right;">
+                         <br>NTN/FTN#7236542-2<br>
+                    </span> -->
                 </h1>
                 <div>
-                    <b style="color: #1a75ff;">YOUR BETTER SERVICE - OUR PRIDE</b>
-                    <b style="float: right; margin-right: 10px;"><a style="text-decoration: none; color: #1a75ff;" href="{{env('APP_URL')}}">pedokp.gov.pk</a></b>
-                    <b style="color: #1a75ff; float: right; margin-right: 60px">
+                    <!-- <b style="color: #1a75ff;">YOUR BETTER SERVICE - OUR PRIDE </b> -->
+                    <b style="padding-right:100px;"><a style="text-decoration: none; color: #1a75ff;" href="{{env('APP_URL')}}">pedokp.gov.pk</a></b>
+                    <b style="color: #1a75ff;padding-right:100px;">
                         ELECTRICITY CONSUMER BILL</b>
+                        <b style="color: #1a75ff;padding-right:100px;">
+                         NTN/FTN#7236542-2
+                    </b>
                 </div>
             </div>
         </div>
@@ -1627,7 +1630,9 @@ span
                         </tr>
                         <tr>
                             <td style="text-align: left; width: 215px; color: #1a75ff;">
-                                <span style="font-size: 11px; color: #1a75ff;"><b>YOUR BETTER SERVICE - OUR PRIDE</b> </span>
+                                <span style="font-size: 11px; color: #1a75ff;">
+                                <!-- <b>YOUR BETTER SERVICE - OUR PRIDE</b>  -->
+                            </span>
                             </td>
                             <td style="text-align: left; width: 170px; color: #1a75ff;">
                                 <h3 style="font-size: 14pt; margin-left: 6px;">  </h3> 

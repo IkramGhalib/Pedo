@@ -847,10 +847,13 @@ span
                     </span>
                 </h1>
                 <div>
-                    <b >YOUR BETTER SERVICE - OUR PRIDE</b>
-                    <b style="float: right; margin-right: 10px;"><a style="text-decoration: none;color:white; " href="{{env('APP_URL')}}">pedokp.gov.pk</a></b>
-                    <b style=" float: right; margin-right: 60px">
+                    <!-- <b style="color: #1a75ff;">YOUR BETTER SERVICE - OUR PRIDE </b> -->
+                    <b style="padding-right:100px;"><a style="text-decoration: none; color: white;" href="{{env('APP_URL')}}">pedokp.gov.pk</a></b>
+                    <b style="color: white;padding-right:100px;">
                         ELECTRICITY CONSUMER BILL</b>
+                        <b style="color:white;padding-right:100px;">
+                         NTN/FTN#7236542-2
+                    </b>
                 </div>
             </div>
         </div>
@@ -1646,7 +1649,9 @@ span
                         </tr>
                         <tr>
                             <td style="text-align: left; width: 215px; ">
-                                <span style="font-size: 11px; "><b>YOUR BETTER SERVICE - OUR PRIDE</b> </span>
+                                <span style="font-size: 11px; ">
+                                <!-- <b>YOUR BETTER SERVICE - OUR PRIDE</b>  -->
+                            </span>
                             </td>
                             <td style="text-align: left; width: 170px; ">
                                 <h3 style="font-size: 14pt; margin-left: 6px;">  </h3> 
