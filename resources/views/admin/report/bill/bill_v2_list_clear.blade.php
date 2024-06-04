@@ -189,7 +189,7 @@ dfn {
  */
 
 h1 {
-  font-size: 2em;
+  font-size: 1.8em;
   margin: 0.67em 0;
 }
 
@@ -839,19 +839,20 @@ span
             <div class="headerimg">
                 <img style="margin-left: 10px; margin-top: 5px; max-width: 100%; max-height: 85%"  src="{{asset('frontend/img/learningwhite.png')}}" alt="PESCO">
             </div>
-            <div class="heading " >
-                <h1 style="margin: 10px 10px 10px 35px " >
+            
+            <div class="heading">
+                <h1 style="margin: 10px 10px 10px 35px" >
                 PAKHTUNKHWA ENERGY DEVELOPMENT ORGANIZATION
-                    <span style=" float: right;">
-                        GST No.<br>21-00-2716-001-46<br>
-                    </span>
+                    <!-- <span style="color: #1a75ff; float: right;">
+                         <br>NTN/FTN#7236542-2<br>
+                    </span> -->
                 </h1>
                 <div>
                     <!-- <b style="color: #1a75ff;">YOUR BETTER SERVICE - OUR PRIDE </b> -->
                     <b style="padding-right:100px;"><a style="text-decoration: none; color: white;" href="{{env('APP_URL')}}">pedokp.gov.pk</a></b>
                     <b style="color: white;padding-right:100px;">
                         ELECTRICITY CONSUMER BILL</b>
-                        <b style="color:white;padding-right:100px;">
+                        <b style="color: white;padding-right:100px;">
                          NTN/FTN#7236542-2
                     </b>
                 </div>
@@ -1201,7 +1202,7 @@ span
             </tr>
         </tbody></table>
         <div class="border-t" style="width: 755pt; height: 430pt ; color:black;">
-            <table class="nested7" style="width: 454pt; height: 100pt; float: left" >
+            <table class="nested7" style="width: 454pt; height: 400px; float: left;" >
                 <tbody><tr class="fontsize" style="height: 28px; width: 100%">
                     <td colspan="2" class="border-rb" style="text-align: center; font-size: 16px; color:white;">
                     <b>
@@ -1220,29 +1221,29 @@ span
                     <td colspan="2" style="vertical-align: top;"  >
                         <table width="101%" style="border-collapse:collapse" cellpadding="5px">
                             <tr class="fontsize " style="height: 24px;">
-                                <td class="ball nestedtdwidth" style="; "  >UNITS CONSUMED</td>
-                                <td class="ball nestedtdwidth content">{{$offpeak_units}} </td>
+                                <td class=" nestedtdwidth" style="; "  >UNITS CONSUMED</td>
+                                <td class=" nestedtdwidth content">{{$offpeak_units}} </td>
                             </tr>
 
                             <tr class="fontsize" style="height: 24px;">
-                                <td class="ball nestedtdwidth" style="">COST OF ELECTRICITY</td>
-                                <td class="ball nestedtdwidth content">{{$cost_of_electricity}}  </td>
+                                <td class=" nestedtdwidth" style="">COST OF ELECTRICITY</td>
+                                <td class=" nestedtdwidth content">{{$cost_of_electricity}}  </td>
                           
                             </tr>
                             <?php $pesco_total=0;?>
                             <?php $pesco_total+=$cost_of_electricity ?>
                             @foreach (json_decode($bill_data->charges_breakup) as $chbkey => $charges_b_row )
                             <tr class="fontsize" style="height: 24px;">
-                                <td class="ball nestedtdwidth" style="">{{$charges_b_row->charges_type}} </td>
-                                <td class="ball nestedtdwidth content">{{$charges_b_row->calculated_charges}}  </td>
+                                <td class=" nestedtdwidth" style="">{{$charges_b_row->charges_type}} </td>
+                                <td class=" nestedtdwidth content">{{$charges_b_row->calculated_charges}}  </td>
                             </tr>
                             <?php $pesco_total+=$charges_b_row->calculated_charges; ?>
                             @endforeach
                            
 
                             <tr class="fontsize" style="height: 24px;">
-                                <td class="ball nestedtdwidth" style="">TOTAL</td>
-                                <td class="ball nestedtdwidth content">{{$pesco_total}}  </td>
+                                <td class=" nestedtdwidth" style="">TOTAL</td>
+                                <td class=" nestedtdwidth content">{{$pesco_total}}  </td>
                             </tr>
 
                         </table>
@@ -1252,25 +1253,25 @@ span
                             <?php $gov_total=0; ?>
                         @foreach (json_decode($bill_data->taxes_breakup) as $tbkey => $tb_row )
                             <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb  ball nestedtdwidth" style=""> {{$tb_row->tax_type}}</td>
-                                <td class="border-rb ball nestedtdwidth content">{{$tb_row->calculated_tax}}</td>
+                                <td class="border-rb   nestedtdwidth" style=""> {{$tb_row->tax_type}}</td>
+                                <td class="border-rb  nestedtdwidth content">{{$tb_row->calculated_tax}}</td>
                             </tr> 
                             <?php $gov_total+=$tb_row->calculated_tax; ?>
                         @endforeach    
                            
                             <tr class="fontsize" style="height: 24px;">
-                                <td class="border-rb ball nestedtdwidth" style="">TOTAL</td>
-                                <td class="border-rb ball nestedtdwidth content">{{$gov_total}} </td>
+                                <td class="border-rb  nestedtdwidth" style="">TOTAL</td>
+                                <td class="border-rb  nestedtdwidth content">{{$gov_total}} </td>
                             </tr>
                             
                         </table>
                     </td>
                 </tr>
                 
-                <tr class="fontsize" style="height: 24px;" > 
-                    <td class="border-r" colspan="2" >
+                <!-- <tr class="fontsize" style="height: 24px;margin-bottom: 10px;border: 1px solid red;" >  -->
+                   <!--  <td class="border-r" colspan="2" >
                         <h3 style="color:black !important;">BILL CALCULATION</h3>
-                    </td>
+                    </td> -->
                     {{-- <td class="border-rb" style="background-color: #FFB2B2;" rowspan="3">
                         
                         
@@ -1295,12 +1296,15 @@ span
 
                         
                     </td> --}}
-                </tr>
+                <!-- </tr> -->
                 <tr class="border-b fontsize" style="height: 24px;">
                     <td class="border-rb" colspan="2" rowspan="3">
                         <table style="width: 100%;color:black !important;" >
                             
                             <tbody>
+                                 <td class="border-r" colspan="2" >
+                                    <h3 style="color:black !important;">BILL CALCULATION</h3>
+                                </td>
                                 <tr>
                                 <td>GOP Tariff &nbsp; &nbsp; x  &nbsp;&nbsp; Units
                                 </td>
@@ -1435,7 +1439,7 @@ span
 
             <!-- total charges table section -->
             <!-- margin-top : -20px -->
-            <table class="nested7" style="width: 300pt; height: 319pt;">
+            <table class="nested7" style="width: 300pt; height: 400px;">
                 <tbody><tr class="fontsize" style="height: 27px;  text-align: center;">
                     <td colspan="5" class="border-b" style="font-size: 16px; ">
                         

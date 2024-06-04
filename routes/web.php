@@ -69,10 +69,10 @@ Route::get('getCheckTime', [HomeController::class,'getCheckTime']);
 Route::get('checkUserEmailExists', [HomeController::class, 'checkUserEmailExists']);
 
 
-Route::get('course-breadcrumb', [CourseController::class, 'saveBreadcrumb'])->name('course.breadcurmb');
+// Route::get('course-breadcrumb', [CourseController::class, 'saveBreadcrumb'])->name('course.breadcurmb');
 
 // Route::get('instructors', [InstructorController::class,'instructorList'])->name('instructor.list');
-Route::post('contact-instructor', [InstructorController::class,'contactInstructor'])->name('contact.instructor');
+// Route::post('contact-instructor', [InstructorController::class,'contactInstructor'])->name('contact.instructor');
 
 Route::post('contact-admin', [HomeController::class,'contactAdmin'])->name('contact.admin');
 
@@ -83,8 +83,8 @@ Route::get('blog/{blog_slug}', [HomeController::class,'blogView'])->name('blog.v
 
 //cart
 
-Route::post('add-to-cart',[CartController::class,'addcart']);
-Route::get('cart',[CartController::class,'cartview']);
+// Route::post('add-to-cart',[CartController::class,'addcart']);
+// Route::get('cart',[CartController::class,'cartview']);
 
 
 //count cart
@@ -106,47 +106,46 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-    Route::get('load-cart-data',[CartController::class,'cartcount']);
-    Route::get('cart-delete/{group_id}/{fee_type}',[CartController::class,'deletecart'])->name('delete.cart');
+    // Route::get('load-cart-data',[CartController::class,'cartcount']);
+    // Route::get('cart-delete/{group_id}/{fee_type}',[CartController::class,'deletecart'])->name('delete.cart');
 
     //front invoices
-    Route::post('checkout',[InvoiceController::class,'store']);
+    // Route::post('checkout',[InvoiceController::class,'store']);
     // Route::get('invoice-detail',[InvoiceController::class,'index']);
-    Route::get('getUserInvoice/{id?}',[InvoiceController::class,'getUserInvoice'])->name('getUserInvoice');
-    Route::post('uploadReceipt/{id?}',[InvoiceController::class,'upload_file'])->name('upload_file');
+    // Route::get('getUserInvoice/{id?}',[InvoiceController::class,'getUserInvoice'])->name('getUserInvoice');
+    // Route::post('uploadReceipt/{id?}',[InvoiceController::class,'upload_file'])->name('upload_file');
 
     
 
-    Route::post('delete-photo', [CourseController::class, 'deletePhoto']);
+    // Route::post('delete-photo', [CourseController::class, 'deletePhoto']);
     Route::post('payment-form', [PaymentController::class, 'paymentForm'])->name('payment.form');
 
     Route::get('payment/success', [PaymentController::class, 'getSuccess'])->name('payment.success');
     Route::get('payment/failure', [PaymentController::class, 'getFailure'])->name('payment.failure');
 
-    Route::get('my-courses', [CourseController::class, 'myCourses'])->name('my.courses');
+    // Route::get('my-courses', [CourseController::class, 'myCourses'])->name('my.courses');
 
     //Functions accessed by only students
-    Route::group(['middleware' => 'role:student'], function () {
+    // Route::group(['middleware' => 'role:student'], function () {
 
-        Route::get('course-enroll-api/{course_slug}/{lecture_slug}/{is_sidebar}', [CourseController::class, 'courseEnrollAPI']);
-        Route::get('readPDF/{file_id}', [CourseController::class, 'readPDF']);
-        Route::get('update-lecture-status/{course_id}/{lecture_id}/{status}', [CourseController::class, 'updateLectureStatus']);
+    //     Route::get('course-enroll-api/{course_slug}/{lecture_slug}/{is_sidebar}', [CourseController::class, 'courseEnrollAPI']);
+    //     Route::get('readPDF/{file_id}', [CourseController::class, 'readPDF']);
+    //     Route::get('update-lecture-status/{course_id}/{lecture_id}/{status}', [CourseController::class, 'updateLectureStatus']);
 
-        Route::get('download-resource/{resource_id}/{course_slug}', [CourseController::class, 'getDownloadResource']);
+    //     Route::get('download-resource/{resource_id}/{course_slug}', [CourseController::class, 'getDownloadResource']);
 
-        // Route::get('my-courses', [CourseController::class, 'myCourses'])->name('my.courses');
-        // Route::get('course-learn/{course_slug}', [CourseController::class, 'courseLearn'])->name('course.learn');
+       
 
-        Route::post('course-rate', [CourseController::class, 'courseRate'])->name('course.rate');
-        Route::get('delete-rating/{raing_id}', [CourseController::class, 'deleteRating'])->name('delete.rating');
+    //     Route::post('course-rate', [CourseController::class, 'courseRate'])->name('course.rate');
+    //     Route::get('delete-rating/{raing_id}', [CourseController::class, 'deleteRating'])->name('delete.rating');
 
-        Route::get('course-enroll-api/{course_slug}/{lecture_slug}/{is_sidebar}', [CourseController::class, 'courseEnrollAPI']);
-        Route::get('readPDF/{file_id}', [CourseController::class, 'readPDF']);
+    //     Route::get('course-enroll-api/{course_slug}/{lecture_slug}/{is_sidebar}', [CourseController::class, 'courseEnrollAPI']);
+    //     Route::get('readPDF/{file_id}', [CourseController::class, 'readPDF']);
 
-        Route::get('myPayments', [CartController::class, 'myPayments'])->name('myPayments');
-        Route::post('upload_file', [InvoiceController::class, 'upload_file'])->name('upload_file');
+    //     Route::get('myPayments', [CartController::class, 'myPayments'])->name('myPayments');
+    //     Route::post('upload_file', [InvoiceController::class, 'upload_file'])->name('upload_file');
         
-    });
+    // });
 
     //Functions accessed by both student and instructor
     // Route::group(['middleware' => 'role:student,instructor'], function () {

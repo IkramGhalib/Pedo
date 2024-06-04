@@ -60,11 +60,11 @@ class FeederController extends Controller
         $record=Feeder::find($id);
         // $record=SubDivision::find($id);
         // dd($record);
-        // $parant_record=Division::find($record->division_id);
-        $parant_record=SubDivision::find($record->sub_division_id);
+        $parant_record=SubDivision::get();
+        $child_record=SubDivision::find($record->sub_division_id);
 
         // $courses = Course::all();
-        return view('admin.feeder.edit',compact('record','parant_record'));
+        return view('admin.feeder.edit',compact('record','parant_record','child_record'));
     }
 
     public function update($id,Request $request)

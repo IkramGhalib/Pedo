@@ -23,7 +23,9 @@
             <div class="form-group col-md-4">
               <label class="form-control-label">Sub Divison</label>
               <select name="sub_division" id="sub_division" class="form-control">
-                    <option value="{{$parant_record->id}}" selected>{{$parant_record->sub_division_code.' - '.$parant_record->name}}</option>
+                @foreach($parant_record as $pk => $prow) 
+                    <option value="{{$prow->id}}" @if($prow->id==$child_record->id) {{'selected'}} @endif>{{$prow->sub_division_code.' - '.$prow->name}}</option>
+                @endforeach    
                   </select>
                 @if ($errors->has('sub_division'))
                     <label class="error" for="sub_division">{{ $errors->first('sub_division') }}</label>
