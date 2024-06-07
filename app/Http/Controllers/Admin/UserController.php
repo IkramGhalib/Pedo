@@ -80,7 +80,7 @@ class UserController extends Controller
         if ($user_id) {
             
             $validation_rules = [
-                'first_name' => 'required|string|max:255',
+                'full_name' => 'required|string|max:255',
                 // 'last_name' => 'required|string|max:255',
                 'roles' => 'required'
             ];
@@ -88,7 +88,7 @@ class UserController extends Controller
         } else {
             
             $validation_rules = [
-                'first_name' => 'required|string|max:255',
+                'full_name' => 'required|string|max:255',
                 // 'last_name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:6',
@@ -114,10 +114,11 @@ class UserController extends Controller
             $success_message = 'User added successfully';
         }
 
-        $user->first_name = $request->input('first_name');
-        $user->last_name = $request->input('last_name');
+        $user->first_name = $request->input('full_name');
+        // $user->last_name = $request->input('last_name');
         $user->email = $request->input('email');
 
+        $user->code = $request->input('code');
         $password = $request->input('password');
         if($password) {
             $user->password = bcrypt($password);

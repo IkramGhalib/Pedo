@@ -19,11 +19,11 @@
       <div class="row">
       
         <div class="form-group col-md-4">
-          <label class="form-control-label">First Name</label>
-          <input type="text" class="form-control" name="first_name" 
-            placeholder="First Name" value="{{ $user->first_name }}" />
-            @if ($errors->has('first_name'))
-                <label class="error" for="first_name">{{ $errors->first('first_name') }}</label>
+          <label class="form-control-label">Full  Name</label>
+          <input type="text" class="form-control" name="full_name" 
+            placeholder="Full  Name" value="{{ $user->first_name }}" />
+            @if ($errors->has('full_name'))
+                <label class="error" for="full_name">{{ $errors->first('full_name') }}</label>
             @endif
         </div>
       
@@ -90,6 +90,17 @@
             <label class="error" for="password">{{ $errors->first('password') }}</label>
         @endif
       </div>
+
+      <div class="form-group col-md-2">
+        <label class="form-control-label" >Code</label>
+        <input type="text" class="form-control"  value="{{ $user->code }}"  name="code"
+          placeholder="code"/>
+        @if ($errors->has('code'))
+            <label class="error" for="password">{{ $errors->first('code') }}</label>
+        @endif
+      </div>
+
+
       </div>
       <hr>
       <div class="form-group row">
