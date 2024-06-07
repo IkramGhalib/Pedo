@@ -117,18 +117,30 @@ class ApiReadingController extends Controller
                         $record->status=$request->status;
                         // $record->added_date=date('Y-m-d');
                         $record->add_by=auth()->user()->id;
-                        if($request->hasFile('peak_image'))
-                            {
-                                $food_image = time().'p'. '.' . $request->peak_image->getClientOriginalExtension();
-                                $request->peak_image->move(public_path('reading/'), $food_image);
-                                $record->pkimage=$food_image;
-                            }
+                        // if($request->hasFile('peak_image'))
+                        //     {
+                        //         $food_image = time().'p'. '.' . $request->peak_image->getClientOriginalExtension();
+                        //         $request->peak_image->move(public_path('reading/'), $food_image);
+                        //         $record->pkimage=$food_image;
+                        //     }
 
-                        if($request->hasFile('off_peak_image'))
-                            {
-                                $food_image = time().'op'. '.' . $request->off_peak_image->getClientOriginalExtension();
-                                $request->off_peak_image->move(public_path('reading/'), $food_image);
-                                $record->offpkimage=$food_image;
+                        // if($request->hasFile('off_peak_image'))
+                        //     {
+                        //         $food_image = time().'op'. '.' . $request->off_peak_image->getClientOriginalExtension();
+                        //         $request->off_peak_image->move(public_path('reading/'), $food_image);
+                        //         $record->offpkimage=$food_image;
+                        //     }
+
+                            // if($request->hasFile('off_peak_image'))
+                            // {
+                            //     $food_image = time().'op'. '.' . $request->off_peak_image->getClientOriginalExtension();
+                            //     $request->off_peak_image->move(public_path('reading/'), $food_image);
+                            //     $record->offpkimage=$food_image;
+                            // }
+                            if($request->hasFile('off_peak_image')){
+                                $off_peak_image = 'op'.time().'.'.$request->off_peak_image->getClientOriginalExtension();
+                                $check=Storage::disk('public_image')->put($off_peak_image, file_get_contents($request->off_peak_image));
+                                $record->offpkimage =$off_peak_image;
                             }
                         $record->save();
                         return  success('Action Completed Successfully',  $record, 200);

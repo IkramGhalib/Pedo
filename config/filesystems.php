@@ -44,19 +44,9 @@ return [
             'throw' => false,
         ],
 
-        'public_course' => [
+       'public_image' => [
             'driver' => 'local',
-            'root'   => public_path() . '/course',
-        ],
-
-        'public_instructor' => [
-            'driver' => 'local',
-            'root'   => public_path() . '/instructor',
-        ],
-
-        'public_slide' => [
-            'driver' => 'local',
-            'root'   => public_path() . '/slide',
+            'root'   => '/home/cispvt-pedo/htdocs/pedo.cispvt.com/reading',
         ],
 
        
