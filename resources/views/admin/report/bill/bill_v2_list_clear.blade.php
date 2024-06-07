@@ -1634,12 +1634,12 @@ span
         </div>
         <div class="headertable fontsize " >
             <div>
-                <div style="height: 100%; width: 100px; float: left; display: inline-block; margin: 15px 0 0 15px">
+                <div style="height: 100%; width: 100px;float: left; display: inline-block; margin: 15px 0 0 15px">
                     <img style="margin: auto; max-width: 100%; max-height: 85%;" src="{{asset('frontend/img/learningwhite.png')}}" alt="PEDO" id="Img1">
                                                     <span><b>
                                                         pedokp.gov.pk</b></span>
                 </div>
-                <div style="width: 670px; display: inline-block">
+                <div style="width: 670px; display: inline-block ">
                     <table style="width: 100%; text-align: right;">
                         <tbody><tr>
                             <td colspan="3">
@@ -1652,50 +1652,63 @@ span
                             </td>
                         </tr>
                         <tr>
-                            <td style="text-align: left; width: 215px; ">
-                                <span style="font-size: 11px; ">
+                            <td style="text-align: left; width: 170px; color: #1a75ff;">
+                                <span style="font-size: 11px; color: #1a75ff;">
                                 <!-- <b>YOUR BETTER SERVICE - OUR PRIDE</b>  -->
                             </span>
                             </td>
-                            <td style="text-align: left; width: 170px; ">
+                            <td style="text-align: left; width: 170px; color: #1a75ff;">
                                 <h3 style="font-size: 14pt; margin-left: 6px;">  </h3> 
-                            </td>
-                            <td>
-                                <table style="width: 230px; margin-right: 20px; float: right; border-collapse: collapse; text-align: center">
-                                    <tbody><tr>
-                                        <td class="border-rb border-t" style="border-left: 1px solid white; color: white;">
-                                            <h4>CONSUMER ID</h4>
-                                        </td>
-                                        <td class="border-rb border-t content">
-                                        {{$bill_data->consumer_id}} 
-                                        </td>
-                                    </tr>
+                                <table style="width: 250px;  float: right; border-collapse: collapse; text-align: center">
+                                    <tbody>
+                                        <tr>
+                                            <td class="" style=" color: white;">
+                                                <h4> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CONSUMER ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+                                            </td>
+                                            <td class=" content" style="color: white;">
+                                                
+                                               <h4> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BILL NO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </h4>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="" style=" color: black;">
+                                                <h4>{{$bill_data->consumer_id}} </h4>
+                                            </td>
+                                            <td class="border-rb border-t content">
+                                                
+                                                <h4>{{$bill_no}} </h4>
+                                            </td>
+                                        </tr>
                                     
                                 </tbody></table>
+                            </td>
+                            <td>
+                                 <div class="" style=" margin-left:50px;display: inline-block; border: 1px solid white; color: white; padding: 20px; border-radius: 100%; width: 35px;">BANK
+                <br>
+                STAMP
+            </div>
                             </td>
                         </tr>
                     </tbody></table>
                 </div>
 
-                <div style="width: 15%; margin-top: 20px; float: right; display: inline-block ;color:black !important" >
-                    <span><br> {{$bill_no}} </span>
+               <!--  <div style="width: 15%; margin-top: 20px; float: right; display: inline-block">
+                    <span>BILL NO <br> {{$bill_no}} </span>
                     
-                </div>
+                </div> -->
 
             </div>
-            <div style="display: inline-block; border: 1px solid white; color: white; padding: 20px; border-radius: 100%; width: 35px;">BANK
-                <br>
-                STAMP
-            </div>
+           
             
 
-            <div style="float: right; margin-right: 206px; height: 70px; margin-bottom: 15px;">
+           {{-- <div style="float: right; margin-right: 206px; height: 70px; margin-bottom: 15px;">
                 
                 
-                    {{-- <svg id="normal_bill_barcode" width="331px" height="60px" x="0px" y="0px" viewBox="0 0 331 60" xmlns="http://www.w3.org/2000/svg" version="1.1" style="transform: translate(0,0)"><rect x="0" y="0" width="331" height="60" style="fill:#ffffff;"></rect><g transform="translate(5, 5)" style="fill:#000000;"><rect x="0" y="0" width="2" height="50"></rect><rect x="3" y="0" width="1" height="50"></rect><rect x="6" y="0" width="1" height="50"></rect><rect x="11" y="0" width="1" height="50"></rect><rect x="15" y="0" width="2" height="50"></rect><rect x="18" y="0" width="1" height="50"></rect><rect x="22" y="0" width="1" height="50"></rect><rect x="25" y="0" width="3" height="50"></rect><rect x="29" y="0" width="2" height="50"></rect><rect x="33" y="0" width="1" height="50"></rect><rect x="35" y="0" width="3" height="50"></rect><rect x="39" y="0" width="4" height="50"></rect><rect x="44" y="0" width="1" height="50"></rect><rect x="47" y="0" width="1" height="50"></rect><rect x="50" y="0" width="4" height="50"></rect><rect x="55" y="0" width="2" height="50"></rect><rect x="59" y="0" width="1" height="50"></rect><rect x="64" y="0" width="1" height="50"></rect><rect x="66" y="0" width="1" height="50"></rect><rect x="68" y="0" width="2" height="50"></rect><rect x="71" y="0" width="3" height="50"></rect><rect x="77" y="0" width="1" height="50"></rect><rect x="80" y="0" width="1" height="50"></rect><rect x="83" y="0" width="2" height="50"></rect><rect x="88" y="0" width="4" height="50"></rect><rect x="93" y="0" width="2" height="50"></rect><rect x="96" y="0" width="2" height="50"></rect><rect x="99" y="0" width="2" height="50"></rect><rect x="102" y="0" width="4" height="50"></rect><rect x="107" y="0" width="2" height="50"></rect><rect x="110" y="0" width="2" height="50"></rect><rect x="115" y="0" width="1" height="50"></rect><rect x="117" y="0" width="1" height="50"></rect><rect x="121" y="0" width="1" height="50"></rect><rect x="123" y="0" width="1" height="50"></rect><rect x="125" y="0" width="4" height="50"></rect><rect x="132" y="0" width="2" height="50"></rect><rect x="137" y="0" width="2" height="50"></rect><rect x="140" y="0" width="2" height="50"></rect><rect x="143" y="0" width="1" height="50"></rect><rect x="145" y="0" width="2" height="50"></rect><rect x="151" y="0" width="1" height="50"></rect><rect x="154" y="0" width="1" height="50"></rect><rect x="156" y="0" width="1" height="50"></rect><rect x="158" y="0" width="4" height="50"></rect><rect x="165" y="0" width="2" height="50"></rect><rect x="168" y="0" width="2" height="50"></rect><rect x="171" y="0" width="2" height="50"></rect><rect x="176" y="0" width="2" height="50"></rect><rect x="179" y="0" width="2" height="50"></rect><rect x="183" y="0" width="2" height="50"></rect><rect x="187" y="0" width="2" height="50"></rect><rect x="190" y="0" width="2" height="50"></rect><rect x="194" y="0" width="2" height="50"></rect><rect x="198" y="0" width="4" height="50"></rect><rect x="203" y="0" width="2" height="50"></rect><rect x="206" y="0" width="2" height="50"></rect><rect x="209" y="0" width="2" height="50"></rect><rect x="214" y="0" width="2" height="50"></rect><rect x="217" y="0" width="2" height="50"></rect><rect x="220" y="0" width="2" height="50"></rect><rect x="223" y="0" width="2" height="50"></rect><rect x="227" y="0" width="2" height="50"></rect><rect x="231" y="0" width="2" height="50"></rect><rect x="234" y="0" width="2" height="50"></rect><rect x="238" y="0" width="2" height="50"></rect><rect x="242" y="0" width="2" height="50"></rect><rect x="246" y="0" width="1" height="50"></rect><rect x="249" y="0" width="1" height="50"></rect><rect x="253" y="0" width="1" height="50"></rect><rect x="256" y="0" width="4" height="50"></rect><rect x="262" y="0" width="1" height="50"></rect><rect x="264" y="0" width="3" height="50"></rect><rect x="269" y="0" width="1" height="50"></rect><rect x="272" y="0" width="2" height="50"></rect><rect x="275" y="0" width="3" height="50"></rect><rect x="279" y="0" width="1" height="50"></rect><rect x="281" y="0" width="4" height="50"></rect><rect x="286" y="0" width="1" height="50"></rect><rect x="290" y="0" width="2" height="50"></rect><rect x="293" y="0" width="1" height="50"></rect><rect x="297" y="0" width="1" height="50"></rect><rect x="300" y="0" width="2" height="50"></rect><rect x="304" y="0" width="1" height="50"></rect><rect x="308" y="0" width="2" height="50"></rect><rect x="313" y="0" width="3" height="50"></rect><rect x="317" y="0" width="1" height="50"></rect><rect x="319" y="0" width="2" height="50"></rect></g></svg> --}}
+                     <svg id="normal_bill_barcode" width="331px" height="60px" x="0px" y="0px" viewBox="0 0 331 60" xmlns="http://www.w3.org/2000/svg" version="1.1" style="transform: translate(0,0)"><rect x="0" y="0" width="331" height="60" style="fill:#ffffff;"></rect><g transform="translate(5, 5)" style="fill:#000000;"><rect x="0" y="0" width="2" height="50"></rect><rect x="3" y="0" width="1" height="50"></rect><rect x="6" y="0" width="1" height="50"></rect><rect x="11" y="0" width="1" height="50"></rect><rect x="15" y="0" width="2" height="50"></rect><rect x="18" y="0" width="1" height="50"></rect><rect x="22" y="0" width="1" height="50"></rect><rect x="25" y="0" width="3" height="50"></rect><rect x="29" y="0" width="2" height="50"></rect><rect x="33" y="0" width="1" height="50"></rect><rect x="35" y="0" width="3" height="50"></rect><rect x="39" y="0" width="4" height="50"></rect><rect x="44" y="0" width="1" height="50"></rect><rect x="47" y="0" width="1" height="50"></rect><rect x="50" y="0" width="4" height="50"></rect><rect x="55" y="0" width="2" height="50"></rect><rect x="59" y="0" width="1" height="50"></rect><rect x="64" y="0" width="1" height="50"></rect><rect x="66" y="0" width="1" height="50"></rect><rect x="68" y="0" width="2" height="50"></rect><rect x="71" y="0" width="3" height="50"></rect><rect x="77" y="0" width="1" height="50"></rect><rect x="80" y="0" width="1" height="50"></rect><rect x="83" y="0" width="2" height="50"></rect><rect x="88" y="0" width="4" height="50"></rect><rect x="93" y="0" width="2" height="50"></rect><rect x="96" y="0" width="2" height="50"></rect><rect x="99" y="0" width="2" height="50"></rect><rect x="102" y="0" width="4" height="50"></rect><rect x="107" y="0" width="2" height="50"></rect><rect x="110" y="0" width="2" height="50"></rect><rect x="115" y="0" width="1" height="50"></rect><rect x="117" y="0" width="1" height="50"></rect><rect x="121" y="0" width="1" height="50"></rect><rect x="123" y="0" width="1" height="50"></rect><rect x="125" y="0" width="4" height="50"></rect><rect x="132" y="0" width="2" height="50"></rect><rect x="137" y="0" width="2" height="50"></rect><rect x="140" y="0" width="2" height="50"></rect><rect x="143" y="0" width="1" height="50"></rect><rect x="145" y="0" width="2" height="50"></rect><rect x="151" y="0" width="1" height="50"></rect><rect x="154" y="0" width="1" height="50"></rect><rect x="156" y="0" width="1" height="50"></rect><rect x="158" y="0" width="4" height="50"></rect><rect x="165" y="0" width="2" height="50"></rect><rect x="168" y="0" width="2" height="50"></rect><rect x="171" y="0" width="2" height="50"></rect><rect x="176" y="0" width="2" height="50"></rect><rect x="179" y="0" width="2" height="50"></rect><rect x="183" y="0" width="2" height="50"></rect><rect x="187" y="0" width="2" height="50"></rect><rect x="190" y="0" width="2" height="50"></rect><rect x="194" y="0" width="2" height="50"></rect><rect x="198" y="0" width="4" height="50"></rect><rect x="203" y="0" width="2" height="50"></rect><rect x="206" y="0" width="2" height="50"></rect><rect x="209" y="0" width="2" height="50"></rect><rect x="214" y="0" width="2" height="50"></rect><rect x="217" y="0" width="2" height="50"></rect><rect x="220" y="0" width="2" height="50"></rect><rect x="223" y="0" width="2" height="50"></rect><rect x="227" y="0" width="2" height="50"></rect><rect x="231" y="0" width="2" height="50"></rect><rect x="234" y="0" width="2" height="50"></rect><rect x="238" y="0" width="2" height="50"></rect><rect x="242" y="0" width="2" height="50"></rect><rect x="246" y="0" width="1" height="50"></rect><rect x="249" y="0" width="1" height="50"></rect><rect x="253" y="0" width="1" height="50"></rect><rect x="256" y="0" width="4" height="50"></rect><rect x="262" y="0" width="1" height="50"></rect><rect x="264" y="0" width="3" height="50"></rect><rect x="269" y="0" width="1" height="50"></rect><rect x="272" y="0" width="2" height="50"></rect><rect x="275" y="0" width="3" height="50"></rect><rect x="279" y="0" width="1" height="50"></rect><rect x="281" y="0" width="4" height="50"></rect><rect x="286" y="0" width="1" height="50"></rect><rect x="290" y="0" width="2" height="50"></rect><rect x="293" y="0" width="1" height="50"></rect><rect x="297" y="0" width="1" height="50"></rect><rect x="300" y="0" width="2" height="50"></rect><rect x="304" y="0" width="1" height="50"></rect><rect x="308" y="0" width="2" height="50"></rect><rect x="313" y="0" width="3" height="50"></rect><rect x="317" y="0" width="1" height="50"></rect><rect x="319" y="0" width="2" height="50"></rect></g></svg> 
                     
                 
-                {{-- <div>SEP 23 - 08 26142 0391904 - 000009132 - 27 SEP 23 - 6</div>
+                <div>SEP 23 - 08 26142 0391904 - 000009132 - 27 SEP 23 - 6</div>
 
                 <script>
                     
@@ -1707,14 +1720,14 @@ span
                         displayValue: false
                     });
                     
-                </script> --}}
+                </script> 
 
                 
-            </div>
+            </div>--}}
 
             
-            <div style="width: 98%; margin: 0 auto 10px;">
-                <table style="text-align: center; width: 100%; border-collapse: collapse;">
+            <div style="width: 98%; margin-top: 20px;margin-bottom: 10px;">
+                <table  style=" width: 100%; border-collapse: collapse;" cellpadding="6">
                     <tbody><tr style="height: 10px;">
                         <td class="border-rb border-t" style="width: 15%; color: white; border-left: 1px solid white;">
                         <b>BILL MONTH </b> <br/><span> بل کا مہینہ</span>
@@ -1723,12 +1736,12 @@ span
                         <b>DUE DATE</b> <br/> <span class="text-right"> اخری تاریخ</span> 
                         </td>
                         <td class="border-rb border-t" style="width: 25%; color: white;">
-                        <b>REFERENCE NO</b> <br/> <span class="text-right"> حوالہ نمبر</span> 
+                            <b>REFERENCE NO</b> <br/> <span class="text-right"> حوالہ نمبر</span> 
                         </td>
-                        <td class="border-rb border-t" style="width: 25%; color: white">
-                        <b>PAYABLE WITHIN DUE DATE</b> <br/> <span class="text-right"> مقرّر تاریخ تک رقم</span> 
+                        <td class="border-rb border-t" style="width: 25%; color: white;">
+                            <b>PAYABLE WITHIN DUE DATE</b> <br/> <span class="text-right"> مقرّر تاریخ تک رقم</span> 
                         </td>
-                        <td class="border-b border-t border-r content" style="width: 20%;">
+                        <td class="border-b border-t border-r content text-center" style="width: 20%;">
                         {{$payable}}
                             
                             <br>
@@ -1736,21 +1749,21 @@ span
                         </td>
                     </tr>
                     <tr style="height: 40px;">
-                        <td class="border-rb content" style="width: 15%; text-align: center; border-left: 1px solid white;">
+                        <td class="border-rb content text-center" style="width: 15%; text-align: center; border-left: 1px solid white;">
                             <!-- SEP 23 -->
                             {{$billing_month_year}}
                         </td>
-                        <td class="border-rb content" style="width: 15%; text-align: center;">
+                        <td class="border-rb content text-center" style="width: 15%; text-align: center;">
                         {{$due_date}}
                         </td>
-                        <td class="font-size border-rb content" style="width: 25%; text-align: Center;">
+                        <td class="font-size border-rb content text-center" style="width: 25%; text-align: Center;">
                         {{$ref_no}} 
                             
                         </td>
                         <td class="border-rb" style="width: 25%; color: white;">
-                        <b>PAYABLE AFTER DUE DATE</b> <br/> <span class="text-right"> مقرّر تاریخ کی بعد رقم</span> 
+                            <b>PAYABLE AFTER DUE DATE</b> <br/> <span class="text-right"> مقرّر تاریخ کی بعد رقم</span> 
                         </td>
-                        <td class="font-size border-rb border-r content" style="width: 15%;">
+                        <td class="font-size border-rb border-r content text-center" style="width: 15%;">
                         {{$payable_after_due_date}}
                             
                             <br>
