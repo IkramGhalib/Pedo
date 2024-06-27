@@ -47,7 +47,7 @@
               </tr>
             </thead>
             <tbody>
-              @foreach($list as $key=>$i)
+              @foreach($list as $key => $i)
               <tr>
                 <td>{{ $key+1}}</td>
                 <td>{{ $i->bUser->code}} </td>
@@ -75,7 +75,7 @@
         </div>
           
           <div class="float-right">
-            {{-- {{ $instructor->appends(['search' => Request::input('search')])->links() }} --}}
+             {{ $list->appends(['search' => Request::input('search')])->links() }} 
           </div>
           
           

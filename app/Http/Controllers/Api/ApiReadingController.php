@@ -57,7 +57,7 @@ class ApiReadingController extends Controller
     public function get_month(Request $request)
     {
        $meter_status= config('meterstatus.status');
-    //    pr($meter_status);
+       // pr($meter_status);
         $last_date=DB::table('reading_approve')->orderBy('id','desc')->first();
         $data=[];
         $data['meter_status']=$meter_status;

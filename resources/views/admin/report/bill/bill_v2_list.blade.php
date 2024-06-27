@@ -1108,7 +1108,9 @@ span
                             {{$offpeak_units}} <br>
                             </td>
                              <td class="">
-                                 @if($bill_data->reading_status && $bill_data->reading_status!='Functional') {{$bill_data->reading_status}} @endif
+                                 @if($bill_data->reading_status && (ucwords($bill_data->reading_status) != 'Functional') ) 
+                                 {{$bill_data->reading_status}} 
+                                 @endif
                             </td>
                            
                         </tr>
